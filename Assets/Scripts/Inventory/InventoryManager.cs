@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class InventoryManager : Inventory
 {
     public static InventoryManager instance;
     public GameObject backpackInventory;
-
-    int selectedSlot = -1;
-    int toolBarLength = 5;
+    [SerializeField] List<GearSlot> weaponSlots;
+    [SerializeField] TMP_Text weightText; // "BACKPACK 0.0/0.0"
 
     private void Awake()
     {
@@ -25,7 +25,6 @@ public class InventoryManager : Inventory
     new protected void Start()
     {
         base.Start();
-        ChangeSelectedSlot(0);
     }
 
     private void Update()
@@ -36,46 +35,34 @@ public class InventoryManager : Inventory
             backpackInventory.SetActive(!currentStatus);
             Character.SetUserInputStatus(currentStatus);
         }
-        if (Input.inputString != null)
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            bool isNumber = int.TryParse(Input.inputString, out int number);
-            if (isNumber)
+            foreach (Item startItem in startItems)
             {
-                ChangeSelectedSlot(number - 1);
+                Debug.Log(AddItem(startItem));
             }
         }
     }
 
-    void ChangeSelectedSlot(int newSlot)
+    public override void UpdateWeight(float amount)
     {
-        if (selectedSlot >= 0)
+        base.UpdateWeight(amount);
+        weightText.text = "BACKPACK " + currentWeight.ToString() + "/" + inventoryWeightLimit;
+    }
+
+    public override void OnItemStartDragged(InventoryItem inventoryItem)
+    {
+        foreach (GearSlot weaponSlot in weaponSlots)
         {
-            inventorySlots[selectedSlot].Deselect();
-        }
-        if (newSlot < toolBarLength) {
-            selectedSlot = newSlot;
-            inventorySlots[selectedSlot].Select();
+            weaponSlot.DisplayItemIndication(inventoryItem.GetItemType());
         }
     }
 
-    public Item GetSelectedItem(bool useDrop)
+    public override void OnItemStopDragged(InventoryItem inventoryItem)
     {
-        InventorySlot slot = inventorySlots[selectedSlot];
-        InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-        if (itemInSlot != null)
+        foreach (GearSlot weaponSlot in weaponSlots)
         {
-            Item item = itemInSlot.item;
-            if(useDrop)
-            {
-                itemInSlot.count--;
-                itemInSlot.RefreshItemCount();
-                if (itemInSlot.count <= 0)
-                {
-                    Destroy(itemInSlot.gameObject);
-                }
-            }
-            return item;
+            weaponSlot.ResetItemIndication();
         }
-        return null;
     }
 }

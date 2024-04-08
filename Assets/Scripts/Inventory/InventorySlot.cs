@@ -3,40 +3,55 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
     public Image image;
-    public Color selectedColor, notSelectedColor;
+    [SerializeField] public Transform itemSlot;
+    InventoryItem itemInSlot;
+
+    Inventory inventory;
+
+    [SerializeField] protected TMP_Text weightText;
 
     void Awake()
     {
-        Deselect();
+        inventory = GetComponentInParent<Inventory>();
+        weightText.text = "";
     }
 
-    [SerializeField] public Transform itemSlot;
     public void OnDrop(PointerEventData eventData)
     {
+        OnDropItem(eventData);
+    }
+
+    public virtual void OnDropItem(PointerEventData eventData)
+    {
         GameObject dropped = eventData.pointerDrag;
-        InventoryItem draggableItem = dropped.GetComponent<InventoryItem>();
+        itemInSlot = dropped.GetComponent<InventoryItem>();
 
         // If itemslot has item, swap
         if (itemSlot.childCount != 0)
         {
             // Begin Swap
             Transform itemToSwap = itemSlot.GetChild(0);
-            itemToSwap.SetParent(draggableItem.parentAfterDrag);
+            itemToSwap.SetParent(itemInSlot.parentAfterDrag);
         }
 
-        draggableItem.parentAfterDrag = itemSlot;
+        // Set the parent to this itemSlot
+        itemInSlot.parentAfterDrag = itemSlot;
     }
 
-    public void Select()
+    public virtual void OnAddItem(Item item)
     {
-        image.color = selectedColor;
+        inventory.UpdateWeight(item.Weight);
+        weightText.text = item.Weight.ToString();
     }
-    public void Deselect()
+
+    public virtual void OnRemoveItem(Item item)
     {
-        image.color = notSelectedColor;
+        inventory.UpdateWeight(-item.Weight);
+        weightText.text = "";
     }
 }

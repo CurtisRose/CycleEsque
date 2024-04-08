@@ -12,4 +12,11 @@ public class Item : ScriptableObject
     
     [field: SerializeField] public Sprite image { get; private set; }
     [field: SerializeField] public bool stackable { get; private set; }
+
+    [field: SerializeField] public ItemType ItemType { get; private set; }
+
+    [field: SerializeField] public float Weight { get; private set; }
+
 }
+
+public enum ItemType { PRIMARY_WEAPON, HELMET, ARMOR, BACKPACK, OTHER };

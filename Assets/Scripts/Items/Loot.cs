@@ -14,7 +14,7 @@ public class Loot : MonoBehaviour
         this.item = item;
     }
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -24,7 +24,7 @@ public class Loot : MonoBehaviour
                 StartCoroutine(MoveAndCollect(other.transform));
             }
         }
-    }
+    }*/
 
     private IEnumerator MoveAndCollect(Transform target)
     {

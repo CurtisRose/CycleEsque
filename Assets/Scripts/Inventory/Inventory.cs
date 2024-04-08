@@ -7,6 +7,8 @@ public class Inventory : MonoBehaviour
     public Item[] startItems;
     public InventorySlot[] inventorySlots;
     public GameObject inventoryItemPrefab;
+    public float inventoryWeightLimit;
+    public float currentWeight;
 
     protected void Start()
     {
@@ -18,6 +20,14 @@ public class Inventory : MonoBehaviour
 
     public bool AddItem(Item item)
     {
+        if (item.Weight > inventoryWeightLimit - currentWeight)
+        {
+            return false;
+        }
+
+        // Add item weight to current weight
+        //UpdateWeight(item.Weight);
+
         // Check if any slot already has item with count lower than the stack size
         if (item.stackable)
         {
@@ -31,6 +41,7 @@ public class Inventory : MonoBehaviour
                 {
                     itemInSlot.count++;
                     itemInSlot.RefreshItemCount();
+                    slot.OnAddItem(itemInSlot.item);
                     return true;
                 }
             }
@@ -44,19 +55,39 @@ public class Inventory : MonoBehaviour
             // If slot is empty
             if (itemInSlot == null)
             {
-                SpawnNewItem(item, slot);
+                CreateNewItem(item, slot);
+                slot.OnAddItem(item);
                 return true;
             }
         }
+
+        // No Empty Slots
+        // TODO: Create More Slots Dynamically
+        // Inventory is only limited by weight
 
         Debug.Log("Inventory Is Full");
         return false;
     }
 
-    protected void SpawnNewItem(Item item, InventorySlot inventorySlot)
+    public virtual void UpdateWeight(float amount)
+    {
+        currentWeight += amount;
+    }
+
+    protected void CreateNewItem(Item item, InventorySlot inventorySlot)
     {
         GameObject newItem = Instantiate(inventoryItemPrefab, inventorySlot.itemSlot);
         InventoryItem inventoryItem = newItem.GetComponent<InventoryItem>();
-        inventoryItem.InitializeItem(item);
+        inventoryItem.InitializeItem(item, this);
+    }
+
+    public virtual void OnItemStartDragged(InventoryItem inventoryItem)
+    {
+
+    }
+
+    public virtual void OnItemStopDragged(InventoryItem inventoryItem)
+    {
+
     }
 }
