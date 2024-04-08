@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Helmet
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Helmet
-  <maxStackSize>k__BackingField: 1
+  <ItemType>k__BackingField: 1
+  <Rarity>k__BackingField: 3
   <Image>k__BackingField: {fileID: 21300000, guid: 7dd9123b0beb10f48bf6fe308bbe62fe,
     type: 3}
-  <stackable>k__BackingField: 0
-  <ItemType>k__BackingField: 1
   <Weight>k__BackingField: 10
-  <Rarity>k__BackingField: 0
+  <stackable>k__BackingField: 0
+  <maxStackSize>k__BackingField: 1

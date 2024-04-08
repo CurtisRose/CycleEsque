@@ -350,6 +350,16 @@ PrefabInstance:
       propertyPath: m_margin.x
       value: -97.94336
       objectReference: {fileID: 0}
+    - target: {fileID: 4647661812781517577, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 290
+      objectReference: {fileID: 0}
+    - target: {fileID: 4647661812781517577, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 90
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1014386658, guid: d9fa8fcd8ce0e3843ad711ed0b19a865, type: 3}
     - {fileID: 3524764378241485267, guid: d9fa8fcd8ce0e3843ad711ed0b19a865, type: 3}

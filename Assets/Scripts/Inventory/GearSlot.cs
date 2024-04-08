@@ -39,13 +39,13 @@ public class GearSlot : InventorySlot
         if (this.itemType == itemType)
         {
             Color temp = Color.green;
-            temp.a = 0.4f;
+            temp.a = 1.0f;
             indicationImage.color = temp;
         }
         else
         {
             Color temp = Color.red;
-            temp.a = 0.4f;
+            temp.a = 1.0f;
             indicationImage.color = temp;
         }
     }
@@ -66,6 +66,7 @@ public class GearSlot : InventorySlot
         itemInSlot = inventoryItem;
         HasItem = true;
         SetSlotHolderImageVisible(false);
+        weightText.text = inventoryItem.item.Weight.ToString();
         SetImageColor(inventoryItem.item.Rarity);
     }
 
@@ -75,6 +76,7 @@ public class GearSlot : InventorySlot
         itemInSlot = null;
         HasItem = false;
         SetSlotHolderImageVisible(true);
+        weightText.text = "";
         SetImageColorDefault();
     }
 }

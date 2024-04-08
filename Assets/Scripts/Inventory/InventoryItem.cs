@@ -47,6 +47,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         // Then set it at the bottom of that hierarchy so that it is drawn on top of everything else
         transform.SetAsLastSibling();
         itemImage.raycastTarget = false;
+
+        AdjustImageSizeForDragging();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -74,8 +76,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         transform.SetParent(parentAfterDrag);
         itemImage.raycastTarget = true;
-
-        AdjustImageSizeForDragging();
     }
 
     public ItemType GetItemType()
@@ -97,8 +97,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         RectTransform rt = GetComponent<RectTransform>();
         rt.sizeDelta = new Vector2(80, 80);
-
-
     }
 
     private void AdjustImageSizeToFitSlot(Transform newParent)

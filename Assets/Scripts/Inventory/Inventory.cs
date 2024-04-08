@@ -81,6 +81,7 @@ public class Inventory : MonoBehaviour
     {
         GameObject newItem = Instantiate(inventoryItemPrefab, inventorySlot.itemSlot);
         InventoryItem inventoryItem = newItem.GetComponent<InventoryItem>();
+        inventoryItem.name = item.DisplayName;
         inventoryItem.InitializeItem(item);
         inventorySlot.SetItemInSlot(inventoryItem);
     }
