@@ -7,9 +7,9 @@ public class Loot : MonoBehaviour
     [SerializeField] Collider lootCollider;
     [SerializeField] float moveSpeed;
 
-    [SerializeField] private Item item;
+    [SerializeField] private BaseItem item;
 
-    public void Initialize(Item item)
+    public void Initialize(BaseItem item)
     {
         this.item = item;
     }

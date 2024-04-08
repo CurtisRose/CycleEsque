@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public Item[] startItems;
+    public BaseItem[] startItems;
     public InventorySlot[] inventorySlots;
     public GameObject inventoryItemPrefab;
     public float inventoryWeightLimit;
@@ -12,13 +12,13 @@ public class Inventory : MonoBehaviour
 
     protected void Start()
     {
-        foreach (Item startItem in startItems)
+        foreach (BaseItem startItem in startItems)
         {
             AddItem(startItem);
         }
     }
 
-    public bool AddItem(Item item)
+    public bool AddItem(BaseItem item)
     {
         if (item.Weight > inventoryWeightLimit - currentWeight)
         {
@@ -72,12 +72,12 @@ public class Inventory : MonoBehaviour
         currentWeight += amount;
     }
 
-    public bool RemoveItem(Item item)
+    public bool RemoveItem(BaseItem item)
     {
         return true;
     }
 
-    protected void CreateNewItem(Item item, InventorySlot inventorySlot)
+    protected void CreateNewItem(BaseItem item, InventorySlot inventorySlot)
     {
         GameObject newItem = Instantiate(inventoryItemPrefab, inventorySlot.itemSlot);
         InventoryItem inventoryItem = newItem.GetComponent<InventoryItem>();

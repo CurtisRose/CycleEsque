@@ -10,13 +10,14 @@ public class GearSlot : InventorySlot
     [SerializeField] ItemType itemType;
     Color indicationColor;
     [SerializeField] TMP_Text slotIndicationText;
+    [SerializeField] Image indicationImage;
 
 
     public override void Awake()
     {
         base.Awake();
-        indicationColor = image.color;
         weightText.text = "";
+        indicationImage.enabled = false;
     }
 
     public override void OnDropItem(PointerEventData eventData)
@@ -34,19 +35,24 @@ public class GearSlot : InventorySlot
 
     public void DisplayItemIndication(ItemType itemType)
     {
+        indicationImage.enabled = true;
         if (this.itemType == itemType)
         {
-            image.color = Color.green;
+            Color temp = Color.green;
+            temp.a = 0.4f;
+            indicationImage.color = temp;
         }
         else
         {
-            image.color = Color.red;
+            Color temp = Color.red;
+            temp.a = 0.4f;
+            indicationImage.color = temp;
         }
     }
 
     public void ResetItemIndication()
     {
-        image.color = indicationColor;
+        indicationImage.enabled = false;
     }
 
     public void SetSlotHolderImageVisible(bool setVisible)
@@ -59,6 +65,8 @@ public class GearSlot : InventorySlot
     {
         itemInSlot = inventoryItem;
         HasItem = true;
+        SetSlotHolderImageVisible(false);
+        SetImageColor(inventoryItem.item.Rarity);
     }
 
     // This gets called from InventoryItem when the player clicks the inventoryItem and begins to drag it.
@@ -66,5 +74,7 @@ public class GearSlot : InventorySlot
     {
         itemInSlot = null;
         HasItem = false;
+        SetSlotHolderImageVisible(true);
+        SetImageColorDefault();
     }
 }

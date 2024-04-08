@@ -37,7 +37,7 @@ public class PlayerInventory : Inventory
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            foreach (Item startItem in startItems)
+            foreach (BaseItem startItem in startItems)
             {
                 Debug.Log(AddItem(startItem));
             }

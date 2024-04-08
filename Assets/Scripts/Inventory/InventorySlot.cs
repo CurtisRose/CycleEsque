@@ -7,7 +7,6 @@ using TMPro;
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
-    public Image image;
     [SerializeField] public Transform itemSlot;
     protected InventoryItem itemInSlot;
 
@@ -17,10 +16,16 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     [SerializeField] protected TMP_Text weightText;
 
+    [SerializeField] List<Color> rarityColors;
+
+    [SerializeField] Image itemBackgroundImage;
+    [SerializeField] Image itemBorderImage;
+
     public virtual void Awake()
     {
         inventory = GetComponentInParent<Inventory>();
         weightText.text = "";
+        SetImageColorDefault();
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -51,6 +56,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         itemInSlot = inventoryItem;
         HasItem = true;
         inventory.UpdateWeight(inventoryItem.item.Weight);
+        weightText.text = inventoryItem.item.Weight.ToString();
+        SetImageColor(inventoryItem.item.Rarity);
     }
 
     // This gets called from InventoryItem when the player clicks the inventoryItem and begins to drag it.
@@ -59,6 +66,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         itemInSlot = null;
         HasItem = false;
         inventory.UpdateWeight(-inventoryItem.item.Weight);
+        weightText.text = "";
+        SetImageColorDefault();
     }
 
     // These are pass through functions from the inventory Item to the slot to the inventory
@@ -72,5 +81,20 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     public virtual void EndInventoryItemMoved(InventoryItem inventoryItem)
     {
         inventory.EndInventoryItemMoved(inventoryItem);
+    }
+
+    protected void SetImageColor(Rarity rarity)
+    {
+        Color temp = rarityColors[(int)rarity];
+        itemBackgroundImage.color = temp;
+        itemBorderImage.color = temp;
+    }
+
+    protected void SetImageColorDefault()
+    {
+        Color temp = Color.white;
+        temp.a = 0.2f;
+        itemBackgroundImage.color = temp;
+        itemBorderImage.color = temp;
     }
 }

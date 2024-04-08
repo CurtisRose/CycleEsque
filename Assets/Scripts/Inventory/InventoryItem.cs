@@ -7,7 +7,7 @@ using TMPro;
 
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
-    [HideInInspector] public Item item;
+    [HideInInspector] public BaseItem item;
     [HideInInspector] public int count = 1;
 
     public TMP_Text countText;
@@ -16,10 +16,10 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [HideInInspector] public Transform parentAfterDrag;
 
     // Initialized by the inventory when it's created
-    public void InitializeItem(Item item)
+    public void InitializeItem(BaseItem item)
     {
         this.item = item;
-        itemImage.sprite = item.image;
+        itemImage.sprite = item.Image;
         parentAfterDrag = transform.parent;
         RefreshItemCount();
     }
@@ -95,8 +95,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     private void AdjustImageSizeForDragging()
     {
-        //RectTransform rt = GetComponent<RectTransform>();
-        //rt.sizeDelta = new Vector2(100, 100); // Set the width and height to 100 units
+        RectTransform rt = GetComponent<RectTransform>();
+        rt.sizeDelta = new Vector2(80, 80);
 
 
     }
@@ -105,25 +105,20 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         // Example: Adjust the image size based on the new parent slot's dimensions
         // This could involve setting RectTransform size, applying scaling, or using layout components
+        RectTransform parentRectTransform = newParent.GetComponent<RectTransform>();
         RectTransform itemRectTransform = GetComponent<RectTransform>();
 
         // Set the item as a child of the new parent
         itemRectTransform.SetParent(newParent, false);
 
-        // Set anchors to stretch to fill the parent
-        itemRectTransform.anchorMin = Vector2.zero; // Anchors to the bottom-left
-        itemRectTransform.anchorMax = Vector2.one;  // Anchors to the top-right
+        // Optionally, set pivot and anchors to the center if they are not already
+        itemRectTransform.pivot = new Vector2(0.5f, 0.5f);
+        itemRectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+        itemRectTransform.anchorMax = new Vector2(0.5f, 0.5f);
 
-        // Set offsets to zero to fill the parent
-        itemRectTransform.offsetMin = Vector2.zero; // Offset from the bottom-left
-        itemRectTransform.offsetMax = Vector2.zero; // Offset from the top-right
+        // Adjust the sizeDelta to match the parent's size, or use a specific size here
+        itemRectTransform.sizeDelta = new Vector2(parentRectTransform.rect.width, parentRectTransform.rect.height);
 
-        // Optional: If you're using a Preserve Aspect Ratio component and want to adjust settings
-        var preserveAspect = itemRectTransform.GetComponent<AspectRatioFitter>();
-        if (preserveAspect != null)
-        {
-            preserveAspect.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
-            // Adjust other settings as necessary
-        }
+        itemRectTransform.localPosition = Vector3.zero;
     }
 }

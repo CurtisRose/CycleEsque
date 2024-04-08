@@ -9,13 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ff7524c1a50c5d48bd986ab176948e8, type: 3}
+  m_Script: {fileID: 11500000, guid: 08fd329829f79b44fa989b806aebbf17, type: 3}
   m_Name: Rifle
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Rifle
   <maxStackSize>k__BackingField: 1
-  <image>k__BackingField: {fileID: 21300000, guid: 89c94b010a5928f4a9b03d41d3a4d4c1,
+  <Image>k__BackingField: {fileID: 21300000, guid: c76531ca37f37614d8c19068caf7dde2,
     type: 3}
   <stackable>k__BackingField: 0
   <ItemType>k__BackingField: 0
   <Weight>k__BackingField: 20
+  <Rarity>k__BackingField: 0
+  <LargeImage>k__BackingField: {fileID: 0}
