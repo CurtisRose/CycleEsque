@@ -41,7 +41,6 @@ public class Inventory : MonoBehaviour
                 {
                     itemInSlot.count++;
                     itemInSlot.RefreshItemCount();
-                    slot.OnAddItem(itemInSlot.item);
                     return true;
                 }
             }
@@ -56,7 +55,6 @@ public class Inventory : MonoBehaviour
             if (itemInSlot == null)
             {
                 CreateNewItem(item, slot);
-                slot.OnAddItem(item);
                 return true;
             }
         }
@@ -74,19 +72,25 @@ public class Inventory : MonoBehaviour
         currentWeight += amount;
     }
 
+    public bool RemoveItem(Item item)
+    {
+        return true;
+    }
+
     protected void CreateNewItem(Item item, InventorySlot inventorySlot)
     {
         GameObject newItem = Instantiate(inventoryItemPrefab, inventorySlot.itemSlot);
         InventoryItem inventoryItem = newItem.GetComponent<InventoryItem>();
-        inventoryItem.InitializeItem(item, this);
+        inventoryItem.InitializeItem(item);
+        inventorySlot.SetItemInSlot(inventoryItem);
     }
 
-    public virtual void OnItemStartDragged(InventoryItem inventoryItem)
+    public virtual void StartInventoryItemMoved(InventoryItem inventoryItem)
     {
 
     }
 
-    public virtual void OnItemStopDragged(InventoryItem inventoryItem)
+    public virtual void EndInventoryItemMoved(InventoryItem inventoryItem)
     {
 
     }

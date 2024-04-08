@@ -1401,7 +1401,7 @@ PrefabInstance:
     - target: {fileID: 6754216929609444848, guid: 18afc7dec9b93d34a84ce2fba64e2d83,
         type: 3}
       propertyPath: m_Name
-      value: Inventory
+      value: PlayerInventory
       objectReference: {fileID: 0}
     - target: {fileID: 7932794578613391676, guid: 18afc7dec9b93d34a84ce2fba64e2d83,
         type: 3}

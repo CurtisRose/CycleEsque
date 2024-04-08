@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Rifle
   <maxStackSize>k__BackingField: 1
-  <image>k__BackingField: {fileID: 10901, guid: 0000000000000000f000000000000000,
-    type: 0}
+  <image>k__BackingField: {fileID: 21300000, guid: 89c94b010a5928f4a9b03d41d3a4d4c1,
+    type: 3}
   <stackable>k__BackingField: 0
   <ItemType>k__BackingField: 0
   <Weight>k__BackingField: 20

@@ -12,8 +12,9 @@ public class GearSlot : InventorySlot
     [SerializeField] TMP_Text slotIndicationText;
 
 
-    void Awake()
+    public override void Awake()
     {
+        base.Awake();
         indicationColor = image.color;
         weightText.text = "";
     }
@@ -53,16 +54,17 @@ public class GearSlot : InventorySlot
         slotIndicationText.enabled = setVisible;
     }
 
-
-    // Item Added to GearSlot
-    public override void OnAddItem(Item item)
+    // This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)
+    public override void SetItemInSlot(InventoryItem inventoryItem)
     {
-        weightText.text = item.Weight.ToString();
+        itemInSlot = inventoryItem;
+        HasItem = true;
     }
 
-    // Item Removed from GearSlot
-    public override void OnRemoveItem(Item item)
+    // This gets called from InventoryItem when the player clicks the inventoryItem and begins to drag it.
+    public override void RemoveItemFromSlot(InventoryItem inventoryItem)
     {
-        weightText.text = "";
+        itemInSlot = null;
+        HasItem = false;
     }
 }

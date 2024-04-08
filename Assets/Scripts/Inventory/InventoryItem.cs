@@ -14,13 +14,13 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public Image itemImage;
     
     [HideInInspector] public Transform parentAfterDrag;
-    Inventory inventory;
 
-    public void InitializeItem(Item item, Inventory inventory)
+    // Initialized by the inventory when it's created
+    public void InitializeItem(Item item)
     {
         this.item = item;
-        this.inventory = inventory;
         itemImage.sprite = item.image;
+        parentAfterDrag = transform.parent;
         RefreshItemCount();
     }
 
@@ -37,23 +37,16 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         {
             return;
         }
-        
+
+        parentAfterDrag.GetComponentInParent<InventorySlot>().RemoveItemFromSlot(this);
+        parentAfterDrag.GetComponentInParent<InventorySlot>().StartInventoryItemMoved(this);
+
         parentAfterDrag = transform.parent;
         // Sets the UI Panel at the top of this hierarchy as the parent
         transform.SetParent(transform.root);
         // Then set it at the bottom of that hierarchy so that it is drawn on top of everything else
         transform.SetAsLastSibling();
         itemImage.raycastTarget = false;
-        inventory.OnItemStartDragged(this);
-
-        if (parentAfterDrag.GetComponentInParent<GearSlot>())
-        {
-            parentAfterDrag.GetComponentInParent<GearSlot>().SetSlotHolderImageVisible(true);
-            parentAfterDrag.GetComponentInParent<InventorySlot>().OnRemoveItem(item);
-        } else if (parentAfterDrag.GetComponentInParent<InventorySlot>())
-        {
-            parentAfterDrag.GetComponentInParent<InventorySlot>().OnRemoveItem(item);
-        }
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -73,22 +66,14 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             return;
         }
 
+        parentAfterDrag.GetComponentInParent<InventorySlot>().SetItemInSlot(this);
+        parentAfterDrag.GetComponentInParent<InventorySlot>().EndInventoryItemMoved(this);
+
         // Before setting the parent, adjust the size to fit the new slot
         AdjustImageSizeToFitSlot(parentAfterDrag);
 
         transform.SetParent(parentAfterDrag);
         itemImage.raycastTarget = true;
-        inventory.OnItemStopDragged(this);
-
-        if (parentAfterDrag.GetComponentInParent<GearSlot>())
-        {
-            parentAfterDrag.GetComponentInParent<GearSlot>().SetSlotHolderImageVisible(false);
-        }
-
-        if (parentAfterDrag.GetComponentInParent<InventorySlot>())
-        {
-            parentAfterDrag.GetComponentInParent<InventorySlot>().OnAddItem(item);
-        }
 
         AdjustImageSizeForDragging();
     }
@@ -110,7 +95,9 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     private void AdjustImageSizeForDragging()
     {
-        // Example: Reset to default size or apply specific adjustments for dragging
+        //RectTransform rt = GetComponent<RectTransform>();
+        //rt.sizeDelta = new Vector2(100, 100); // Set the width and height to 100 units
+
 
     }
 

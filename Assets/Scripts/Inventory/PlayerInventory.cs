@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class InventoryManager : Inventory
+public class PlayerInventory : Inventory
 {
-    public static InventoryManager instance;
+    public static PlayerInventory instance;
     public GameObject backpackInventory;
     [SerializeField] List<GearSlot> weaponSlots;
     [SerializeField] TMP_Text weightText; // "BACKPACK 0.0/0.0"
@@ -50,7 +50,7 @@ public class InventoryManager : Inventory
         weightText.text = "BACKPACK " + currentWeight.ToString() + "/" + inventoryWeightLimit;
     }
 
-    public override void OnItemStartDragged(InventoryItem inventoryItem)
+    public void StartShowSlotAcceptability(InventoryItem inventoryItem)
     {
         foreach (GearSlot weaponSlot in weaponSlots)
         {
@@ -58,11 +58,21 @@ public class InventoryManager : Inventory
         }
     }
 
-    public override void OnItemStopDragged(InventoryItem inventoryItem)
+    public void EndShowSlotAcceptability(InventoryItem inventoryItem)
     {
         foreach (GearSlot weaponSlot in weaponSlots)
         {
             weaponSlot.ResetItemIndication();
         }
+    }
+
+    public override void StartInventoryItemMoved(InventoryItem inventoryItem)
+    {
+        StartShowSlotAcceptability(inventoryItem);
+    }
+
+    public override void EndInventoryItemMoved(InventoryItem inventoryItem)
+    {
+        EndShowSlotAcceptability(inventoryItem);
     }
 }

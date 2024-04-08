@@ -660,7 +660,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1161955947460558580}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
   m_Name: 
@@ -866,6 +866,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 5989646235290386907}
   itemSlot: {fileID: 3883925510158629820}
+  HasItem: 0
   weightText: {fileID: 1243853154541986609}
   itemType: 2
   slotIndicationText: {fileID: 3903877392407051807}
@@ -1354,6 +1355,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 4403760697037594321}
   itemSlot: {fileID: 8848060109448309411}
+  HasItem: 0
   weightText: {fileID: 6367785722240495117}
   itemType: 0
   slotIndicationText: {fileID: 9039575074895483763}
@@ -1515,7 +1517,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3651066580972380489}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
   m_Name: 
@@ -1615,7 +1617,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4110572598345973950}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
   m_Name: 
@@ -1849,7 +1851,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4379285039256942334}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
   m_Name: 
@@ -2224,8 +2226,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 10, y: 381.1}
-  m_SizeDelta: {x: 300, y: 220}
+  m_AnchoredPosition: {x: 0, y: 249.97}
+  m_SizeDelta: {x: 300, y: 499.94}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8959116346662216971
 MonoBehaviour:
@@ -2247,8 +2249,8 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 80, y: 80}
-  m_Spacing: {x: 20, y: 20}
+  m_CellSize: {x: 100, y: 100}
+  m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!222 &2690820163851985718
@@ -2417,7 +2419,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5496163020535835038}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
   m_Name: 
@@ -2489,6 +2491,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 8829799014945266409}
   itemSlot: {fileID: 6636771565397362692}
+  HasItem: 0
   weightText: {fileID: 1163953376526888971}
   itemType: 3
   slotIndicationText: {fileID: 805001896787064010}
@@ -2773,6 +2776,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 2247016943912012165}
   itemSlot: {fileID: 6470943056472701686}
+  HasItem: 0
   weightText: {fileID: 2346439913285934858}
   itemType: 1
   slotIndicationText: {fileID: 8410631323843852126}
@@ -3386,6 +3390,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 7508284978385396548}
   itemSlot: {fileID: 857888726611725888}
+  HasItem: 0
   weightText: {fileID: 1907697915908304751}
   itemType: 0
   slotIndicationText: {fileID: 8015530504216682978}
