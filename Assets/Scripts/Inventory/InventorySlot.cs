@@ -43,8 +43,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         {
             // Begin Swap
             InventoryItem itemAlreadyHere = itemInSlot;
-            itemAlreadyHere.parentAfterDrag = itemComingIn.parentAfterDrag;
-            InventorySlot otherSlot = itemComingIn.parentAfterDrag.GetComponentInParent<InventorySlot>();
+            itemAlreadyHere.SetParentAfterDrag(itemComingIn.GetCurrentInventorySlot().transform);
+            InventorySlot otherSlot = itemComingIn.GetCurrentInventorySlot();
             RemoveItemFromSlot(itemAlreadyHere);
             otherSlot.SetItemInSlot(itemAlreadyHere);
             itemAlreadyHere.DoThingsAfterMove();
@@ -57,17 +57,48 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
         // Set the parent to this itemSlot
         itemInSlot = itemComingIn;
-        itemComingIn.parentAfterDrag = itemSlot;
+        itemComingIn.SetParentAfterDrag(itemSlot);
+    }
+
+    public virtual void Swap(InventoryItem incomingItem)
+    {
+        if (HasItem)
+        {
+            InventoryItem inventoryItemAlreadyHere = itemInSlot;
+            InventorySlot otherSlot = incomingItem.GetCurrentInventorySlot();
+            otherSlot.RemoveItemFromSlot(incomingItem);
+            RemoveItemFromSlot(inventoryItemAlreadyHere);
+
+            otherSlot.SetItemInSlot(inventoryItemAlreadyHere);
+            SetItemInSlot(incomingItem);
+
+            inventoryItemAlreadyHere.DoThingsAfterMove();
+            incomingItem.DoThingsAfterMove();
+        } else
+        {
+            InventorySlot otherSlot = incomingItem.GetCurrentInventorySlot();
+            otherSlot.RemoveItemFromSlot(incomingItem);
+            SetItemInSlot(incomingItem);
+            incomingItem.DoThingsAfterMove();
+        }
     }
 
     // This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)
     public virtual void SetItemInSlot(InventoryItem inventoryItem)
     {
-        itemInSlot = inventoryItem;
-        HasItem = true;
-        inventory.UpdateWeight(inventoryItem.item.Weight);
-        weightText.text = inventoryItem.item.Weight.ToString();
-        SetImageColor(inventoryItem.item.Rarity);
+        if (HasItem)
+        {
+            Swap(inventoryItem);
+        }
+        else
+        {
+            itemInSlot = inventoryItem;
+            HasItem = true;
+            inventory.UpdateWeight(inventoryItem.item.Weight);
+            weightText.text = inventoryItem.item.Weight.ToString();
+            inventoryItem.SetParentAfterDrag(itemSlot);
+            SetImageColor(inventoryItem.item.Rarity);
+        }
     }
 
     // This gets called from InventoryItem when the player clicks the inventoryItem and begins to drag it.
@@ -78,6 +109,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         inventory.UpdateWeight(-inventoryItem.item.Weight);
         weightText.text = "";
         SetImageColorDefault();
+    }
+
+    public InventoryItem GetItemInSlot()
+    {
+        return itemInSlot;
     }
 
     // These are pass through functions from the inventory Item to the slot to the inventory

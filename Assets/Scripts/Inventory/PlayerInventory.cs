@@ -42,6 +42,11 @@ public class PlayerInventory : Inventory
                 Debug.Log(AddItem(startItem));
             }
         }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Debug.Log("Attempting Swapping");
+            Swap(inventorySlots[0], inventorySlots[1]);
+        } 
     }
 
     public override void UpdateWeight(float amount)

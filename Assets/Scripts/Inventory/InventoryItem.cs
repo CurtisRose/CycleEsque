@@ -13,7 +13,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public TMP_Text countText;
     public Image itemImage;
     
-    [HideInInspector] public Transform parentAfterDrag;
+    private Transform parentAfterDrag;
+    private InventorySlot currentInventorySlot;
 
     // Initialized by the inventory when it's created
     public void InitializeItem(BaseItem item)
@@ -72,8 +73,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             return;
         }
 
-        parentAfterDrag.GetComponentInParent<InventorySlot>().SetItemInSlot(this);
-        parentAfterDrag.GetComponentInParent<InventorySlot>().EndInventoryItemMoved(this);
+        currentInventorySlot.SetItemInSlot(this);
+        currentInventorySlot.EndInventoryItemMoved(this);
 
         DoThingsAfterMove();
         itemImage.raycastTarget = true;
@@ -127,5 +128,16 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         itemRectTransform.sizeDelta = new Vector2(parentRectTransform.rect.width, parentRectTransform.rect.height);
 
         itemRectTransform.localPosition = Vector3.zero;
+    }
+
+    public void SetParentAfterDrag(Transform parentAfterDrag)
+    {
+        this.parentAfterDrag = parentAfterDrag;
+        currentInventorySlot = parentAfterDrag.GetComponentInParent<InventorySlot>();
+    }
+
+    public InventorySlot GetCurrentInventorySlot()
+    {
+        return currentInventorySlot;
     }
 }

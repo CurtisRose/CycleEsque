@@ -95,4 +95,9 @@ public class Inventory : MonoBehaviour
     {
 
     }
+
+    public void Swap(InventorySlot slot1, InventorySlot slot2)
+    {
+        slot1.Swap(slot2.GetItemInSlot());
+    }
 }
