@@ -48,6 +48,10 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         transform.SetAsLastSibling();
         itemImage.raycastTarget = false;
 
+        // Changing the sprite is only useful for primary weapons.
+        // If the primary weapon is put into a big weapon slot, the image get's changed to the big image
+        // It needs to be switched back to the small image when it's dragged
+        itemImage.sprite = item.Image;
         AdjustImageSizeForDragging();
     }
 

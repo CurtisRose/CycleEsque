@@ -30,6 +30,11 @@ public class GearSlot : InventorySlot
             return;
         }
 
+        if (itemType == ItemType.PRIMARY_WEAPON)
+        {
+            draggableItem.itemImage.sprite = draggableItem.item.LargeImage;
+        }
+
         base.OnDropItem(eventData);
     }
 

@@ -9,16 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08fd329829f79b44fa989b806aebbf17, type: 3}
+  m_Script: {fileID: 11500000, guid: 0fc5f5943b6530c47ae44e4b282de077, type: 3}
   m_Name: Handgun
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Handgun
   <ItemType>k__BackingField: 0
   <Rarity>k__BackingField: 4
-  <Image>k__BackingField: {fileID: 21300000, guid: ba23bc7dabcd5e342a50aa57c482e496,
+  <Image>k__BackingField: {fileID: 21300000, guid: d4f1b8eed624daf40a2495b5dda1926b,
+    type: 3}
+  <LargeImage>k__BackingField: {fileID: 21300000, guid: 6dd1921c4ee011f4c9f8385cf81a9707,
     type: 3}
   <Weight>k__BackingField: 5
   <stackable>k__BackingField: 0
   <maxStackSize>k__BackingField: 1
-  <LargeImage>k__BackingField: {fileID: 21300000, guid: ba23bc7dabcd5e342a50aa57c482e496,
-    type: 3}
