@@ -360,10 +360,19 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 7885276232268549690, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_CellSize.x
+      value: 280
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885276232268549690, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_CellSize.y
+      value: 80
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1014386658, guid: d9fa8fcd8ce0e3843ad711ed0b19a865, type: 3}
     - {fileID: 3524764378241485267, guid: d9fa8fcd8ce0e3843ad711ed0b19a865, type: 3}
-    - {fileID: 7885276232268549690, guid: d9fa8fcd8ce0e3843ad711ed0b19a865, type: 3}
     - {fileID: 2896222342279725356, guid: d9fa8fcd8ce0e3843ad711ed0b19a865, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:

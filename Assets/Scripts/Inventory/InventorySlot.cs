@@ -8,7 +8,7 @@ using TMPro;
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
     [SerializeField] public Transform itemSlot;
-    protected InventoryItem itemInSlot;
+    [SerializeField] protected InventoryItem itemInSlot;
 
     Inventory inventory;
 
@@ -36,18 +36,28 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     public virtual void OnDropItem(PointerEventData eventData)
     {
         GameObject dropped = eventData.pointerDrag;
-        itemInSlot = dropped.GetComponent<InventoryItem>();
+        InventoryItem itemComingIn = dropped.GetComponent<InventoryItem>();
 
         // If itemslot has item, swap
-        if (itemSlot.childCount != 0)
+        if (HasItem)
         {
             // Begin Swap
-            Transform itemToSwap = itemSlot.GetChild(0);
-            itemToSwap.SetParent(itemInSlot.parentAfterDrag);
+            InventoryItem itemAlreadyHere = itemInSlot;
+            itemAlreadyHere.parentAfterDrag = itemComingIn.parentAfterDrag;
+            InventorySlot otherSlot = itemComingIn.parentAfterDrag.GetComponentInParent<InventorySlot>();
+            RemoveItemFromSlot(itemAlreadyHere);
+            otherSlot.SetItemInSlot(itemAlreadyHere);
+            itemAlreadyHere.DoThingsAfterMove();
+            // If the other slot is NOT gear slot and this IS a gear slot, switch the image from the large image to the small.
+            if (!(otherSlot as GearSlot) && (this as GearSlot))
+            {
+                itemAlreadyHere.itemImage.sprite = itemAlreadyHere.item.SmallImage;
+            }
         }
 
         // Set the parent to this itemSlot
-        itemInSlot.parentAfterDrag = itemSlot;
+        itemInSlot = itemComingIn;
+        itemComingIn.parentAfterDrag = itemSlot;
     }
 
     // This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)

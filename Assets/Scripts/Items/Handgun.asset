@@ -15,7 +15,7 @@ MonoBehaviour:
   <DisplayName>k__BackingField: Handgun
   <ItemType>k__BackingField: 0
   <Rarity>k__BackingField: 4
-  <Image>k__BackingField: {fileID: 21300000, guid: d4f1b8eed624daf40a2495b5dda1926b,
+  <SmallImage>k__BackingField: {fileID: 21300000, guid: d4f1b8eed624daf40a2495b5dda1926b,
     type: 3}
   <LargeImage>k__BackingField: {fileID: 21300000, guid: 6dd1921c4ee011f4c9f8385cf81a9707,
     type: 3}

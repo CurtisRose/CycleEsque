@@ -19,7 +19,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void InitializeItem(BaseItem item)
     {
         this.item = item;
-        itemImage.sprite = item.Image;
+        itemImage.sprite = item.SmallImage;
         parentAfterDrag = transform.parent;
         RefreshItemCount();
     }
@@ -51,7 +51,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         // Changing the sprite is only useful for primary weapons.
         // If the primary weapon is put into a big weapon slot, the image get's changed to the big image
         // It needs to be switched back to the small image when it's dragged
-        itemImage.sprite = item.Image;
+        itemImage.sprite = item.SmallImage;
         AdjustImageSizeForDragging();
     }
 
@@ -75,11 +75,16 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         parentAfterDrag.GetComponentInParent<InventorySlot>().SetItemInSlot(this);
         parentAfterDrag.GetComponentInParent<InventorySlot>().EndInventoryItemMoved(this);
 
+        DoThingsAfterMove();
+        itemImage.raycastTarget = true;
+    }
+
+    public void DoThingsAfterMove()
+    {
         // Before setting the parent, adjust the size to fit the new slot
         AdjustImageSizeToFitSlot(parentAfterDrag);
 
         transform.SetParent(parentAfterDrag);
-        itemImage.raycastTarget = true;
     }
 
     public ItemType GetItemType()
