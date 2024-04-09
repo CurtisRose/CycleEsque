@@ -1054,6 +1054,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1371790077613327512, guid: 18afc7dec9b93d34a84ce2fba64e2d83,
+        type: 3}
+      propertyPath: UseLargeImage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2213082948616849649, guid: 18afc7dec9b93d34a84ce2fba64e2d83,
+        type: 3}
+      propertyPath: UseLargeImage
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3185496436311464136, guid: 18afc7dec9b93d34a84ce2fba64e2d83,
         type: 3}
       propertyPath: m_Pivot.x

@@ -50,7 +50,10 @@ public class PlayerInventory : Inventory
         {
             PlaceItem(inventorySlots[1].GetItemInSlot(), inventorySlots[2]);
         }
-
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            RemoveAllItemsFromEachSlot();
+        }
     }
 
     public override void UpdateWeight(float amount)
@@ -85,11 +88,15 @@ public class PlayerInventory : Inventory
         EndShowSlotAcceptability(inventoryItem);
     }
 
-    private void Remove1ItemFromEachSlot()
+    private void RemoveAllItemsFromEachSlot()
     {
         foreach(InventorySlot inventorySlot in inventorySlots)
         {
-            inventorySlot.RemoveItemFromSlot();
+            if (inventorySlot.GetItemInSlot() != null)
+            {
+                InventoryItem item = inventorySlot.RemoveItemFromSlot();
+                Destroy(item.gameObject);
+            }
         }
     }
 }

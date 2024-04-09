@@ -22,6 +22,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     [SerializeField] Image itemBackgroundImage;
     [SerializeField] Image itemBorderImage;
 
+    [SerializeField] bool partOfInventoryWeight;
+
+    [SerializeField] public bool UseLargeImage = false;
+    [SerializeField] public bool contributesToWeight = true;
+
     public virtual void Awake()
     {
         inventory = GetComponentInParent<Inventory>();
@@ -43,17 +48,26 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         // If itemslot has item, swap
         if (HasItem)
         {
-            // Begin Swap
             InventoryItem itemAlreadyHere = itemInSlot;
+
+            // Check to see if it's too heavy for inventory
+            if (inventory.currentWeight + itemComingIn.GetTotalWeight() - itemAlreadyHere.GetTotalWeight() > inventory.inventoryWeightLimit)
+            {
+                return;
+            }
+
+            // Begin Swap
             itemAlreadyHere.SetParentAfterDrag(itemComingIn.GetCurrentInventorySlot().transform);
             InventorySlot otherSlot = itemComingIn.GetCurrentInventorySlot();
             RemoveItemFromSlot();
             otherSlot.SetItemInSlotAfterDrag(itemAlreadyHere);
             itemAlreadyHere.DoThingsAfterMove();
-            // If the other slot is NOT gear slot and this IS a gear slot, switch the image from the large image to the small.
-            if (!(otherSlot as GearSlot) && (this as GearSlot))
+        } else
+        {
+            // Check to see if it's too heavy for inventory
+            if (inventory.currentWeight + itemComingIn.GetTotalWeight() > inventory.inventoryWeightLimit) 
             {
-                itemAlreadyHere.itemImage.sprite = itemAlreadyHere.item.SmallImage;
+                return;
             }
         }
 
@@ -96,8 +110,12 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         {
             itemInSlot = inventoryItem;
             HasItem = true;
-            inventory.UpdateWeight(inventoryItem.item.Weight);
-            weightText.text = inventoryItem.item.Weight.ToString();
+
+            if (contributesToWeight)
+            {
+                inventory.UpdateWeight(inventoryItem.GetTotalWeight());
+            }
+            weightText.text = inventoryItem.GetTotalWeight().ToString();
             if (inventoryItem.item.stackable)
             {
                 stackSizeText.text = inventoryItem.GetItemCount().ToString();
@@ -124,23 +142,29 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
         } else
         {
-            weightText.text = (itemInSlot.item.Weight * itemInSlot.GetItemCount()).ToString();
+            weightText.text = (itemInSlot.GetTotalWeight()).ToString();
             stackSizeText.text = itemInSlot.GetItemCount().ToString();
         }
     }
 
     // This gets called from InventoryItem when the player clicks the inventoryItem and begins to drag it.
-    public virtual void RemoveItemFromSlot()
+    public virtual InventoryItem RemoveItemFromSlot()
     {
         if (itemInSlot != null)
         {
+            InventoryItem itemToReturn = itemInSlot;
             itemInSlot.OnItemCountChanged -= RefreshItemStats;
-            inventory.UpdateWeight(-itemInSlot.item.Weight);
+            if (contributesToWeight)
+            {
+                inventory.UpdateWeight(-(itemInSlot.GetTotalWeight()));
+            }
             itemInSlot = null;
             HasItem = false;
             RefreshItemStats();
             SetImageColorDefault();
+            return itemToReturn;
         }
+        return null;
     }
 
     public InventoryItem GetItemInSlot()

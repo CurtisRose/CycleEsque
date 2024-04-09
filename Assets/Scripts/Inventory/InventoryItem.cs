@@ -10,10 +10,10 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [HideInInspector] public BaseItem item;
     [SerializeField] protected int count = 1;
 
-    public Image itemImage;
+    [SerializeField] protected Image itemImage;
     
-    private Transform parentAfterDrag;
-    private InventorySlot currentInventorySlot;
+    [SerializeField] private Transform parentAfterDrag;
+    [SerializeField] private InventorySlot currentInventorySlot;
 
     public delegate void ItemCountChanged();
     public event ItemCountChanged OnItemCountChanged;
@@ -110,6 +110,14 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         RectTransform parentRectTransform = newParent.GetComponent<RectTransform>();
         RectTransform itemRectTransform = GetComponent<RectTransform>();
 
+        if (currentInventorySlot.UseLargeImage)
+        {
+            itemImage.sprite = item.LargeImage;
+        } else
+        {
+            itemImage.sprite = item.SmallImage;
+        }
+
         // Set the item as a child of the new parent
         itemRectTransform.SetParent(newParent, false);
 
@@ -152,5 +160,10 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         {
             OnItemCountChanged();
         }
+    }
+
+    public float GetTotalWeight()
+    {
+        return GetItemCount() * item.Weight;
     }
 }

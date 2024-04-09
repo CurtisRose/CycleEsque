@@ -30,11 +30,6 @@ public class GearSlot : InventorySlot
             return;
         }
 
-        if (itemType == ItemType.PRIMARY_WEAPON)
-        {
-            draggableItem.itemImage.sprite = draggableItem.item.LargeImage;
-        }
-
         base.OnDropItem(eventData);
     }
 
@@ -68,23 +63,19 @@ public class GearSlot : InventorySlot
     // This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)
     public override void SetItemInSlotAfterDrag(InventoryItem inventoryItem)
     {
-        itemInSlot = inventoryItem;
-        HasItem = true;
+        base.SetItemInSlotAfterDrag(inventoryItem);
         SetSlotHolderImageVisible(false);
-        weightText.text = inventoryItem.item.Weight.ToString();
         SetImageColor(inventoryItem.item.Rarity);
     }
 
     // This gets called from InventoryItem when the player clicks the inventoryItem and begins to drag it.
-    public override void RemoveItemFromSlot()
+    public override InventoryItem RemoveItemFromSlot()
     {
         if (itemInSlot != null)
         {
-            itemInSlot = null;
-            HasItem = false;
             SetSlotHolderImageVisible(true);
-            weightText.text = "";
             SetImageColorDefault();
         }
+        return base.RemoveItemFromSlot();
     }
 }
