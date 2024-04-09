@@ -66,7 +66,7 @@ public class GearSlot : InventorySlot
     }
 
     // This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)
-    public override void SetItemInSlot(InventoryItem inventoryItem)
+    public override void SetItemInSlotAfterDrag(InventoryItem inventoryItem)
     {
         itemInSlot = inventoryItem;
         HasItem = true;
@@ -76,7 +76,7 @@ public class GearSlot : InventorySlot
     }
 
     // This gets called from InventoryItem when the player clicks the inventoryItem and begins to drag it.
-    public override void RemoveItemFromSlot(InventoryItem inventoryItem)
+    public override void RemoveItemFromSlotAfterDrag(InventoryItem inventoryItem)
     {
         itemInSlot = null;
         HasItem = false;

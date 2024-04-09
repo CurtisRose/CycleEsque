@@ -45,8 +45,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             InventoryItem itemAlreadyHere = itemInSlot;
             itemAlreadyHere.SetParentAfterDrag(itemComingIn.GetCurrentInventorySlot().transform);
             InventorySlot otherSlot = itemComingIn.GetCurrentInventorySlot();
-            RemoveItemFromSlot(itemAlreadyHere);
-            otherSlot.SetItemInSlot(itemAlreadyHere);
+            RemoveItemFromSlotAfterDrag(itemAlreadyHere);
+            otherSlot.SetItemInSlotAfterDrag(itemAlreadyHere);
             itemAlreadyHere.DoThingsAfterMove();
             // If the other slot is NOT gear slot and this IS a gear slot, switch the image from the large image to the small.
             if (!(otherSlot as GearSlot) && (this as GearSlot))
@@ -66,25 +66,25 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         {
             InventoryItem inventoryItemAlreadyHere = itemInSlot;
             InventorySlot otherSlot = incomingItem.GetCurrentInventorySlot();
-            otherSlot.RemoveItemFromSlot(incomingItem);
-            RemoveItemFromSlot(inventoryItemAlreadyHere);
+            otherSlot.RemoveItemFromSlotAfterDrag(incomingItem);
+            RemoveItemFromSlotAfterDrag(inventoryItemAlreadyHere);
 
-            otherSlot.SetItemInSlot(inventoryItemAlreadyHere);
-            SetItemInSlot(incomingItem);
+            otherSlot.SetItemInSlotAfterDrag(inventoryItemAlreadyHere);
+            SetItemInSlotAfterDrag(incomingItem);
 
             inventoryItemAlreadyHere.DoThingsAfterMove();
             incomingItem.DoThingsAfterMove();
         } else
         {
             InventorySlot otherSlot = incomingItem.GetCurrentInventorySlot();
-            otherSlot.RemoveItemFromSlot(incomingItem);
-            SetItemInSlot(incomingItem);
+            otherSlot.RemoveItemFromSlotAfterDrag(incomingItem);
+            SetItemInSlotAfterDrag(incomingItem);
             incomingItem.DoThingsAfterMove();
         }
     }
 
     // This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)
-    public virtual void SetItemInSlot(InventoryItem inventoryItem)
+    public virtual void SetItemInSlotAfterDrag(InventoryItem inventoryItem)
     {
         if (HasItem)
         {
@@ -102,7 +102,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     }
 
     // This gets called from InventoryItem when the player clicks the inventoryItem and begins to drag it.
-    public virtual void RemoveItemFromSlot(InventoryItem inventoryItem)
+    public virtual void RemoveItemFromSlotAfterDrag(InventoryItem inventoryItem)
     {
         itemInSlot = null;
         HasItem = false;

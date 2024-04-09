@@ -39,7 +39,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             return;
         }
 
-        parentAfterDrag.GetComponentInParent<InventorySlot>().RemoveItemFromSlot(this);
+        parentAfterDrag.GetComponentInParent<InventorySlot>().RemoveItemFromSlotAfterDrag(this);
         parentAfterDrag.GetComponentInParent<InventorySlot>().StartInventoryItemMoved(this);
 
         parentAfterDrag = transform.parent;
@@ -73,7 +73,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             return;
         }
 
-        currentInventorySlot.SetItemInSlot(this);
+        currentInventorySlot.SetItemInSlotAfterDrag(this);
         currentInventorySlot.EndInventoryItemMoved(this);
 
         DoThingsAfterMove();

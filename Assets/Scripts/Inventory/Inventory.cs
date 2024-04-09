@@ -83,7 +83,7 @@ public class Inventory : MonoBehaviour
         InventoryItem inventoryItem = newItem.GetComponent<InventoryItem>();
         inventoryItem.name = item.DisplayName;
         inventoryItem.InitializeItem(item);
-        inventorySlot.SetItemInSlot(inventoryItem);
+        inventorySlot.SetItemInSlotAfterDrag(inventoryItem);
     }
 
     public virtual void StartInventoryItemMoved(InventoryItem inventoryItem)
@@ -96,8 +96,11 @@ public class Inventory : MonoBehaviour
 
     }
 
-    public void Swap(InventorySlot slot1, InventorySlot slot2)
+    public void PlaceItem(InventoryItem item, InventorySlot inventorySlot)
     {
-        slot1.Swap(slot2.GetItemInSlot());
+        if (item != null)
+        {
+            inventorySlot.Swap(item);
+        }
     }
 }
