@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gun : MonoBehaviour
+public class ShootableGun : MonoBehaviour
 {
     [SerializeField] Transform shootPositionTransform;
     [SerializeField] Projectile projectilePrefab;

@@ -360,6 +360,7 @@ GameObject:
   - component: {fileID: 3185496436311464136}
   - component: {fileID: 2036190449175059833}
   - component: {fileID: 7488946573659412822}
+  - component: {fileID: 5312652824492974175}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -439,10 +440,23 @@ MonoBehaviour:
   - {fileID: 736026325898383237}
   - {fileID: 4614139373016842702}
   - {fileID: 5779764687719866986}
-  weaponSlots:
   - {fileID: 2213082948616849649}
   - {fileID: 1371790077613327512}
   weightText: {fileID: 2718549675581289894}
+--- !u!114 &5312652824492974175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6754216929609444848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7044b5430ccdaba49a64d58b5e35ac5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInventory: {fileID: 7488946573659412822}
+  selectedFirstSlot: 1
 --- !u!1 &7056760596738209765
 GameObject:
   m_ObjectHideFlags: 0

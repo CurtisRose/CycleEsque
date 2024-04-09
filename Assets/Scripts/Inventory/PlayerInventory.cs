@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+public enum GearSlotIdentifier { BACKPACK, ARMOR, HELMET, WEAPONSLOT1, WEAPONSLOT2 };
+
 public class PlayerInventory : Inventory
 {
     public static PlayerInventory instance;
     public GameObject backpackInventory;
     [SerializeField] List<GearSlot> gearSlots;
-    [SerializeField] List<GearSlot> weaponSlots;
     [SerializeField] TMP_Text weightText; // "BACKPACK 0.0/0.0"
 
     private void Awake()
@@ -65,17 +66,17 @@ public class PlayerInventory : Inventory
 
     public void StartShowSlotAcceptability(InventoryItem inventoryItem)
     {
-        foreach (GearSlot weaponSlot in gearSlots)
+        foreach (GearSlot gearSlot in gearSlots)
         {
-            weaponSlot.DisplayItemIndication(inventoryItem.GetItemType());
+            gearSlot.DisplayItemIndication(inventoryItem.GetItemType());
         }
     }
 
     public void EndShowSlotAcceptability(InventoryItem inventoryItem)
     {
-        foreach (GearSlot weaponSlot in gearSlots)
+        foreach (GearSlot gearSlot in gearSlots)
         {
-            weaponSlot.ResetItemIndication();
+            gearSlot.ResetItemIndication();
         }
     }
 
@@ -87,18 +88,6 @@ public class PlayerInventory : Inventory
     public override void EndInventoryItemMoved(InventoryItem inventoryItem)
     {
         EndShowSlotAcceptability(inventoryItem);
-    }
-
-    private void RemoveAllItemsFromEachSlot()
-    {
-        foreach(InventorySlot inventorySlot in inventorySlots)
-        {
-            if (inventorySlot.GetItemInSlot() != null)
-            {
-                InventoryItem item = inventorySlot.RemoveItemFromSlot();
-                Destroy(item.gameObject);
-            }
-        }
     }
 
     public override void QuickEquip(InventorySlot inventorySlot)
@@ -120,17 +109,17 @@ public class PlayerInventory : Inventory
             if (itemToEquip.GetItemType() == ItemType.PRIMARY_WEAPON)
             {
                 // Pick first slot if it's empty
-                if (!weaponSlots[0].HasItem())
+                if (!gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1].HasItem())
                 {
-                    gearSlotMatch = weaponSlots[0];
+                    gearSlotMatch = gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1];
                 }
                 // Pick second slot if it's empty
-                else if (!weaponSlots[1].HasItem())
+                else if (!gearSlots[(int)GearSlotIdentifier.WEAPONSLOT2].HasItem())
                 {
-                    gearSlotMatch = weaponSlots[1];
+                    gearSlotMatch = gearSlots[(int)GearSlotIdentifier.WEAPONSLOT2];
                 } else // Else, default to first slot
                 {
-                    gearSlotMatch = weaponSlots[0];
+                    gearSlotMatch = gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1];
                 }
             } else
             {
@@ -166,5 +155,15 @@ public class PlayerInventory : Inventory
             }
             inventorySlotMatch.Swap(itemToEquip);
         }
+    }
+
+    public List<GearSlot> GetGearSlots()
+    {
+        return gearSlots;
+    }
+
+    public GearSlot GetGearSlot(GearSlotIdentifier identifier)
+    {
+        return gearSlots[(int)identifier];
     }
 }

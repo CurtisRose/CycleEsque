@@ -150,6 +150,20 @@ public class Inventory : MonoBehaviour
 
     public virtual void QuickEquip(InventorySlot inventorySlot)
     {
-        
+        // Possibly, this can be used to right click items into earlier slots.
+        // For now only used in the player inventory class
+    }
+
+    // For Testing
+    protected void RemoveAllItemsFromEachSlot()
+    {
+        foreach (InventorySlot inventorySlot in inventorySlots)
+        {
+            if (inventorySlot.GetItemInSlot() != null)
+            {
+                InventoryItem item = inventorySlot.RemoveItemFromSlot();
+                Destroy(item.gameObject);
+            }
+        }
     }
 }

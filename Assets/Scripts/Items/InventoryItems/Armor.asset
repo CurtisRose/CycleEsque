@@ -10,14 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fc5f5943b6530c47ae44e4b282de077, type: 3}
-  m_Name: Helmet
+  m_Name: Armor
   m_EditorClassIdentifier: 
-  <DisplayName>k__BackingField: Helmet
-  <ItemType>k__BackingField: 1
-  <Rarity>k__BackingField: 3
-  <SmallImage>k__BackingField: {fileID: 21300000, guid: 7dd9123b0beb10f48bf6fe308bbe62fe,
+  <DisplayName>k__BackingField: Armor
+  <ItemType>k__BackingField: 2
+  <Rarity>k__BackingField: 2
+  <SmallImage>k__BackingField: {fileID: 21300000, guid: 8587a3490b405b94e83c2dc6f82bc5b8,
     type: 3}
   <LargeImage>k__BackingField: {fileID: 0}
-  <Weight>k__BackingField: 10
+  <Weight>k__BackingField: 40
   <stackable>k__BackingField: 0
   <maxStackSize>k__BackingField: 1
+  <itemPrefab>k__BackingField: {fileID: 2957839627501502580, guid: 4e05ae2e02441ed419ff8aa1c7902ced,
+    type: 3}

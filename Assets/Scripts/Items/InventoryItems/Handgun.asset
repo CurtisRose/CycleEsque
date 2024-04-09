@@ -10,14 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fc5f5943b6530c47ae44e4b282de077, type: 3}
-  m_Name: Armor
+  m_Name: Handgun
   m_EditorClassIdentifier: 
-  <DisplayName>k__BackingField: Armor
-  <ItemType>k__BackingField: 2
-  <Rarity>k__BackingField: 1
-  <SmallImage>k__BackingField: {fileID: 21300000, guid: 8587a3490b405b94e83c2dc6f82bc5b8,
+  <DisplayName>k__BackingField: Handgun
+  <ItemType>k__BackingField: 0
+  <Rarity>k__BackingField: 4
+  <SmallImage>k__BackingField: {fileID: 21300000, guid: d4f1b8eed624daf40a2495b5dda1926b,
     type: 3}
-  <LargeImage>k__BackingField: {fileID: 0}
-  <Weight>k__BackingField: 40
+  <LargeImage>k__BackingField: {fileID: 21300000, guid: 6dd1921c4ee011f4c9f8385cf81a9707,
+    type: 3}
+  <Weight>k__BackingField: 5
   <stackable>k__BackingField: 0
   <maxStackSize>k__BackingField: 1
+  <itemPrefab>k__BackingField: {fileID: 2839922264228978995, guid: 812d2b978146442409953a471f02035f,
+    type: 3}

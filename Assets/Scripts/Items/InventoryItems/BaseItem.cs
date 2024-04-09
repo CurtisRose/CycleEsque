@@ -18,5 +18,6 @@ public class BaseItem : ScriptableObject
     [field: SerializeField] public float Weight { get; private set; }
     [field: SerializeField] public bool stackable { get; private set; }
     [field: SerializeField] public int maxStackSize { get; private set; }
+    [field: SerializeField] public WorldItem itemPrefab { get; private set; }
 
 }
