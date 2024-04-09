@@ -37,10 +37,10 @@ public class Inventory : MonoBehaviour
                 InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
                 if (itemInSlot != null &&
                     itemInSlot.item == item &&
-                    itemInSlot.count < itemInSlot.item.maxStackSize)
+                    itemInSlot.GetItemCount() < itemInSlot.item.maxStackSize)
                 {
-                    itemInSlot.count++;
-                    itemInSlot.RefreshItemCount();
+                    itemInSlot.IncrementItemCount();
+                    UpdateWeight(itemInSlot.item.Weight);
                     return true;
                 }
             }
@@ -72,8 +72,10 @@ public class Inventory : MonoBehaviour
         currentWeight += amount;
     }
 
+    // TODO:
     public bool RemoveItem(BaseItem item)
     {
+        Debug.Log("This Function has NOT Been Implemented");
         return true;
     }
 
@@ -101,6 +103,19 @@ public class Inventory : MonoBehaviour
         if (item != null)
         {
             inventorySlot.Swap(item);
+        }
+    }
+
+    public virtual void QuickEquip (InventoryItem inventoryItem)
+    {
+        InventorySlot currentSlot = inventoryItem.GetCurrentInventorySlot();
+
+        if (currentSlot as GearSlot)
+        {
+
+        } else
+        {
+
         }
     }
 }

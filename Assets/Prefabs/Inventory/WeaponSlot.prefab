@@ -360,6 +360,11 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 7381897466615531158, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7885276232268549690, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_CellSize.x
@@ -409,8 +414,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemSlot: {fileID: 5915296245706380481}
+  itemInSlot: {fileID: 0}
   HasItem: 0
   weightText: {fileID: 3322507745560301023}
+  stackSizeText: {fileID: 8930028864405306753}
   rarityColors:
   - {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
   - {r: 0, g: 0.8584906, b: 0.4620719, a: 1}
@@ -471,3 +478,15 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1326474274251890632}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8930028864405306753 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7603554615927677513, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+    type: 3}
+  m_PrefabInstance: {fileID: 1326474274251890632}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

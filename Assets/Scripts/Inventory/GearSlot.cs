@@ -76,12 +76,15 @@ public class GearSlot : InventorySlot
     }
 
     // This gets called from InventoryItem when the player clicks the inventoryItem and begins to drag it.
-    public override void RemoveItemFromSlotAfterDrag(InventoryItem inventoryItem)
+    public override void RemoveItemFromSlot()
     {
-        itemInSlot = null;
-        HasItem = false;
-        SetSlotHolderImageVisible(true);
-        weightText.text = "";
-        SetImageColorDefault();
+        if (itemInSlot != null)
+        {
+            itemInSlot = null;
+            HasItem = false;
+            SetSlotHolderImageVisible(true);
+            weightText.text = "";
+            SetImageColorDefault();
+        }
     }
 }

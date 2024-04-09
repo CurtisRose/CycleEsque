@@ -8,13 +8,15 @@ using TMPro;
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     [HideInInspector] public BaseItem item;
-    [HideInInspector] public int count = 1;
+    [SerializeField] protected int count = 1;
 
-    public TMP_Text countText;
     public Image itemImage;
     
     private Transform parentAfterDrag;
     private InventorySlot currentInventorySlot;
+
+    public delegate void ItemCountChanged();
+    public event ItemCountChanged OnItemCountChanged;
 
     // Initialized by the inventory when it's created
     public void InitializeItem(BaseItem item)
@@ -22,14 +24,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         this.item = item;
         itemImage.sprite = item.SmallImage;
         parentAfterDrag = transform.parent;
-        RefreshItemCount();
-    }
-
-    public void RefreshItemCount()
-    {
-        countText.text = count.ToString();
-        bool textActive = count > 1;
-        countText.gameObject.SetActive(textActive);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -39,8 +33,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             return;
         }
 
-        parentAfterDrag.GetComponentInParent<InventorySlot>().RemoveItemFromSlotAfterDrag(this);
-        parentAfterDrag.GetComponentInParent<InventorySlot>().StartInventoryItemMoved(this);
+        parentAfterDrag.GetComponentInParent<InventorySlot>().RemoveItemFromSlot();
+        parentAfterDrag.GetComponentInParent<InventorySlot>().StartInventoryItemMovedPassThrough(this);
 
         parentAfterDrag = transform.parent;
         // Sets the UI Panel at the top of this hierarchy as the parent
@@ -74,7 +68,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
 
         currentInventorySlot.SetItemInSlotAfterDrag(this);
-        currentInventorySlot.EndInventoryItemMoved(this);
+        currentInventorySlot.EndInventoryItemMovedPassThrough(this);
 
         DoThingsAfterMove();
         itemImage.raycastTarget = true;
@@ -99,7 +93,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         if (eventData.button == PointerEventData.InputButton.Right)
         {
             // Attempt to quick sort it into or out of the gear slots.
-
+            currentInventorySlot.ItemQuickEquipPassThrough(this);
         }
     }
 
@@ -139,5 +133,24 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public InventorySlot GetCurrentInventorySlot()
     {
         return currentInventorySlot;
+    }
+
+    public int GetItemCount()
+    {
+        return count;
+    }
+
+    public void IncrementItemCount()
+    {
+        ChangeItemCount(1);
+    }
+
+    public void ChangeItemCount(int change)
+    {
+        count += change;
+        if (OnItemCountChanged != null)
+        {
+            OnItemCountChanged();
+        }
     }
 }

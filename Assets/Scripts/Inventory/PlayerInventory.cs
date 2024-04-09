@@ -39,7 +39,7 @@ public class PlayerInventory : Inventory
         {
             foreach (BaseItem startItem in startItems)
             {
-                Debug.Log(AddItem(startItem));
+                AddItem(startItem);
             }
         }
         if (Input.GetKeyDown(KeyCode.R))
@@ -83,5 +83,13 @@ public class PlayerInventory : Inventory
     public override void EndInventoryItemMoved(InventoryItem inventoryItem)
     {
         EndShowSlotAcceptability(inventoryItem);
+    }
+
+    private void Remove1ItemFromEachSlot()
+    {
+        foreach(InventorySlot inventorySlot in inventorySlots)
+        {
+            inventorySlot.RemoveItemFromSlot();
+        }
     }
 }
