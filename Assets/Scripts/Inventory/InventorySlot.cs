@@ -25,7 +25,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     [SerializeField] bool partOfInventoryWeight;
 
     [SerializeField] public bool UseLargeImage = false;
-    [SerializeField] public bool contributesToWeight = true;
+    [SerializeField] public bool slotContributesToWeight = true;
 
     public virtual void Awake()
     {
@@ -44,6 +44,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     {
         GameObject dropped = eventData.pointerDrag;
         InventoryItem itemComingIn = dropped.GetComponent<InventoryItem>();
+        InventorySlot otherSlot = itemComingIn.GetCurrentInventorySlot();
 
         // If itemslot has item, swap
         if (HasItem)
@@ -51,21 +52,30 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             InventoryItem itemAlreadyHere = itemInSlot;
 
             // Check to see if it's too heavy for inventory
-            if (inventory.currentWeight + itemComingIn.GetTotalWeight() - itemAlreadyHere.GetTotalWeight() > inventory.inventoryWeightLimit)
+            if (this.slotContributesToWeight)
             {
-                return;
+                if (inventory.currentWeight + itemComingIn.GetTotalWeight() - itemAlreadyHere.GetTotalWeight() > inventory.inventoryWeightLimit)
+                {
+                    return;
+                }
+            }
+            if (otherSlot.slotContributesToWeight)
+            {
+                if (inventory.currentWeight + itemAlreadyHere.GetTotalWeight() - itemComingIn.GetTotalWeight() > inventory.inventoryWeightLimit)
+                {
+                    return;
+                }
             }
 
             // Begin Swap
             itemAlreadyHere.SetParentAfterDrag(itemComingIn.GetCurrentInventorySlot().transform);
-            InventorySlot otherSlot = itemComingIn.GetCurrentInventorySlot();
             RemoveItemFromSlot();
             otherSlot.SetItemInSlotAfterDrag(itemAlreadyHere);
             itemAlreadyHere.DoThingsAfterMove();
         } else
         {
             // Check to see if it's too heavy for inventory
-            if (inventory.currentWeight + itemComingIn.GetTotalWeight() > inventory.inventoryWeightLimit) 
+            if (inventory.currentWeight + itemComingIn.GetTotalWeight() > inventory.inventoryWeightLimit)
             {
                 return;
             }
@@ -111,7 +121,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             itemInSlot = inventoryItem;
             HasItem = true;
 
-            if (contributesToWeight)
+            if (slotContributesToWeight)
             {
                 inventory.UpdateWeight(inventoryItem.GetTotalWeight());
             }
@@ -154,7 +164,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         {
             InventoryItem itemToReturn = itemInSlot;
             itemInSlot.OnItemCountChanged -= RefreshItemStats;
-            if (contributesToWeight)
+            if (slotContributesToWeight)
             {
                 inventory.UpdateWeight(-(itemInSlot.GetTotalWeight()));
             }

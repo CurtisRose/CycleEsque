@@ -413,6 +413,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0c9df605b2dd323498a1c68c21de8341, type: 2}
   - {fileID: 11400000, guid: 33d826e104d0d2c439ab4c4af0b40a8c, type: 2}
   - {fileID: 11400000, guid: ecac0c9839ad18c42b35e8e1f4e1480e, type: 2}
+  - {fileID: 11400000, guid: bc5b2db7cbfbf8e48ba4f44123602b65, type: 2}
   inventorySlots:
   - {fileID: 2124339769283591068}
   - {fileID: 1409807846554023938}
@@ -632,6 +633,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1825426545259654874, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: UseLargeImage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825426545259654874, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: slotContributesToWeight
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4852069576726618893, guid: 84034475bd2468a4c80d77d6ce7acdfe,
         type: 3}
       propertyPath: m_text
@@ -781,6 +792,16 @@ PrefabInstance:
     - target: {fileID: 307038010599925885, guid: 84034475bd2468a4c80d77d6ce7acdfe,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825426545259654874, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: UseLargeImage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825426545259654874, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: slotContributesToWeight
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4852069576726618893, guid: 84034475bd2468a4c80d77d6ce7acdfe,
@@ -1654,6 +1675,11 @@ PrefabInstance:
         type: 3}
       propertyPath: itemType
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844331975079573883, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: slotContributesToWeight
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2877497486593297112, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
         type: 3}
@@ -2889,6 +2915,11 @@ PrefabInstance:
       propertyPath: itemType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2844331975079573883, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: slotContributesToWeight
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2877497486593297112, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
         type: 3}
       propertyPath: m_Name
@@ -3170,6 +3201,11 @@ PrefabInstance:
         type: 3}
       propertyPath: itemType
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844331975079573883, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: slotContributesToWeight
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2877497486593297112, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
         type: 3}
