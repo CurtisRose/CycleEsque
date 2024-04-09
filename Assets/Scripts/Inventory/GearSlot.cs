@@ -78,4 +78,9 @@ public class GearSlot : InventorySlot
         }
         return base.RemoveItemFromSlot();
     }
+
+    public ItemType GetItemType()
+    {
+        return itemType;
+    }
 }

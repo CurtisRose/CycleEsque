@@ -435,10 +435,11 @@ MonoBehaviour:
   inventoryWeightLimit: 200
   currentWeight: 0
   backpackInventory: {fileID: 7056760596738209765}
-  weaponSlots:
+  gearSlots:
   - {fileID: 736026325898383237}
   - {fileID: 4614139373016842702}
   - {fileID: 5779764687719866986}
+  weaponSlots:
   - {fileID: 2213082948616849649}
   - {fileID: 1371790077613327512}
   weightText: {fileID: 2718549675581289894}

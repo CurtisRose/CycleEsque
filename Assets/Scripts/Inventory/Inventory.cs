@@ -5,7 +5,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public BaseItem[] startItems;
-    public InventorySlot[] inventorySlots;
+    public List<InventorySlot> inventorySlots;
     public GameObject inventoryItemPrefab;
     public float inventoryWeightLimit;
     public float currentWeight;
@@ -31,7 +31,7 @@ public class Inventory : MonoBehaviour
         // Check if any slot already has item with count lower than the stack size
         if (item.stackable)
         {
-            for (int i = 0; i < inventorySlots.Length; i++)
+            for (int i = 0; i < inventorySlots.Count; i++)
             {
                 InventorySlot slot = inventorySlots[i];
                 InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
@@ -47,7 +47,7 @@ public class Inventory : MonoBehaviour
         }
 
         // Find an empty slot
-        for (int i = 0; i < inventorySlots.Length; i++)
+        for (int i = 0; i < inventorySlots.Count; i++)
         {
             InventorySlot slot = inventorySlots[i];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
@@ -98,6 +98,48 @@ public class Inventory : MonoBehaviour
 
     }
 
+    /*public bool AddItem(InventoryItem inventoryItem)
+    {
+        if (inventoryItem.GetTotalWeight() > inventoryWeightLimit - currentWeight)
+        {
+            return false;
+        }
+
+        if (inventoryItem.item.stackable)
+        {
+            for (int i = 0; i < inventorySlots.Count; i++)
+            {
+                InventorySlot slot = inventorySlots[i];
+                InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+                if (itemInSlot != null &&
+                    itemInSlot == inventoryItem &&
+                    itemInSlot.GetItemCount() < itemInSlot.item.maxStackSize)
+                {
+                    itemInSlot.IncrementItemCount();
+                    UpdateWeight(itemInSlot.item.Weight);
+                    return true;
+                }
+            }
+        } else
+        {
+            // Find an empty slot
+            for (int i = 0; i < inventorySlots.Count; i++)
+            {
+                InventorySlot slot = inventorySlots[i];
+                InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+                // If slot is empty
+                if (itemInSlot == null)
+                {
+                    slot.Swap(inventoryItem);
+                    return true;
+                }
+            }
+        }
+
+        Debug.Log("Inventory Is Full");
+        return false;
+    }*/
+
     public void PlaceItem(InventoryItem item, InventorySlot inventorySlot)
     {
         if (item != null)
@@ -106,16 +148,8 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public virtual void QuickEquip (InventoryItem inventoryItem)
+    public virtual void QuickEquip(InventorySlot inventorySlot)
     {
-        InventorySlot currentSlot = inventoryItem.GetCurrentInventorySlot();
-
-        if (currentSlot as GearSlot)
-        {
-
-        } else
-        {
-
-        }
+        
     }
 }

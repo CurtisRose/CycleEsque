@@ -12,7 +12,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     Inventory inventory;
 
-    [SerializeField] protected bool HasItem = false;
+    [SerializeField] protected bool hasItem = false;
 
     [SerializeField] protected TMP_Text weightText;
     [SerializeField] protected TMP_Text stackSizeText;
@@ -47,7 +47,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         InventorySlot otherSlot = itemComingIn.GetCurrentInventorySlot();
 
         // If itemslot has item, swap
-        if (HasItem)
+        if (HasItem())
         {
             InventoryItem itemAlreadyHere = itemInSlot;
 
@@ -88,7 +88,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     public virtual void Swap(InventoryItem incomingItem)
     {
-        if (HasItem)
+        if (HasItem())
         {
             InventoryItem inventoryItemAlreadyHere = itemInSlot;
             InventorySlot otherSlot = incomingItem.GetCurrentInventorySlot();
@@ -112,14 +112,14 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     // This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)
     public virtual void SetItemInSlotAfterDrag(InventoryItem inventoryItem)
     {
-        if (HasItem)
+        if (HasItem())
         {
             Swap(inventoryItem);
         }
         else
         {
             itemInSlot = inventoryItem;
-            HasItem = true;
+            hasItem = true;
 
             if (slotContributesToWeight)
             {
@@ -169,7 +169,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 inventory.UpdateWeight(-(itemInSlot.GetTotalWeight()));
             }
             itemInSlot = null;
-            HasItem = false;
+            hasItem = false;
             RefreshItemStats();
             SetImageColorDefault();
             return itemToReturn;
@@ -197,7 +197,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     public virtual void ItemQuickEquipPassThrough(InventoryItem inventoryItem)
     {
-        inventory.QuickEquip(inventoryItem);
+        inventory.QuickEquip(this);
     }
 
     protected void SetImageColor(Rarity rarity)
@@ -213,5 +213,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         temp.a = 0.2f;
         itemBackgroundImage.color = temp;
         itemBorderImage.color = temp;
+    }
+
+    public bool HasItem()
+    {
+        return hasItem;
     }
 }
