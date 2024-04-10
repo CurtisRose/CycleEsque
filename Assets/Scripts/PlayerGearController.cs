@@ -10,6 +10,9 @@ public class PlayerGearController : MonoBehaviour
     // GearSlotIdentifier { BACKPACK, ARMOR, HELMET, WEAPONSLOT1, WEAPONSLOT2 }
     [SerializeField] WorldItem[] gearItems;
     [SerializeField] List<Transform> gearStorageLocations;
+    [SerializeField] Transform weaponPositionHands;
+    [SerializeField] Transform weaponPositionHip;
+
 
     private void Awake()
     {
@@ -25,18 +28,50 @@ public class PlayerGearController : MonoBehaviour
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
         // Check if there's any scroll input
-        if (scroll != 0f)
+        /*if (scroll != 0f)
         {
             selectedFirstSlot = !selectedFirstSlot;
-        }
+            SwitchGuns();
+        }*/
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             selectedFirstSlot = true;
+            SwitchGuns();
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             selectedFirstSlot = false;
+            SwitchGuns();
         }
+    }
+
+    private void SwitchGuns()
+    {
+        if (selectedFirstSlot)
+        {
+            gearStorageLocations[(int)GearSlotIdentifier.WEAPONSLOT1].transform.SetParent(weaponPositionHands,false);
+            gearStorageLocations[(int)GearSlotIdentifier.WEAPONSLOT2].transform.SetParent(weaponPositionHip, false);
+            if (gearItems[(int)GearSlotIdentifier.WEAPONSLOT1] != null)
+            {
+                gearItems[(int)GearSlotIdentifier.WEAPONSLOT1].enabled = true;
+            }
+            if (gearItems[(int)GearSlotIdentifier.WEAPONSLOT2] != null)
+            {
+                gearItems[(int)GearSlotIdentifier.WEAPONSLOT2].enabled = false;
+            }
+        } else {
+            gearStorageLocations[(int)GearSlotIdentifier.WEAPONSLOT1].transform.SetParent(weaponPositionHip, false);
+            gearStorageLocations[(int)GearSlotIdentifier.WEAPONSLOT2].transform.SetParent(weaponPositionHands, false);
+            if (gearItems[(int)GearSlotIdentifier.WEAPONSLOT1] != null)
+            {
+                gearItems[(int)GearSlotIdentifier.WEAPONSLOT1].enabled = false;
+            }
+            if (gearItems[(int)GearSlotIdentifier.WEAPONSLOT2] != null)
+            {
+                gearItems[(int)GearSlotIdentifier.WEAPONSLOT2].enabled = true;
+            }
+        }
+      
     }
 
     private void GearSlotChange(GearSlot gearSlot)
