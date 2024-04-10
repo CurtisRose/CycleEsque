@@ -161,7 +161,8 @@ public class Inventory : MonoBehaviour
         {
             if (inventorySlot.GetItemInSlot() != null)
             {
-                InventoryItem item = inventorySlot.RemoveItemFromSlot();
+                InventoryItem item = inventorySlot.GetItemInSlot();
+                inventorySlot.RemoveItemFromSlot();
                 Destroy(item.gameObject);
             }
         }

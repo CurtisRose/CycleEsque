@@ -158,7 +158,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     }
 
     // This gets called from InventoryItem when the player clicks the inventoryItem and begins to drag it.
-    public virtual InventoryItem RemoveItemFromSlot()
+    public virtual void RemoveItemFromSlot()
     {
         if (itemInSlot != null)
         {
@@ -172,9 +172,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             hasItem = false;
             RefreshItemStats();
             SetImageColorDefault();
-            return itemToReturn;
         }
-        return null;
     }
 
     public InventoryItem GetItemInSlot()

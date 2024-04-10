@@ -66,29 +66,30 @@ public class GearSlot : InventorySlot
     public override void SetItemInSlotAfterDrag(InventoryItem inventoryItem)
     {
         //Debug.Log("Item added to gear slot");
-        if (OnGearSlotsChanged != null)
-        {
-            OnGearSlotsChanged(this);
-        }
         base.SetItemInSlotAfterDrag(inventoryItem);
         SetSlotHolderImageVisible(false);
         SetImageColor(inventoryItem.item.Rarity);
-    }
 
-    // This gets called from InventoryItem when the player clicks the inventoryItem and begins to drag it.
-    public override InventoryItem RemoveItemFromSlot()
-    {
-        //Debug.Log("Item removed from gear slot");
         if (OnGearSlotsChanged != null)
         {
             OnGearSlotsChanged(this);
         }
+    }
+
+    // This gets called from InventoryItem when the player clicks the inventoryItem and begins to drag it.
+    public override void RemoveItemFromSlot()
+    {
+        //Debug.Log("Item removed from gear slot");
         if (itemInSlot != null)
         {
             SetSlotHolderImageVisible(true);
             SetImageColorDefault();
         }
-        return base.RemoveItemFromSlot();
+        base.RemoveItemFromSlot();
+        if (OnGearSlotsChanged != null)
+        {
+            OnGearSlotsChanged(this);
+        }
     }
 
     public ItemType GetItemType()

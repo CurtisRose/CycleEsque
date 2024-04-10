@@ -7,8 +7,13 @@ public class PlayerGearController : MonoBehaviour
     [SerializeField] PlayerInventory playerInventory;
     [SerializeField] bool selectedFirstSlot;
 
+    // GearSlotIdentifier { BACKPACK, ARMOR, HELMET, WEAPONSLOT1, WEAPONSLOT2 }
+    [SerializeField] WorldItem[] gearItems;
+    [SerializeField] List<Transform> gearStorageLocations;
+
     private void Awake()
     {
+        gearItems = new WorldItem[5];
         foreach(GearSlot gearSlot in playerInventory.GetGearSlots())
         {
             gearSlot.OnGearSlotsChanged += GearSlotChange;
@@ -40,27 +45,41 @@ public class PlayerGearController : MonoBehaviour
         {
             if (gearSlot == playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1))
             {
-                //Debug.Log("Weapon Slot 1 Changed");
+                HandleGearSlotChange(GearSlotIdentifier.WEAPONSLOT1, gearSlot);
             } else
             {
-                //Debug.Log("Weapon Slot 2 Changed");
+                HandleGearSlotChange(GearSlotIdentifier.WEAPONSLOT2, gearSlot);
             }
         }
         else if (gearSlot.GetItemType() == ItemType.BACKPACK)
         {
-            //Debug.Log("Backpack Slot Changed");
+            HandleGearSlotChange(GearSlotIdentifier.BACKPACK, gearSlot);
         }
         else if (gearSlot.GetItemType() == ItemType.HELMET)
         {
-            //Debug.Log("Helmet Slot Changed");
+            HandleGearSlotChange(GearSlotIdentifier.HELMET, gearSlot);
         }
         else if (gearSlot.GetItemType() == ItemType.ARMOR)
         {
-            //Debug.Log("Armor Slot Changed");
+            HandleGearSlotChange(GearSlotIdentifier.ARMOR, gearSlot);
         }
         else if (gearSlot.GetItemType() == ItemType.OTHER)
         {
-            //Debug.Log("Other");
+            Debug.Log("Error: What Kind of Gear is That?");
+            //HandleGearSlotChange(GearSlotIdentifier.WEAPONSLOT1, gearSlot);
+        }
+    }
+
+    private void HandleGearSlotChange(GearSlotIdentifier identifier, GearSlot gearSlot)
+    {
+        if (gearItems[(int)identifier] != null)
+        {
+            Destroy(gearItems[(int)identifier].gameObject);
+        }
+        if (gearSlot.HasItem())
+        {
+            gearItems[(int)identifier] =
+            Instantiate<WorldItem>(gearSlot.GetItemInSlot().item.itemPrefab, gearStorageLocations[(int)identifier]);
         }
     }
 }

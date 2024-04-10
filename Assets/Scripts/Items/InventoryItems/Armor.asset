@@ -21,5 +21,5 @@ MonoBehaviour:
   <Weight>k__BackingField: 40
   <stackable>k__BackingField: 0
   <maxStackSize>k__BackingField: 1
-  <itemPrefab>k__BackingField: {fileID: 2957839627501502580, guid: 4e05ae2e02441ed419ff8aa1c7902ced,
+  <itemPrefab>k__BackingField: {fileID: 8769822573121866879, guid: 02b5ee9bf46cbee41aacd8d66a845001,
     type: 3}
