@@ -1425,6 +1425,12 @@ PrefabInstance:
       propertyPath: inventoryWeightLimit
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 7488946573659412822, guid: 18afc7dec9b93d34a84ce2fba64e2d83,
+        type: 3}
+      propertyPath: startItems.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 82614f18b67fd5d49b737332d85cfa22,
+        type: 2}
     - target: {fileID: 8314444099955828013, guid: 18afc7dec9b93d34a84ce2fba64e2d83,
         type: 3}
       propertyPath: m_AnchorMax.y

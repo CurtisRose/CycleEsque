@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 3167376812800278590}
   - component: {fileID: 7587566732184782447}
   m_Layer: 0
-  m_Name: Backpack
+  m_Name: BackpackCommon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -11,7 +11,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [SerializeField] protected int count = 1;
 
     [SerializeField] protected Image itemImage;
-    
+
     [SerializeField] private Transform parentAfterDrag;
     [SerializeField] private InventorySlot currentInventorySlot;
 
@@ -33,8 +33,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             return;
         }
 
-        parentAfterDrag.GetComponentInParent<InventorySlot>().RemoveItemFromSlot();
-        parentAfterDrag.GetComponentInParent<InventorySlot>().StartInventoryItemMovedPassThrough(this);
+		//currentInventorySlot.RemoveItemFromSlot();
+        currentInventorySlot.StartInventoryItemMovedPassThrough(this);
 
         parentAfterDrag = transform.parent;
         // Sets the UI Panel at the top of this hierarchy as the parent

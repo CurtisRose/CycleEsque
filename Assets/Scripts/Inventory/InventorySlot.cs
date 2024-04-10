@@ -54,34 +54,68 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             // Check to see if it's too heavy for inventory
             if (this.slotContributesToWeight)
             {
-                if (inventory.currentWeight + itemComingIn.GetTotalWeight() - itemAlreadyHere.GetTotalWeight() > inventory.GetInventoryWeightLimit())
+                float weightLimitAfterSwap = inventory.GetInventoryWeightLimit();
+                
+                // If the other slot is the backpack slot then recalculate the inventory size
+                if (itemAlreadyHere.item.ItemType == ItemType.BACKPACK)
                 {
+                    weightLimitAfterSwap += 
+                        ((BackpackItem)itemAlreadyHere.item).CarryCapacity -
+                        ((BackpackItem)itemComingIn.item).CarryCapacity;
+                }
+
+                if (inventory.currentWeight + itemComingIn.GetTotalWeight() - itemAlreadyHere.GetTotalWeight() > weightLimitAfterSwap)
+                {
+                    // Put the item back in it's original slot
+                    //otherSlot.SetItemInSlotAfterDrag(itemComingIn);
                     return;
                 }
             }
             if (otherSlot.slotContributesToWeight)
             {
-                if (inventory.currentWeight + itemAlreadyHere.GetTotalWeight() - itemComingIn.GetTotalWeight() > inventory.GetInventoryWeightLimit())
+
+                float weightLimitAfterSwap = inventory.GetInventoryWeightLimit();
+                // If the this slot is the backpack slot then recalculate the inventory size
+                if (itemComingIn.item.ItemType == ItemType.BACKPACK)
                 {
+                    weightLimitAfterSwap +=
+                        ((BackpackItem)itemComingIn.item).CarryCapacity -
+                        ((BackpackItem)itemAlreadyHere.item).CarryCapacity;
+                }
+
+                if (inventory.currentWeight + itemAlreadyHere.GetTotalWeight() - itemComingIn.GetTotalWeight() > weightLimitAfterSwap)
+                {
+                    // Put the item back in it's original slot
+                    //otherSlot.SetItemInSlotAfterDrag(itemComingIn);
                     return;
                 }
             }
 
-            // Begin Swap
-            itemAlreadyHere.SetParentAfterDrag(itemComingIn.GetCurrentInventorySlot().transform);
-            RemoveItemFromSlot();
-            otherSlot.SetItemInSlotAfterDrag(itemAlreadyHere);
-            itemAlreadyHere.DoThingsAfterMove();
+            Swap(itemComingIn);
         } else
         {
             // Check to see if it's too heavy for inventory
-            if (inventory.currentWeight + itemComingIn.GetTotalWeight() > inventory.GetInventoryWeightLimit())
+            if (this.slotContributesToWeight)
             {
-                return;
+                float weightLimitAfterSwap = inventory.GetInventoryWeightLimit();
+                // If the this slot is the backpack slot then recalculate the inventory size
+                if (itemComingIn.item.ItemType == ItemType.BACKPACK)
+                {
+                    weightLimitAfterSwap -=
+                        ((BackpackItem)itemComingIn.item).CarryCapacity;
+                }
+
+                if (inventory.currentWeight + itemComingIn.GetTotalWeight() > weightLimitAfterSwap)
+                {
+                    // Put the item back in it's original slot
+                    //otherSlot.SetItemInSlotAfterDrag(itemComingIn);
+                    return;
+                }
             }
         }
 
         // Set the parent to this itemSlot
+        itemComingIn.GetCurrentInventorySlot().RemoveItemFromSlot();
         itemInSlot = itemComingIn;
         itemComingIn.SetParentAfterDrag(itemSlot);
     }
@@ -112,11 +146,16 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     // This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)
     public virtual void SetItemInSlotAfterDrag(InventoryItem inventoryItem)
     {
+        InventorySlot test = this;  
         if (HasItem())
         {
+            if (itemInSlot == inventoryItem)
+            {
+                return;
+            }
             Swap(inventoryItem);
         }
-        else
+        
         {
             itemInSlot = inventoryItem;
             hasItem = true;
