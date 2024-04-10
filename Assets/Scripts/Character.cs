@@ -49,25 +49,22 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
-        if (disableUserInput)
+        if (!disableUserInput)
         {
-            return;
+            transform.Rotate(0, Input.GetAxisRaw("Mouse X") * rotationSpeedHorizontal, 0);
+
+            //Rotate head but clamp it between -90 and 90 degrees
+            headRotation += Input.GetAxis("Mouse Y") * rotationSpeedVertical * -1;
+            headRotation = Mathf.Clamp(headRotation, -90.0f, 90.0f);
+            head.localEulerAngles = new Vector3(headRotation, head.localEulerAngles.y, head.localEulerAngles.z);
+
+
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                SwitchPerspective();
+            }
         }
 
-        transform.Rotate(0, Input.GetAxisRaw("Mouse X") * rotationSpeedHorizontal, 0);
-
-        //Rotate head but clamp it between -90 and 90 degrees
-        headRotation += Input.GetAxis("Mouse Y") * rotationSpeedVertical * -1;
-        headRotation = Mathf.Clamp(headRotation, -90.0f, 90.0f);
-        head.localEulerAngles = new Vector3(headRotation, head.localEulerAngles.y, head.localEulerAngles.z);
-
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            SwitchPerspective();
-        }
-
-       
         HandleJumpInput();
 
         currentMovementSpeed = movementSpeed;
@@ -87,11 +84,13 @@ public class Character : MonoBehaviour
                 characterController.slopeLimit = currentSlopeLimit;
             }
         }
-        
 
-        if (Input.GetKey(KeyCode.LeftControl))
+        if (!disableUserInput)
         {
-            currentMovementSpeed = crouchSpeed;
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+                currentMovementSpeed = crouchSpeed;
+            }
         }
     }
 

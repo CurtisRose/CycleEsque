@@ -26,7 +26,9 @@ public class PlayerInventory : Inventory
 
     new protected void Start()
     {
+        backpackInventory.SetActive(true);
         base.Start();
+        backpackInventory.SetActive(false);
     }
 
     private void Update()
@@ -46,22 +48,34 @@ public class PlayerInventory : Inventory
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            PlaceItem(inventorySlots[0].GetItemInSlot(), inventorySlots[7]);
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            PlaceItem(inventorySlots[1].GetItemInSlot(), inventorySlots[2]);
-        }
-        if (Input.GetKeyDown(KeyCode.T))
-        {
             RemoveAllItemsFromEachSlot();
         }
+        if (Input.GetKey(KeyCode.E))
+        {
+            AddItem(startItems[5]);
+        }
+    }
+
+    public override float GetInventoryWeightLimit()
+    {
+        if (gearSlots[(int)GearSlotIdentifier.BACKPACK].GetItemInSlot() != null)
+        {
+            BackpackItem backpack = (BackpackItem)gearSlots[(int)GearSlotIdentifier.BACKPACK].GetItemInSlot().item;
+
+            return base.GetInventoryWeightLimit() + backpack.CarryCapacity;
+        }
+        return base.GetInventoryWeightLimit();
     }
 
     public override void UpdateWeight(float amount)
     {
         base.UpdateWeight(amount);
-        weightText.text = "BACKPACK " + currentWeight.ToString() + "/" + inventoryWeightLimit;
+        UpdateWeightText();
+    }
+
+    public void UpdateWeightText()
+    {
+        weightText.text = "BACKPACK " + currentWeight.ToString() + "/" + GetInventoryWeightLimit();
     }
 
     public void StartShowSlotAcceptability(InventoryItem inventoryItem)
@@ -88,6 +102,7 @@ public class PlayerInventory : Inventory
     public override void EndInventoryItemMoved(InventoryItem inventoryItem)
     {
         EndShowSlotAcceptability(inventoryItem);
+        UpdateWeightText();
     }
 
     public override void QuickEquip(InventorySlot inventorySlot)
@@ -105,6 +120,7 @@ public class PlayerInventory : Inventory
         if (inventorySlots.Contains(inventorySlot)) {
             // Switch it with a gear slot\
             GearSlot gearSlotMatch = null;
+
             // If it's a weapon, prefer an empty slot, else, the first slot
             if (itemToEquip.GetItemType() == ItemType.PRIMARY_WEAPON)
             {
@@ -133,7 +149,32 @@ public class PlayerInventory : Inventory
                 }
             }
 
-            gearSlotMatch.Swap(itemToEquip);
+            // Do Weight Check Before Swapping, this is swapping inventory item into gear
+            bool weightCheck = false;
+            {
+                // Get the weight difference
+                float weightAfterSwitch = currentWeight - itemToEquip.GetTotalWeight();
+                if (gearSlotMatch.GetItemInSlot() != null)
+                {
+                    weightAfterSwitch += gearSlotMatch.GetItemInSlot().GetTotalWeight();
+                }
+                float newCarryCapacity = GetInventoryWeightLimit();
+                // Then check if it was a backpack switch to check the new carry weight
+                if (itemToEquip.GetItemType() == ItemType.BACKPACK)
+                {
+                    newCarryCapacity = base.GetInventoryWeightLimit() + ((BackpackItem)itemToEquip.item).CarryCapacity;
+                }
+
+                if (newCarryCapacity >= weightAfterSwitch)
+                {
+                    weightCheck = true;
+                }
+            }
+
+            if (weightCheck)
+            {
+                gearSlotMatch.Swap(itemToEquip);
+            }
         } else // If the slot was a gear slot then swap into inventory
         {
             // Add it to the inventory, find empty slot
@@ -153,8 +194,32 @@ public class PlayerInventory : Inventory
                 // TODO: Add more slots dynamically
                 // Make inventory a scrollable window
             }
-            inventorySlotMatch.Swap(itemToEquip);
+
+            // Do Weight Check Before Swapping, this is swapping gear into the inventory
+            bool weightCheck = false;
+            {
+                // Get the weight difference
+                float weightAfterSwitch = currentWeight + itemToEquip.GetTotalWeight();
+
+                float newCarryCapacity = GetInventoryWeightLimit();
+                // Then check if it was a backpack switch to check the new carry weight
+                if (itemToEquip.GetItemType() == ItemType.BACKPACK)
+                {
+                    newCarryCapacity = base.GetInventoryWeightLimit();
+                }
+
+                if (newCarryCapacity >= weightAfterSwitch)
+                {
+                    weightCheck = true;
+                }
+            }
+
+            if (weightCheck)
+            {
+                inventorySlotMatch.Swap(itemToEquip);
+            }
         }
+        UpdateWeightText();
     }
 
     public List<GearSlot> GetGearSlots()

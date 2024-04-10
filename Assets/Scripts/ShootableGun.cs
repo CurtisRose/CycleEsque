@@ -30,6 +30,11 @@ public class ShootableGun : WorldItem
 
     private void Update()
     {
+        if (Character.disableUserInput)
+        {
+            return;
+        }
+
         if (Input.GetMouseButtonDown(1))
         {
             // Semi Auto

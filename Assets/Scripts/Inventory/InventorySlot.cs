@@ -54,14 +54,14 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             // Check to see if it's too heavy for inventory
             if (this.slotContributesToWeight)
             {
-                if (inventory.currentWeight + itemComingIn.GetTotalWeight() - itemAlreadyHere.GetTotalWeight() > inventory.inventoryWeightLimit)
+                if (inventory.currentWeight + itemComingIn.GetTotalWeight() - itemAlreadyHere.GetTotalWeight() > inventory.GetInventoryWeightLimit())
                 {
                     return;
                 }
             }
             if (otherSlot.slotContributesToWeight)
             {
-                if (inventory.currentWeight + itemAlreadyHere.GetTotalWeight() - itemComingIn.GetTotalWeight() > inventory.inventoryWeightLimit)
+                if (inventory.currentWeight + itemAlreadyHere.GetTotalWeight() - itemComingIn.GetTotalWeight() > inventory.GetInventoryWeightLimit())
                 {
                     return;
                 }
@@ -75,7 +75,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         } else
         {
             // Check to see if it's too heavy for inventory
-            if (inventory.currentWeight + itemComingIn.GetTotalWeight() > inventory.inventoryWeightLimit)
+            if (inventory.currentWeight + itemComingIn.GetTotalWeight() > inventory.GetInventoryWeightLimit())
             {
                 return;
             }

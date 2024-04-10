@@ -7,7 +7,7 @@ public class Inventory : MonoBehaviour
     public BaseItem[] startItems;
     public List<InventorySlot> inventorySlots;
     public GameObject inventoryItemPrefab;
-    public float inventoryWeightLimit;
+    [SerializeField] private float inventoryWeightLimit;
     public float currentWeight;
 
     protected void Start()
@@ -18,15 +18,18 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    public virtual float GetInventoryWeightLimit()
+    {
+        return inventoryWeightLimit;
+    }
+
     public bool AddItem(BaseItem item)
     {
-        if (item.Weight > inventoryWeightLimit - currentWeight)
+        float temp = GetInventoryWeightLimit();
+        if (item.Weight > GetInventoryWeightLimit() - currentWeight)
         {
             return false;
         }
-
-        // Add item weight to current weight
-        //UpdateWeight(item.Weight);
 
         // Check if any slot already has item with count lower than the stack size
         if (item.stackable)
@@ -98,6 +101,9 @@ public class Inventory : MonoBehaviour
 
     }
 
+    // This will probably be used when moving items from one inventory to another
+    // And just picking items off the ground maybe.
+    // Although, you could do that using the other add item as well.
     /*public bool AddItem(InventoryItem inventoryItem)
     {
         if (inventoryItem.GetTotalWeight() > inventoryWeightLimit - currentWeight)
