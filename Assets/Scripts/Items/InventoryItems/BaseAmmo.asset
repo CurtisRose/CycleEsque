@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BaseAmmo
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: BaseAmmo
+  <ItemDescription>k__BackingField: 
   <ItemType>k__BackingField: 4
   <Rarity>k__BackingField: 0
   <SmallImage>k__BackingField: {fileID: 21300000, guid: db7e2dc1a8334d94482fe0e0a13d9287,
@@ -21,5 +22,5 @@ MonoBehaviour:
   <Weight>k__BackingField: 0.5
   <stackable>k__BackingField: 1
   <maxStackSize>k__BackingField: 100
-  <itemPrefab>k__BackingField: {fileID: 2957839627501502580, guid: 4e05ae2e02441ed419ff8aa1c7902ced,
+  <itemPrefab>k__BackingField: {fileID: 3494190095646576863, guid: 3d4da2cff714a904b827e9c6b77ab840,
     type: 3}

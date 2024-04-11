@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootableGun : WorldItem
+public class Gun : WorldItem
 {
     [SerializeField] Transform shootPositionTransform;
     [SerializeField] Projectile projectilePrefab;
@@ -22,15 +22,16 @@ public class ShootableGun : WorldItem
 
 
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         originalRotation = transform.localRotation;
         targetRotation = originalRotation;
     }
 
     private void Update()
     {
-        if (Character.disableUserInput)
+        if (Character.disableUserClickingInputStatus)
         {
             return;
         }

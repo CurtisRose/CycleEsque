@@ -17,8 +17,10 @@ public class Character : MonoBehaviour
     [SerializeField] private float crouchSpeed;
     private float currentMovementSpeed = 0.0f;
     private float headRotation = 0.0f;
-    [SerializeField] public static bool disableUserInput = false;
-    
+    [SerializeField] public static bool disableUserMovementInputStatus = false;
+    [SerializeField] public static bool disableUserClickingInputStatus = false;
+    [SerializeField] public static bool disableUserLookingInputStatus = false;
+
     [Header("Jump Parameters")]
     // Adds forgiveness to jumps, allows you to fall off an edge for a short amount of time and still be able to jump.
     [SerializeField] private float jumpAidTime;
@@ -44,50 +46,43 @@ public class Character : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         this.jumpTimer = 0;
-        SetUserInputStatus(true);
+        SetUserMovementInputStatus(true);
     }
 
     private void Update()
     {
-        if (disableUserInput)
+        if (!disableUserLookingInputStatus)
         {
-            return;
-        }
-        transform.Rotate(0, Input.GetAxisRaw("Mouse X") * rotationSpeedHorizontal, 0);
+            transform.Rotate(0, Input.GetAxisRaw("Mouse X") * rotationSpeedHorizontal, 0);
 
-        //Rotate head but clamp it between -90 and 90 degrees
-        headRotation += Input.GetAxis("Mouse Y") * rotationSpeedVertical * -1;
-        headRotation = Mathf.Clamp(headRotation, -90.0f, 90.0f);
-        head.localEulerAngles = new Vector3(headRotation, head.localEulerAngles.y, head.localEulerAngles.z);
-
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            SwitchPerspective();
+            //Rotate head but clamp it between -90 and 90 degrees
+            headRotation += Input.GetAxis("Mouse Y") * rotationSpeedVertical * -1;
+            headRotation = Mathf.Clamp(headRotation, -90.0f, 90.0f);
+            head.localEulerAngles = new Vector3(headRotation, head.localEulerAngles.y, head.localEulerAngles.z);
         }
 
-        HandleJumpInput();
-
-        currentMovementSpeed = movementSpeed;
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (!disableUserMovementInputStatus)
         {
-            currentMovementSpeed = sprintSpeed;
-            if (currentSlopeLimit != sprintingSlopeLimit)
+            HandleJumpInput();
+
+            currentMovementSpeed = movementSpeed;
+            if (Input.GetKey(KeyCode.LeftShift))
             {
-                currentSlopeLimit = sprintingSlopeLimit;
-                characterController.slopeLimit = currentSlopeLimit;
-            }
-        } else
-        {
-            if (currentSlopeLimit != walkingSlopeLimit)
+                currentMovementSpeed = sprintSpeed;
+                if (currentSlopeLimit != sprintingSlopeLimit)
+                {
+                    currentSlopeLimit = sprintingSlopeLimit;
+                    characterController.slopeLimit = currentSlopeLimit;
+                }
+            } else
             {
-                currentSlopeLimit = walkingSlopeLimit;
-                characterController.slopeLimit = currentSlopeLimit;
+                if (currentSlopeLimit != walkingSlopeLimit)
+                {
+                    currentSlopeLimit = walkingSlopeLimit;
+                    characterController.slopeLimit = currentSlopeLimit;
+                }
             }
-        }
 
-        if (!disableUserInput)
-        {
             if (Input.GetKey(KeyCode.LeftControl))
             {
                 currentMovementSpeed = crouchSpeed;
@@ -99,7 +94,7 @@ public class Character : MonoBehaviour
     {
         Vector3 move = Vector3.zero;
 
-        if (!disableUserInput)
+        if (!disableUserMovementInputStatus)
         {
             move = (transform.forward * Input.GetAxis("Vertical") * currentMovementSpeed * Time.deltaTime +
                     transform.right * Input.GetAxis("Horizontal") * currentMovementSpeed * Time.deltaTime);
@@ -155,16 +150,49 @@ public class Character : MonoBehaviour
         thirdPersonCamera.gameObject.SetActive(!thirdPersonCamera.gameObject.activeSelf);
     }
 
-    public static void SetUserInputStatus(bool enabled)
+    public static void SetUserMovementInputStatus(bool enabled)
     {
         if (enabled)
         {
-            disableUserInput = false;
+            disableUserMovementInputStatus = false;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-        } else
+        }
+        else
         {
-            disableUserInput = true;
+            disableUserMovementInputStatus = true;
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+    }
+
+    public static void SetUserLookingInputStatus(bool enabled)
+    {
+        if (enabled)
+        {
+            disableUserLookingInputStatus = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            disableUserLookingInputStatus = true;
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+    }
+
+    public static void SetUserClickingInputStatus(bool enabled)
+    {
+        if (enabled)
+        {
+            disableUserClickingInputStatus = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            disableUserClickingInputStatus = true;
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
         }

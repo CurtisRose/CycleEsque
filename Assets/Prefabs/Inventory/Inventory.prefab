@@ -359,6 +359,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3185496436311464136}
   - component: {fileID: 2036190449175059833}
+  - component: {fileID: 3074282955600289556}
   - component: {fileID: 7488946573659412822}
   m_Layer: 5
   m_Name: Inventory
@@ -395,6 +396,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6754216929609444848}
   m_CullTransparentMesh: 1
+--- !u!114 &3074282955600289556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6754216929609444848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 860938a9b56d3a44e972e33ea05b2bc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuPanel: {fileID: 7056760596738209765}
+  affectsUserMovement: 0
+  affectsUserClicking: 1
+  affectsUserLooking: 1
 --- !u!114 &7488946573659412822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,7 +425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startItems:
-  - {fileID: 11400000, guid: 82614f18b67fd5d49b737332d85cfa22, type: 2}
+  - {fileID: 11400000, guid: 19a45a5080c7e35468eaa40b7484a8b2, type: 2}
   - {fileID: 11400000, guid: 2b43522bd2983514e9bacd1aa89bda18, type: 2}
   - {fileID: 11400000, guid: 0c9df605b2dd323498a1c68c21de8341, type: 2}
   - {fileID: 11400000, guid: 33d826e104d0d2c439ab4c4af0b40a8c, type: 2}
@@ -442,6 +459,7 @@ MonoBehaviour:
   - {fileID: 2213082948616849649}
   - {fileID: 1371790077613327512}
   weightText: {fileID: 2718549675581289894}
+  inventoryMenu: {fileID: 3074282955600289556}
 --- !u!1 &7056760596738209765
 GameObject:
   m_ObjectHideFlags: 0
@@ -510,8 +528,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: eeabb0b69b21d2948b8e73d9565e4be6, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

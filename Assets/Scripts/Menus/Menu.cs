@@ -6,7 +6,9 @@ public class Menu : MonoBehaviour, IMenu
 {
     [SerializeField] GameObject menuPanel;
     bool isOpen = false;
-    [SerializeField] bool affectsUserInput;
+    [SerializeField] bool affectsUserMovement;
+    [SerializeField] bool affectsUserClicking;
+    [SerializeField] bool affectsUserLooking;
 
     void Awake()
     {
@@ -22,16 +24,35 @@ public class Menu : MonoBehaviour, IMenu
     {
         menuPanel.SetActive(false);
         isOpen = false;
-        Character.SetUserInputStatus(true);
+        if (affectsUserMovement)
+        {
+            Character.SetUserMovementInputStatus(true);
+        }
+        if (affectsUserClicking)
+        {
+            Character.SetUserClickingInputStatus(true);
+        }
+        if (affectsUserLooking)
+        {
+            Character.SetUserLookingInputStatus(true);
+        }
     }
 
     public void Open()
     {
         menuPanel.SetActive(true);
         isOpen = true;
-        if (affectsUserInput)
+        if (affectsUserMovement)
         {
-            Character.SetUserInputStatus(false);
+            Character.SetUserMovementInputStatus(false);
+        }
+        if (affectsUserClicking)
+        {
+            Character.SetUserClickingInputStatus(false);
+        }
+        if (affectsUserLooking)
+        {
+            Character.SetUserLookingInputStatus(false);
         }
     }
 }

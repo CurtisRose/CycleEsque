@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
+public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [HideInInspector] public BaseItem item;
     [SerializeField] protected int count = 1;
@@ -17,6 +17,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public delegate void ItemCountChanged();
     public event ItemCountChanged OnItemCountChanged;
+
+    public static InventoryItem CurrentHoveredItem { get; private set; }
 
     // Initialized by the inventory when it's created
     public void InitializeItem(BaseItem item)
@@ -165,5 +167,18 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public float GetTotalWeight()
     {
         return GetItemCount() * item.Weight;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        CurrentHoveredItem = this;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (CurrentHoveredItem == this)
+        {
+            CurrentHoveredItem = null;
+        }
     }
 }

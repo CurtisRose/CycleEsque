@@ -152,6 +152,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 2b43522bd2983514e9bacd1aa89bda18, type: 2}
+  timeDelay: 1
+  temporaryLayerName: Ignore Raycast
+  originalLayerName: WorldItems
 --- !u!54 &7228000642220015270
 Rigidbody:
   m_ObjectHideFlags: 0

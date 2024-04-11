@@ -322,11 +322,13 @@ MonoBehaviour:
   interactionLayer:
     serializedVersion: 2
     m_Bits: 8
-  pickupPromptUI: {fileID: 0}
+  pickupPromptMenu: {fileID: 0}
   itemName: {fileID: 0}
   itemWeight: {fileID: 0}
   itemRarity: {fileID: 0}
   itemDescription: {fileID: 0}
+  pickupText: {fileID: 0}
+  pickupImage: {fileID: 0}
 --- !u!1 &4060710622146128505
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,6 +481,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.468, y: -0.33299994, z: 1.303}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9064487097268030572}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7178168387789337314
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6780773922304257058}
+  m_Layer: 3
+  m_Name: ThrowPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6780773922304257058
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7178168387789337314}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -802,6 +835,7 @@ Transform:
   - {fileID: 5075259123542633160}
   - {fileID: 8730573079300955122}
   - {fileID: 8166624196369545103}
+  - {fileID: 6780773922304257058}
   m_Father: {fileID: 9064487096557084800}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &9064487097268030569
@@ -985,6 +1019,9 @@ MonoBehaviour:
   - {fileID: 8897493055078843416}
   weaponPositionHands: {fileID: 8730573079300955122}
   weaponPositionHip: {fileID: 6265170968284108111}
+  head: {fileID: 9064487097268030572}
+  throwForce: 100
+  throwPosition: {fileID: 6780773922304257058}
 --- !u!1 &9166655474706790046
 GameObject:
   m_ObjectHideFlags: 0

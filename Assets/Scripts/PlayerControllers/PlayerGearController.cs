@@ -12,6 +12,9 @@ public class PlayerGearController : MonoBehaviour
     [SerializeField] List<Transform> gearStorageLocations;
     [SerializeField] Transform weaponPositionHands;
     [SerializeField] Transform weaponPositionHip;
+    [SerializeField] Transform head;
+    [SerializeField] float throwForce;
+    [SerializeField] Transform throwPosition;
 
 
     private void Awake()
@@ -42,6 +45,21 @@ public class PlayerGearController : MonoBehaviour
         {
             selectedFirstSlot = false;
             SwitchGuns();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            if (InventoryItem.CurrentHoveredItem != null)
+            {
+                //InventoryItem.CurrentHoveredItem
+                //InventoryItem.CurrentHoveredItem.item
+                InventoryItem.CurrentHoveredItem.GetCurrentInventorySlot().RemoveItemFromSlot();
+                WorldItem itemBeingDropped = Instantiate<WorldItem>(InventoryItem.CurrentHoveredItem.item.itemPrefab, throwPosition.position, Quaternion.identity);
+                // Maybe yeet it a little bit
+                itemBeingDropped.GetComponent<Rigidbody>().AddForce(head.forward * throwForce * Time.deltaTime, ForceMode.Impulse);
+                
+                Destroy(InventoryItem.CurrentHoveredItem.gameObject);
+            }
         }
     }
 

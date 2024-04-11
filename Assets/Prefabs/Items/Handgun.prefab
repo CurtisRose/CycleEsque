@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4661840394237003201}
   - component: {fileID: 1570672019362220136}
+  - component: {fileID: -8819084480297045738}
   m_Layer: 3
   m_Name: Handgun
   m_TagString: Untagged
@@ -47,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 33d826e104d0d2c439ab4c4af0b40a8c, type: 2}
+  timeDelay: 1
   shootPositionTransform: {fileID: 7579410308665524227}
   projectilePrefab: {fileID: 7343739617303108452, guid: 9ce584057e259bb47b9937b06cfa6540,
     type: 3}
@@ -57,6 +59,33 @@ MonoBehaviour:
   maxRecoilX: 1
   spreadAmount: 1
   returnSpeed: 1
+--- !u!54 &-8819084480297045738
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2474077918294206929}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1 &2647082089903213152
 GameObject:
   m_ObjectHideFlags: 0

@@ -372,6 +372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: a1ce3aec883f03848b706fe1284055cc, type: 2}
+  timeDelay: 1
 --- !u!54 &7170956006411438655
 Rigidbody:
   m_ObjectHideFlags: 0

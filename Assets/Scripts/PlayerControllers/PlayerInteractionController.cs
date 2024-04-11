@@ -41,13 +41,16 @@ public class PlayerInteractionController : MonoBehaviour
             WorldItem worldItem = hit.collider.GetComponentInParent<WorldItem>();
             if (worldItem != null)
             {
-                // Show the pickup prompt UI element if a WorldItem is hit.
-                itemLookingAt = worldItem;
-                ShowPickupPrompt(true);
-
-                if (Input.GetKeyDown(KeyCode.F))
+                if (worldItem.IsInteractable())
                 {
-                    OnWorldItemPickedUp(worldItem);
+                    // Show the pickup prompt UI element if a WorldItem is hit.
+                    itemLookingAt = worldItem;
+                    ShowPickupPrompt(true);
+
+                    if (Input.GetKeyDown(KeyCode.F))
+                    {
+                        OnWorldItemPickedUp(worldItem);
+                    }
                 }
             }
         }
@@ -73,33 +76,42 @@ public class PlayerInteractionController : MonoBehaviour
 
     void ShowPickupPrompt(bool show)
     {
+        if (show)
+        {
+            UpdatePickupPromptInfo();
+        }
         // Only fill out the details once
         if (!pickupPromptMenu.IsOpen() && show)
         {
             MenuManager.Instance.OpenMenu(pickupPromptMenu);
-            BaseItem item = itemLookingAt.GetBaseItem();
-            itemName.text = item.DisplayName;
-            itemWeight.text = item.Weight.ToString();
-            itemRarity.text = item.Rarity.ToString();
-            itemRarity.color = RarityColorManager.Instance.GetColorByRarity(item.Rarity);
-            float roomInBackpack = playerInventory.GetInventoryWeightLimit() - playerInventory.currentWeight;
-            if (roomInBackpack >= item.Weight)
-            {
-                itemWeight.color = Color.white;
-                pickupImage.color = Color.white;
-                pickupText.color = Color.white;
-            } else
-            {
-                itemWeight.color = Color.red;
-                pickupImage.color = Color.red;
-                pickupText.color = Color.red;
-            }
-            
-            //itemDescription.text = item.Description;
         }
         else if (!show)
         {
             MenuManager.Instance.CloseMenu(pickupPromptMenu);
         }
+    }
+
+    void UpdatePickupPromptInfo()
+    {
+        BaseItem item = itemLookingAt.GetBaseItem();
+        itemName.text = item.DisplayName;
+        itemWeight.text = item.Weight.ToString();
+        itemRarity.text = item.Rarity.ToString();
+        itemRarity.color = RarityColorManager.Instance.GetColorByRarity(item.Rarity);
+        float roomInBackpack = playerInventory.GetInventoryWeightLimit() - playerInventory.currentWeight;
+        if (roomInBackpack >= item.Weight)
+        {
+            itemWeight.color = Color.white;
+            pickupImage.color = Color.white;
+            pickupText.color = Color.white;
+        }
+        else
+        {
+            itemWeight.color = Color.red;
+            pickupImage.color = Color.red;
+            pickupText.color = Color.red;
+        }
+
+        //itemDescription.text = item.Description;
     }
 }
