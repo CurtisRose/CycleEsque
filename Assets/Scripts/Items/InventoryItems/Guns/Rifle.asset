@@ -16,9 +16,9 @@ MonoBehaviour:
   <ItemDescription>k__BackingField: Rifle Exotic
   <ItemType>k__BackingField: 0
   <Rarity>k__BackingField: 5
-  <SmallImage>k__BackingField: {fileID: 21300000, guid: 5ed5023966536dc45a4da123eda31f49,
+  <SmallImage>k__BackingField: {fileID: 21300000, guid: 2253677b23e717c4290779f41d0d1a10,
     type: 3}
-  <LargeImage>k__BackingField: {fileID: 21300000, guid: f1a82f286c48ff54c89eb5c5f852a9a4,
+  <LargeImage>k__BackingField: {fileID: 21300000, guid: acbed6368afe8f94e9d69e3442e02b05,
     type: 3}
   <Weight>k__BackingField: 20
   <stackable>k__BackingField: 0
@@ -26,9 +26,10 @@ MonoBehaviour:
   <itemPrefab>k__BackingField: {fileID: 625792777598891736, guid: 83d9d0040336f4645b16a5f568c6952b,
     type: 3}
   <MagazineCapacity>k__BackingField: 30
-  <RateOfFire>k__BackingField: 0.5
-  <recoilAmountY>k__BackingField: 5
-  <maxRecoilY>k__BackingField: 20
-  <recoilAmountX>k__BackingField: 2
-  <maxRecoilX>k__BackingField: 10
-  <spreadAmount>k__BackingField: 2
+  <RateOfFire>k__BackingField: 0.1
+  <recoilAmountY>k__BackingField: 1
+  <maxRecoilY>k__BackingField: 1
+  <recoilAmountX>k__BackingField: 0.5
+  <maxRecoilX>k__BackingField: 1
+  <spreadAmount>k__BackingField: 1
+  <returnSpeed>k__BackingField: 1

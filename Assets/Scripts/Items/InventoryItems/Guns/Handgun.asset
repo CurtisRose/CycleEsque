@@ -16,9 +16,9 @@ MonoBehaviour:
   <ItemDescription>k__BackingField: Handgun Epic
   <ItemType>k__BackingField: 0
   <Rarity>k__BackingField: 3
-  <SmallImage>k__BackingField: {fileID: 21300000, guid: d4f1b8eed624daf40a2495b5dda1926b,
+  <SmallImage>k__BackingField: {fileID: 21300000, guid: 330dceb09913d584cbe13d2fd1ef7eff,
     type: 3}
-  <LargeImage>k__BackingField: {fileID: 21300000, guid: 6dd1921c4ee011f4c9f8385cf81a9707,
+  <LargeImage>k__BackingField: {fileID: 21300000, guid: 0eb64349cb944eb4aa32ac716195115b,
     type: 3}
   <Weight>k__BackingField: 5
   <stackable>k__BackingField: 0
@@ -26,9 +26,10 @@ MonoBehaviour:
   <itemPrefab>k__BackingField: {fileID: 1570672019362220136, guid: e0fb84f16e09975479eda3f75c318d2b,
     type: 3}
   <MagazineCapacity>k__BackingField: 12
-  <RateOfFire>k__BackingField: 0.5
-  <recoilAmountY>k__BackingField: 5
-  <maxRecoilY>k__BackingField: 20
-  <recoilAmountX>k__BackingField: 2
-  <maxRecoilX>k__BackingField: 10
-  <spreadAmount>k__BackingField: 2
+  <RateOfFire>k__BackingField: 0.2
+  <recoilAmountY>k__BackingField: 1
+  <maxRecoilY>k__BackingField: 1
+  <recoilAmountX>k__BackingField: 0.5
+  <maxRecoilX>k__BackingField: 1
+  <spreadAmount>k__BackingField: 1
+  <returnSpeed>k__BackingField: 1

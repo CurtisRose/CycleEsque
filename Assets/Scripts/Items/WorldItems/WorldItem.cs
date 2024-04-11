@@ -11,7 +11,7 @@ public class WorldItem : MonoBehaviour
     [SerializeField] float timeDelay = 1.0f;
     bool interactable = true;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
         InitializeItem();

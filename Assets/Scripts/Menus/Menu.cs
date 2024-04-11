@@ -16,7 +16,7 @@ public class Menu : MonoBehaviour, IMenu
     // Maybe they can be open at the same time. Like pickup window never turns off other windows?
     // Or the pick up window can't be open at the same time as inventory using priority for random menus (specifically, NOT menus intentionally opened by user.)
 
-    void Awake()
+    void Start()
     {
         MenuManager.Instance.RegisterMenu(this);
     }

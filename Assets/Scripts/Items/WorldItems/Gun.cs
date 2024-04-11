@@ -10,28 +10,30 @@ public class Gun : WorldItem
     [SerializeField] float fireRate = 0.5f; // Time in seconds between shots
     private float lastShotTime = 0f; // Time since the last shot was fired
 
-    private float recoilAmountY = 5f; // How much the gun recoils
-    private float maxRecoilY = 20f; // Maximum recoil rotation on the x-axis
-    private float recoilAmountX = 2f; // How much the gun recoils sideways
-    private float maxRecoilX = 10f; // Maximum side-to-side recoil rotation
-    private float spreadAmount = 2f; // The variance in bullet direction
+    private float recoilAmountY; // How much the gun recoils
+    private float maxRecoilY; // Maximum recoil rotation on the x-axis
+    private float recoilAmountX; // How much the gun recoils sideways
+    private float maxRecoilX; // Maximum side-to-side recoil rotation
+    private float spreadAmount; // The variance in bullet direction
+    private float returnSpeed; // Speed at which the gun returns to original rotation
 
     private Quaternion originalRotation;
     private Quaternion targetRotation;
-    [SerializeField] private float returnSpeed = 1f; // Speed at which the gun returns to original rotation
-
-    //[SerializeField] LayerMask gunLayer;
-    //[SerializeField] LayerMask worldItemLayer;
 
     int magazineCapacity;
     int numberOfRounds;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        numberOfRounds = magazineCapacity;
+    }
 
     protected override void Start()
     {
         base.Start();
         originalRotation = transform.localRotation;
         targetRotation = originalRotation;
-        numberOfRounds = magazineCapacity;
     }
 
     protected override void InitializeItem()
@@ -44,6 +46,7 @@ public class Gun : WorldItem
         recoilAmountX = ((GunItem)item).recoilAmountX;
         maxRecoilX = ((GunItem)item).maxRecoilX;
         spreadAmount = ((GunItem)item).spreadAmount;
+        returnSpeed = ((GunItem)item).returnSpeed;
     }
 
     public override void Use()
@@ -67,14 +70,15 @@ public class Gun : WorldItem
     public int Reload(int numRoundsAvailable)
     {
         int missingAmmoAmount = magazineCapacity - numberOfRounds;
+        
         if (missingAmmoAmount > numRoundsAvailable)
         {
-            numberOfRounds = magazineCapacity;
+            numberOfRounds += numRoundsAvailable;
             return missingAmmoAmount;
         } else
         {
-            numberOfRounds += numRoundsAvailable;
-            return numRoundsAvailable;
+            numberOfRounds += missingAmmoAmount;
+            return numRoundsAvailable - missingAmmoAmount;
         }
     }
 
@@ -167,5 +171,15 @@ public class Gun : WorldItem
         {
             SetLayerRecursively(child.gameObject, newLayer);
         }
+    }
+
+    public int GetMagazineCapacity()
+    {
+        return magazineCapacity;
+    }
+
+    public int GetNumberOfRounds()
+    {
+        return numberOfRounds;
     }
 }

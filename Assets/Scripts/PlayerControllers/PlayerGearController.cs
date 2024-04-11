@@ -6,7 +6,8 @@ public class PlayerGearController : MonoBehaviour
 {
     [SerializeField] PlayerInventory playerInventory;
     [SerializeField] bool selectedFirstSlot;
-    [SerializeField] Gun currentGunHeld = null;
+    [SerializeField] public Gun currentGunHeld = null;
+    [SerializeField] public Gun gunOnHip = null;
 
     // GearSlotIdentifier { BACKPACK, ARMOR, HELMET, WEAPONSLOT1, WEAPONSLOT2 }
     [SerializeField] WorldItem[] gearItems;
@@ -16,6 +17,15 @@ public class PlayerGearController : MonoBehaviour
     [SerializeField] Transform head;
     [SerializeField] float throwForce;
     [SerializeField] Transform throwPosition;
+
+    public delegate void LoadOutChanged();
+    public event LoadOutChanged OnLoadOutChanged;
+
+    public delegate void PrimaryGunFired();
+    public event PrimaryGunFired OnPrimaryGunFired;
+
+    public delegate void PrimaryGunReloaded();
+    public event PrimaryGunReloaded OnPrimaryGunReloaded;
 
 
     private void Awake()
@@ -70,6 +80,10 @@ public class PlayerGearController : MonoBehaviour
             // Reload Gun
             int numberOfRoundsAvailable = 100;
             int numberOfRoundsUsed = currentGunHeld.Reload(numberOfRoundsAvailable);
+            if (OnPrimaryGunReloaded != null)
+            {
+                OnPrimaryGunReloaded();
+            }
         }
 
         if (Character.disableUserClickingInputStatus)
@@ -83,6 +97,10 @@ public class PlayerGearController : MonoBehaviour
             if (currentGunHeld != null)
             {
                 currentGunHeld.Use();
+                if (OnPrimaryGunFired != null)
+                {
+                    OnPrimaryGunFired();
+                }
             }
         }
     }
@@ -101,7 +119,8 @@ public class PlayerGearController : MonoBehaviour
             {
                 gearItems[(int)GearSlotIdentifier.WEAPONSLOT2].enabled = false;
             }
-            currentGunHeld = (Gun)gearItems[(int)GearSlotIdentifier.WEAPONSLOT1];
+            SetCurrentGun((Gun)gearItems[(int)GearSlotIdentifier.WEAPONSLOT1]);
+            SetHipGun((Gun)gearItems[(int)GearSlotIdentifier.WEAPONSLOT2]);
         } else {
             gearStorageLocations[(int)GearSlotIdentifier.WEAPONSLOT1].transform.SetParent(weaponPositionHip, false);
             gearStorageLocations[(int)GearSlotIdentifier.WEAPONSLOT2].transform.SetParent(weaponPositionHands, false);
@@ -113,7 +132,8 @@ public class PlayerGearController : MonoBehaviour
             {
                 gearItems[(int)GearSlotIdentifier.WEAPONSLOT2].enabled = true;
             }
-            currentGunHeld = (Gun)gearItems[(int)GearSlotIdentifier.WEAPONSLOT2];
+            SetCurrentGun((Gun)gearItems[(int)GearSlotIdentifier.WEAPONSLOT2]);
+            SetHipGun((Gun)gearItems[(int)GearSlotIdentifier.WEAPONSLOT1]);
         }
       
     }
@@ -164,15 +184,40 @@ public class PlayerGearController : MonoBehaviour
             {
                 if (identifier == GearSlotIdentifier.WEAPONSLOT1)
                 {
-                    currentGunHeld = (Gun)gearItems[(int)GearSlotIdentifier.WEAPONSLOT1];
+                    SetCurrentGun((Gun)gearItems[(int)GearSlotIdentifier.WEAPONSLOT1]);
+                } else
+                {
+                    SetHipGun((Gun)gearItems[(int)GearSlotIdentifier.WEAPONSLOT2]);
                 }
             } else
             {
                 if (identifier == GearSlotIdentifier.WEAPONSLOT2)
                 {
-                    currentGunHeld = (Gun)gearItems[(int)GearSlotIdentifier.WEAPONSLOT2];
+                    SetCurrentGun((Gun)gearItems[(int)GearSlotIdentifier.WEAPONSLOT2]);
+                }
+                else
+                {
+                    SetHipGun((Gun)gearItems[(int)GearSlotIdentifier.WEAPONSLOT1]);
                 }
             }
+        }
+    }
+
+    private void SetCurrentGun(Gun gun)
+    {
+        currentGunHeld = gun;
+        if (OnLoadOutChanged != null)
+        {
+            OnLoadOutChanged();
+        }
+    }
+
+    private void SetHipGun(Gun gun)
+    {
+        gunOnHip = gun;
+        if (OnLoadOutChanged != null)
+        {
+            OnLoadOutChanged();
         }
     }
 }
