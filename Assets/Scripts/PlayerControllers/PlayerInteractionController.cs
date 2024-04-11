@@ -9,7 +9,7 @@ public class PlayerInteractionController : MonoBehaviour
     [SerializeField] PlayerInventory playerInventory;
     [SerializeField] float interactionDistance = 5f;
     [SerializeField] LayerMask interactionLayer;
-    [SerializeField] GameObject pickupPromptUI;
+    [SerializeField] Menu pickupPromptMenu;
 
     WorldItem itemLookingAt;
 
@@ -23,7 +23,7 @@ public class PlayerInteractionController : MonoBehaviour
 
     private void Awake()
     {
-        pickupPromptUI.SetActive(false);
+        pickupPromptMenu.Close();
     }
 
     void Update()
@@ -68,15 +68,15 @@ public class PlayerInteractionController : MonoBehaviour
         {
             Destroy(item.gameObject);
         }
-        ShowPickupPrompt(false);
+        ShowPickupPrompt(true);
     }
 
     void ShowPickupPrompt(bool show)
     {
         // Only fill out the details once
-        if (!pickupPromptUI.activeInHierarchy && show)
+        if (!pickupPromptMenu.IsOpen() && show)
         {
-            pickupPromptUI.SetActive(true);
+            MenuManager.Instance.OpenMenu(pickupPromptMenu);
             BaseItem item = itemLookingAt.GetBaseItem();
             itemName.text = item.DisplayName;
             itemWeight.text = item.Weight.ToString();
@@ -99,7 +99,7 @@ public class PlayerInteractionController : MonoBehaviour
         }
         else if (!show)
         {
-            pickupPromptUI.SetActive(false);
+            MenuManager.Instance.CloseMenu(pickupPromptMenu);
         }
     }
 }

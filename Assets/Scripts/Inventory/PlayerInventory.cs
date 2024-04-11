@@ -11,6 +11,7 @@ public class PlayerInventory : Inventory
     public GameObject backpackInventory;
     [SerializeField] List<GearSlot> gearSlots;
     [SerializeField] TMP_Text weightText; // "BACKPACK 0.0/0.0"
+    [SerializeField] Menu inventoryMenu;
 
     private void Awake()
     {
@@ -26,18 +27,23 @@ public class PlayerInventory : Inventory
 
     new protected void Start()
     {
-        backpackInventory.SetActive(true);
+        inventoryMenu.Open();
         base.Start();
-        backpackInventory.SetActive(false);
+        inventoryMenu.Close();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            bool currentStatus = backpackInventory.activeSelf;
-            backpackInventory.SetActive(!currentStatus);
-            Character.SetUserInputStatus(currentStatus);
+
+            if (!inventoryMenu.IsOpen())
+            {
+                MenuManager.Instance.OpenMenu(inventoryMenu);
+            } else
+            {
+                MenuManager.Instance.CloseMenu(inventoryMenu);
+            }
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {

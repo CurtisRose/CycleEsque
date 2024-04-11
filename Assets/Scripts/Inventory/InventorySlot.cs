@@ -265,6 +265,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         Color temp = Color.white;
         temp.a = 0.2f;
         itemBackgroundImage.color = temp;
+        temp = Color.black;
+        temp.a = 0.5f;
         itemBorderImage.color = temp;
     }
 

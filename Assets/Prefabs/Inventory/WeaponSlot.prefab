@@ -193,7 +193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -224,6 +224,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 8d1654c94771b504bb8fc5b66f96a04e,
         type: 3}
+    - target: {fileID: 1597163933523742060, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163933523742060, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163933523742060, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1597163933523742061, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -415,18 +430,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemSlot: {fileID: 5915296245706380481}
   itemInSlot: {fileID: 0}
-  HasItem: 0
+  hasItem: 0
   weightText: {fileID: 3322507745560301023}
   stackSizeText: {fileID: 8930028864405306753}
-  rarityColors:
-  - {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
-  - {r: 0, g: 0.8584906, b: 0.4620719, a: 1}
-  - {r: 0, g: 0.660487, b: 0.8113208, a: 1}
-  - {r: 0.54532397, g: 0.36436453, b: 0.8679245, a: 1}
-  - {r: 0.9339623, g: 0.8657028, b: 0.41852084, a: 1}
-  - {r: 0.9056604, g: 0.3033108, b: 0.3033108, a: 1}
   itemBackgroundImage: {fileID: 307038011243151616}
   itemBorderImage: {fileID: 307038010992874148}
+  partOfInventoryWeight: 0
+  UseLargeImage: 0
+  slotContributesToWeight: 1
   itemType: 0
   slotIndicationText: {fileID: 4852069576726618893}
   indicationImage: {fileID: 2423295843265513207}

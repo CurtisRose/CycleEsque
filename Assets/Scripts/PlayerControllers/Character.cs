@@ -49,20 +49,21 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
-        if (!disableUserInput)
+        if (disableUserInput)
         {
-            transform.Rotate(0, Input.GetAxisRaw("Mouse X") * rotationSpeedHorizontal, 0);
+            return;
+        }
+        transform.Rotate(0, Input.GetAxisRaw("Mouse X") * rotationSpeedHorizontal, 0);
 
-            //Rotate head but clamp it between -90 and 90 degrees
-            headRotation += Input.GetAxis("Mouse Y") * rotationSpeedVertical * -1;
-            headRotation = Mathf.Clamp(headRotation, -90.0f, 90.0f);
-            head.localEulerAngles = new Vector3(headRotation, head.localEulerAngles.y, head.localEulerAngles.z);
+        //Rotate head but clamp it between -90 and 90 degrees
+        headRotation += Input.GetAxis("Mouse Y") * rotationSpeedVertical * -1;
+        headRotation = Mathf.Clamp(headRotation, -90.0f, 90.0f);
+        head.localEulerAngles = new Vector3(headRotation, head.localEulerAngles.y, head.localEulerAngles.z);
 
 
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                SwitchPerspective();
-            }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            SwitchPerspective();
         }
 
         HandleJumpInput();
@@ -96,16 +97,13 @@ public class Character : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (disableUserInput)
-        {
-            return;
-        }
-
         Vector3 move = Vector3.zero;
-        
-        move = (transform.forward * Input.GetAxis("Vertical") * currentMovementSpeed * Time.deltaTime +
-                transform.right * Input.GetAxis("Horizontal") * currentMovementSpeed * Time.deltaTime);
 
+        if (!disableUserInput)
+        {
+            move = (transform.forward * Input.GetAxis("Vertical") * currentMovementSpeed * Time.deltaTime +
+                    transform.right * Input.GetAxis("Horizontal") * currentMovementSpeed * Time.deltaTime);
+        }
         currentVerticalSpeed -= gravity * Time.deltaTime;
         move.y = currentVerticalSpeed;
         characterController.Move(move);
