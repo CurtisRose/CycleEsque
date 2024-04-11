@@ -17,8 +17,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     [SerializeField] protected TMP_Text weightText;
     [SerializeField] protected TMP_Text stackSizeText;
 
-    [SerializeField] List<Color> rarityColors;
-
     [SerializeField] Image itemBackgroundImage;
     [SerializeField] Image itemBorderImage;
 
@@ -42,9 +40,22 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     public virtual void OnDropItem(PointerEventData eventData)
     {
+        // You can't drag an item with anything but left click.
+        // But, apparently, if you drag with middle or right click, it won't visually do anything,
+        // But it still calls this method.
+        if (eventData.button != PointerEventData.InputButton.Left)
+        {
+            return;
+        }
+
         GameObject dropped = eventData.pointerDrag;
         InventoryItem itemComingIn = dropped.GetComponent<InventoryItem>();
         InventorySlot otherSlot = itemComingIn.GetCurrentInventorySlot();
+
+        if (otherSlot == this)
+        {
+            return;
+        }
 
         // If itemslot has item, swap
         if (HasItem())
@@ -97,19 +108,22 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             // Check to see if it's too heavy for inventory
             if (this.slotContributesToWeight)
             {
-                float weightLimitAfterSwap = inventory.GetInventoryWeightLimit();
-                // If the this slot is the backpack slot then recalculate the inventory size
-                if (itemComingIn.item.ItemType == ItemType.BACKPACK)
+                if (!itemComingIn.GetCurrentInventorySlot().slotContributesToWeight)
                 {
-                    weightLimitAfterSwap -=
-                        ((BackpackItem)itemComingIn.item).CarryCapacity;
-                }
+                    float weightLimitAfterSwap = inventory.GetInventoryWeightLimit();
+                    // If the this slot is the backpack slot then recalculate the inventory size
+                    if (itemComingIn.item.ItemType == ItemType.BACKPACK)
+                    {
+                        weightLimitAfterSwap -=
+                            ((BackpackItem)itemComingIn.item).CarryCapacity;
+                    }
 
-                if (inventory.currentWeight + itemComingIn.GetTotalWeight() > weightLimitAfterSwap)
-                {
-                    // Put the item back in it's original slot
-                    //otherSlot.SetItemInSlotAfterDrag(itemComingIn);
-                    return;
+                    if (inventory.currentWeight + itemComingIn.GetTotalWeight() > weightLimitAfterSwap)
+                    {
+                        // Put the item back in it's original slot
+                        //otherSlot.SetItemInSlotAfterDrag(itemComingIn);
+                        return;
+                    }
                 }
             }
         }
@@ -146,7 +160,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     // This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)
     public virtual void SetItemInSlotAfterDrag(InventoryItem inventoryItem)
     {
-        InventorySlot test = this;  
+        InventorySlot test = this;
+        InventorySlot other = inventoryItem.GetCurrentInventorySlot();
+
         if (HasItem())
         {
             if (itemInSlot == inventoryItem)
@@ -239,7 +255,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     protected void SetImageColor(Rarity rarity)
     {
-        Color temp = rarityColors[(int)rarity];
+        Color temp = RarityColorManager.Instance.GetColorByRarity(rarity);
         itemBackgroundImage.color = temp;
         itemBorderImage.color = temp;
     }

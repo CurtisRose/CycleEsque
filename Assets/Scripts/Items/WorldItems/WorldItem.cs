@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class WorldItem : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] BaseItem item;
+    Rigidbody rigidBody;
+
+    private void Awake()
     {
-        
+        rigidBody = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public BaseItem GetBaseItem()
     {
-        
+        return item;
+    }
+
+    public void Equip()
+    {
+        if (rigidBody != null)
+        {
+            rigidBody.isKinematic = true;
+        }
     }
 }

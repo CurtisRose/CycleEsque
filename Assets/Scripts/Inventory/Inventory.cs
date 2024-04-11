@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Inventory : MonoBehaviour
 {
     public BaseItem[] startItems;
@@ -9,6 +10,7 @@ public class Inventory : MonoBehaviour
     public GameObject inventoryItemPrefab;
     [SerializeField] private float inventoryWeightLimit;
     public float currentWeight;
+    [SerializeField] public static List<Color> rarityColors;
 
     protected void Start()
     {

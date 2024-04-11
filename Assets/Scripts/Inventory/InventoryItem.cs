@@ -74,6 +74,16 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         itemImage.raycastTarget = true;
     }
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        // Check if the right mouse button was clicked
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            // Attempt to quick sort it into or out of the gear slots.
+            currentInventorySlot.ItemQuickEquipPassThrough(this);
+        }
+    }
+
     public void DoThingsAfterMove()
     {
         // Before setting the parent, adjust the size to fit the new slot
@@ -85,16 +95,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public ItemType GetItemType()
     {
         return item.ItemType;
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        // Check if the right mouse button was clicked
-        if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            // Attempt to quick sort it into or out of the gear slots.
-            currentInventorySlot.ItemQuickEquipPassThrough(this);
-        }
     }
 
     private void AdjustImageSizeForDragging()
@@ -135,7 +135,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void SetParentAfterDrag(Transform parentAfterDrag)
     {
         this.parentAfterDrag = parentAfterDrag;
-        currentInventorySlot = parentAfterDrag.GetComponentInParent<InventorySlot>();
+        currentInventorySlot = parentAfterDrag.GetComponentInParent<InventorySlot>(true);
     }
 
     public InventorySlot GetCurrentInventorySlot()

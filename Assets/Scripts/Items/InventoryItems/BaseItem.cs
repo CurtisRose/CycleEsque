@@ -10,6 +10,7 @@ public enum ItemType { PRIMARY_WEAPON, HELMET, ARMOR, BACKPACK, OTHER };
 public class BaseItem : ScriptableObject
 {
     [field: SerializeField] public string DisplayName { get; private set; }
+    [field: SerializeField] public string ItemDescription { get; private set; }
     [field: SerializeField] public ItemType ItemType { get; private set; }
     [field: SerializeField] public Rarity Rarity { get; private set; }
     [field: SerializeField] public Sprite SmallImage { get; private set; }

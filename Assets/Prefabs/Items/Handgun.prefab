@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4661840394237003201}
   - component: {fileID: 1570672019362220136}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Handgun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01f2536804b157a419c3d3ec20ac4cc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: 33d826e104d0d2c439ab4c4af0b40a8c, type: 2}
   shootPositionTransform: {fileID: 7579410308665524227}
   projectilePrefab: {fileID: 7343739617303108452, guid: 9ce584057e259bb47b9937b06cfa6540,
     type: 3}
@@ -65,7 +66,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7579410308665524227}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: ShootPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,7 +82,7 @@ Transform:
   m_GameObject: {fileID: 2647082089903213152}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.03}
+  m_LocalPosition: {x: 0, y: 0, z: 0.1376}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -99,7 +100,7 @@ GameObject:
   - component: {fileID: 563218562000357600}
   - component: {fileID: 5588485157677802557}
   - component: {fileID: 5701358219749158163}
-  m_Layer: 7
+  m_Layer: 3
   m_Name: Gun Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}

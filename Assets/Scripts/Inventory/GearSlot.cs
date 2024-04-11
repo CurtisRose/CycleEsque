@@ -68,7 +68,7 @@ public class GearSlot : InventorySlot
         //Debug.Log("Item added to gear slot");
         base.SetItemInSlotAfterDrag(inventoryItem);
         SetSlotHolderImageVisible(false);
-        SetImageColor(inventoryItem.item.Rarity);
+        //SetImageColor(inventoryItem.item.Rarity);
 
         if (OnGearSlotsChanged != null)
         {
@@ -83,7 +83,7 @@ public class GearSlot : InventorySlot
         if (itemInSlot != null)
         {
             SetSlotHolderImageVisible(true);
-            SetImageColorDefault();
+                SetImageColorDefault();
         }
         base.RemoveItemFromSlot();
         if (OnGearSlotsChanged != null)

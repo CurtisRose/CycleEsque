@@ -114,7 +114,8 @@ public class PlayerGearController : MonoBehaviour
         if (gearSlot.HasItem())
         {
             gearItems[(int)identifier] =
-            Instantiate<WorldItem>(gearSlot.GetItemInSlot().item.itemPrefab, gearStorageLocations[(int)identifier]);
+                Instantiate<WorldItem>(gearSlot.GetItemInSlot().item.itemPrefab, gearStorageLocations[(int)identifier]);
+            gearItems[(int)identifier].Equip();
         }
     }
 }

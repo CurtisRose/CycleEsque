@@ -130,18 +130,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemSlot: {fileID: 4647661812781517577}
   itemInSlot: {fileID: 0}
-  HasItem: 0
+  hasItem: 0
   weightText: {fileID: 4355964232053903895}
   stackSizeText: {fileID: 7603554615927677513}
-  rarityColors:
-  - {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
-  - {r: 0, g: 0.8584906, b: 0.4620719, a: 1}
-  - {r: 0, g: 0.660487, b: 0.8113208, a: 1}
-  - {r: 0.54532397, g: 0.36436453, b: 0.8679245, a: 1}
-  - {r: 0.9339623, g: 0.8657028, b: 0.41852084, a: 1}
-  - {r: 0.9056604, g: 0.3033108, b: 0.3033108, a: 1}
   itemBackgroundImage: {fileID: 1597163934312996552}
   itemBorderImage: {fileID: 1597163933523742060}
+  partOfInventoryWeight: 0
+  UseLargeImage: 0
+  slotContributesToWeight: 1
 --- !u!1 &1597163934312996550
 GameObject:
   m_ObjectHideFlags: 0

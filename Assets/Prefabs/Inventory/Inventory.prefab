@@ -408,7 +408,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startItems:
-  - {fileID: 11400000, guid: 19a45a5080c7e35468eaa40b7484a8b2, type: 2}
+  - {fileID: 11400000, guid: 82614f18b67fd5d49b737332d85cfa22, type: 2}
   - {fileID: 11400000, guid: 2b43522bd2983514e9bacd1aa89bda18, type: 2}
   - {fileID: 11400000, guid: 0c9df605b2dd323498a1c68c21de8341, type: 2}
   - {fileID: 11400000, guid: 33d826e104d0d2c439ab4c4af0b40a8c, type: 2}
@@ -432,7 +432,7 @@ MonoBehaviour:
   - {fileID: 8193502127861903209}
   inventoryItemPrefab: {fileID: 3147761878662062801, guid: 26b3212637127e643b9007e40bdbf8e1,
     type: 3}
-  inventoryWeightLimit: 200
+  inventoryWeightLimit: 100
   currentWeight: 0
   backpackInventory: {fileID: 7056760596738209765}
   gearSlots:
@@ -454,7 +454,7 @@ GameObject:
   - component: {fileID: 8286511822454614524}
   - component: {fileID: 1793209840087703791}
   m_Layer: 5
-  m_Name: InventoryBackground
+  m_Name: InventoryMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
