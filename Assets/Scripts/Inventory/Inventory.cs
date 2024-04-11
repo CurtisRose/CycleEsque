@@ -103,6 +103,29 @@ public class Inventory : MonoBehaviour
 
     }
 
+    public void AddItemToEarliestEmptySlot(InventoryItem inventoryItem)
+    {
+        InventorySlot emptySlot = null;
+        foreach (InventorySlot slot in inventorySlots)
+        {
+            // If the earliest slot is it's own slot, then break.
+            if (slot == inventoryItem.GetCurrentInventorySlot())
+            {
+                break;
+            }
+            if (!slot.HasItem())
+            {
+                emptySlot = slot;
+                break;
+            }
+        }
+        // If an earlier empty slot was found, then swap them
+        if (emptySlot != null)
+        {
+            emptySlot.Swap(inventoryItem);
+        }
+    }
+
     // This will probably be used when moving items from one inventory to another
     // And just picking items off the ground maybe.
     // Although, you could do that using the other add item as well.

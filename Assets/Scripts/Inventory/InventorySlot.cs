@@ -61,48 +61,41 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         if (HasItem())
         {
             InventoryItem itemAlreadyHere = itemInSlot;
+            float weightAfterSwap = inventory.currentWeight;
+            float weightLimitAfterSwap = inventory.GetInventoryWeightLimit();
 
             // Check to see if it's too heavy for inventory
             if (this.slotContributesToWeight)
-            {
-                float weightLimitAfterSwap = inventory.GetInventoryWeightLimit();
-                
+            {                
                 // If the other slot is the backpack slot then recalculate the inventory size
-                if (itemAlreadyHere.item.ItemType == ItemType.BACKPACK)
+                if ((this as GearSlot || otherSlot as GearSlot) && itemInSlot.GetItemType() == ItemType.BACKPACK)
                 {
                     weightLimitAfterSwap += 
                         ((BackpackItem)itemAlreadyHere.item).CarryCapacity -
                         ((BackpackItem)itemComingIn.item).CarryCapacity;
                 }
 
-                if (inventory.currentWeight + itemComingIn.GetTotalWeight() - itemAlreadyHere.GetTotalWeight() > weightLimitAfterSwap)
-                {
-                    // Put the item back in it's original slot
-                    //otherSlot.SetItemInSlotAfterDrag(itemComingIn);
-                    return;
-                }
+                weightAfterSwap = weightAfterSwap + itemComingIn.GetTotalWeight() - itemAlreadyHere.GetTotalWeight();
             }
             if (otherSlot.slotContributesToWeight)
             {
-
-                float weightLimitAfterSwap = inventory.GetInventoryWeightLimit();
                 // If the this slot is the backpack slot then recalculate the inventory size
-                if (itemComingIn.item.ItemType == ItemType.BACKPACK)
+                if ((this as GearSlot || otherSlot as GearSlot) && itemInSlot.GetItemType() == ItemType.BACKPACK)
                 {
                     weightLimitAfterSwap +=
                         ((BackpackItem)itemComingIn.item).CarryCapacity -
                         ((BackpackItem)itemAlreadyHere.item).CarryCapacity;
                 }
 
-                if (inventory.currentWeight + itemAlreadyHere.GetTotalWeight() - itemComingIn.GetTotalWeight() > weightLimitAfterSwap)
-                {
-                    // Put the item back in it's original slot
-                    //otherSlot.SetItemInSlotAfterDrag(itemComingIn);
-                    return;
-                }
+                weightAfterSwap = weightAfterSwap + itemAlreadyHere.GetTotalWeight() - itemComingIn.GetTotalWeight();
             }
 
-            Swap(itemComingIn);
+            if (weightAfterSwap > weightLimitAfterSwap)
+            {
+                return;
+            }
+
+                Swap(itemComingIn);
         } else
         {
             // Check to see if it's too heavy for inventory
