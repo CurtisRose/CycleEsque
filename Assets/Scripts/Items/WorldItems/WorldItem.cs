@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class WorldItem : MonoBehaviour
 {
-    [SerializeField] BaseItem item;
+    [SerializeField] protected BaseItem item;
     Rigidbody rigidBody;
 
     [SerializeField] float timeDelay = 1.0f;
@@ -14,6 +14,12 @@ public class WorldItem : MonoBehaviour
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
+        InitializeItem();
+    }
+
+    protected virtual void InitializeItem()
+    {
+
     }
 
     protected virtual void Start()
@@ -21,18 +27,32 @@ public class WorldItem : MonoBehaviour
         StartCoroutine(TempInteractionOff(timeDelay));
     }
 
+    public virtual void Use()
+    {
+
+    }
+
     public BaseItem GetBaseItem()
     {
         return item;
     }
 
-    public void Equip()
+    public virtual void Equip()
     {
         if (rigidBody != null)
         {
             rigidBody.isKinematic = true;
         }
         interactable = false;
+    }
+
+    public virtual void Unequip()
+    {
+        if (rigidBody != null)
+        {
+            rigidBody.isKinematic = false;
+        }
+        interactable = true;
     }
 
     IEnumerator TempInteractionOff(float delay)

@@ -6,6 +6,7 @@ public class PlayerGearController : MonoBehaviour
 {
     [SerializeField] PlayerInventory playerInventory;
     [SerializeField] bool selectedFirstSlot;
+    [SerializeField] Gun currentGunHeld = null;
 
     // GearSlotIdentifier { BACKPACK, ARMOR, HELMET, WEAPONSLOT1, WEAPONSLOT2 }
     [SerializeField] WorldItem[] gearItems;
@@ -31,11 +32,13 @@ public class PlayerGearController : MonoBehaviour
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
         // Check if there's any scroll input
-        /*if (scroll != 0f)
+        if (scroll != 0f)
         {
             selectedFirstSlot = !selectedFirstSlot;
             SwitchGuns();
-        }*/
+        }
+
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             selectedFirstSlot = true;
@@ -61,6 +64,27 @@ public class PlayerGearController : MonoBehaviour
                 Destroy(InventoryItem.CurrentHoveredItem.gameObject);
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            // Reload Gun
+            int numberOfRoundsAvailable = 100;
+            int numberOfRoundsUsed = currentGunHeld.Reload(numberOfRoundsAvailable);
+        }
+
+        if (Character.disableUserClickingInputStatus)
+        {
+            return;
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            // Fully Auto
+            if (currentGunHeld != null)
+            {
+                currentGunHeld.Use();
+            }
+        }
     }
 
     private void SwitchGuns()
@@ -77,6 +101,7 @@ public class PlayerGearController : MonoBehaviour
             {
                 gearItems[(int)GearSlotIdentifier.WEAPONSLOT2].enabled = false;
             }
+            currentGunHeld = (Gun)gearItems[(int)GearSlotIdentifier.WEAPONSLOT1];
         } else {
             gearStorageLocations[(int)GearSlotIdentifier.WEAPONSLOT1].transform.SetParent(weaponPositionHip, false);
             gearStorageLocations[(int)GearSlotIdentifier.WEAPONSLOT2].transform.SetParent(weaponPositionHands, false);
@@ -88,6 +113,7 @@ public class PlayerGearController : MonoBehaviour
             {
                 gearItems[(int)GearSlotIdentifier.WEAPONSLOT2].enabled = true;
             }
+            currentGunHeld = (Gun)gearItems[(int)GearSlotIdentifier.WEAPONSLOT2];
         }
       
     }
@@ -134,6 +160,19 @@ public class PlayerGearController : MonoBehaviour
             gearItems[(int)identifier] =
                 Instantiate<WorldItem>(gearSlot.GetItemInSlot().item.itemPrefab, gearStorageLocations[(int)identifier]);
             gearItems[(int)identifier].Equip();
+            if (selectedFirstSlot)
+            {
+                if (identifier == GearSlotIdentifier.WEAPONSLOT1)
+                {
+                    currentGunHeld = (Gun)gearItems[(int)GearSlotIdentifier.WEAPONSLOT1];
+                }
+            } else
+            {
+                if (identifier == GearSlotIdentifier.WEAPONSLOT2)
+                {
+                    currentGunHeld = (Gun)gearItems[(int)GearSlotIdentifier.WEAPONSLOT2];
+                }
+            }
         }
     }
 }

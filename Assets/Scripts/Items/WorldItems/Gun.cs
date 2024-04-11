@@ -10,42 +10,71 @@ public class Gun : WorldItem
     [SerializeField] float fireRate = 0.5f; // Time in seconds between shots
     private float lastShotTime = 0f; // Time since the last shot was fired
 
-    [SerializeField] private float recoilAmountY = 5f; // How much the gun recoils
-    [SerializeField] private float maxRecoilY = 20f; // Maximum recoil rotation on the x-axis
-    [SerializeField] private float recoilAmountX = 2f; // How much the gun recoils sideways
-    [SerializeField] private float maxRecoilX = 10f; // Maximum side-to-side recoil rotation
-    [SerializeField] private float spreadAmount = 2f; // The variance in bullet direction
+    private float recoilAmountY = 5f; // How much the gun recoils
+    private float maxRecoilY = 20f; // Maximum recoil rotation on the x-axis
+    private float recoilAmountX = 2f; // How much the gun recoils sideways
+    private float maxRecoilX = 10f; // Maximum side-to-side recoil rotation
+    private float spreadAmount = 2f; // The variance in bullet direction
 
     private Quaternion originalRotation;
     private Quaternion targetRotation;
     [SerializeField] private float returnSpeed = 1f; // Speed at which the gun returns to original rotation
 
+    //[SerializeField] LayerMask gunLayer;
+    //[SerializeField] LayerMask worldItemLayer;
 
+    int magazineCapacity;
+    int numberOfRounds;
 
     protected override void Start()
     {
         base.Start();
         originalRotation = transform.localRotation;
         targetRotation = originalRotation;
+        numberOfRounds = magazineCapacity;
     }
 
-    private void Update()
+    protected override void InitializeItem()
     {
-        if (Character.disableUserClickingInputStatus)
-        {
-            return;
-        }
+        base.InitializeItem();
+        magazineCapacity = ((GunItem)item).MagazineCapacity;
+        fireRate = ((GunItem)item).RateOfFire;
+        recoilAmountY = ((GunItem)item).recoilAmountY;
+        maxRecoilY = ((GunItem)item).maxRecoilY;
+        recoilAmountX = ((GunItem)item).recoilAmountX;
+        maxRecoilX = ((GunItem)item).maxRecoilX;
+        spreadAmount = ((GunItem)item).spreadAmount;
+    }
 
-        if (Input.GetMouseButtonDown(1))
-        {
-            // Semi Auto
-            Shoot();
-        }
+    public override void Use()
+    {
+        Shoot();
+    }
 
-        if (Input.GetMouseButton(0))
+    public override void Equip()
+    {
+        base.Equip();
+        SetLayerRecursively(gameObject, LayerMask.NameToLayer("Gun"));
+    }
+
+    public override void Unequip()
+    {
+        base.Unequip();
+        SetLayerRecursively(gameObject, LayerMask.NameToLayer("WorldItems"));
+    }
+
+    // Returns the number of rounds used
+    public int Reload(int numRoundsAvailable)
+    {
+        int missingAmmoAmount = magazineCapacity - numberOfRounds;
+        if (missingAmmoAmount > numRoundsAvailable)
         {
-            // Fully Auto
-            Shoot();
+            numberOfRounds = magazineCapacity;
+            return missingAmmoAmount;
+        } else
+        {
+            numberOfRounds += numRoundsAvailable;
+            return numRoundsAvailable;
         }
     }
 
@@ -53,10 +82,13 @@ public class Gun : WorldItem
     {
         if (Time.time - lastShotTime < fireRate) return;
 
+        if (numberOfRounds <= 0) return;
+
         if (Time.time - lastShotTime >= returnSpeed)
         {
             // Instantiate the projectile with no spread
             Projectile projectile = Instantiate<Projectile>(projectilePrefab, shootPositionTransform.position, shootPositionTransform.rotation);
+            numberOfRounds--;
         } else
         {
             // Calculate bullet spread
@@ -68,6 +100,7 @@ public class Gun : WorldItem
 
             // Instantiate the projectile with spread applied
             Projectile projectile = Instantiate<Projectile>(projectilePrefab, shootPositionTransform.position, spreadRotation);
+            numberOfRounds--;
         }
 
         ApplyRecoil();
@@ -124,6 +157,15 @@ public class Gun : WorldItem
             targetRotation = transform.localRotation;
             elapsedTime += Time.deltaTime;
             yield return null;
+        }
+    }
+
+    private void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        obj.layer = newLayer;
+        foreach (Transform child in obj.transform)
+        {
+            SetLayerRecursively(child.gameObject, newLayer);
         }
     }
 }

@@ -9,18 +9,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fc5f5943b6530c47ae44e4b282de077, type: 3}
+  m_Script: {fileID: 11500000, guid: c499bd2122478b343b16073094b38b22, type: 3}
   m_Name: Handgun
   m_EditorClassIdentifier: 
-  <DisplayName>k__BackingField: Handgun
+  <DisplayName>k__BackingField: Handgun Epic
+  <ItemDescription>k__BackingField: Handgun Epic
   <ItemType>k__BackingField: 0
-  <Rarity>k__BackingField: 4
+  <Rarity>k__BackingField: 3
   <SmallImage>k__BackingField: {fileID: 21300000, guid: d4f1b8eed624daf40a2495b5dda1926b,
     type: 3}
   <LargeImage>k__BackingField: {fileID: 21300000, guid: 6dd1921c4ee011f4c9f8385cf81a9707,
     type: 3}
   <Weight>k__BackingField: 5
   <stackable>k__BackingField: 0
-  <maxStackSize>k__BackingField: 1
+  <maxStackSize>k__BackingField: 0
   <itemPrefab>k__BackingField: {fileID: 1570672019362220136, guid: e0fb84f16e09975479eda3f75c318d2b,
     type: 3}
+  <MagazineCapacity>k__BackingField: 12
+  <RateOfFire>k__BackingField: 0.5
+  <recoilAmountY>k__BackingField: 5
+  <maxRecoilY>k__BackingField: 20
+  <recoilAmountX>k__BackingField: 2
+  <maxRecoilX>k__BackingField: 10
+  <spreadAmount>k__BackingField: 2

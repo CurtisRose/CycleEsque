@@ -993,11 +993,6 @@ PrefabInstance:
       objectReference: {fileID: 1404581493}
     - target: {fileID: 1315985713516066803, guid: e4c6fb353c04e3049b2329c6e6edcf05,
         type: 3}
-      propertyPath: throwForce
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 1315985713516066803, guid: e4c6fb353c04e3049b2329c6e6edcf05,
-        type: 3}
       propertyPath: playerInventory
       value: 
       objectReference: {fileID: 140963399841969862}

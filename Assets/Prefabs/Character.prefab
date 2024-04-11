@@ -1010,6 +1010,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInventory: {fileID: 0}
   selectedFirstSlot: 1
+  currentGunHeld: {fileID: 0}
   gearItems: []
   gearStorageLocations:
   - {fileID: 4307309158942832435}
@@ -1020,7 +1021,7 @@ MonoBehaviour:
   weaponPositionHands: {fileID: 8730573079300955122}
   weaponPositionHip: {fileID: 6265170968284108111}
   head: {fileID: 9064487097268030572}
-  throwForce: 100
+  throwForce: 2000
   throwPosition: {fileID: 6780773922304257058}
 --- !u!1 &9166655474706790046
 GameObject:
