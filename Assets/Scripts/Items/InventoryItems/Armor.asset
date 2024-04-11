@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fc5f5943b6530c47ae44e4b282de077, type: 3}
+  m_Name: Armor
+  m_EditorClassIdentifier: 
+  <DisplayName>k__BackingField: Armor
+  <ItemType>k__BackingField: 2
+  <Rarity>k__BackingField: 2
+  <SmallImage>k__BackingField: {fileID: 21300000, guid: 8587a3490b405b94e83c2dc6f82bc5b8,
+    type: 3}
+  <LargeImage>k__BackingField: {fileID: 0}
+  <Weight>k__BackingField: 40
+  <stackable>k__BackingField: 0
+  <maxStackSize>k__BackingField: 1
+  <itemPrefab>k__BackingField: {fileID: 8769822573121866879, guid: 02b5ee9bf46cbee41aacd8d66a845001,
+    type: 3}

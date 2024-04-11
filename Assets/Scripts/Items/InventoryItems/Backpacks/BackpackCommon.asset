@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e102ccb07c6344845bb70ec9f3cdd3b9, type: 3}
+  m_Name: BackpackCommon
+  m_EditorClassIdentifier: 
+  <DisplayName>k__BackingField: Backpack Common
+  <ItemType>k__BackingField: 3
+  <Rarity>k__BackingField: 0
+  <SmallImage>k__BackingField: {fileID: 21300000, guid: 57fddd8b9308e014ca623b7e8a612e1f,
+    type: 3}
+  <LargeImage>k__BackingField: {fileID: 0}
+  <Weight>k__BackingField: 20
+  <stackable>k__BackingField: 0
+  <maxStackSize>k__BackingField: 0
+  <itemPrefab>k__BackingField: {fileID: 7587566732184782447, guid: fe93e72082719794daa53c124b9b5e1f,
+    type: 3}
+  <CarryCapacity>k__BackingField: 50

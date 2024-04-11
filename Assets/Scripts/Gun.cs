@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gun : MonoBehaviour
+public class Gun : WorldItem
 {
     [SerializeField] Transform shootPositionTransform;
     [SerializeField] Projectile projectilePrefab;
@@ -22,14 +22,20 @@ public class Gun : MonoBehaviour
 
 
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         originalRotation = transform.localRotation;
         targetRotation = originalRotation;
     }
 
     private void Update()
     {
+        if (Character.disableUserClickingInputStatus)
+        {
+            return;
+        }
+
         if (Input.GetMouseButtonDown(1))
         {
             // Semi Auto

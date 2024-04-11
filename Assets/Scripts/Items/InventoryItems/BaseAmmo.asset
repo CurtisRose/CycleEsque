@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fc5f5943b6530c47ae44e4b282de077, type: 3}
+  m_Name: BaseAmmo
+  m_EditorClassIdentifier: 
+  <DisplayName>k__BackingField: BaseAmmo
+  <ItemDescription>k__BackingField: 
+  <ItemType>k__BackingField: 4
+  <Rarity>k__BackingField: 0
+  <SmallImage>k__BackingField: {fileID: 21300000, guid: db7e2dc1a8334d94482fe0e0a13d9287,
+    type: 3}
+  <LargeImage>k__BackingField: {fileID: 0}
+  <Weight>k__BackingField: 0.5
+  <stackable>k__BackingField: 1
+  <maxStackSize>k__BackingField: 100
+  <itemPrefab>k__BackingField: {fileID: 3494190095646576863, guid: 3d4da2cff714a904b827e9c6b77ab840,
+    type: 3}
