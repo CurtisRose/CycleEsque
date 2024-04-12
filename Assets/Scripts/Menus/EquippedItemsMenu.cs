@@ -29,23 +29,30 @@ public class EquippedItemsMenu : Menu
         playerGearController.OnLoadOutChanged += LoadOutChanged;
         playerGearController.OnPrimaryGunFired += UpdateAmmoText;
         playerGearController.OnPrimaryGunReloaded += UpdateAmmoText;
+        playerGearController.OnInventoryChanged += UpdateAmmoText;
         LoadOutChanged();
     }
 
     private void UpdateAmmoText()
     {
+        if (gunHeld == null)
+        {
+            return;
+        }
         ammoInMagText.text = gunHeld.GetNumberOfRounds().ToString();
+        ammoInBackpackText.text = playerGearController.GetNumberOfRoundsOfAmmoInInventory().ToString();
+
     }
 
     private void LoadOutChanged()
     {
-        gunHeld = playerGearController.currentGunHeld;
+        gunHeld = playerGearController.gunInHands;
         if (gunHeld != null)
         {
             weapon1Image.sprite = gunHeld.GetBaseItem().LargeImage;
             weapon1Image.enabled = true;
             ammoInMagText.text = gunHeld.GetNumberOfRounds().ToString();
-            ammoInBackpackText.text = "";
+            ammoInBackpackText.text = playerGearController.GetNumberOfRoundsOfAmmoInInventory().ToString();
             weapon1NameText.text = gunHeld.GetBaseItem().name;
             weapon1RarityBorder1.color = RarityColorManager.Instance.GetColorByRarity(gunHeld.GetBaseItem().Rarity);
             weapon1RarityBorder2.color = RarityColorManager.Instance.GetColorByRarity(gunHeld.GetBaseItem().Rarity); ;

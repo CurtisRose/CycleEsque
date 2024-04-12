@@ -74,11 +74,11 @@ public class Gun : WorldItem
         if (missingAmmoAmount > numRoundsAvailable)
         {
             numberOfRounds += numRoundsAvailable;
-            return missingAmmoAmount;
+            return numRoundsAvailable;
         } else
         {
             numberOfRounds += missingAmmoAmount;
-            return numRoundsAvailable - missingAmmoAmount;
+            return missingAmmoAmount;
         }
     }
 

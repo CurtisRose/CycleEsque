@@ -6,7 +6,7 @@ public class PlayerGearController : MonoBehaviour
 {
     [SerializeField] PlayerInventory playerInventory;
     [SerializeField] bool selectedFirstSlot;
-    [SerializeField] public Gun currentGunHeld = null;
+    [SerializeField] public Gun gunInHands = null;
     [SerializeField] public Gun gunOnHip = null;
 
     // GearSlotIdentifier { BACKPACK, ARMOR, HELMET, WEAPONSLOT1, WEAPONSLOT2 }
@@ -27,6 +27,9 @@ public class PlayerGearController : MonoBehaviour
     public delegate void PrimaryGunReloaded();
     public event PrimaryGunReloaded OnPrimaryGunReloaded;
 
+    public delegate void InventoryChanged();
+    public event InventoryChanged OnInventoryChanged;
+
 
     private void Awake()
     {
@@ -35,6 +38,12 @@ public class PlayerGearController : MonoBehaviour
         {
             gearSlot.OnGearSlotsChanged += GearSlotChange;
         }
+        playerInventory.OnInventoryChanged += OnInventoryChangedPassThrough;
+    }
+
+    public void OnInventoryChangedPassThrough()
+    {
+        OnInventoryChanged();
     }
 
     private void Update()
@@ -71,21 +80,31 @@ public class PlayerGearController : MonoBehaviour
                 WorldItem itemBeingDropped = Instantiate<WorldItem>(InventoryItem.CurrentHoveredItem.item.itemPrefab, throwPosition.position, Quaternion.identity);
                 // Maybe yeet it a little bit
                 itemBeingDropped.GetComponent<Rigidbody>().AddForce(head.forward * throwForce * Time.deltaTime, ForceMode.Impulse);
+                // This is so the pick up menu doesn't trigger immediately.
+                itemBeingDropped.SetUninteractableTemporarily();
                 itemBeingDropped.SetNumberOfStartingItems(inventoryItemBeingDropped.GetItemCount());
-
                 Destroy(InventoryItem.CurrentHoveredItem.gameObject);
+
+                if (inventoryItemBeingDropped.item.ItemType == ItemType.PRIMARY_WEAPON)
+                {
+                    if (OnLoadOutChanged != null)
+                    {
+                        OnLoadOutChanged();
+                    }
+                }
             }
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            if (currentGunHeld == null)
+            if (gunInHands == null)
             {
                 return;
             }
             // Reload Gun
-            int numberOfRoundsAvailable = playerInventory.GetNumberOfItemsOfType(ItemType.AMMO);
-            int numberOfRoundsUsed = currentGunHeld.Reload(numberOfRoundsAvailable);
+            int numberOfRoundsAvailable = GetNumberOfRoundsOfAmmoInInventory();
+            int numberOfRoundsUsed = gunInHands.Reload(numberOfRoundsAvailable);
+            playerInventory.RemoveItemOfType(ItemType.AMMO, numberOfRoundsUsed  );
             if (OnPrimaryGunReloaded != null)
             {
                 OnPrimaryGunReloaded();
@@ -100,9 +119,9 @@ public class PlayerGearController : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             // Fully Auto
-            if (currentGunHeld != null)
+            if (gunInHands != null)
             {
-                currentGunHeld.Use();
+                gunInHands.Use();
                 if (OnPrimaryGunFired != null)
                 {
                     OnPrimaryGunFired();
@@ -180,6 +199,21 @@ public class PlayerGearController : MonoBehaviour
         if (gearItems[(int)identifier] != null)
         {
             Destroy(gearItems[(int)identifier].gameObject);
+            if (gearItems[(int)identifier] == gunInHands)
+            {
+                gunInHands = null;
+                if (OnLoadOutChanged != null)
+                {
+                    OnLoadOutChanged();
+                }
+            } else if(gearItems[(int)identifier] == gunOnHip)
+            {
+                gunOnHip = null;
+                if (OnLoadOutChanged != null)
+                {
+                    OnLoadOutChanged();
+                }
+            }
         }
         if (gearSlot.HasItem())
         {
@@ -209,9 +243,14 @@ public class PlayerGearController : MonoBehaviour
         }
     }
 
+    public int GetNumberOfRoundsOfAmmoInInventory()
+    {
+        return playerInventory.GetNumberOfItemsOfType(ItemType.AMMO);
+    }
+
     private void SetCurrentGun(Gun gun)
     {
-        currentGunHeld = gun;
+        gunInHands = gun;
         if (OnLoadOutChanged != null)
         {
             OnLoadOutChanged();

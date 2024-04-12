@@ -12,6 +12,9 @@ public class Inventory : MonoBehaviour
     public float currentWeight;
     [SerializeField] public static List<Color> rarityColors;
 
+    public delegate void InventoryChanged();
+    public event InventoryChanged OnInventoryChanged;
+
     protected void Start()
     {
         foreach (BaseItem startItem in startItems)
@@ -79,6 +82,10 @@ public class Inventory : MonoBehaviour
                 {
                     itemInSlot.ChangeItemCount(numItems);
                     UpdateWeight(item.Weight * numItems);
+                    if (OnInventoryChanged != null)
+                    {
+                        OnInventoryChanged();
+                    }
                     return true;
                 }
                 if (!slot.HasItem() && firstEmptySlot == null)
@@ -90,6 +97,10 @@ public class Inventory : MonoBehaviour
             if (firstEmptySlot != null)
             {
                 CreateNewItem(item, firstEmptySlot, numItems);
+                if (OnInventoryChanged != null)
+                {
+                    OnInventoryChanged();
+                }
                 return true;
             }
         }
@@ -103,6 +114,10 @@ public class Inventory : MonoBehaviour
             if (itemInSlot == null)
             {
                 CreateNewItem(item, slot);
+                if (OnInventoryChanged != null)
+                {
+                    OnInventoryChanged();
+                }
                 return true;
             }
         }
@@ -145,6 +160,33 @@ public class Inventory : MonoBehaviour
     {
         Debug.Log("This Function has NOT Been Implemented");
         return true;
+    }
+
+    public bool RemoveItemOfType(ItemType type, int numItems = 1)
+    {
+        foreach (InventorySlot inventorySlot in inventorySlots)
+        {
+            InventoryItem itemInSlot = inventorySlot.GetItemInSlot();
+            if (itemInSlot != null && inventorySlot.GetItemInSlot().GetItemType() == type)
+            {
+                if (itemInSlot.GetItemCount() > numItems)
+                {
+                    itemInSlot.ChangeItemCount(-numItems);
+                    return true;
+                } else if (itemInSlot.GetItemCount() == numItems)
+                {
+                    inventorySlot.RemoveItemFromSlot();
+                    Destroy(itemInSlot.gameObject);
+                    return true;
+                } else
+                {
+                    inventorySlot.RemoveItemFromSlot();
+                    Destroy(itemInSlot.gameObject);
+                    numItems -= itemInSlot.GetItemCount();
+                }
+            }
+        }
+        return false;
     }
 
     protected void CreateNewItem(BaseItem item, InventorySlot inventorySlot, int numberOfItems = 1)

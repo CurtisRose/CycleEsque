@@ -50,7 +50,7 @@ public class WorldItem : MonoBehaviour
 
     protected virtual void Start()
     {
-        StartCoroutine(TempInteractionOff(timeDelay));
+        
     }
 
     public virtual void Use()
@@ -61,6 +61,11 @@ public class WorldItem : MonoBehaviour
     public BaseItem GetBaseItem()
     {
         return item;
+    }
+
+    public void SetUninteractableTemporarily()
+    {
+        StartCoroutine(TempInteractionOff(timeDelay));
     }
 
     public virtual void Equip()
