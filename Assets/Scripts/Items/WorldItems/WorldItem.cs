@@ -53,9 +53,9 @@ public class WorldItem : MonoBehaviour
         
     }
 
-    public virtual void Use()
+    public virtual bool Use()
     {
-
+        return true;
     }
 
     public BaseItem GetBaseItem()

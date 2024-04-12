@@ -20,9 +20,8 @@ public class PlayerGearController : MonoBehaviour
     [SerializeField] Transform throwPosition;
 
     // Crosshair Aimer Test
-    [SerializeField] Image crosshairs;
-    private Vector3 velocity = Vector3.zero; // This needs to be stored between calls
-    [SerializeField] float smoothTime = 0.1f; // Lower values mean quicker smoothing
+    [SerializeField] CrosshairController crosshairController;
+    [SerializeField] float smoothTime = 0.1f; // This should be based on the gun maybe
 
     public delegate void LoadOutChanged();
     public event LoadOutChanged OnLoadOutChanged;
@@ -59,21 +58,7 @@ public class PlayerGearController : MonoBehaviour
     {
         if (gunInHands != null)
         {
-            RaycastHit hit;
-            // Define a layer mask that includes all layers except 'Projectiles'
-            int layerMask = 1 << LayerMask.NameToLayer("Projectile");
-            layerMask = ~layerMask; // Bitwise invert to ignore the 'Projectiles' layer
-            if (Physics.Raycast(gunInHands.GetAimPoint().position, gunInHands.GetAimPoint().forward, out hit, Mathf.Infinity, layerMask))
-            {
-                Vector3 screenPoint = Camera.main.WorldToScreenPoint(hit.point); // Convert world position to screen position
-                crosshairs.transform.position = Vector3.SmoothDamp(crosshairs.transform.position, screenPoint, ref velocity, smoothTime);
-            }
-            else
-            {
-                // put aimer at middle of screen
-                Vector3 centerScreenPoint = new Vector3(Screen.width / 2, Screen.height / 2, 10); 
-                crosshairs.transform.position = Vector3.SmoothDamp(crosshairs.transform.position, centerScreenPoint, ref velocity, smoothTime);
-            }
+            crosshairController.SetCrosshairPosition(gunInHands.transform, smoothTime);
         }
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
@@ -132,7 +117,7 @@ public class PlayerGearController : MonoBehaviour
             // Reload Gun
             int numberOfRoundsAvailable = GetNumberOfRoundsOfAmmoInInventory();
             int numberOfRoundsUsed = gunInHands.Reload(numberOfRoundsAvailable);
-            playerInventory.RemoveItemOfType(ItemType.AMMO, numberOfRoundsUsed  );
+            playerInventory.RemoveItemOfType(ItemType.AMMO, numberOfRoundsUsed);
             if (OnPrimaryGunReloaded != null)
             {
                 OnPrimaryGunReloaded();
@@ -149,10 +134,14 @@ public class PlayerGearController : MonoBehaviour
             // Fully Auto
             if (gunInHands != null)
             {
-                gunInHands.Use();
-                if (OnPrimaryGunFired != null)
+                bool fired = gunInHands.Use();
+                if (fired)
                 {
-                    OnPrimaryGunFired();
+                    crosshairController.Bloom();
+                    if (OnPrimaryGunFired != null)
+                    {
+                        OnPrimaryGunFired();
+                    }
                 }
             }
         }

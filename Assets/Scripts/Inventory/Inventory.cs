@@ -172,6 +172,7 @@ public class Inventory : MonoBehaviour
                 if (itemInSlot.GetItemCount() > numItems)
                 {
                     itemInSlot.ChangeItemCount(-numItems);
+                    UpdateWeight(-(numItems * itemInSlot.item.Weight));
                     return true;
                 } else if (itemInSlot.GetItemCount() == numItems)
                 {

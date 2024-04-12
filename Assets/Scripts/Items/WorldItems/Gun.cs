@@ -49,9 +49,9 @@ public class Gun : WorldItem
         returnSpeed = ((GunItem)item).returnSpeed;
     }
 
-    public override void Use()
+    public override bool Use()
     {
-        Shoot();
+        return Shoot();
     }
 
     public override void Equip()
@@ -88,11 +88,11 @@ public class Gun : WorldItem
         }
     }
 
-    void Shoot()
+    bool Shoot()
     {
-        if (Time.time - lastShotTime < fireRate) return;
+        if (Time.time - lastShotTime < fireRate) return false;
 
-        if (numberOfRounds <= 0) return;
+        if (numberOfRounds <= 0) return false;
 
         if (Time.time - lastShotTime >= returnSpeed)
         {
@@ -102,19 +102,23 @@ public class Gun : WorldItem
         } else
         {
             // Calculate bullet spread
-            Vector3 spread = Vector3.zero;
+            /*Vector3 spread = Vector3.zero;
             spread += shootPositionTransform.up * Random.Range(-spreadAmount, spreadAmount);
             spread += shootPositionTransform.right * Random.Range(-spreadAmount, spreadAmount);
 
             Quaternion spreadRotation = Quaternion.Euler(spread) * shootPositionTransform.rotation;
-
+            
             // Instantiate the projectile with spread applied
             Projectile projectile = Instantiate<Projectile>(projectilePrefab, shootPositionTransform.position, spreadRotation);
+            */
+            Projectile projectile = Instantiate<Projectile>(projectilePrefab, shootPositionTransform.position, shootPositionTransform.rotation);
+
             numberOfRounds--;
         }
 
-        ApplyRecoil();
+        //ApplyRecoil();
         lastShotTime = Time.time;
+        return true;
     }
 
     void ApplyRecoil()

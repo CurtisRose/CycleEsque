@@ -945,13 +945,12 @@ MonoBehaviour:
   - {fileID: 5075259123542633160}
   - {fileID: 2305574298787733903}
   - {fileID: 8897493055078843416}
-  weaponPositionHands: {fileID: 2305574298787733903}
+  weaponPositionHands: {fileID: 8730573079300955122}
   weaponPositionHip: {fileID: 6265170968284108111}
   head: {fileID: 9064487097268030572}
   throwForce: 2000
   throwPosition: {fileID: 6780773922304257058}
-  crosshairs: {fileID: 0}
-  aimPoint: {fileID: 0}
+  crosshairController: {fileID: 0}
   smoothTime: 0.1
 --- !u!1 &9166655474706790046
 GameObject:

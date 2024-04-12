@@ -47,8 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 153fc1ffb49dd5a4e8831f23a2acb8b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifespan: 5
-  speed: 50
+  lifespan: 2
+  speed: 200
   damage: 20
   armorPenetration: 11
 --- !u!54 &5262769569975799373
@@ -73,7 +73,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 0
