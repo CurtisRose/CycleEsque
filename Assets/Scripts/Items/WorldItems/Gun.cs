@@ -66,6 +66,12 @@ public class Gun : WorldItem
         SetLayerRecursively(gameObject, LayerMask.NameToLayer("WorldItems"));
     }
 
+    public Transform GetAimPoint()
+    {
+        return shootPositionTransform;
+    }
+
+
     // Returns the number of rounds used
     public int Reload(int numRoundsAvailable)
     {

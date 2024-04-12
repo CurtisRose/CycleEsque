@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerGearController : MonoBehaviour
 {
@@ -17,6 +18,11 @@ public class PlayerGearController : MonoBehaviour
     [SerializeField] Transform head;
     [SerializeField] float throwForce;
     [SerializeField] Transform throwPosition;
+
+    // Crosshair Aimer Test
+    [SerializeField] Image crosshairs;
+    private Vector3 velocity = Vector3.zero; // This needs to be stored between calls
+    [SerializeField] float smoothTime = 0.1f; // Lower values mean quicker smoothing
 
     public delegate void LoadOutChanged();
     public event LoadOutChanged OnLoadOutChanged;
@@ -49,8 +55,27 @@ public class PlayerGearController : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void Update() 
     {
+        if (gunInHands != null)
+        {
+            RaycastHit hit;
+            // Define a layer mask that includes all layers except 'Projectiles'
+            int layerMask = 1 << LayerMask.NameToLayer("Projectile");
+            layerMask = ~layerMask; // Bitwise invert to ignore the 'Projectiles' layer
+            if (Physics.Raycast(gunInHands.GetAimPoint().position, gunInHands.GetAimPoint().forward, out hit, Mathf.Infinity, layerMask))
+            {
+                Vector3 screenPoint = Camera.main.WorldToScreenPoint(hit.point); // Convert world position to screen position
+                crosshairs.transform.position = Vector3.SmoothDamp(crosshairs.transform.position, screenPoint, ref velocity, smoothTime);
+            }
+            else
+            {
+                // put aimer at middle of screen
+                Vector3 centerScreenPoint = new Vector3(Screen.width / 2, Screen.height / 2, 10); 
+                crosshairs.transform.position = Vector3.SmoothDamp(crosshairs.transform.position, centerScreenPoint, ref velocity, smoothTime);
+            }
+        }
+
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
         // Check if there's any scroll input
