@@ -66,19 +66,25 @@ public class PlayerGearController : MonoBehaviour
             {
                 //InventoryItem.CurrentHoveredItem
                 //InventoryItem.CurrentHoveredItem.item
-                InventoryItem.CurrentHoveredItem.GetCurrentInventorySlot().RemoveItemFromSlot();
+                InventoryItem inventoryItemBeingDropped = InventoryItem.CurrentHoveredItem;
+                inventoryItemBeingDropped.GetCurrentInventorySlot().RemoveItemFromSlot();
                 WorldItem itemBeingDropped = Instantiate<WorldItem>(InventoryItem.CurrentHoveredItem.item.itemPrefab, throwPosition.position, Quaternion.identity);
                 // Maybe yeet it a little bit
                 itemBeingDropped.GetComponent<Rigidbody>().AddForce(head.forward * throwForce * Time.deltaTime, ForceMode.Impulse);
-                
+                itemBeingDropped.SetNumberOfStartingItems(inventoryItemBeingDropped.GetItemCount());
+
                 Destroy(InventoryItem.CurrentHoveredItem.gameObject);
             }
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
+            if (currentGunHeld == null)
+            {
+                return;
+            }
             // Reload Gun
-            int numberOfRoundsAvailable = 100;
+            int numberOfRoundsAvailable = playerInventory.GetNumberOfItemsOfType(ItemType.AMMO);
             int numberOfRoundsUsed = currentGunHeld.Reload(numberOfRoundsAvailable);
             if (OnPrimaryGunReloaded != null)
             {

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public enum Rarity { COMMON, UNCOMMON, RARE, EPIC, LEGENDARY, EXOTIC };
-public enum ItemType { PRIMARY_WEAPON, HELMET, ARMOR, BACKPACK, OTHER };
+public enum ItemType { PRIMARY_WEAPON, HELMET, ARMOR, BACKPACK, AMMO, OTHER };
 
 [CreateAssetMenu(fileName = "New Weapon Item", menuName = "Items/BaseItem")]
 public class BaseItem : ScriptableObject

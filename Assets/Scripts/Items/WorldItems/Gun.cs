@@ -36,9 +36,9 @@ public class Gun : WorldItem
         targetRotation = originalRotation;
     }
 
-    protected override void InitializeItem()
+    protected override void InitializeItemFromBaseItemData()
     {
-        base.InitializeItem();
+        base.InitializeItemFromBaseItemData();
         magazineCapacity = ((GunItem)item).MagazineCapacity;
         fireRate = ((GunItem)item).RateOfFire;
         recoilAmountY = ((GunItem)item).recoilAmountY;

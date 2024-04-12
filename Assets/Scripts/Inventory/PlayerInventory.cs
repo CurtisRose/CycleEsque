@@ -51,7 +51,7 @@ public class PlayerInventory : Inventory
         }
         if (Input.GetKey(KeyCode.E))
         {
-            AddItem(startItems[5]);
+            AddItem(startItems[5], 1);
         }
     }
 
@@ -111,7 +111,7 @@ public class PlayerInventory : Inventory
         // First, anything that is other, can't be equipped.
         // Later, there may be other "Types" that can't be equipped, but for now this works.
         // Find the earliest slot to quick sort it in your inventory
-        if (itemToEquip.GetItemType() == ItemType.OTHER)
+        if (itemToEquip.GetItemType() >= ItemType.AMMO)
         {
             AddItemToEarliestEmptySlot(inventorySlot.GetItemInSlot());
             return;

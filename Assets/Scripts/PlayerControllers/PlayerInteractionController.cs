@@ -63,10 +63,8 @@ public class PlayerInteractionController : MonoBehaviour
 
     void OnWorldItemPickedUp(WorldItem item)
     {
-        Debug.Log("Picked up: " + item.name);
         // Hide prompt after picking up the item
-        BaseItem itemPickedUp = item.GetBaseItem();
-        bool pickedUp = playerInventory.AddItem(itemPickedUp);
+        bool pickedUp = playerInventory.AddItem(item, item.GetNumberOfItems());
         if (pickedUp)
         {
             Destroy(item.gameObject);
@@ -95,11 +93,11 @@ public class PlayerInteractionController : MonoBehaviour
     {
         BaseItem item = itemLookingAt.GetBaseItem();
         itemName.text = item.DisplayName;
-        itemWeight.text = item.Weight.ToString();
+        itemWeight.text = (itemLookingAt.GetWeight()).ToString();
         itemRarity.text = item.Rarity.ToString();
         itemRarity.color = RarityColorManager.Instance.GetColorByRarity(item.Rarity);
         float roomInBackpack = playerInventory.GetInventoryWeightLimit() - playerInventory.currentWeight;
-        if (roomInBackpack >= item.Weight)
+        if (roomInBackpack >= itemLookingAt.GetWeight())
         {
             itemWeight.color = Color.white;
             pickupImage.color = Color.white;

@@ -11,15 +11,41 @@ public class WorldItem : MonoBehaviour
     [SerializeField] float timeDelay = 1.0f;
     bool interactable = true;
 
+    protected int numItemsInStack;
+
     protected virtual void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
-        InitializeItem();
+        InitializeItemFromBaseItemData();
+        if (!item.stackable)
+        {
+            numItemsInStack = 1;
+        }
     }
 
-    protected virtual void InitializeItem()
+    public float GetWeight()
     {
+        return item.Weight * numItemsInStack;
+    }
 
+    protected virtual void InitializeItemFromBaseItemData()
+    {
+        
+    }
+
+    public void SetNumberOfStartingItems(int numItems)
+    {
+        numItemsInStack = numItems;
+    }
+
+    public int GetNumberOfItems()
+    {
+        return numItemsInStack;
+    }
+
+    public void ChangeNumberOfItems(int amount)
+    {
+        numItemsInStack += amount;
     }
 
     protected virtual void Start()

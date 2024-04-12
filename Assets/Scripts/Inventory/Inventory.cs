@@ -25,10 +25,42 @@ public class Inventory : MonoBehaviour
         return inventoryWeightLimit;
     }
 
-    public bool AddItem(BaseItem item)
+    public bool AddItem(WorldItem item, int numItems = 1)
+    {
+        bool partialOnly = false;
+        if (item.GetWeight() > GetInventoryWeightLimit() - currentWeight)
+        {
+            if (item.GetBaseItem().stackable)
+            {
+                float weightToFillBackpack = GetInventoryWeightLimit() - currentWeight;
+                numItems = (int)Mathf.Floor(weightToFillBackpack / item.GetBaseItem().Weight);
+                partialOnly = true;
+                if (numItems == 0)
+                {
+                    return false;
+                }
+            } else
+            {
+                return false;
+            }
+        }
+
+        BaseItem itemPickedUp = item.GetBaseItem();
+        bool successCheck = AddItem(itemPickedUp, numItems);
+
+        if (partialOnly)
+        {
+            item.ChangeNumberOfItems(-numItems);
+            return false;
+        }
+
+        return successCheck && !partialOnly;
+    }
+
+    public bool AddItem(BaseItem item, int numItems = 1)
     {
         float temp = GetInventoryWeightLimit();
-        if (item.Weight > GetInventoryWeightLimit() - currentWeight)
+        if (item.Weight * numItems > GetInventoryWeightLimit() - currentWeight)
         {
             return false;
         }
@@ -36,6 +68,7 @@ public class Inventory : MonoBehaviour
         // Check if any slot already has item with count lower than the stack size
         if (item.stackable)
         {
+            InventorySlot firstEmptySlot = null;
             for (int i = 0; i < inventorySlots.Count; i++)
             {
                 InventorySlot slot = inventorySlots[i];
@@ -44,10 +77,20 @@ public class Inventory : MonoBehaviour
                     itemInSlot.item == item &&
                     itemInSlot.GetItemCount() < itemInSlot.item.maxStackSize)
                 {
-                    itemInSlot.IncrementItemCount();
-                    UpdateWeight(itemInSlot.item.Weight);
+                    itemInSlot.ChangeItemCount(numItems);
+                    UpdateWeight(item.Weight * numItems);
                     return true;
                 }
+                if (!slot.HasItem() && firstEmptySlot == null)
+                {
+                    firstEmptySlot = slot;
+                }
+            }
+            // No items of same type were found, Add it to the earliest empty slot
+            if (firstEmptySlot != null)
+            {
+                CreateNewItem(item, firstEmptySlot, numItems);
+                return true;
             }
         }
 
@@ -72,6 +115,26 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
+    public int GetNumberOfItemsOfType(ItemType type)
+    {
+        int numItems = 0;
+        foreach(InventorySlot inventorySlot in inventorySlots)
+        {
+            InventoryItem itemInSlot = inventorySlot.GetItemInSlot();
+            if (itemInSlot != null && inventorySlot.GetItemInSlot().GetItemType() == type)
+            {
+                if (inventorySlot.GetItemInSlot().item.stackable)
+                {
+                    numItems += inventorySlot.GetItemInSlot().GetItemCount();
+                } else
+                {
+                    numItems++;
+                }
+            }
+        }
+        return numItems;
+    }
+
     public virtual void UpdateWeight(float amount)
     {
         currentWeight += amount;
@@ -84,12 +147,13 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
-    protected void CreateNewItem(BaseItem item, InventorySlot inventorySlot)
+    protected void CreateNewItem(BaseItem item, InventorySlot inventorySlot, int numberOfItems = 1)
     {
         GameObject newItem = Instantiate(inventoryItemPrefab, inventorySlot.itemSlot);
         InventoryItem inventoryItem = newItem.GetComponent<InventoryItem>();
         inventoryItem.name = item.DisplayName;
         inventoryItem.InitializeItem(item);
+        inventoryItem.ChangeItemCount(numberOfItems);
         inventorySlot.SetItemInSlotAfterDrag(inventoryItem);
     }
 
@@ -125,51 +189,6 @@ public class Inventory : MonoBehaviour
             emptySlot.Swap(inventoryItem);
         }
     }
-
-    // This will probably be used when moving items from one inventory to another
-    // And just picking items off the ground maybe.
-    // Although, you could do that using the other add item as well.
-    /*public bool AddItem(InventoryItem inventoryItem)
-    {
-        if (inventoryItem.GetTotalWeight() > inventoryWeightLimit - currentWeight)
-        {
-            return false;
-        }
-
-        if (inventoryItem.item.stackable)
-        {
-            for (int i = 0; i < inventorySlots.Count; i++)
-            {
-                InventorySlot slot = inventorySlots[i];
-                InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-                if (itemInSlot != null &&
-                    itemInSlot == inventoryItem &&
-                    itemInSlot.GetItemCount() < itemInSlot.item.maxStackSize)
-                {
-                    itemInSlot.IncrementItemCount();
-                    UpdateWeight(itemInSlot.item.Weight);
-                    return true;
-                }
-            }
-        } else
-        {
-            // Find an empty slot
-            for (int i = 0; i < inventorySlots.Count; i++)
-            {
-                InventorySlot slot = inventorySlots[i];
-                InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-                // If slot is empty
-                if (itemInSlot == null)
-                {
-                    slot.Swap(inventoryItem);
-                    return true;
-                }
-            }
-        }
-
-        Debug.Log("Inventory Is Full");
-        return false;
-    }*/
 
     public void PlaceItem(InventoryItem item, InventorySlot inventorySlot)
     {

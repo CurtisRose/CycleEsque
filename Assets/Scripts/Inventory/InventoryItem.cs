@@ -8,7 +8,7 @@ using TMPro;
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [HideInInspector] public BaseItem item;
-    [SerializeField] protected int count = 1;
+    protected int count = 0;
 
     [SerializeField] protected Image itemImage;
 
@@ -166,7 +166,16 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public float GetTotalWeight()
     {
-        return GetItemCount() * item.Weight;
+        // I've put several protections in place to make sure non stackable items only have one item in them
+        // But this is yet another that their weight won't be fucked up.
+        if (item.stackable)
+        {
+            return GetItemCount() * item.Weight;
+        }
+        else
+        {
+            return item.Weight;
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -180,5 +189,10 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         {
             CurrentHoveredItem = null;
         }
+    }
+
+    private void OnDisable()
+    {
+        CurrentHoveredItem = null;
     }
 }
