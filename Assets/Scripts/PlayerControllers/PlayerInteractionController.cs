@@ -81,11 +81,17 @@ public class PlayerInteractionController : MonoBehaviour
         // Only fill out the details once
         if (!pickupPromptMenu.IsOpen() && show)
         {
-            MenuManager.Instance.OpenMenu(pickupPromptMenu);
+            if (MenuManager.Instance != null)
+            {
+                MenuManager.Instance.OpenMenu(pickupPromptMenu);
+            }
         }
         else if (!show)
         {
-            MenuManager.Instance.CloseMenu(pickupPromptMenu);
+            if (MenuManager.Instance != null)
+            {
+                MenuManager.Instance.CloseMenu(pickupPromptMenu);
+            }
         }
     }
 

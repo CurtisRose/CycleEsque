@@ -43,7 +43,10 @@ public class PlayerGearController : MonoBehaviour
 
     public void OnInventoryChangedPassThrough()
     {
-        OnInventoryChanged();
+        if (OnInventoryChanged != null)
+        {
+            OnInventoryChanged();
+        }
     }
 
     private void Update()
