@@ -15,6 +15,9 @@ public class CrosshairController : MonoBehaviour
     public float originalY; // Original starting y position
     public float targetValue; // The target position value
     public float currentValue; // The current position value
+    public float noHitZeroingPoint = 50f;
+
+    [SerializeField] Transform laser;
 
     public Vector2 currentPosition;
 
@@ -63,22 +66,30 @@ public class CrosshairController : MonoBehaviour
         targetValue = Mathf.Min(targetValue, targetMaxHeight); // Cap the target value at maxHeight
     }
 
-    public void SetCrosshairPosition(Transform aimPosition, float smoothTime)
+    public void SetCrosshairPositionWhereGunIsLooking(Transform aimPosition, float smoothTime)
     {
         RaycastHit hit;
         // Define a layer mask that includes all layers except 'Projectiles'
         int layerMask = 1 << LayerMask.NameToLayer("Projectile");
         layerMask = ~layerMask; // Bitwise invert to ignore the 'Projectiles' layer
+
+        Vector3 targetPoint;
+
         if (Physics.Raycast(aimPosition.position, aimPosition.forward, out hit, Mathf.Infinity, layerMask))
         {
-            Vector3 screenPoint = Camera.main.WorldToScreenPoint(hit.point); // Convert world position to screen position
-            crossHairRoot.transform.position = Vector3.SmoothDamp(crossHairRoot.transform.position, screenPoint, ref velocity, smoothTime);
+            // If the raycast hits, use the hit point
+            targetPoint = hit.point;
+            laser.position = targetPoint;
         }
         else
         {
-            // put aimer at middle of screen
-            Vector3 centerScreenPoint = new Vector3(Screen.width / 2, Screen.height / 2, 10);
-            crossHairRoot.transform.position = Vector3.SmoothDamp(crossHairRoot.transform.position, centerScreenPoint, ref velocity, smoothTime);
+            // If the raycast fails, use a point 50 units in front of the aim position
+            targetPoint = aimPosition.position + aimPosition.forward * noHitZeroingPoint;
         }
+
+        // Convert the target point from world space to screen space
+        Vector3 screenPoint = Camera.main.WorldToScreenPoint(targetPoint);
+        // Smoothly move the crosshair to the target screen point
+        crossHairRoot.transform.position = Vector3.SmoothDamp(crossHairRoot.transform.position, screenPoint, ref velocity, smoothTime);
     }
 }

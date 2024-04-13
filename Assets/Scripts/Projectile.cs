@@ -1,21 +1,20 @@
-    using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
     private Rigidbody rb;
-    [SerializeField] float lifespan;
-    [SerializeField] float speed;
-    [SerializeField] float damage;
-    [SerializeField] float armorPenetration;
+    [SerializeField] private float lifespan = 5f;
+    [SerializeField] private float speed = 100f;
+    [SerializeField] private float damage = 25f;
+    [SerializeField] private float armorPenetration = 0.5f;
 
-    private void Awake()
+    private void OnEnable()
     {
         rb = GetComponent<Rigidbody>();
+        rb.velocity = Vector3.zero;
         rb.velocity = transform.forward * speed;
-        Destroy(this.gameObject, lifespan);
-    }
+        Invoke("ReturnToPool", lifespan);Debug.DrawRay(transform.position, transform.forward * 10, Color.blue, 2.0f);
+    }   
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -23,7 +22,16 @@ public class Projectile : MonoBehaviour
         {
             damageableObject.TakeDamage(damage, armorPenetration);
         }
+        ReturnToPool();
+    }
 
-        Destroy(gameObject);
+    private void ReturnToPool()
+    {
+        ProjectilePool.Instance.ReturnProjectile(gameObject);
+    }
+
+    private void OnDisable()
+    {
+        CancelInvoke();
     }
 }

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5075259123542633160}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: HelmetHoldingPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 4188802689043222257}
   - component: {fileID: 6906055806816248783}
   - component: {fileID: 4999738099391993790}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Main Third Person Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -177,8 +177,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1594420528566663912}
-  m_Layer: 3
-  m_Name: WeaponSlot 1 ADS Position
+  m_Layer: 8
+  m_Name: WeaponSlot ADS Position
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -193,11 +193,11 @@ Transform:
   m_GameObject: {fileID: 1583757355173959416}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.468, y: 0.19199991, z: 0.18999988}
+  m_LocalPosition: {x: 0, y: -0.142, z: 0.741}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8730573079300955122}
+  m_Father: {fileID: 9064487097268030572}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3659061217729818929
 GameObject:
@@ -209,7 +209,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8166624196369545103}
   - component: {fileID: 1168892303510810196}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: PlayerInteractionController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3659061217729818929}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -264,7 +264,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6265170968284108111}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: GunUnequipedHoldingPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -296,7 +296,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4307309158942832435}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: BackpackHoldingPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -318,39 +318,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9064487096557084800}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5365490416898303251
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8730573079300955122}
-  m_Layer: 3
-  m_Name: GunEquippedHoldingPosition
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8730573079300955122
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5365490416898303251}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.468, y: -0.33299994, z: 0.756}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1594420528566663912}
-  - {fileID: 2305574298787733903}
-  m_Father: {fileID: 9064487097268030572}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5998416793006266891
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,8 +327,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2305574298787733903}
-  m_Layer: 3
-  m_Name: Weapon Slot 1 From Hip Fire Position
+  m_Layer: 8
+  m_Name: Weapon Slot 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -380,7 +347,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8730573079300955122}
+  m_Father: {fileID: 4845008993545661789}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6315801968432176580
 GameObject:
@@ -391,7 +358,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7210233801581030460}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: ShootPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -413,6 +380,69 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9064487097268030572}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6357201737716941582
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6667082619905216441}
+  m_Layer: 8
+  m_Name: WeaponSlot Hip Fire Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6667082619905216441
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6357201737716941582}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.48, y: -0.43, z: 0.934}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9064487097268030572}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6838424447373396039
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4845008993545661789}
+  m_Layer: 8
+  m_Name: WeaponPositionHands
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4845008993545661789
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6838424447373396039}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.48, y: -0.43000007, z: 0.934}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2305574298787733903}
+  m_Father: {fileID: 9064487097268030572}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7178168387789337314
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,7 +452,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6780773922304257058}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: ThrowPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -453,7 +483,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8897493055078843416}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: WeaponSlot2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -487,7 +517,7 @@ GameObject:
   - component: {fileID: 9064487096557084829}
   - component: {fileID: 9064487096557084830}
   - component: {fileID: 9064487096557084831}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -598,7 +628,7 @@ GameObject:
   - component: {fileID: 9064487096786326366}
   - component: {fileID: 9064487096786326367}
   - component: {fileID: 883271043315248875}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Main First Person Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -659,7 +689,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 255
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -735,7 +765,7 @@ GameObject:
   - component: {fileID: 9064487097268030569}
   - component: {fileID: 9064487097268030570}
   - component: {fileID: 9064487097268030571}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -759,7 +789,9 @@ Transform:
   - {fileID: 8909195187056709392}
   - {fileID: 7210233801581030460}
   - {fileID: 5075259123542633160}
-  - {fileID: 8730573079300955122}
+  - {fileID: 1594420528566663912}
+  - {fileID: 6667082619905216441}
+  - {fileID: 4845008993545661789}
   - {fileID: 8166624196369545103}
   - {fileID: 6780773922304257058}
   m_Father: {fileID: 9064487096557084800}
@@ -845,9 +877,9 @@ GameObject:
   m_Component:
   - component: {fileID: 9064487098345231791}
   - component: {fileID: 9064487098345231824}
-  - component: {fileID: 9064487098345231790}
   - component: {fileID: 1315985713516066803}
-  m_Layer: 3
+  - component: {fileID: 9064487098345231790}
+  m_Layer: 8
   m_Name: Character
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -896,6 +928,41 @@ MonoBehaviour:
   thirdPersonCamera: {fileID: 4188802689043222257}
   walkingSlopeLimit: 0
   sprintingSlopeLimit: 0
+--- !u!114 &1315985713516066803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064487098345231825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7044b5430ccdaba49a64d58b5e35ac5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInventory: {fileID: 0}
+  selectedFirstSlot: 1
+  gunInHands: {fileID: 0}
+  gunOnHip: {fileID: 0}
+  gearItems: []
+  gearStorageLocations:
+  - {fileID: 4307309158942832435}
+  - {fileID: 7250737621801206233}
+  - {fileID: 5075259123542633160}
+  - {fileID: 2305574298787733903}
+  - {fileID: 8897493055078843416}
+  weaponPositionHands: {fileID: 4845008993545661789}
+  weaponPositionHip: {fileID: 6265170968284108111}
+  head: {fileID: 9064487097268030572}
+  throwForce: 2000
+  throwPosition: {fileID: 6780773922304257058}
+  hipFirePosition: {fileID: 6667082619905216441}
+  ADSFirePosition: {fileID: 1594420528566663912}
+  timeToADS: 0.2
+  crosshairController: {fileID: 0}
+  smoothTime: 0.1
+  crosshairVisiblityTime: 0.5
+  switchCooldown: 0.5
 --- !u!143 &9064487098345231790
 CharacterController:
   m_ObjectHideFlags: 0
@@ -922,36 +989,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.5, z: 0}
---- !u!114 &1315985713516066803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9064487098345231825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7044b5430ccdaba49a64d58b5e35ac5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerInventory: {fileID: 0}
-  selectedFirstSlot: 1
-  gunInHands: {fileID: 0}
-  gunOnHip: {fileID: 0}
-  gearItems: []
-  gearStorageLocations:
-  - {fileID: 4307309158942832435}
-  - {fileID: 7250737621801206233}
-  - {fileID: 5075259123542633160}
-  - {fileID: 2305574298787733903}
-  - {fileID: 8897493055078843416}
-  weaponPositionHands: {fileID: 8730573079300955122}
-  weaponPositionHip: {fileID: 6265170968284108111}
-  head: {fileID: 9064487097268030572}
-  throwForce: 2000
-  throwPosition: {fileID: 6780773922304257058}
-  crosshairController: {fileID: 0}
-  smoothTime: 0.1
 --- !u!1 &9166655474706790046
 GameObject:
   m_ObjectHideFlags: 0
@@ -961,7 +998,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7250737621801206233}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: ArmorHoldingPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}

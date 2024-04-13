@@ -75,6 +75,7 @@ public class WorldItem : MonoBehaviour
             rigidBody.isKinematic = true;
         }
         interactable = false;
+        SetLayerRecursively(gameObject, LayerMask.NameToLayer("Player"));
     }
 
     public virtual void Unequip()
@@ -84,6 +85,7 @@ public class WorldItem : MonoBehaviour
             rigidBody.isKinematic = false;
         }
         interactable = true;
+        SetLayerRecursively(gameObject, LayerMask.NameToLayer("WorldItems"));
     }
 
     IEnumerator TempInteractionOff(float delay)
@@ -96,5 +98,14 @@ public class WorldItem : MonoBehaviour
     public bool IsInteractable()
     {
         return interactable;
+    }
+
+    public void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        obj.layer = newLayer;
+        foreach (Transform child in obj.transform)
+        {
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
     }
 }

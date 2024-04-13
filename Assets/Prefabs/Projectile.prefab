@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 303745844949652432}
   - component: {fileID: 7343739617303108452}
   - component: {fileID: 5262769569975799373}
-  - component: {fileID: 1917463489676619786}
+  - component: {fileID: 4055433080479630565}
   m_Layer: 6
   m_Name: Projectile
   m_TagString: Untagged
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifespan: 2
-  speed: 200
+  speed: 400
   damage: 20
   armorPenetration: 11
 --- !u!54 &5262769569975799373
@@ -75,11 +75,11 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 2
   m_Constraints: 0
-  m_CollisionDetection: 1
---- !u!136 &1917463489676619786
-CapsuleCollider:
+  m_CollisionDetection: 2
+--- !u!135 &4055433080479630565
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -96,10 +96,8 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Radius: 0.05
-  m_Height: 0.2
-  m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5810407875484260858
 GameObject:

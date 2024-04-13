@@ -17,8 +17,16 @@ public class Gun : WorldItem
     private float spreadAmount; // The variance in bullet direction
     private float returnSpeed; // Speed at which the gun returns to original rotation
 
+    [SerializeField] float damage;
+    [SerializeField] float armorPenetration;
+
     private Quaternion originalRotation;
     private Quaternion targetRotation;
+
+    [SerializeField] AudioSource gunAudioSource;
+    [SerializeField] AudioClip weaponFireSound;
+    [SerializeField] AudioClip weaponReloadSound;
+    [SerializeField] AudioClip weaponEquipSound;
 
     int magazineCapacity;
     int numberOfRounds;
@@ -58,12 +66,12 @@ public class Gun : WorldItem
     {
         base.Equip();
         SetLayerRecursively(gameObject, LayerMask.NameToLayer("Gun"));
+        gunAudioSource.PlayOneShot(weaponEquipSound);
     }
 
-    public override void Unequip()
+    public void PlayWeaponSwapSound()
     {
-        base.Unequip();
-        SetLayerRecursively(gameObject, LayerMask.NameToLayer("WorldItems"));
+        gunAudioSource.PlayOneShot(weaponEquipSound);
     }
 
     public Transform GetAimPoint()
@@ -75,8 +83,19 @@ public class Gun : WorldItem
     // Returns the number of rounds used
     public int Reload(int numRoundsAvailable)
     {
+        if (numRoundsAvailable <= 0)
+        {
+            return 0;
+        }
+
         int missingAmmoAmount = magazineCapacity - numberOfRounds;
-        
+        if (missingAmmoAmount <= 0)
+        {
+            return 0;
+        }
+
+        gunAudioSource.PlayOneShot(weaponReloadSound);
+
         if (missingAmmoAmount > numRoundsAvailable)
         {
             numberOfRounds += numRoundsAvailable;
@@ -94,31 +113,30 @@ public class Gun : WorldItem
 
         if (numberOfRounds <= 0) return false;
 
-        if (Time.time - lastShotTime >= returnSpeed)
-        {
-            // Instantiate the projectile with no spread
-            Projectile projectile = Instantiate<Projectile>(projectilePrefab, shootPositionTransform.position, shootPositionTransform.rotation);
-            numberOfRounds--;
-        } else
-        {
-            // Calculate bullet spread
-            /*Vector3 spread = Vector3.zero;
-            spread += shootPositionTransform.up * Random.Range(-spreadAmount, spreadAmount);
-            spread += shootPositionTransform.right * Random.Range(-spreadAmount, spreadAmount);
+        Debug.DrawRay(shootPositionTransform.position, shootPositionTransform.forward * 10, Color.red, 2.0f);
 
-            Quaternion spreadRotation = Quaternion.Euler(spread) * shootPositionTransform.rotation;
-            
-            // Instantiate the projectile with spread applied
-            Projectile projectile = Instantiate<Projectile>(projectilePrefab, shootPositionTransform.position, spreadRotation);
-            */
-            Projectile projectile = Instantiate<Projectile>(projectilePrefab, shootPositionTransform.position, shootPositionTransform.rotation);
+        GameObject projectileObj = ProjectilePool.Instance.GetProjectile();
+        if (projectileObj != null)
+        {
+            projectileObj.transform.position = shootPositionTransform.position;
+            projectileObj.transform.rotation = shootPositionTransform.rotation;
+            projectileObj.SetActive(true);
+
+            /*
+            if (Time.time - lastShotTime < returnSpeed)
+            {
+                ApplyBulletSpread(projectileObj.transform);
+            }*/
+
+            projectileObj.SetActive(true); // Ensure the projectile is active
 
             numberOfRounds--;
+            gunAudioSource.PlayOneShot(weaponFireSound);
+            lastShotTime = Time.time;
+            return true;
         }
 
-        //ApplyRecoil();
-        lastShotTime = Time.time;
-        return true;
+        return false;
     }
 
     void ApplyRecoil()
@@ -150,6 +168,15 @@ public class Gun : WorldItem
     }
 
 
+    private void ApplyBulletSpread(Transform projectileTransform)
+    {
+        Vector3 spread = Vector3.zero;
+        spread += projectileTransform.up * Random.Range(-spreadAmount, spreadAmount);
+        spread += projectileTransform.right * Random.Range(-spreadAmount, spreadAmount);
+
+        projectileTransform.rotation = Quaternion.Euler(spread) * projectileTransform.rotation;
+    }
+
 
 
     IEnumerator RecoilCoroutine()
@@ -171,15 +198,6 @@ public class Gun : WorldItem
             targetRotation = transform.localRotation;
             elapsedTime += Time.deltaTime;
             yield return null;
-        }
-    }
-
-    private void SetLayerRecursively(GameObject obj, int newLayer)
-    {
-        obj.layer = newLayer;
-        foreach (Transform child in obj.transform)
-        {
-            SetLayerRecursively(child.gameObject, newLayer);
         }
     }
 

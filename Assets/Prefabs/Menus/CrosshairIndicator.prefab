@@ -303,6 +303,8 @@ MonoBehaviour:
   originalY: 100
   targetValue: 100
   currentValue: 100
+  noHitZeroingPoint: 50
+  laser: {fileID: 0}
   currentPosition: {x: 0, y: 102.2289}
 --- !u!1 &3669480107050241735
 GameObject:
