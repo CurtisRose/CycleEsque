@@ -383,14 +383,14 @@ public class PlayerGearController : MonoBehaviour
     public void MoveToADS()
     {
         if (Character.disableUserClickingInputStatus) return;
-        StopAllCoroutines();  // Stops all coroutines to prevent overlapping animations
+        StopCoroutine("MoveWeapon");
         StartCoroutine(MoveWeapon(true));
     }
 
     public void MoveToHipFire()
     {
 
-        StopAllCoroutines();  // Stops all coroutines to prevent overlapping animations
+        StopCoroutine("MoveWeapon");
         StartCoroutine(MoveWeapon(false));
     }
 
