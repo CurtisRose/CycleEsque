@@ -22,7 +22,6 @@ MonoBehaviour:
   <Weight>k__BackingField: 10
   <stackable>k__BackingField: 0
   <maxStackSize>k__BackingField: 0
-  <itemPrefab>k__BackingField: {fileID: 7241278087371654759, guid: 254ad7d260168ef48a099c239a077d43,
-    type: 3}
+  <ColorGameObjectBasedOnRarity>k__BackingField: 1
   <AmountOfArmor>k__BackingField: 75
   <DefenseValue>k__BackingField: 1

@@ -23,6 +23,14 @@ public class WorldItem : MonoBehaviour
         }
     }
 
+    protected virtual void Start()
+    {
+        if (item.ColorGameObjectBasedOnRarity)
+        {
+            GetComponentInChildren<Renderer>().material.color = RarityColorManager.Instance.GetColorByRarity(item.Rarity);
+        }
+    }
+
     public float GetWeight()
     {
         return item.Weight * numItemsInStack;
@@ -46,11 +54,6 @@ public class WorldItem : MonoBehaviour
     public void ChangeNumberOfItems(int amount)
     {
         numItemsInStack += amount;
-    }
-
-    protected virtual void Start()
-    {
-        
     }
 
     public virtual bool Use()
@@ -107,5 +110,10 @@ public class WorldItem : MonoBehaviour
         {
             SetLayerRecursively(child.gameObject, newLayer);
         }
+    }
+
+    public void UpdateBaseItemData(BaseItem item)
+    {
+        this.item = item;
     }
 }

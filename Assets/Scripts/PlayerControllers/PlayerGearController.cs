@@ -256,7 +256,8 @@ public class PlayerGearController : MonoBehaviour
                 //InventoryItem.CurrentHoveredItem.item
                 InventoryItem inventoryItemBeingDropped = InventoryItem.CurrentHoveredItem;
                 inventoryItemBeingDropped.GetCurrentInventorySlot().RemoveItemFromSlot();
-                WorldItem itemBeingDropped = Instantiate<WorldItem>(InventoryItem.CurrentHoveredItem.item.itemPrefab, throwPosition.position, Quaternion.identity);
+                WorldItem itemBeingDropped = ItemSpawner.Instance.SpawnItem(InventoryItem.CurrentHoveredItem.item, throwPosition.position, Quaternion.identity);
+                //WorldItem itemBeingDropped = Instantiate<WorldItem>(InventoryItem.CurrentHoveredItem.item.itemPrefab, throwPosition.position, Quaternion.identity);
                 // Maybe yeet it a little bit
                 itemBeingDropped.GetComponent<Rigidbody>().AddForce(head.forward * throwForce * Time.deltaTime, ForceMode.Impulse);
                 // This is so the pick up menu doesn't trigger immediately.
@@ -329,8 +330,9 @@ public class PlayerGearController : MonoBehaviour
         }
         if (gearSlot.HasItem())
         {
-            gearItems[(int)identifier] =
-                Instantiate<WorldItem>(gearSlot.GetItemInSlot().item.itemPrefab, gearStorageLocations[(int)identifier]);
+            //WorldItem itemBeingDropped = ItemSpawner.Instance.SpawnItem(gearSlot.GetItemInSlot().item, Vector3.zero);
+            gearItems[(int)identifier] = ItemSpawner.Instance.SpawnItem(gearSlot.GetItemInSlot().item, gearStorageLocations[(int)identifier]);
+            //gearItems[(int)identifier] = Instantiate<WorldItem>(gearSlot.GetItemInSlot().item.itemPrefab, gearStorageLocations[(int)identifier]);
             gearItems[(int)identifier].Equip();
             if (selectedFirstSlot)
             {
@@ -367,7 +369,10 @@ public class PlayerGearController : MonoBehaviour
         {
             OnLoadOutChanged();
         }
-        gunInHands.SetLayerRecursively(gun.gameObject, LayerMask.NameToLayer("Gun"));
+        if (gunInHands != null)
+        {
+            gunInHands.SetLayerRecursively(gun.gameObject, LayerMask.NameToLayer("Gun"));
+        }
     }
 
     private void SetHipGun(Gun gun)
@@ -377,19 +382,22 @@ public class PlayerGearController : MonoBehaviour
         {
             OnLoadOutChanged();
         }
-        gunOnHip.SetLayerRecursively(gun.gameObject, LayerMask.NameToLayer("Player"));
+        if (gunOnHip != null)
+        {
+            gunOnHip.SetLayerRecursively(gun.gameObject, LayerMask.NameToLayer("Player"));
+        }
     }
 
     public void MoveToADS()
     {
         if (Character.disableUserClickingInputStatus) return;
+        if (gunInHands == null) return;
         StopCoroutine("MoveWeapon");
         StartCoroutine(MoveWeapon(true));
     }
 
     public void MoveToHipFire()
     {
-
         StopCoroutine("MoveWeapon");
         StartCoroutine(MoveWeapon(false));
     }
