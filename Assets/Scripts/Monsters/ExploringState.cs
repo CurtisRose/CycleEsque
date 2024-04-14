@@ -11,6 +11,7 @@ public class ExploringState : MonsterState
     {
         this.targetArea = targetArea;
         ChooseNextPosition();
+        monster.GetComponent<Health>().OnDamageTaken += OnDamageTaken;
     }
 
     public override void Enter()
@@ -30,6 +31,13 @@ public class ExploringState : MonsterState
         }
     }
 
+    public override void Exit()
+    {
+        base.Exit();
+        // Unsubscribe to avoid memory leaks
+        monster.GetComponent<Health>().OnDamageTaken -= OnDamageTaken;
+    }
+
     private void ChooseNextPosition()
     {
         Vector3 randomDirection = Random.insideUnitSphere * monsterData.exploringRadius;
@@ -38,6 +46,12 @@ public class ExploringState : MonsterState
         UnityEngine.AI.NavMesh.SamplePosition(randomDirection, out hit, monsterData.exploringRadius, UnityEngine.AI.NavMesh.AllAreas);
         nextPosition = hit.position;
         navMeshAgent.SetDestination(nextPosition);
+    }
+
+    private void OnDamageTaken(float currentHealth)
+    {
+        // Change state to Aggressive when taking damage
+        monster.GetComponent<MonsterController>().ChangeState(new AggressiveState(monster, monsterData));
     }
 
     private void PauseAndLookAround()

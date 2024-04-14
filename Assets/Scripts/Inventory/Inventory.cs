@@ -63,12 +63,13 @@ public class Inventory : MonoBehaviour
     public bool AddItem(BaseItem item, int numItems = 1)
     {
         float temp = GetInventoryWeightLimit();
-        if (item.Weight * numItems > GetInventoryWeightLimit() - currentWeight)
+        if (item.Weight * numItems > temp - currentWeight)
         {
-            return false;
+            return false; // Not enough weight capacity to add these items
         }
 
-        // Check if any slot already has item with count lower than the stack size
+        bool updated = false;
+        // Check if any slot already has the item and can hold more
         if (item.stackable)
         {
             InventorySlot firstEmptySlot = null;
@@ -76,59 +77,77 @@ public class Inventory : MonoBehaviour
             {
                 InventorySlot slot = inventorySlots[i];
                 InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-                if (itemInSlot != null &&
-                    itemInSlot.item == item &&
-                    itemInSlot.GetItemCount() < itemInSlot.item.maxStackSize)
+
+                // Check if the slot already contains the item and is not full
+                if (itemInSlot != null && itemInSlot.item == item)
                 {
-                    itemInSlot.ChangeItemCount(numItems);
-                    UpdateWeight(item.Weight * numItems);
-                    if (OnInventoryChanged != null)
+                    int spaceLeftInSlot = itemInSlot.item.maxStackSize - itemInSlot.GetItemCount();
+                    if (spaceLeftInSlot > 0)
                     {
-                        OnInventoryChanged();
+                        int itemsToAdd = Mathf.Min(spaceLeftInSlot, numItems);
+                        itemInSlot.ChangeItemCount(itemsToAdd);
+                        UpdateWeight(item.Weight * itemsToAdd);
+                        numItems -= itemsToAdd;
+                        updated = true;
+
+                        if (numItems <= 0)
+                        {
+                            if (OnInventoryChanged != null)
+                                OnInventoryChanged();
+                            return true;
+                        }
                     }
-                    return true;
                 }
+
+                // Remember the first empty slot if we need to add a new item there
                 if (!slot.HasItem() && firstEmptySlot == null)
                 {
                     firstEmptySlot = slot;
                 }
             }
-            // No items of same type were found, Add it to the earliest empty slot
-            if (firstEmptySlot != null)
+
+            // If there are still items left to add, use the first empty slot
+            if (firstEmptySlot != null && numItems > 0)
             {
                 CreateNewItem(item, firstEmptySlot, numItems);
                 if (OnInventoryChanged != null)
-                {
                     OnInventoryChanged();
-                }
                 return true;
             }
         }
-
-        // Find an empty slot
-        for (int i = 0; i < inventorySlots.Count; i++)
+        else
         {
-            InventorySlot slot = inventorySlots[i];
-            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-            // If slot is empty
-            if (itemInSlot == null)
+            // Non-stackable item, simply find an empty slot
+            foreach (InventorySlot slot in inventorySlots)
             {
-                CreateNewItem(item, slot);
-                if (OnInventoryChanged != null)
+                if (!slot.HasItem())
                 {
-                    OnInventoryChanged();
+                    CreateNewItem(item, slot, numItems);
+                    if (OnInventoryChanged != null)
+                        OnInventoryChanged();
+                    return true;
                 }
-                return true;
             }
         }
 
-        // No Empty Slots
-        // TODO: Create More Slots Dynamically
-        // Inventory is only limited by weight
+        // If no suitable slot is found and there are leftover items, log the full inventory
+        if (numItems > 0)
+        {
+            Debug.Log("Inventory Is Full or not enough slots to accommodate all items.");
+            return false;
+        }
 
-        Debug.Log("Inventory Is Full");
-        return false;
+        // If inventory changes occurred, update listeners
+        if (updated)
+        {
+            if (OnInventoryChanged != null)
+                OnInventoryChanged();
+            return true;
+        }
+
+        return false; // Default return, though logically unreachable in current setup
     }
+
 
     public int GetNumberOfItemsOfType(ItemType type)
     {

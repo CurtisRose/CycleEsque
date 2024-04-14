@@ -10,6 +10,9 @@ public class Health : MonoBehaviour, IDamageable
     public delegate void HealthChanged(float currentHealth);
     public event HealthChanged OnHealthChanged;
 
+    public delegate void DamageTaken(float currentHealth);
+    public event DamageTaken OnDamageTaken;
+
     public delegate void Death();
     public event Death OnDeath;
 
@@ -24,6 +27,7 @@ public class Health : MonoBehaviour, IDamageable
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
         OnHealthChanged?.Invoke(currentHealth);
+        OnDamageTaken?.Invoke(currentHealth);
 
         if (currentHealth <= 0)
         {

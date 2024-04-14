@@ -6,15 +6,18 @@ using UnityEngine.AI;  // Required for NavMeshAgent
 public class AggressiveState : MonsterState
 {
     private NavMeshAgent agent;  // Reference to the NavMeshAgent component
+    private Transform playerTransform;
+    private float aggressiveTimer;  // Timer to track aggression duration
+    private float minimumAggressionTime = 30.0f;  // Minimum time to stay aggressive
 
     public AggressiveState(GameObject monster, MonsterData monsterData) : base(monster, monsterData)
     {
-        // Ensure there's a NavMeshAgent component attached to the monster
         agent = monster.GetComponent<NavMeshAgent>();
         if (agent == null)
         {
             Debug.LogError("NavMeshAgent component is missing from the monster!");
         }
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     public override void Enter()
@@ -22,7 +25,8 @@ public class AggressiveState : MonsterState
         base.Enter();
         Debug.Log("Monster becomes aggressive!");
 
-        // Configure the NavMeshAgent for aggressive behavior
+        aggressiveTimer = 0;  // Reset the aggression timer
+
         if (agent != null)
         {
             agent.speed = monsterData.moveSpeed;  // Set the chasing speed
@@ -34,18 +38,17 @@ public class AggressiveState : MonsterState
     {
         if (agent == null) return;
 
-        Transform playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        // Update the timer each frame
+        aggressiveTimer += Time.deltaTime;
 
-        // Check the distance to the player
-        if (Vector3.Distance(monster.transform.position, playerTransform.position) > monsterData.detectionRadius)
+        // Set the destination of the NavMeshAgent to the player's position continuously
+        agent.SetDestination(playerTransform.position);
+
+        // Check if the conditions to stop being aggressive are met
+        if (Vector3.Distance(monster.transform.position, playerTransform.position) > monsterData.detectionRadius && aggressiveTimer > minimumAggressionTime)
         {
-            // If the player is outside the detection radius, switch to exploring state
+            // If the player is outside the detection radius and the minimum time has elapsed
             monster.GetComponent<MonsterController>().ChangeState(new ExploringState(monster, monsterData, monster.GetComponent<MonsterController>().explorationTarget));
-        }
-        else
-        {
-            // Set the destination of the NavMeshAgent to the player's position
-            agent.SetDestination(playerTransform.position);
         }
     }
 
@@ -54,7 +57,6 @@ public class AggressiveState : MonsterState
         base.Exit();
         Debug.Log("Monster stops being aggressive.");
 
-        // Optionally stop the NavMeshAgent when not aggressive
         if (agent.isActiveAndEnabled)
         {
             agent.ResetPath();

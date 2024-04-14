@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MonsterController : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class MonsterController : MonoBehaviour
     [SerializeField] private Health healthComponent;
     private Collider[] hitColliders;
     [SerializeField] public Transform explorationTarget;
+    [SerializeField] NavMeshAgent agent;
+    [SerializeField] NavMeshPathVisualizer visualizer;
 
     void Start()
     {
@@ -59,7 +62,10 @@ public class MonsterController : MonoBehaviour
 
     private void HandleDeath()
     {
-        this.enabled = false;
-        healthComponent.enabled = false;
+        Destroy(this);
+        Destroy(healthComponent);
+        Destroy(visualizer);
+        Destroy(agent,.01f); // Because of dumb thing about visualizer needing it...
+        agent.isStopped = true;
     }
 }
