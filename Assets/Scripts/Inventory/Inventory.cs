@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public BaseItem[] startItems;
+    public SharedItemData[] startItems;
     public List<InventorySlot> inventorySlots;
     public GameObject inventoryItemPrefab;
     [SerializeField] private float inventoryWeightLimit;
@@ -15,12 +15,12 @@ public class Inventory : MonoBehaviour
     public delegate void InventoryChanged();
     public event InventoryChanged OnInventoryChanged;
 
-    public delegate void ItemDropped(BaseItem item, int numItems);
+    public delegate void ItemDropped(SharedItemData sharedItemData, int numItems);
     public event ItemDropped OnItemDropped;
 
     protected void Start()
     {
-        foreach (BaseItem startItem in startItems)
+        foreach (SharedItemData startItem in startItems)
         {
             AddItem(startItem);
         }
@@ -51,7 +51,7 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        BaseItem itemPickedUp = item.GetBaseItem();
+        SharedItemData itemPickedUp = item.GetBaseItem();
         bool successCheck = AddItem(itemPickedUp, numItems);
 
         if (partialOnly)
@@ -63,17 +63,17 @@ public class Inventory : MonoBehaviour
         return successCheck && !partialOnly;
     }
 
-    public bool AddItem(BaseItem item, int numItems = 1)
+    public bool AddItem(SharedItemData sharedItemData, int numItems = 1)
     {
         float temp = GetInventoryWeightLimit();
-        if (item.Weight * numItems > temp - currentWeight)
+        if (sharedItemData.Weight * numItems > temp - currentWeight)
         {
             return false; // Not enough weight capacity to add these items
         }
 
         bool updated = false;
         // Check if any slot already has the item and can hold more
-        if (item.stackable)
+        if (sharedItemData.stackable)
         {
             InventorySlot firstEmptySlot = null;
             for (int i = 0; i < inventorySlots.Count; i++)
@@ -82,14 +82,14 @@ public class Inventory : MonoBehaviour
                 InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
 
                 // Check if the slot already contains the item and is not full
-                if (itemInSlot != null && itemInSlot.item == item)
+                if (itemInSlot != null && itemInSlot.sharedItemData == sharedItemData)
                 {
-                    int spaceLeftInSlot = itemInSlot.item.maxStackSize - itemInSlot.GetItemCount();
+                    int spaceLeftInSlot = itemInSlot.sharedItemData.maxStackSize - itemInSlot.GetItemCount();
                     if (spaceLeftInSlot > 0)
                     {
                         int itemsToAdd = Mathf.Min(spaceLeftInSlot, numItems);
                         itemInSlot.ChangeItemCount(itemsToAdd);
-                        UpdateWeight(item.Weight * itemsToAdd);
+                        UpdateWeight(sharedItemData.Weight * itemsToAdd);
                         numItems -= itemsToAdd;
                         updated = true;
 
@@ -112,7 +112,7 @@ public class Inventory : MonoBehaviour
             // If there are still items left to add, use the first empty slot
             if (firstEmptySlot != null && numItems > 0)
             {
-                CreateNewItem(item, firstEmptySlot, numItems);
+                CreateNewItem(sharedItemData, firstEmptySlot, numItems);
                 if (OnInventoryChanged != null)
                     OnInventoryChanged();
                 return true;
@@ -125,7 +125,7 @@ public class Inventory : MonoBehaviour
             {
                 if (!slot.HasItem())
                 {
-                    CreateNewItem(item, slot, numItems);
+                    CreateNewItem(sharedItemData, slot, numItems);
                     if (OnInventoryChanged != null)
                         OnInventoryChanged();
                     return true;
@@ -160,7 +160,7 @@ public class Inventory : MonoBehaviour
             InventoryItem itemInSlot = inventorySlot.GetItemInSlot();
             if (itemInSlot != null && inventorySlot.GetItemInSlot().GetItemType() == type)
             {
-                if (inventorySlot.GetItemInSlot().item.stackable)
+                if (inventorySlot.GetItemInSlot().sharedItemData.stackable)
                 {
                     numItems += inventorySlot.GetItemInSlot().GetItemCount();
                 } else
@@ -178,7 +178,7 @@ public class Inventory : MonoBehaviour
     }
 
     // TODO:
-    public bool RemoveItem(BaseItem item)
+    public bool RemoveItem(SharedItemData sharedItemData)
     {
         Debug.Log("This Function has NOT Been Implemented");
         return true;
@@ -194,7 +194,7 @@ public class Inventory : MonoBehaviour
                 if (itemInSlot.GetItemCount() > numItems)
                 {
                     itemInSlot.ChangeItemCount(-numItems);
-                    UpdateWeight(-(numItems * itemInSlot.item.Weight));
+                    UpdateWeight(-(numItems * itemInSlot.sharedItemData.Weight));
                     return true;
                 } else if (itemInSlot.GetItemCount() == numItems)
                 {
@@ -212,12 +212,12 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
-    protected void CreateNewItem(BaseItem item, InventorySlot inventorySlot, int numberOfItems = 1)
+    protected void CreateNewItem(SharedItemData sharedItemData, InventorySlot inventorySlot, int numberOfItems = 1)
     {
         GameObject newItem = Instantiate(inventoryItemPrefab, inventorySlot.itemSlot);
         InventoryItem inventoryItem = newItem.GetComponent<InventoryItem>();
-        inventoryItem.name = item.DisplayName;
-        inventoryItem.InitializeItem(item);
+        inventoryItem.name = sharedItemData.DisplayName;
+        inventoryItem.InitializeItem(sharedItemData);
         inventoryItem.ChangeItemCount(numberOfItems);
         inventorySlot.SetItemInSlotAfterDrag(inventoryItem);
     }
@@ -269,9 +269,9 @@ public class Inventory : MonoBehaviour
         // For now only used in the player inventory class
     }
 
-    public void DropItem(BaseItem item, int numItems)
+    public void DropItem(SharedItemData sharedItemData, int numItems)
     {
         if (OnItemDropped != null)
-            OnItemDropped(item, numItems);
+            OnItemDropped(sharedItemData, numItems);
     }
 }

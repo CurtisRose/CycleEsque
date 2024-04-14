@@ -95,11 +95,11 @@ public class PlayerInteractionController : MonoBehaviour
 
     void UpdatePickupPromptInfo()
     {
-        BaseItem item = itemLookingAt.GetBaseItem();
-        itemName.text = item.DisplayName;
+        SharedItemData sharedItemData = itemLookingAt.GetBaseItem();
+        itemName.text = sharedItemData.DisplayName;
         itemWeight.text = (itemLookingAt.GetWeight()).ToString();
-        itemRarity.text = item.Rarity.ToString();
-        itemRarity.color = RarityColorManager.Instance.GetColorByRarity(item.Rarity);
+        itemRarity.text = sharedItemData.Rarity.ToString();
+        itemRarity.color = RarityColorManager.Instance.GetColorByRarity(sharedItemData.Rarity);
         float roomInBackpack = playerInventory.GetInventoryWeightLimit() - playerInventory.currentWeight;
         if (roomInBackpack >= itemLookingAt.GetWeight())
         {

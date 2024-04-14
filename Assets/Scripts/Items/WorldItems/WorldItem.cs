@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class WorldItem : MonoBehaviour
 {
-    [SerializeField] protected BaseItem item;
+    [SerializeField] protected SharedItemData sharedItemData;
     Rigidbody rigidBody;
 
     [SerializeField] float timeDelay = 1.0f;
@@ -17,7 +17,7 @@ public class WorldItem : MonoBehaviour
     {
         rigidBody = GetComponent<Rigidbody>();
         InitializeItemFromBaseItemData();
-        if (!item.stackable)
+        if (!sharedItemData.stackable)
         {
             numItemsInStack = 1;
         }
@@ -25,15 +25,15 @@ public class WorldItem : MonoBehaviour
 
     protected virtual void Start()
     {
-        if (item.ColorGameObjectBasedOnRarity)
+        if (sharedItemData.ColorGameObjectBasedOnRarity)
         {
-            GetComponentInChildren<Renderer>().material.color = RarityColorManager.Instance.GetColorByRarity(item.Rarity);
+            GetComponentInChildren<Renderer>().material.color = RarityColorManager.Instance.GetColorByRarity(sharedItemData.Rarity);
         }
     }
 
     public float GetWeight()
     {
-        return item.Weight * numItemsInStack;
+        return sharedItemData.Weight * numItemsInStack;
     }
 
     protected virtual void InitializeItemFromBaseItemData()
@@ -61,9 +61,9 @@ public class WorldItem : MonoBehaviour
         return true;
     }
 
-    public BaseItem GetBaseItem()
+    public SharedItemData GetBaseItem()
     {
-        return item;
+        return sharedItemData;
     }
 
     public void SetUninteractableTemporarily()
@@ -112,8 +112,8 @@ public class WorldItem : MonoBehaviour
         }
     }
 
-    public void UpdateBaseItemData(BaseItem item)
+    public void UpdateBaseItemData(SharedItemData sharedItemData)
     {
-        this.item = item;
+        this.sharedItemData = sharedItemData;
     }
 }

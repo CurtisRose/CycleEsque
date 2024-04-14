@@ -71,8 +71,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 if ((this as GearSlot || otherSlot as GearSlot) && itemInSlot.GetItemType() == ItemType.BACKPACK)
                 {
                     weightLimitAfterSwap += 
-                        ((BackpackItem)itemAlreadyHere.item).CarryCapacity -
-                        ((BackpackItem)itemComingIn.item).CarryCapacity;
+                        ((BackpackItem)itemAlreadyHere.sharedItemData).CarryCapacity -
+                        ((BackpackItem)itemComingIn.sharedItemData).CarryCapacity;
                 }
 
                 weightAfterSwap = weightAfterSwap + itemComingIn.GetTotalWeight() - itemAlreadyHere.GetTotalWeight();
@@ -83,8 +83,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 if ((this as GearSlot || otherSlot as GearSlot) && itemInSlot.GetItemType() == ItemType.BACKPACK)
                 {
                     weightLimitAfterSwap +=
-                        ((BackpackItem)itemComingIn.item).CarryCapacity -
-                        ((BackpackItem)itemAlreadyHere.item).CarryCapacity;
+                        ((BackpackItem)itemComingIn.sharedItemData).CarryCapacity -
+                        ((BackpackItem)itemAlreadyHere.sharedItemData).CarryCapacity;
                 }
 
                 weightAfterSwap = weightAfterSwap + itemAlreadyHere.GetTotalWeight() - itemComingIn.GetTotalWeight();
@@ -105,10 +105,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 {
                     float weightLimitAfterSwap = inventory.GetInventoryWeightLimit();
                     // If the this slot is the backpack slot then recalculate the inventory size
-                    if (itemComingIn.item.ItemType == ItemType.BACKPACK)
+                    if (itemComingIn.sharedItemData.ItemType == ItemType.BACKPACK)
                     {
                         weightLimitAfterSwap -=
-                            ((BackpackItem)itemComingIn.item).CarryCapacity;
+                            ((BackpackItem)itemComingIn.sharedItemData).CarryCapacity;
                     }
 
                     if (inventory.currentWeight + itemComingIn.GetTotalWeight() > weightLimitAfterSwap)
@@ -174,7 +174,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 inventory.UpdateWeight(inventoryItem.GetTotalWeight());
             }
             weightText.text = inventoryItem.GetTotalWeight().ToString();
-            if (inventoryItem.item.stackable)
+            if (inventoryItem.sharedItemData.stackable)
             {
                 stackSizeText.text = inventoryItem.GetItemCount().ToString();
             }
@@ -183,7 +183,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 stackSizeText.text = "";
             }
             inventoryItem.SetParentAfterDrag(itemSlot);
-            SetImageColor(inventoryItem.item.Rarity);
+            SetImageColor(inventoryItem.sharedItemData.Rarity);
         }
         if (itemInSlot != null)
         {
@@ -270,7 +270,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     public void DropItem()
     {
-        BaseItem item = itemInSlot.item;
+        SharedItemData item = itemInSlot.sharedItemData;
         int numItems = itemInSlot.GetItemCount();
         RemoveItemFromSlot();
         inventory.DropItem(item, numItems);

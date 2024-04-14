@@ -7,7 +7,7 @@ public enum Rarity { COMMON, UNCOMMON, RARE, EPIC, LEGENDARY, EXOTIC };
 public enum ItemType { PRIMARY_WEAPON, HELMET, ARMOR, BACKPACK, AMMO, OTHER };
 
 [CreateAssetMenu(fileName = "New Weapon Item", menuName = "Items/BaseItem")]
-public class BaseItem : ScriptableObject
+public class SharedItemData : ScriptableObject
 {
     [field: SerializeField] public string DisplayName { get; private set; }
     [field: SerializeField] public string ItemDescription { get; private set; }

@@ -263,10 +263,10 @@ public class PlayerGearController : MonoBehaviour
                 //InventoryItem.CurrentHoveredItem.item
                 InventoryItem inventoryItemBeingDropped = InventoryItem.CurrentHoveredItem;
                 inventoryItemBeingDropped.GetCurrentInventorySlot().RemoveItemFromSlot();
-                DropItem(InventoryItem.CurrentHoveredItem.item, inventoryItemBeingDropped.GetItemCount());
+                DropItem(InventoryItem.CurrentHoveredItem.sharedItemData, inventoryItemBeingDropped.GetItemCount());
                 Destroy(InventoryItem.CurrentHoveredItem.gameObject);
 
-                if (inventoryItemBeingDropped.item.ItemType == ItemType.PRIMARY_WEAPON)
+                if (inventoryItemBeingDropped.sharedItemData.ItemType == ItemType.PRIMARY_WEAPON)
                 {
                     if (OnLoadOutChanged != null)
                     {
@@ -277,7 +277,7 @@ public class PlayerGearController : MonoBehaviour
         }
     }
 
-    private void DropItem(BaseItem item, int numItems)
+    private void DropItem(SharedItemData item, int numItems)
     {
         WorldItem itemBeingDropped = ItemSpawner.Instance.SpawnItem(item, throwPosition.position, Quaternion.identity);
         //WorldItem itemBeingDropped = Instantiate<WorldItem>(InventoryItem.CurrentHoveredItem.item.itemPrefab, throwPosition.position, Quaternion.identity);
@@ -343,7 +343,7 @@ public class PlayerGearController : MonoBehaviour
         if (gearSlot.HasItem())
         {
             //WorldItem itemBeingDropped = ItemSpawner.Instance.SpawnItem(gearSlot.GetItemInSlot().item, Vector3.zero);
-            gearItems[(int)identifier] = ItemSpawner.Instance.SpawnItem(gearSlot.GetItemInSlot().item, gearStorageLocations[(int)identifier]);
+            gearItems[(int)identifier] = ItemSpawner.Instance.SpawnItem(gearSlot.GetItemInSlot().sharedItemData, gearStorageLocations[(int)identifier]);
             //gearItems[(int)identifier] = Instantiate<WorldItem>(gearSlot.GetItemInSlot().item.itemPrefab, gearStorageLocations[(int)identifier]);
             gearItems[(int)identifier].Equip();
             if (selectedFirstSlot)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Gun", menuName = "Items/Gun")]
-public class GunItem : BaseItem
+public class GunItem : SharedItemData
 {
     // Max number of rounds in magazine
     [field: SerializeField] public int MagazineCapacity { get; private set; }

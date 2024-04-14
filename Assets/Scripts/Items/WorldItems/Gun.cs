@@ -47,14 +47,14 @@ public class Gun : WorldItem
     protected override void InitializeItemFromBaseItemData()
     {
         base.InitializeItemFromBaseItemData();
-        magazineCapacity = ((GunItem)item).MagazineCapacity;
-        fireRate = ((GunItem)item).RateOfFire;
-        recoilAmountY = ((GunItem)item).recoilAmountY;
-        maxRecoilY = ((GunItem)item).maxRecoilY;
-        recoilAmountX = ((GunItem)item).recoilAmountX;
-        maxRecoilX = ((GunItem)item).maxRecoilX;
-        spreadAmount = ((GunItem)item).spreadAmount;
-        returnSpeed = ((GunItem)item).returnSpeed;
+        magazineCapacity = ((GunItem)sharedItemData).MagazineCapacity;
+        fireRate = ((GunItem)sharedItemData).RateOfFire;
+        recoilAmountY = ((GunItem)sharedItemData).recoilAmountY;
+        maxRecoilY = ((GunItem)sharedItemData).maxRecoilY;
+        recoilAmountX = ((GunItem)sharedItemData).recoilAmountX;
+        maxRecoilX = ((GunItem)sharedItemData).maxRecoilX;
+        spreadAmount = ((GunItem)sharedItemData).spreadAmount;
+        returnSpeed = ((GunItem)sharedItemData).returnSpeed;
     }
 
     public override bool Use()
