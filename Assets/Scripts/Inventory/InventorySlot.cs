@@ -267,4 +267,12 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     {
         return hasItem;
     }
+
+    public void DropItem()
+    {
+        BaseItem item = itemInSlot.item;
+        int numItems = itemInSlot.GetItemCount();
+        RemoveItemFromSlot();
+        inventory.DropItem(item, numItems);
+    }
 }

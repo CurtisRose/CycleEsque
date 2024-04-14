@@ -15,6 +15,9 @@ public class Inventory : MonoBehaviour
     public delegate void InventoryChanged();
     public event InventoryChanged OnInventoryChanged;
 
+    public delegate void ItemDropped(BaseItem item, int numItems);
+    public event ItemDropped OnItemDropped;
+
     protected void Start()
     {
         foreach (BaseItem startItem in startItems)
@@ -266,17 +269,9 @@ public class Inventory : MonoBehaviour
         // For now only used in the player inventory class
     }
 
-    // For Testing
-    protected void RemoveAllItemsFromEachSlot()
+    public void DropItem(BaseItem item, int numItems)
     {
-        foreach (InventorySlot inventorySlot in inventorySlots)
-        {
-            if (inventorySlot.GetItemInSlot() != null)
-            {
-                InventoryItem item = inventorySlot.GetItemInSlot();
-                inventorySlot.RemoveItemFromSlot();
-                Destroy(item.gameObject);
-            }
-        }
+        if (OnItemDropped != null)
+            OnItemDropped(item, numItems);
     }
 }

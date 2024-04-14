@@ -57,6 +57,7 @@ public class PlayerGearController : MonoBehaviour
             gearSlot.OnGearSlotsChanged += GearSlotChange;
         }
         playerInventory.OnInventoryChanged += OnInventoryChangedPassThrough;
+        playerInventory.OnItemDropped += DropItem;
     }
 
     private void Start()
@@ -262,13 +263,7 @@ public class PlayerGearController : MonoBehaviour
                 //InventoryItem.CurrentHoveredItem.item
                 InventoryItem inventoryItemBeingDropped = InventoryItem.CurrentHoveredItem;
                 inventoryItemBeingDropped.GetCurrentInventorySlot().RemoveItemFromSlot();
-                WorldItem itemBeingDropped = ItemSpawner.Instance.SpawnItem(InventoryItem.CurrentHoveredItem.item, throwPosition.position, Quaternion.identity);
-                //WorldItem itemBeingDropped = Instantiate<WorldItem>(InventoryItem.CurrentHoveredItem.item.itemPrefab, throwPosition.position, Quaternion.identity);
-                // Maybe yeet it a little bit
-                itemBeingDropped.GetComponent<Rigidbody>().AddForce(head.forward * throwForce * Time.deltaTime, ForceMode.Impulse);
-                // This is so the pick up menu doesn't trigger immediately.
-                itemBeingDropped.SetUninteractableTemporarily();
-                itemBeingDropped.SetNumberOfStartingItems(inventoryItemBeingDropped.GetItemCount());
+                DropItem(InventoryItem.CurrentHoveredItem.item, inventoryItemBeingDropped.GetItemCount());
                 Destroy(InventoryItem.CurrentHoveredItem.gameObject);
 
                 if (inventoryItemBeingDropped.item.ItemType == ItemType.PRIMARY_WEAPON)
@@ -280,6 +275,17 @@ public class PlayerGearController : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void DropItem(BaseItem item, int numItems)
+    {
+        WorldItem itemBeingDropped = ItemSpawner.Instance.SpawnItem(item, throwPosition.position, Quaternion.identity);
+        //WorldItem itemBeingDropped = Instantiate<WorldItem>(InventoryItem.CurrentHoveredItem.item.itemPrefab, throwPosition.position, Quaternion.identity);
+        // Maybe yeet it a little bit
+        itemBeingDropped.GetComponent<Rigidbody>().AddForce(head.forward * throwForce * Time.deltaTime, ForceMode.Impulse);
+        // This is so the pick up menu doesn't trigger immediately.
+        itemBeingDropped.SetUninteractableTemporarily();
+        itemBeingDropped.SetNumberOfStartingItems(numItems);
     }
 
     private void GearSlotChange(GearSlot gearSlot)

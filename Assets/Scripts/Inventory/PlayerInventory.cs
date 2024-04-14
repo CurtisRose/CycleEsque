@@ -45,10 +45,6 @@ public class PlayerInventory : Inventory
                 MenuManager.Instance.CloseMenu(inventoryMenu);
             }
         }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            RemoveAllItemsFromEachSlot();
-        }
         if (Input.GetKey(KeyCode.E))
         {
             AddItem(startItems[5], 1);

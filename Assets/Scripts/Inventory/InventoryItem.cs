@@ -69,11 +69,32 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             return;
         }
 
-        currentInventorySlot.SetItemInSlotAfterDrag(this);
-        currentInventorySlot.EndInventoryItemMovedPassThrough(this);
-
-        DoThingsAfterMove();
+        // Check if the drag ended outside the inventory UI, i.e., no UI element was under the pointer
+        GameObject droppedOn = eventData.pointerCurrentRaycast.gameObject;
+        if (droppedOn != null && IsPartOfInventoryUI(droppedOn))
+        {
+            currentInventorySlot.SetItemInSlotAfterDrag(this);
+            currentInventorySlot.EndInventoryItemMovedPassThrough(this);
+            DoThingsAfterMove();
+        }
+        else
+        {
+            //currentInventorySlot.RemoveItemFromSlot();
+            currentInventorySlot.DropItem();
+            Destroy(this.gameObject);
+        }
         itemImage.raycastTarget = true;
+    }
+
+    private bool IsPartOfInventoryUI(GameObject obj)
+    {
+        while (obj != null)
+        {
+            if (obj.CompareTag("InventoryUI"))
+                return true;
+            obj = obj.transform.parent?.gameObject;
+        }
+        return false;
     }
 
     public void OnPointerClick(PointerEventData eventData)

@@ -1186,6 +1186,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1792069281}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1810556356 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7809575511066420092, guid: 9bc62157e5d63394da56c7be13a066aa,
+    type: 3}
+  m_PrefabInstance: {fileID: 520501222298058612}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38316627e8ec11c47a8cc4f0807d52dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1836195115 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3167376812800278590, guid: fe93e72082719794daa53c124b9b5e1f,
@@ -1557,6 +1569,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4825388136055349772, guid: 9bc62157e5d63394da56c7be13a066aa,
+        type: 3}
+      propertyPath: visualizer
+      value: 
+      objectReference: {fileID: 1810556356}
     - target: {fileID: 4825388136055349772, guid: 9bc62157e5d63394da56c7be13a066aa,
         type: 3}
       propertyPath: explorationTarget
