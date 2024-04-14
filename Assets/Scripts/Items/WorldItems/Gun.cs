@@ -57,6 +57,25 @@ public class Gun : WorldItem
         returnSpeed = ((GunItem)sharedItemData).returnSpeed;
     }
 
+    public override ItemInstance CreateItemInstance()
+    {
+        ItemInstance itemInstance = base.CreateItemInstance();
+        itemInstance.SetProperty("AmmoCount", numberOfRounds);
+        return itemInstance;
+    }
+
+    public override void InitializeFromItemInstance(ItemInstance instance)
+    {
+        base.InitializeFromItemInstance(instance);
+        if (instance.uniqueData.TryGetValue("AmmoCount", out object ammo))
+        {
+            numberOfRounds = (int)ammo;
+        } else
+        {
+            numberOfRounds = 0;
+        }
+    }
+
     public override bool Use()
     {
         return Shoot();

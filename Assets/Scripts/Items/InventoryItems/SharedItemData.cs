@@ -21,4 +21,6 @@ public class SharedItemData : ScriptableObject
     [field: SerializeField] public int maxStackSize { get; private set; }
 
     [field: SerializeField] public bool ColorGameObjectBasedOnRarity { get; private set; }
+
+    public List<string> allowedKeys = new List<string>();
 }

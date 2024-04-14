@@ -366,7 +366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01f2536804b157a419c3d3ec20ac4cc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 94a51b5ebdd69db48ba42c2ca07057f4, type: 2}
+  sharedItemData: {fileID: 11400000, guid: 94a51b5ebdd69db48ba42c2ca07057f4, type: 2}
   timeDelay: 1
   shootPositionTransform: {fileID: 3816439002682325706}
   projectilePrefab: {fileID: 7343739617303108452, guid: 9ce584057e259bb47b9937b06cfa6540,

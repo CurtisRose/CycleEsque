@@ -6,6 +6,8 @@ using UnityEngine;
 public class WorldItem : MonoBehaviour
 {
     [SerializeField] protected SharedItemData sharedItemData;
+    public Dictionary<string, object> uniqueAttributes;
+
     Rigidbody rigidBody;
 
     [SerializeField] float timeDelay = 1.0f;
@@ -29,6 +31,23 @@ public class WorldItem : MonoBehaviour
         {
             GetComponentInChildren<Renderer>().material.color = RarityColorManager.Instance.GetColorByRarity(sharedItemData.Rarity);
         }
+    }
+
+    // Function to create an ItemInstance from this WorldItem
+    public virtual ItemInstance CreateItemInstance()
+    {
+        var instance = new ItemInstance(sharedItemData);
+        foreach (var key in sharedItemData.allowedKeys)
+        {
+            instance.SetProperty(key, uniqueAttributes[key]);
+        }
+        return instance;
+    }
+
+    public virtual void InitializeFromItemInstance(ItemInstance instance)
+    {
+        sharedItemData = instance.sharedData;
+        uniqueAttributes = new Dictionary<string, object>(instance.uniqueData);
     }
 
     public float GetWeight()
