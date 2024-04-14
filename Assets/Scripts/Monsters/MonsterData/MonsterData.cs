@@ -8,4 +8,5 @@ public class MonsterData : ScriptableObject
     public float exploringRadius = 10f;
     public float pauseTime = 2f;
     public float detectionRadius = 15f;
+    public float fleeDistance = 20f;
 }
