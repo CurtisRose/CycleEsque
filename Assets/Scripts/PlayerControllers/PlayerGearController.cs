@@ -23,6 +23,7 @@ public class PlayerGearController : MonoBehaviour
     [SerializeField] Transform hipFirePosition;
     [SerializeField] Transform ADSFirePosition;
     [SerializeField] float timeToADS = 0.5f;
+    private Coroutine currentTransitionCoroutine;
 
     // Crosshair Aimer Test
     [SerializeField] CrosshairController crosshairController;
@@ -56,6 +57,11 @@ public class PlayerGearController : MonoBehaviour
             gearSlot.OnGearSlotsChanged += GearSlotChange;
         }
         playerInventory.OnInventoryChanged += OnInventoryChangedPassThrough;
+    }
+
+    private void Start()
+    {
+        
     }
 
     public void OnInventoryChangedPassThrough()
@@ -393,26 +399,32 @@ public class PlayerGearController : MonoBehaviour
         if (Character.disableUserClickingInputStatus) return;
         if (gunInHands == null) return;
         StopCoroutine("MoveWeapon");
-        StartCoroutine(MoveWeapon(true));
+        currentTransitionCoroutine = StartCoroutine(MoveWeapon(true));
     }
 
     public void MoveToHipFire()
     {
         StopCoroutine("MoveWeapon");
-        StartCoroutine(MoveWeapon(false));
+        currentTransitionCoroutine = StartCoroutine(MoveWeapon(false));
     }
 
-    IEnumerator MoveWeapon(bool ADS)
+    IEnumerator MoveWeapon(bool toADS)
     {
-            float time = 0;
-        Vector3 startLocalPosition = weaponPositionHands.localPosition;  // Start from the current local position
-        Quaternion startLocalRotation = weaponPositionHands.localRotation;  // Start from the current local rotation
-        Transform targetTransform = ADS ? ADSFirePosition : hipFirePosition;  // Determine target based on ADS state
+        if (currentTransitionCoroutine != null)
+        {
+            StopCoroutine(currentTransitionCoroutine); // Stop any ongoing transition
+        }
+
+        float time = 0;
+        Vector3 startLocalPosition = weaponPositionHands.localPosition; // Start from the current local position
+        Quaternion startLocalRotation = weaponPositionHands.localRotation; // Start from the current local rotation
+
+        Transform targetTransform = toADS ? ADSFirePosition : hipFirePosition;
 
         while (time < timeToADS)
         {
-            float t = time / timeToADS;  // Normalize time
-            t = Mathf.SmoothStep(0.0f, 1.0f, t);  // Apply SmoothStep for smoother interpolation
+            float t = time / timeToADS; // Normalize time
+            t = Mathf.SmoothStep(0.0f, 1.0f, t); // Apply SmoothStep for smoother interpolation
 
             weaponPositionHands.localPosition = Vector3.Lerp(startLocalPosition, targetTransform.localPosition, t);
             weaponPositionHands.localRotation = Quaternion.Lerp(startLocalRotation, targetTransform.localRotation, t);
@@ -421,7 +433,6 @@ public class PlayerGearController : MonoBehaviour
             yield return null;
         }
 
-        // Ensure the final position and rotation are exactly as the target
         weaponPositionHands.localPosition = targetTransform.localPosition;
         weaponPositionHands.localRotation = targetTransform.localRotation;
     }

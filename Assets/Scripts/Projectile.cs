@@ -22,6 +22,10 @@ public class Projectile : MonoBehaviour
         {
             damageableObject.TakeDamage(damage, armorPenetration);
         }
+
+
+        PlayImpactEffect();
+
         ReturnToPool();
     }
 
@@ -33,5 +37,10 @@ public class Projectile : MonoBehaviour
     private void OnDisable()
     {
         CancelInvoke();
+    }
+
+    private void PlayImpactEffect()
+    {
+        
     }
 }
