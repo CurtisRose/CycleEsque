@@ -8,7 +8,6 @@ public class AggressiveState : MonsterState
     private NavMeshAgent agent;  // Reference to the NavMeshAgent component
     private Transform playerTransform;
     private float aggressiveTimer;  // Timer to track aggression duration
-    private float minimumAggressionTime = 30.0f;  // Minimum time to stay aggressive
 
     public AggressiveState(GameObject monster, MonsterData monsterData) : base(monster, monsterData)
     {
@@ -45,7 +44,7 @@ public class AggressiveState : MonsterState
         agent.SetDestination(playerTransform.position);
 
         // Check if the conditions to stop being aggressive are met
-        if (Vector3.Distance(monster.transform.position, playerTransform.position) > monsterData.detectionRadius && aggressiveTimer > minimumAggressionTime)
+        if (Vector3.Distance(monster.transform.position, playerTransform.position) > monsterData.detectionRadius && aggressiveTimer > monsterData.minimumAggressionTime)
         {
             // If the player is outside the detection radius and the minimum time has elapsed
             monster.GetComponent<MonsterController>().ChangeState(new ExploringState(monster, monsterData, monster.GetComponent<MonsterController>().explorationTarget));

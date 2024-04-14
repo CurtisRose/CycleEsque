@@ -9,4 +9,5 @@ public class MonsterData : ScriptableObject
     public float pauseTime = 2f;
     public float detectionRadius = 15f;
     public float fleeDistance = 20f;
+    public float minimumAggressionTime = 30f;
 }
