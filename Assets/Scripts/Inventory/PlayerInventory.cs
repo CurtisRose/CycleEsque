@@ -45,13 +45,13 @@ public class PlayerInventory : Inventory
                 MenuManager.Instance.CloseMenu(inventoryMenu);
             }
         }
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.P))
         {
             RemoveAllItemsFromEachSlot();
         }
         if (Input.GetKey(KeyCode.E))
         {
-            AddItem(startItems[5]);
+            AddItem(startItems[5], 1);
         }
     }
 
@@ -110,8 +110,10 @@ public class PlayerInventory : Inventory
 
         // First, anything that is other, can't be equipped.
         // Later, there may be other "Types" that can't be equipped, but for now this works.
-        if (itemToEquip.GetItemType() == ItemType.OTHER)
+        // Find the earliest slot to quick sort it in your inventory
+        if (itemToEquip.GetItemType() >= ItemType.AMMO)
         {
+            AddItemToEarliestEmptySlot(inventorySlot.GetItemInSlot());
             return;
         }
 
@@ -172,6 +174,9 @@ public class PlayerInventory : Inventory
 
             if (weightCheck)
             {
+                // First move the item to an earlier slot.
+                AddItemToEarliestEmptySlot(itemToEquip);
+                // Then swap them, that way the gear ends up in the earlier slot
                 gearSlotMatch.Swap(itemToEquip);
             }
         } else // If the slot was a gear slot then swap into inventory

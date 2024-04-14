@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbbbe840dac63fe46b2cfa83165c749f, type: 3}
+  m_Name: ArmorCommon
+  m_EditorClassIdentifier: 
+  <DisplayName>k__BackingField: Common Armor
+  <ItemDescription>k__BackingField: 
+  <ItemType>k__BackingField: 2
+  <Rarity>k__BackingField: 0
+  <SmallImage>k__BackingField: {fileID: 21300000, guid: 7ae76269ee861bc478cc45b42bae2222,
+    type: 3}
+  <LargeImage>k__BackingField: {fileID: 0}
+  <Weight>k__BackingField: 40
+  <stackable>k__BackingField: 0
+  <maxStackSize>k__BackingField: 0
+  <ColorGameObjectBasedOnRarity>k__BackingField: 1
+  <AmountOfArmor>k__BackingField: 100
+  <DefenseValue>k__BackingField: 1

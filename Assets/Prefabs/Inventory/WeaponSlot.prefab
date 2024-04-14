@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: Weapon 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4d0bb7337f597634b94b9005947e8e28, type: 2}
   m_sharedMaterial: {fileID: 7503143391497007800, guid: 4d0bb7337f597634b94b9005947e8e28,
@@ -282,12 +282,12 @@ PrefabInstance:
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 50
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
@@ -327,12 +327,12 @@ PrefabInstance:
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -150
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
@@ -368,12 +368,12 @@ PrefabInstance:
     - target: {fileID: 4647661812781517577, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 290
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 4647661812781517577, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 90
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 7381897466615531158, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
@@ -436,8 +436,8 @@ MonoBehaviour:
   itemBackgroundImage: {fileID: 307038011243151616}
   itemBorderImage: {fileID: 307038010992874148}
   partOfInventoryWeight: 0
-  UseLargeImage: 0
-  slotContributesToWeight: 1
+  UseLargeImage: 1
+  slotContributesToWeight: 0
   itemType: 0
   slotIndicationText: {fileID: 4852069576726618893}
   indicationImage: {fileID: 2423295843265513207}

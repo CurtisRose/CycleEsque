@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: BackpackUncommon
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Backpack Uncommon
+  <ItemDescription>k__BackingField: 
   <ItemType>k__BackingField: 3
   <Rarity>k__BackingField: 1
-  <SmallImage>k__BackingField: {fileID: 21300000, guid: 57fddd8b9308e014ca623b7e8a612e1f,
+  <SmallImage>k__BackingField: {fileID: 21300000, guid: 0d6181af4156a7847936885940187ff7,
     type: 3}
   <LargeImage>k__BackingField: {fileID: 0}
   <Weight>k__BackingField: 20
