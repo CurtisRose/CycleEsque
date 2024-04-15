@@ -31,23 +31,23 @@ public class ItemSpawner : MonoBehaviour
         }
     }
 
-    public WorldItem SpawnItem(SharedItemData sharedItemData, Vector3 position, Quaternion rotation)
+    public WorldItem SpawnItem(ItemInstance itemInstance, Vector3 position, Quaternion rotation)
     {
-        if (itemPrefabMap.TryGetValue(sharedItemData, out WorldItem prefab))
+        if (itemPrefabMap.TryGetValue(itemInstance.sharedData, out WorldItem prefab))
         {
             WorldItem newItem = Instantiate(prefab, position, rotation);
-            newItem.UpdateBaseItemData(sharedItemData); // Assuming you have this method in WorldItem
+            newItem.InitializeFromItemInstance(itemInstance); // Assuming you have this method in WorldItem
             return newItem;
         }
         return null;
     }
 
-    public WorldItem SpawnItem(SharedItemData sharedItemData, Transform parent)
+    public WorldItem SpawnItem(ItemInstance itemInstance, Transform parent)
     {
-        if (itemPrefabMap.TryGetValue(sharedItemData, out WorldItem prefab))
+        if (itemPrefabMap.TryGetValue(itemInstance.sharedData, out WorldItem prefab))
         {
             WorldItem newItem = Instantiate(prefab, parent);
-            newItem.UpdateBaseItemData(sharedItemData); // Assuming you have this method in WorldItem
+            newItem.InitializeFromItemInstance(itemInstance); // Assuming you have this method in WorldItem
             return newItem;
         }
         return null;

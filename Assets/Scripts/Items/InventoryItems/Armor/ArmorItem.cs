@@ -7,4 +7,11 @@ public class ArmorItem : SharedItemData
 {
     [field: SerializeField] public float AmountOfArmor { get; private set; }
     [field: SerializeField] public int DefenseValue { get; private set; }
+
+    protected override void PopulateAllowedKeys()
+    {
+        base.PopulateAllowedKeys();
+
+        allowedKeys.Add("ArmorRemaining");
+    }
 }

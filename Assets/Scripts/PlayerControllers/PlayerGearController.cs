@@ -122,6 +122,16 @@ public class PlayerGearController : MonoBehaviour
                     {
                         ShowCrosshair();
                         crosshairController.Bloom();
+
+                        // Write decrement of AmmoCount to the inventory slot Item Instance
+                        if (selectedFirstSlot)
+                        {
+                            playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1).GetItemInSlot().itemInstance.SetProperty("AmmoCount", gunInHands.GetNumberOfRounds());
+                        } else
+                        {
+                            playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT2).GetItemInSlot().itemInstance.SetProperty("AmmoCount", gunInHands.GetNumberOfRounds());
+                        }
+
                         if (OnPrimaryGunFired != null)
                         {
                             OnPrimaryGunFired();
@@ -148,6 +158,17 @@ public class PlayerGearController : MonoBehaviour
                 if (numberOfRoundsUsed > 0)
                 {
                     playerInventory.RemoveItemOfType(ItemType.AMMO, numberOfRoundsUsed);
+
+                    // Write decrement of AmmoCount to the inventory slot Item Instance
+                    if (selectedFirstSlot)
+                    {
+                        playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1).GetItemInSlot().itemInstance.SetProperty("AmmoCount", gunInHands.GetNumberOfRounds());
+                    }
+                    else
+                    {
+                        playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT2).GetItemInSlot().itemInstance.SetProperty("AmmoCount", gunInHands.GetNumberOfRounds());
+                    }
+
                     if (OnPrimaryGunReloaded != null)
                     {
                         OnPrimaryGunReloaded();
@@ -263,10 +284,10 @@ public class PlayerGearController : MonoBehaviour
                 //InventoryItem.CurrentHoveredItem.item
                 InventoryItem inventoryItemBeingDropped = InventoryItem.CurrentHoveredItem;
                 inventoryItemBeingDropped.GetCurrentInventorySlot().RemoveItemFromSlot();
-                DropItem(InventoryItem.CurrentHoveredItem.sharedItemData, inventoryItemBeingDropped.GetItemCount());
+                DropItem(InventoryItem.CurrentHoveredItem.itemInstance);
                 Destroy(InventoryItem.CurrentHoveredItem.gameObject);
 
-                if (inventoryItemBeingDropped.sharedItemData.ItemType == ItemType.PRIMARY_WEAPON)
+                if (inventoryItemBeingDropped.itemInstance.sharedData.ItemType == ItemType.PRIMARY_WEAPON)
                 {
                     if (OnLoadOutChanged != null)
                     {
@@ -277,15 +298,16 @@ public class PlayerGearController : MonoBehaviour
         }
     }
 
-    private void DropItem(SharedItemData item, int numItems)
+    private void DropItem(ItemInstance itemInstance)
     {
-        WorldItem itemBeingDropped = ItemSpawner.Instance.SpawnItem(item, throwPosition.position, Quaternion.identity);
+        WorldItem itemBeingDropped = ItemSpawner.Instance.SpawnItem(itemInstance, throwPosition.position, Quaternion.identity);
         //WorldItem itemBeingDropped = Instantiate<WorldItem>(InventoryItem.CurrentHoveredItem.item.itemPrefab, throwPosition.position, Quaternion.identity);
         // Maybe yeet it a little bit
+        itemBeingDropped.InitializeFromItemInstance(itemInstance);
         itemBeingDropped.GetComponent<Rigidbody>().AddForce(head.forward * throwForce * Time.deltaTime, ForceMode.Impulse);
         // This is so the pick up menu doesn't trigger immediately.
         itemBeingDropped.SetUninteractableTemporarily();
-        itemBeingDropped.SetNumberOfStartingItems(numItems);
+        itemBeingDropped.SetNumberOfStartingItems((int)itemInstance.GetProperty("NumItemsInStack"));
     }
 
     private void GearSlotChange(GearSlot gearSlot)
@@ -343,7 +365,7 @@ public class PlayerGearController : MonoBehaviour
         if (gearSlot.HasItem())
         {
             //WorldItem itemBeingDropped = ItemSpawner.Instance.SpawnItem(gearSlot.GetItemInSlot().item, Vector3.zero);
-            gearItems[(int)identifier] = ItemSpawner.Instance.SpawnItem(gearSlot.GetItemInSlot().sharedItemData, gearStorageLocations[(int)identifier]);
+            gearItems[(int)identifier] = ItemSpawner.Instance.SpawnItem(gearSlot.GetItemInSlot().itemInstance, gearStorageLocations[(int)identifier]);
             //gearItems[(int)identifier] = Instantiate<WorldItem>(gearSlot.GetItemInSlot().item.itemPrefab, gearStorageLocations[(int)identifier]);
             gearItems[(int)identifier].Equip();
             if (selectedFirstSlot)

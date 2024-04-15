@@ -47,7 +47,8 @@ public class PlayerInventory : Inventory
         }
         if (Input.GetKey(KeyCode.E))
         {
-            AddItem(startItems[5], 1);
+            ItemInstance ammo = new ItemInstance(startItems[5]);
+            AddItem(ammo, 1);
         }
     }
 
@@ -55,7 +56,7 @@ public class PlayerInventory : Inventory
     {
         if (gearSlots[(int)GearSlotIdentifier.BACKPACK].GetItemInSlot() != null)
         {
-            BackpackItem backpack = (BackpackItem)gearSlots[(int)GearSlotIdentifier.BACKPACK].GetItemInSlot().sharedItemData;
+            BackpackItem backpack = (BackpackItem)gearSlots[(int)GearSlotIdentifier.BACKPACK].GetItemInSlot().itemInstance.sharedData;
 
             return base.GetInventoryWeightLimit() + backpack.CarryCapacity;
         }
@@ -159,7 +160,7 @@ public class PlayerInventory : Inventory
                 // Then check if it was a backpack switch to check the new carry weight
                 if (itemToEquip.GetItemType() == ItemType.BACKPACK)
                 {
-                    newCarryCapacity = base.GetInventoryWeightLimit() + ((BackpackItem)itemToEquip.sharedItemData).CarryCapacity;
+                    newCarryCapacity = base.GetInventoryWeightLimit() + ((BackpackItem)itemToEquip.itemInstance.sharedData).CarryCapacity;
                 }
 
                 if (newCarryCapacity >= weightAfterSwitch)

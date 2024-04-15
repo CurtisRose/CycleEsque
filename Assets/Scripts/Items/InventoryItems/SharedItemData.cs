@@ -23,4 +23,15 @@ public class SharedItemData : ScriptableObject
     [field: SerializeField] public bool ColorGameObjectBasedOnRarity { get; private set; }
 
     public List<string> allowedKeys = new List<string>();
+
+    protected virtual void OnValidate()
+    {
+        allowedKeys.Clear();
+        PopulateAllowedKeys();
+    }
+
+    protected virtual void PopulateAllowedKeys()
+    {
+        allowedKeys.Add("NumItemsInStack");
+    }
 }

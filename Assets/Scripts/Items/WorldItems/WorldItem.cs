@@ -6,20 +6,19 @@ using UnityEngine;
 public class WorldItem : MonoBehaviour
 {
     [SerializeField] protected SharedItemData sharedItemData;
-    public Dictionary<string, object> uniqueAttributes;
 
     Rigidbody rigidBody;
 
     [SerializeField] float timeDelay = 1.0f;
     bool interactable = true;
 
-    protected int numItemsInStack;
+    [SerializeField] protected int numItemsInStack;
 
     protected virtual void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
         InitializeItemFromBaseItemData();
-        if (!sharedItemData.stackable)
+        if (!sharedItemData.stackable || numItemsInStack <= 0)
         {
             numItemsInStack = 1;
         }
@@ -36,18 +35,15 @@ public class WorldItem : MonoBehaviour
     // Function to create an ItemInstance from this WorldItem
     public virtual ItemInstance CreateItemInstance()
     {
-        var instance = new ItemInstance(sharedItemData);
-        foreach (var key in sharedItemData.allowedKeys)
-        {
-            instance.SetProperty(key, uniqueAttributes[key]);
-        }
+        ItemInstance instance = new ItemInstance(sharedItemData);
+        instance.SetProperty("NumItemsInStack", numItemsInStack);
         return instance;
     }
 
     public virtual void InitializeFromItemInstance(ItemInstance instance)
     {
         sharedItemData = instance.sharedData;
-        uniqueAttributes = new Dictionary<string, object>(instance.uniqueData);
+        numItemsInStack = (int)instance.GetProperty("NumItemsInStack");
     }
 
     public float GetWeight()
@@ -129,10 +125,5 @@ public class WorldItem : MonoBehaviour
         {
             SetLayerRecursively(child.gameObject, newLayer);
         }
-    }
-
-    public void UpdateBaseItemData(SharedItemData sharedItemData)
-    {
-        this.sharedItemData = sharedItemData;
     }
 }

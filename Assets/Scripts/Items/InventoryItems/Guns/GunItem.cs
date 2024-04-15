@@ -23,4 +23,11 @@ public class GunItem : SharedItemData
     [field: SerializeField] public float spreadAmount { get; private set; }
     // Speed at which the gun returns to original rotation
     [field: SerializeField] public float returnSpeed { get; private set; }
+
+    protected override void PopulateAllowedKeys()
+    {
+        base.PopulateAllowedKeys();
+
+        allowedKeys.Add("AmmoCount");
+    }
 }

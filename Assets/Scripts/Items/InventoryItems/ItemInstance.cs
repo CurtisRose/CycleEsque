@@ -10,6 +10,10 @@ public class ItemInstance
     public ItemInstance(SharedItemData sharedData)
     {
         this.sharedData = sharedData;
+        foreach (string key in sharedData.allowedKeys)
+        {
+            uniqueData.Add(key, null);
+        }
     }
 
     public bool SetProperty(string key, object value)
@@ -25,10 +29,14 @@ public class ItemInstance
 
     public object GetProperty(string key)
     {
-        if (uniqueData.TryGetValue(key, out var value))
+        if (sharedData.allowedKeys.Contains(key)) 
         {
-            return value;
+            if (uniqueData.TryGetValue(key, out object value))
+            {
+                return value;
+            }
         }
+        Debug.LogWarning($"Property key '{key}' is not valid for item type '{sharedData.ItemType.ToString()}'");
         return null; // Optionally, throw an exception or handle this case
     }
 }

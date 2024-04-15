@@ -29,12 +29,11 @@ public class Gun : WorldItem
     [SerializeField] AudioClip weaponEquipSound;
 
     int magazineCapacity;
-    int numberOfRounds;
+    [SerializeField] int numberOfRounds;
 
     protected override void Awake()
     {
         base.Awake();
-        numberOfRounds = magazineCapacity;
     }
 
     protected override void Start()
