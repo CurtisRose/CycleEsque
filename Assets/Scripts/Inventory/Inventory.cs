@@ -20,11 +20,15 @@ public class Inventory : MonoBehaviour
 
     protected void Start()
     {
-        /*foreach (SharedItemData startItem in startItems)
+        foreach (SharedItemData startItem in startItems)
         {
-            ItemInstance itemInstance = new ItemInstance(startItem);
-            AddItem(itemInstance);
-        }*/
+            //ItemInstance itemInstance = new ItemInstance(startItem);
+            WorldItem testItem = ItemSpawner.Instance.GetPrefab(startItem);
+            ItemInstance testInstance = testItem.CreateNewItemInstance(startItem);
+  
+            //itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, 1);
+            AddItem(testInstance);
+        }
     }
 
     public virtual float GetInventoryWeightLimit()

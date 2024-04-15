@@ -76,6 +76,13 @@ public class Gun : WorldItem
         }
     }
 
+    public override ItemInstance CreateNewItemInstance(SharedItemData sharedData)
+    {
+        ItemInstance instance = base.CreateNewItemInstance(sharedData);
+        instance.SetProperty(ItemAttributeKey.AmmoCount, 0);
+        return instance;
+    }
+
     public override bool Use()
     {
         return Shoot();

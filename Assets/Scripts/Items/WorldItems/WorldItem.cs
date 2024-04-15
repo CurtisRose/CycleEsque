@@ -40,6 +40,13 @@ public class WorldItem : MonoBehaviour
         return instance;
     }
 
+    public virtual ItemInstance CreateNewItemInstance(SharedItemData sharedData)
+    {
+        ItemInstance instance = new ItemInstance(sharedData);
+        instance.SetProperty(ItemAttributeKey.NumItemsInStack, 1);
+        return instance;
+    }
+
     public virtual void InitializeFromItemInstance(ItemInstance instance)
     {
         sharedItemData = instance.sharedData;

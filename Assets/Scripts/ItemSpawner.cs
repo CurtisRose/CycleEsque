@@ -52,4 +52,9 @@ public class ItemSpawner : MonoBehaviour
         }
         return null;
     }
+
+    public WorldItem GetPrefab(SharedItemData sharedData)
+    {
+        return itemPrefabMap[sharedData];
+    }
 }
