@@ -36,14 +36,14 @@ public class WorldItem : MonoBehaviour
     public virtual ItemInstance CreateItemInstance()
     {
         ItemInstance instance = new ItemInstance(sharedItemData);
-        instance.SetProperty("NumItemsInStack", numItemsInStack);
+        instance.SetProperty(ItemAttributeKey.NumItemsInStack, numItemsInStack);
         return instance;
     }
 
     public virtual void InitializeFromItemInstance(ItemInstance instance)
     {
         sharedItemData = instance.sharedData;
-        numItemsInStack = (int)instance.GetProperty("NumItemsInStack");
+        numItemsInStack = (int)instance.GetProperty(ItemAttributeKey.NumItemsInStack);
     }
 
     public float GetWeight()

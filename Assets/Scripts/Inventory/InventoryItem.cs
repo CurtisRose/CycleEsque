@@ -8,7 +8,6 @@ using TMPro;
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [HideInInspector] public ItemInstance itemInstance;
-    protected int count = 0;
 
     [SerializeField] protected Image itemImage;
 
@@ -21,6 +20,13 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public static InventoryItem CurrentHoveredItem { get; private set; }
 
     // Initialized by the inventory when it's created
+    public void InitializeItem(SharedItemData sharedItemData)
+    {
+        this.itemInstance.sharedData = sharedItemData;
+        itemImage.sprite = sharedItemData.SmallImage;
+        parentAfterDrag = transform.parent;
+    }
+
     public void InitializeItem(ItemInstance itemInstance)
     {
         this.itemInstance = itemInstance;
@@ -168,7 +174,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public int GetItemCount()
     {
-        return count;
+        return (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
     }
 
     public void IncrementItemCount()
@@ -178,7 +184,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void ChangeItemCount(int change)
     {
-        count += change;
+        int currentCount = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+        itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, currentCount + change);
         if (OnItemCountChanged != null)
         {
             OnItemCountChanged();

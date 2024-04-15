@@ -32,6 +32,6 @@ public class SharedItemData : ScriptableObject
 
     protected virtual void PopulateAllowedKeys()
     {
-        allowedKeys.Add("NumItemsInStack");
+        allowedKeys.Add(ItemAttributeKeys.KeyToString(ItemAttributeKey.NumItemsInStack));
     }
 }

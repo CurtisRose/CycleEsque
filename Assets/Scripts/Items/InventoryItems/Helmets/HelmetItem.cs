@@ -12,6 +12,6 @@ public class HelmetItem : SharedItemData
     {
         base.PopulateAllowedKeys();
 
-        allowedKeys.Add("ArmorRemaining");
+        allowedKeys.Add(ItemAttributeKeys.KeyToString(ItemAttributeKey.ArmorRemaining));
     }
 }

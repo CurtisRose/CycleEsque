@@ -59,16 +59,17 @@ public class Gun : WorldItem
     public override ItemInstance CreateItemInstance()
     {
         ItemInstance itemInstance = base.CreateItemInstance();
-        itemInstance.SetProperty("AmmoCount", numberOfRounds);
+        itemInstance.SetProperty(ItemAttributeKey.AmmoCount, numberOfRounds);
         return itemInstance;
     }
 
     public override void InitializeFromItemInstance(ItemInstance instance)
     {
         base.InitializeFromItemInstance(instance);
-        if (instance.uniqueData.TryGetValue("AmmoCount", out object ammo))
+        int ammoCount = (int)instance.GetProperty(ItemAttributeKey.AmmoCount);
+        if (ammoCount > 0)
         {
-            numberOfRounds = (int)ammo;
+            numberOfRounds = (int)ammoCount;
         } else
         {
             numberOfRounds = 0;

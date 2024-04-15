@@ -62,7 +62,7 @@ public class PlayerInteractionController : MonoBehaviour
     void OnWorldItemPickedUp(WorldItem item)
     {
         // Hide prompt after picking up the item
-        bool pickedUp = playerInventory.AddItem(item, item.GetNumberOfItems());
+        bool pickedUp = playerInventory.AddItem(item);
         if (pickedUp)
         {
             Destroy(item.gameObject);

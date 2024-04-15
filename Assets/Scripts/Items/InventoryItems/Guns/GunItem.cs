@@ -28,6 +28,6 @@ public class GunItem : SharedItemData
     {
         base.PopulateAllowedKeys();
 
-        allowedKeys.Add("AmmoCount");
+        allowedKeys.Add(ItemAttributeKeys.KeyToString(ItemAttributeKey.AmmoCount));
     }
 }

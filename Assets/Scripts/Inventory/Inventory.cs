@@ -32,8 +32,9 @@ public class Inventory : MonoBehaviour
         return inventoryWeightLimit;
     }
 
-    public bool AddItem(WorldItem item, int numItems = 1)
+    public bool AddItem(WorldItem item)
     {
+        int numItems = item.GetNumberOfItems();
         bool partialOnly = false;
         if (item.GetWeight() > GetInventoryWeightLimit() - currentWeight)
         {
@@ -53,7 +54,7 @@ public class Inventory : MonoBehaviour
         }
 
         ItemInstance itemPickedUp = item.CreateItemInstance();
-        bool successCheck = AddItem(itemPickedUp, numItems);
+        bool successCheck = AddItem(itemPickedUp);
 
         if (partialOnly)
         {
@@ -64,9 +65,10 @@ public class Inventory : MonoBehaviour
         return successCheck && !partialOnly;
     }
 
-    public bool AddItem(ItemInstance itemInstance, int numItems = 1)
+    public bool AddItem(ItemInstance itemInstance)
     {
         float temp = GetInventoryWeightLimit();
+        int numItems = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
         if (itemInstance.sharedData.Weight * numItems > temp - currentWeight)
         {
             return false; // Not enough weight capacity to add these items
@@ -113,7 +115,7 @@ public class Inventory : MonoBehaviour
             // If there are still items left to add, use the first empty slot
             if (firstEmptySlot != null && numItems > 0)
             {
-                CreateNewItem(itemInstance, firstEmptySlot, numItems);
+                CreateNewItem(itemInstance, firstEmptySlot);
                 if (OnInventoryChanged != null)
                     OnInventoryChanged();
                 return true;
@@ -126,7 +128,7 @@ public class Inventory : MonoBehaviour
             {
                 if (!slot.HasItem())
                 {
-                    CreateNewItem(itemInstance, slot, numItems);
+                    CreateNewItem(itemInstance, slot);
                     if (OnInventoryChanged != null)
                         OnInventoryChanged();
                     return true;
@@ -213,13 +215,12 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
-    protected void CreateNewItem(ItemInstance itemInstance, InventorySlot inventorySlot, int numberOfItems = 1)
+    protected void CreateNewItem(ItemInstance itemInstance, InventorySlot inventorySlot)
     {
         GameObject newItem = Instantiate(inventoryItemPrefab, inventorySlot.itemSlot);
         InventoryItem inventoryItem = newItem.GetComponent<InventoryItem>();
         inventoryItem.name = itemInstance.sharedData.DisplayName;
         inventoryItem.InitializeItem(itemInstance);
-        inventoryItem.ChangeItemCount(numberOfItems);
         inventorySlot.SetItemInSlotAfterDrag(inventoryItem);
     }
 

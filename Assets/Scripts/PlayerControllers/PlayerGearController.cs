@@ -126,10 +126,10 @@ public class PlayerGearController : MonoBehaviour
                         // Write decrement of AmmoCount to the inventory slot Item Instance
                         if (selectedFirstSlot)
                         {
-                            playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1).GetItemInSlot().itemInstance.SetProperty("AmmoCount", gunInHands.GetNumberOfRounds());
+                            playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gunInHands.GetNumberOfRounds());
                         } else
                         {
-                            playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT2).GetItemInSlot().itemInstance.SetProperty("AmmoCount", gunInHands.GetNumberOfRounds());
+                            playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT2).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gunInHands.GetNumberOfRounds());
                         }
 
                         if (OnPrimaryGunFired != null)
@@ -162,11 +162,11 @@ public class PlayerGearController : MonoBehaviour
                     // Write decrement of AmmoCount to the inventory slot Item Instance
                     if (selectedFirstSlot)
                     {
-                        playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1).GetItemInSlot().itemInstance.SetProperty("AmmoCount", gunInHands.GetNumberOfRounds());
+                        playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gunInHands.GetNumberOfRounds());
                     }
                     else
                     {
-                        playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT2).GetItemInSlot().itemInstance.SetProperty("AmmoCount", gunInHands.GetNumberOfRounds());
+                        playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT2).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gunInHands.GetNumberOfRounds());
                     }
 
                     if (OnPrimaryGunReloaded != null)
@@ -307,7 +307,7 @@ public class PlayerGearController : MonoBehaviour
         itemBeingDropped.GetComponent<Rigidbody>().AddForce(head.forward * throwForce * Time.deltaTime, ForceMode.Impulse);
         // This is so the pick up menu doesn't trigger immediately.
         itemBeingDropped.SetUninteractableTemporarily();
-        itemBeingDropped.SetNumberOfStartingItems((int)itemInstance.GetProperty("NumItemsInStack"));
+        itemBeingDropped.SetNumberOfStartingItems((int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack));
     }
 
     private void GearSlotChange(GearSlot gearSlot)

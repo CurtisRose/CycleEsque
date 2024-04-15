@@ -5,7 +5,7 @@ using UnityEngine;
 public class ItemInstance
 {
     public SharedItemData sharedData;
-    public Dictionary<string, object> uniqueData = new Dictionary<string, object>();
+    protected Dictionary<string, object> uniqueData = new Dictionary<string, object>();
 
     public ItemInstance(SharedItemData sharedData)
     {
@@ -16,27 +16,30 @@ public class ItemInstance
         }
     }
 
-    public bool SetProperty(string key, object value)
+    public bool SetProperty(ItemAttributeKey key, object value)
     {
-        if (sharedData.allowedKeys.Contains(key))
+        string keyString = ItemAttributeKeys.KeyToString(key);
+
+        if (sharedData.allowedKeys.Contains(keyString))
         {
-            uniqueData[key] = value;
+            uniqueData[keyString] = value;
             return true;
         }
-        Debug.LogWarning($"Property key '{key}' is not valid for item type '{sharedData.ItemType.ToString()}'");
+        Debug.LogWarning($"Property key '{keyString}' is not valid for item type '{sharedData.ItemType.ToString()}'");
         return false;
     }
 
-    public object GetProperty(string key)
+    public object GetProperty(ItemAttributeKey key)
     {
-        if (sharedData.allowedKeys.Contains(key)) 
+        string keyString = ItemAttributeKeys.KeyToString(key);
+        if (sharedData.allowedKeys.Contains(keyString)) 
         {
-            if (uniqueData.TryGetValue(key, out object value))
+            if (uniqueData.TryGetValue(keyString, out object value))
             {
                 return value;
             }
         }
-        Debug.LogWarning($"Property key '{key}' is not valid for item type '{sharedData.ItemType.ToString()}'");
+        Debug.LogWarning($"Property key '{keyString}' is not valid for item type '{sharedData.ItemType.ToString()}'");
         return null; // Optionally, throw an exception or handle this case
     }
 }

@@ -48,7 +48,8 @@ public class PlayerInventory : Inventory
         if (Input.GetKey(KeyCode.E))
         {
             ItemInstance ammo = new ItemInstance(startItems[5]);
-            AddItem(ammo, 1);
+            ammo.SetProperty(ItemAttributeKey.NumItemsInStack, 1);
+            AddItem(ammo);
         }
     }
 
