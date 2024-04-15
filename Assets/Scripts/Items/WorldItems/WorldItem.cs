@@ -5,19 +5,20 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class WorldItem : MonoBehaviour
 {
-    [SerializeField] protected BaseItem item;
+    [SerializeField] protected SharedItemData sharedItemData;
+
     Rigidbody rigidBody;
 
     [SerializeField] float timeDelay = 1.0f;
     bool interactable = true;
 
-    protected int numItemsInStack;
+    [SerializeField] protected int numItemsInStack;
 
     protected virtual void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
         InitializeItemFromBaseItemData();
-        if (!item.stackable)
+        if (!sharedItemData.stackable || numItemsInStack <= 0)
         {
             numItemsInStack = 1;
         }
@@ -25,15 +26,36 @@ public class WorldItem : MonoBehaviour
 
     protected virtual void Start()
     {
-        if (item.ColorGameObjectBasedOnRarity)
+        if (sharedItemData.ColorGameObjectBasedOnRarity)
         {
-            GetComponentInChildren<Renderer>().material.color = RarityColorManager.Instance.GetColorByRarity(item.Rarity);
+            GetComponentInChildren<Renderer>().material.color = RarityColorManager.Instance.GetColorByRarity(sharedItemData.Rarity);
         }
+    }
+
+    // Function to create an ItemInstance from this WorldItem
+    public virtual ItemInstance CreateItemInstance()
+    {
+        ItemInstance instance = new ItemInstance(sharedItemData);
+        instance.SetProperty(ItemAttributeKey.NumItemsInStack, numItemsInStack);
+        return instance;
+    }
+
+    public virtual ItemInstance CreateNewItemInstance(SharedItemData sharedData)
+    {
+        ItemInstance instance = new ItemInstance(sharedData);
+        instance.SetProperty(ItemAttributeKey.NumItemsInStack, 1);
+        return instance;
+    }
+
+    public virtual void InitializeFromItemInstance(ItemInstance instance)
+    {
+        sharedItemData = instance.sharedData;
+        numItemsInStack = (int)instance.GetProperty(ItemAttributeKey.NumItemsInStack);
     }
 
     public float GetWeight()
     {
-        return item.Weight * numItemsInStack;
+        return sharedItemData.Weight * numItemsInStack;
     }
 
     protected virtual void InitializeItemFromBaseItemData()
@@ -61,9 +83,9 @@ public class WorldItem : MonoBehaviour
         return true;
     }
 
-    public BaseItem GetBaseItem()
+    public SharedItemData GetBaseItem()
     {
-        return item;
+        return sharedItemData;
     }
 
     public void SetUninteractableTemporarily()
@@ -110,10 +132,5 @@ public class WorldItem : MonoBehaviour
         {
             SetLayerRecursively(child.gameObject, newLayer);
         }
-    }
-
-    public void UpdateBaseItemData(BaseItem item)
-    {
-        this.item = item;
     }
 }

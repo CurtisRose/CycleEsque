@@ -21,6 +21,8 @@ public class PlayerInteractionController : MonoBehaviour
     [SerializeField] TMP_Text pickupText;
     [SerializeField] Image pickupImage;
 
+    [SerializeField] float menuHeightAboveItemMultiplier;
+
     private void Awake()
     {
         pickupPromptMenu.Close();
@@ -39,24 +41,20 @@ public class PlayerInteractionController : MonoBehaviour
         if (Physics.Raycast(ray, out hit, interactionDistance, interactionLayer))
         {
             WorldItem worldItem = hit.collider.GetComponentInParent<WorldItem>();
-            if (worldItem != null)
+            if (worldItem != null && worldItem.IsInteractable())
             {
-                if (worldItem.IsInteractable())
-                {
-                    // Show the pickup prompt UI element if a WorldItem is hit.
-                    itemLookingAt = worldItem;
-                    ShowPickupPrompt(true);
+                itemLookingAt = worldItem;
+                ShowPickupPrompt(true);
+                UpdatePickupPromptPosition();
 
-                    if (Input.GetKeyDown(KeyCode.F))
-                    {
-                        OnWorldItemPickedUp(worldItem);
-                    }
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    OnWorldItemPickedUp(worldItem);
                 }
             }
         }
         else
         {
-            // Hide the pickup prompt UI element if no WorldItem is hit.
             ShowPickupPrompt(false);
         }
     }
@@ -64,7 +62,7 @@ public class PlayerInteractionController : MonoBehaviour
     void OnWorldItemPickedUp(WorldItem item)
     {
         // Hide prompt after picking up the item
-        bool pickedUp = playerInventory.AddItem(item, item.GetNumberOfItems());
+        bool pickedUp = playerInventory.AddItem(item);
         if (pickedUp)
         {
             Destroy(item.gameObject);
@@ -97,11 +95,11 @@ public class PlayerInteractionController : MonoBehaviour
 
     void UpdatePickupPromptInfo()
     {
-        BaseItem item = itemLookingAt.GetBaseItem();
-        itemName.text = item.DisplayName;
+        SharedItemData sharedItemData = itemLookingAt.GetBaseItem();
+        itemName.text = sharedItemData.DisplayName;
         itemWeight.text = (itemLookingAt.GetWeight()).ToString();
-        itemRarity.text = item.Rarity.ToString();
-        itemRarity.color = RarityColorManager.Instance.GetColorByRarity(item.Rarity);
+        itemRarity.text = sharedItemData.Rarity.ToString();
+        itemRarity.color = RarityColorManager.Instance.GetColorByRarity(sharedItemData.Rarity);
         float roomInBackpack = playerInventory.GetInventoryWeightLimit() - playerInventory.currentWeight;
         if (roomInBackpack >= itemLookingAt.GetWeight())
         {
@@ -117,5 +115,39 @@ public class PlayerInteractionController : MonoBehaviour
         }
 
         //itemDescription.text = item.Description;
+    }
+
+    void UpdatePickupPromptPosition()
+    {
+        if (itemLookingAt != null)
+        {
+            Vector3 itemPosition = itemLookingAt.transform.position;
+            Vector3 uiPosition = itemPosition + Vector3.up * menuHeightAboveItemMultiplier;  // Adjust this offset as needed
+
+            Camera camera = Camera.main;
+            Vector3 screenPosition = camera.WorldToScreenPoint(uiPosition);
+
+            // Check if the position is behind the camera
+            if (screenPosition.z < 0)
+            {
+                pickupPromptMenu.gameObject.SetActive(false);
+                return;
+            }
+
+            // Clamp the screen position to stay within the visible screen
+            RectTransform menuRect = pickupPromptMenu.GetComponent<RectTransform>();
+            float width = menuRect.sizeDelta.x * menuRect.lossyScale.x / 2;  // Half width of the menu
+            float height = menuRect.sizeDelta.y * menuRect.lossyScale.y / 2; // Half height of the menu
+
+            screenPosition.x = Mathf.Clamp(screenPosition.x, width, Screen.width - width);
+            screenPosition.y = Mathf.Clamp(screenPosition.y, height, Screen.height - height);
+
+            menuRect.position = screenPosition;
+            pickupPromptMenu.gameObject.SetActive(true);
+        }
+        else
+        {
+            pickupPromptMenu.gameObject.SetActive(false);
+        }
     }
 }

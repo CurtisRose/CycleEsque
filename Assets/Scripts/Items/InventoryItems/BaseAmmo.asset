@@ -22,5 +22,6 @@ MonoBehaviour:
   <Weight>k__BackingField: 0.5
   <stackable>k__BackingField: 1
   <maxStackSize>k__BackingField: 100
-  <itemPrefab>k__BackingField: {fileID: 3494190095646576863, guid: 3d4da2cff714a904b827e9c6b77ab840,
-    type: 3}
+  <ColorGameObjectBasedOnRarity>k__BackingField: 0
+  allowedKeys:
+  - NumItemsInStack

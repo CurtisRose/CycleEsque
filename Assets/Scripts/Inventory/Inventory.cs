@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public BaseItem[] startItems;
+    public SharedItemData[] startItems;
     public List<InventorySlot> inventorySlots;
     public GameObject inventoryItemPrefab;
     [SerializeField] private float inventoryWeightLimit;
@@ -15,11 +15,19 @@ public class Inventory : MonoBehaviour
     public delegate void InventoryChanged();
     public event InventoryChanged OnInventoryChanged;
 
+    public delegate void ItemDropped(ItemInstance itemInstance);
+    public event ItemDropped OnItemDropped;
+
     protected void Start()
     {
-        foreach (BaseItem startItem in startItems)
+        foreach (SharedItemData startItem in startItems)
         {
-            AddItem(startItem);
+            //ItemInstance itemInstance = new ItemInstance(startItem);
+            WorldItem testItem = ItemSpawner.Instance.GetPrefab(startItem);
+            ItemInstance testInstance = testItem.CreateNewItemInstance(startItem);
+  
+            //itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, 1);
+            AddItem(testInstance);
         }
     }
 
@@ -28,8 +36,9 @@ public class Inventory : MonoBehaviour
         return inventoryWeightLimit;
     }
 
-    public bool AddItem(WorldItem item, int numItems = 1)
+    public bool AddItem(WorldItem item)
     {
+        int numItems = item.GetNumberOfItems();
         bool partialOnly = false;
         if (item.GetWeight() > GetInventoryWeightLimit() - currentWeight)
         {
@@ -48,8 +57,8 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        BaseItem itemPickedUp = item.GetBaseItem();
-        bool successCheck = AddItem(itemPickedUp, numItems);
+        ItemInstance itemPickedUp = item.CreateItemInstance();
+        bool successCheck = AddItem(itemPickedUp);
 
         if (partialOnly)
         {
@@ -60,75 +69,95 @@ public class Inventory : MonoBehaviour
         return successCheck && !partialOnly;
     }
 
-    public bool AddItem(BaseItem item, int numItems = 1)
+    public bool AddItem(ItemInstance itemInstance)
     {
         float temp = GetInventoryWeightLimit();
-        if (item.Weight * numItems > GetInventoryWeightLimit() - currentWeight)
+        int numItems = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+        if (itemInstance.sharedData.Weight * numItems > temp - currentWeight)
         {
-            return false;
+            return false; // Not enough weight capacity to add these items
         }
 
-        // Check if any slot already has item with count lower than the stack size
-        if (item.stackable)
+        bool updated = false;
+        // Check if any slot already has the item and can hold more
+        if (itemInstance.sharedData.stackable)
         {
             InventorySlot firstEmptySlot = null;
             for (int i = 0; i < inventorySlots.Count; i++)
             {
                 InventorySlot slot = inventorySlots[i];
                 InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-                if (itemInSlot != null &&
-                    itemInSlot.item == item &&
-                    itemInSlot.GetItemCount() < itemInSlot.item.maxStackSize)
+
+                // Check if the slot already contains the item and is not full
+                if (itemInSlot != null && itemInSlot.itemInstance.sharedData == itemInstance.sharedData)
                 {
-                    itemInSlot.ChangeItemCount(numItems);
-                    UpdateWeight(item.Weight * numItems);
-                    if (OnInventoryChanged != null)
+                    int spaceLeftInSlot = itemInSlot.itemInstance.sharedData.maxStackSize - itemInSlot.GetItemCount();
+                    if (spaceLeftInSlot > 0)
                     {
-                        OnInventoryChanged();
+                        int itemsToAdd = Mathf.Min(spaceLeftInSlot, numItems);
+                        itemInSlot.ChangeItemCount(itemsToAdd);
+                        UpdateWeight(itemInstance.sharedData.Weight * itemsToAdd);
+                        numItems -= itemsToAdd;
+                        updated = true;
+
+                        if (numItems <= 0)
+                        {
+                            if (OnInventoryChanged != null)
+                                OnInventoryChanged();
+                            return true;
+                        }
                     }
-                    return true;
                 }
+
+                // Remember the first empty slot if we need to add a new item there
                 if (!slot.HasItem() && firstEmptySlot == null)
                 {
                     firstEmptySlot = slot;
                 }
             }
-            // No items of same type were found, Add it to the earliest empty slot
-            if (firstEmptySlot != null)
+
+            // If there are still items left to add, use the first empty slot
+            if (firstEmptySlot != null && numItems > 0)
             {
-                CreateNewItem(item, firstEmptySlot, numItems);
+                CreateNewItem(itemInstance, firstEmptySlot);
                 if (OnInventoryChanged != null)
-                {
                     OnInventoryChanged();
-                }
                 return true;
             }
         }
-
-        // Find an empty slot
-        for (int i = 0; i < inventorySlots.Count; i++)
+        else
         {
-            InventorySlot slot = inventorySlots[i];
-            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-            // If slot is empty
-            if (itemInSlot == null)
+            // Non-stackable item, simply find an empty slot
+            foreach (InventorySlot slot in inventorySlots)
             {
-                CreateNewItem(item, slot);
-                if (OnInventoryChanged != null)
+                if (!slot.HasItem())
                 {
-                    OnInventoryChanged();
+                    CreateNewItem(itemInstance, slot);
+                    if (OnInventoryChanged != null)
+                        OnInventoryChanged();
+                    return true;
                 }
-                return true;
             }
         }
 
-        // No Empty Slots
-        // TODO: Create More Slots Dynamically
-        // Inventory is only limited by weight
+        // If no suitable slot is found and there are leftover items, log the full inventory
+        if (numItems > 0)
+        {
+            Debug.Log("Inventory Is Full or not enough slots to accommodate all items.");
+            return false;
+        }
 
-        Debug.Log("Inventory Is Full");
-        return false;
+        // If inventory changes occurred, update listeners
+        if (updated)
+        {
+            if (OnInventoryChanged != null)
+                OnInventoryChanged();
+            return true;
+        }
+
+        return false; // Default return, though logically unreachable in current setup
     }
+
 
     public int GetNumberOfItemsOfType(ItemType type)
     {
@@ -138,7 +167,7 @@ public class Inventory : MonoBehaviour
             InventoryItem itemInSlot = inventorySlot.GetItemInSlot();
             if (itemInSlot != null && inventorySlot.GetItemInSlot().GetItemType() == type)
             {
-                if (inventorySlot.GetItemInSlot().item.stackable)
+                if (inventorySlot.GetItemInSlot().itemInstance.sharedData.stackable)
                 {
                     numItems += inventorySlot.GetItemInSlot().GetItemCount();
                 } else
@@ -156,7 +185,7 @@ public class Inventory : MonoBehaviour
     }
 
     // TODO:
-    public bool RemoveItem(BaseItem item)
+    public bool RemoveItem(ItemInstance itemInstance)
     {
         Debug.Log("This Function has NOT Been Implemented");
         return true;
@@ -172,7 +201,7 @@ public class Inventory : MonoBehaviour
                 if (itemInSlot.GetItemCount() > numItems)
                 {
                     itemInSlot.ChangeItemCount(-numItems);
-                    UpdateWeight(-(numItems * itemInSlot.item.Weight));
+                    UpdateWeight(-(numItems * itemInSlot.itemInstance.sharedData.Weight));
                     return true;
                 } else if (itemInSlot.GetItemCount() == numItems)
                 {
@@ -190,13 +219,12 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
-    protected void CreateNewItem(BaseItem item, InventorySlot inventorySlot, int numberOfItems = 1)
+    protected void CreateNewItem(ItemInstance itemInstance, InventorySlot inventorySlot)
     {
         GameObject newItem = Instantiate(inventoryItemPrefab, inventorySlot.itemSlot);
         InventoryItem inventoryItem = newItem.GetComponent<InventoryItem>();
-        inventoryItem.name = item.DisplayName;
-        inventoryItem.InitializeItem(item);
-        inventoryItem.ChangeItemCount(numberOfItems);
+        inventoryItem.name = itemInstance.sharedData.DisplayName;
+        inventoryItem.InitializeItem(itemInstance);
         inventorySlot.SetItemInSlotAfterDrag(inventoryItem);
     }
 
@@ -247,17 +275,9 @@ public class Inventory : MonoBehaviour
         // For now only used in the player inventory class
     }
 
-    // For Testing
-    protected void RemoveAllItemsFromEachSlot()
+    public void DropItem(ItemInstance itemInstance)
     {
-        foreach (InventorySlot inventorySlot in inventorySlots)
-        {
-            if (inventorySlot.GetItemInSlot() != null)
-            {
-                InventoryItem item = inventorySlot.GetItemInSlot();
-                inventorySlot.RemoveItemFromSlot();
-                Destroy(item.gameObject);
-            }
-        }
+        if (OnItemDropped != null)
+            OnItemDropped(itemInstance);
     }
 }

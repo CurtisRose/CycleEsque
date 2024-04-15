@@ -140,7 +140,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6703320850575281363}
   - component: {fileID: 8178826029191151662}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BlurVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -412,7 +412,7 @@ GameObject:
   - component: {fileID: 7488946573659412822}
   m_Layer: 5
   m_Name: Inventory
-  m_TagString: Untagged
+  m_TagString: InventoryUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -601,6 +601,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WeaponSlot 1
       objectReference: {fileID: 0}
+    - target: {fileID: 307038010599925882, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 307038010599925885, guid: 84034475bd2468a4c80d77d6ce7acdfe,
         type: 3}
       propertyPath: m_Pivot.x
@@ -700,6 +705,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 307038010992874146, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 307038011243151630, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 716814334317353474, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 983696069150201072, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6242608567611810296, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8107043043830120577, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8365807880921930078, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9153203024163295730, guid: 84034475bd2468a4c80d77d6ce7acdfe,
         type: 3}
@@ -747,6 +787,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WeaponSlot 2
       objectReference: {fileID: 0}
+    - target: {fileID: 307038010599925882, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 307038010599925885, guid: 84034475bd2468a4c80d77d6ce7acdfe,
         type: 3}
       propertyPath: m_Pivot.x
@@ -847,6 +892,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 307038010992874146, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 307038011243151630, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 716814334317353474, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 983696069150201072, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1825426545259654874, guid: 84034475bd2468a4c80d77d6ce7acdfe,
         type: 3}
       propertyPath: UseLargeImage
@@ -871,6 +936,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 6242608567611810296, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8107043043830120577, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8365807880921930078, guid: 84034475bd2468a4c80d77d6ce7acdfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9153203024163295730, guid: 84034475bd2468a4c80d77d6ce7acdfe,
         type: 3}
@@ -913,10 +993,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6475474442124819646}
     m_Modifications:
+    - target: {fileID: 1597163933523742058, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_Name
       value: BackPackInventorySlot (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
@@ -1018,6 +1108,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1597163934312996550, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291873782180023096, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4956957107648052784, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7381897466615531158, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1049,10 +1159,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6475474442124819646}
     m_Modifications:
+    - target: {fileID: 1597163933523742058, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_Name
       value: BackPackInventorySlot (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
@@ -1154,6 +1274,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1597163934312996550, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291873782180023096, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4956957107648052784, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7381897466615531158, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1185,10 +1325,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6475474442124819646}
     m_Modifications:
+    - target: {fileID: 1597163933523742058, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_Name
       value: BackPackInventorySlot (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
@@ -1290,6 +1440,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1597163934312996550, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291873782180023096, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4956957107648052784, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7381897466615531158, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1321,10 +1491,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6475474442124819646}
     m_Modifications:
+    - target: {fileID: 1597163933523742058, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_Name
       value: BackPackInventorySlot (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
@@ -1426,6 +1606,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1597163934312996550, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291873782180023096, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4956957107648052784, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7381897466615531158, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1457,10 +1657,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6475474442124819646}
     m_Modifications:
+    - target: {fileID: 1597163933523742058, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_Name
       value: BackPackInventorySlot (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
@@ -1562,6 +1772,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1597163934312996550, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291873782180023096, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4956957107648052784, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7381897466615531158, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1593,10 +1823,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6475474442124819646}
     m_Modifications:
+    - target: {fileID: 1597163933523742058, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_Name
       value: BackPackInventorySlot (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
@@ -1697,6 +1937,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163934312996550, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291873782180023096, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4956957107648052784, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7381897466615531158, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1734,6 +1994,11 @@ PrefabInstance:
       propertyPath: m_text
       value: Backpack
       objectReference: {fileID: 0}
+    - target: {fileID: 2273388309157215198, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2844331975079573883, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
         type: 3}
       propertyPath: itemType
@@ -1744,10 +2009,20 @@ PrefabInstance:
       propertyPath: slotContributesToWeight
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2877497484816425900, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2877497486593297112, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
         type: 3}
       propertyPath: m_Name
       value: Backpack Slot
+      objectReference: {fileID: 0}
+    - target: {fileID: 2877497486593297112, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2877497486593297119, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
         type: 3}
@@ -1848,6 +2123,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2877497486717825024, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3317736319404586578, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6320076639080496124, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7434360950712996400, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434695286834529114, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1880,10 +2180,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6475474442124819646}
     m_Modifications:
+    - target: {fileID: 1597163933523742058, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_Name
       value: BackPackInventorySlot (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
@@ -1985,6 +2295,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1597163934312996550, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291873782180023096, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4956957107648052784, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7381897466615531158, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2016,10 +2346,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6475474442124819646}
     m_Modifications:
+    - target: {fileID: 1597163933523742058, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_Name
       value: BackPackInventorySlot (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
@@ -2120,6 +2460,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163934312996550, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291873782180023096, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4956957107648052784, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7381897466615531158, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2152,10 +2512,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6475474442124819646}
     m_Modifications:
+    - target: {fileID: 1597163933523742058, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_Name
       value: BackPackInventorySlot (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
@@ -2256,6 +2626,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163934312996550, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291873782180023096, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4956957107648052784, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7381897466615531158, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2288,10 +2678,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6475474442124819646}
     m_Modifications:
+    - target: {fileID: 1597163933523742058, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_Name
       value: BackPackInventorySlot (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
@@ -2393,6 +2793,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1597163934312996550, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291873782180023096, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4956957107648052784, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7381897466615531158, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2424,10 +2844,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6475474442124819646}
     m_Modifications:
+    - target: {fileID: 1597163933523742058, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_Name
       value: BackPackInventorySlot (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
@@ -2529,6 +2959,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1597163934312996550, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291873782180023096, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4956957107648052784, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7381897466615531158, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2560,10 +3010,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6475474442124819646}
     m_Modifications:
+    - target: {fileID: 1597163933523742058, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_Name
       value: BackPackInventorySlot (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
@@ -2665,6 +3125,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1597163934312996550, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291873782180023096, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4956957107648052784, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7381897466615531158, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2696,10 +3176,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6475474442124819646}
     m_Modifications:
+    - target: {fileID: 1597163933523742058, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_Name
       value: BackPackInventorySlot (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
@@ -2801,6 +3291,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1597163934312996550, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291873782180023096, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4956957107648052784, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7381897466615531158, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2832,10 +3342,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6475474442124819646}
     m_Modifications:
+    - target: {fileID: 1597163933523742058, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_Name
       value: BackPackInventorySlot (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
@@ -2936,6 +3456,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163934312996550, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291873782180023096, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4956957107648052784, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7381897466615531158, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2973,6 +3513,11 @@ PrefabInstance:
       propertyPath: m_text
       value: Armor
       objectReference: {fileID: 0}
+    - target: {fileID: 2273388309157215198, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2844331975079573883, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
         type: 3}
       propertyPath: itemType
@@ -2983,10 +3528,20 @@ PrefabInstance:
       propertyPath: slotContributesToWeight
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2877497484816425900, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2877497486593297112, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
         type: 3}
       propertyPath: m_Name
       value: Armor Slot
+      objectReference: {fileID: 0}
+    - target: {fileID: 2877497486593297112, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2877497486593297119, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
         type: 3}
@@ -3088,6 +3643,31 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2877497486717825024, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3317736319404586578, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6320076639080496124, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7434360950712996400, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434695286834529114, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3119,10 +3699,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6475474442124819646}
     m_Modifications:
+    - target: {fileID: 1597163933523742058, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
       propertyPath: m_Name
       value: BackPackInventorySlot (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1597163933664524210, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1597163933664524213, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
         type: 3}
@@ -3224,6 +3814,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1597163934312996550, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291873782180023096, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4956957107648052784, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7381897466615531158, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3260,6 +3870,11 @@ PrefabInstance:
       propertyPath: m_text
       value: Helmet
       objectReference: {fileID: 0}
+    - target: {fileID: 2273388309157215198, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2844331975079573883, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
         type: 3}
       propertyPath: itemType
@@ -3270,10 +3885,20 @@ PrefabInstance:
       propertyPath: slotContributesToWeight
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2877497484816425900, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2877497486593297112, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
         type: 3}
       propertyPath: m_Name
       value: Helmet Slot
+      objectReference: {fileID: 0}
+    - target: {fileID: 2877497486593297112, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2877497486593297119, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
         type: 3}
@@ -3374,6 +3999,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2877497486717825024, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3317736319404586578, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6320076639080496124, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7434360950712996400, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434695286834529114, guid: 9b9dbcf3434bf8744ac2f8565d37d1c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

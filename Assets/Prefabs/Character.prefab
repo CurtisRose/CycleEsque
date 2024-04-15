@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 699840648110506303}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.108, z: -0.049}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -255,6 +255,7 @@ MonoBehaviour:
   itemDescription: {fileID: 0}
   pickupText: {fileID: 0}
   pickupImage: {fileID: 0}
+  menuHeightAboveItemMultiplier: 0.75
 --- !u!1 &4060710622146128505
 GameObject:
   m_ObjectHideFlags: 0

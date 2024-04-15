@@ -29,12 +29,11 @@ public class Gun : WorldItem
     [SerializeField] AudioClip weaponEquipSound;
 
     int magazineCapacity;
-    int numberOfRounds;
+    [SerializeField] int numberOfRounds;
 
     protected override void Awake()
     {
         base.Awake();
-        numberOfRounds = magazineCapacity;
     }
 
     protected override void Start()
@@ -47,14 +46,41 @@ public class Gun : WorldItem
     protected override void InitializeItemFromBaseItemData()
     {
         base.InitializeItemFromBaseItemData();
-        magazineCapacity = ((GunItem)item).MagazineCapacity;
-        fireRate = ((GunItem)item).RateOfFire;
-        recoilAmountY = ((GunItem)item).recoilAmountY;
-        maxRecoilY = ((GunItem)item).maxRecoilY;
-        recoilAmountX = ((GunItem)item).recoilAmountX;
-        maxRecoilX = ((GunItem)item).maxRecoilX;
-        spreadAmount = ((GunItem)item).spreadAmount;
-        returnSpeed = ((GunItem)item).returnSpeed;
+        magazineCapacity = ((GunItem)sharedItemData).MagazineCapacity;
+        fireRate = ((GunItem)sharedItemData).RateOfFire;
+        recoilAmountY = ((GunItem)sharedItemData).recoilAmountY;
+        maxRecoilY = ((GunItem)sharedItemData).maxRecoilY;
+        recoilAmountX = ((GunItem)sharedItemData).recoilAmountX;
+        maxRecoilX = ((GunItem)sharedItemData).maxRecoilX;
+        spreadAmount = ((GunItem)sharedItemData).spreadAmount;
+        returnSpeed = ((GunItem)sharedItemData).returnSpeed;
+    }
+
+    public override ItemInstance CreateItemInstance()
+    {
+        ItemInstance itemInstance = base.CreateItemInstance();
+        itemInstance.SetProperty(ItemAttributeKey.AmmoCount, numberOfRounds);
+        return itemInstance;
+    }
+
+    public override void InitializeFromItemInstance(ItemInstance instance)
+    {
+        base.InitializeFromItemInstance(instance);
+        int ammoCount = (int)instance.GetProperty(ItemAttributeKey.AmmoCount);
+        if (ammoCount > 0)
+        {
+            numberOfRounds = (int)ammoCount;
+        } else
+        {
+            numberOfRounds = 0;
+        }
+    }
+
+    public override ItemInstance CreateNewItemInstance(SharedItemData sharedData)
+    {
+        ItemInstance instance = base.CreateNewItemInstance(sharedData);
+        instance.SetProperty(ItemAttributeKey.AmmoCount, 0);
+        return instance;
     }
 
     public override bool Use()

@@ -23,6 +23,7 @@ public class PlayerGearController : MonoBehaviour
     [SerializeField] Transform hipFirePosition;
     [SerializeField] Transform ADSFirePosition;
     [SerializeField] float timeToADS = 0.5f;
+    private Coroutine currentTransitionCoroutine;
 
     // Crosshair Aimer Test
     [SerializeField] CrosshairController crosshairController;
@@ -56,6 +57,12 @@ public class PlayerGearController : MonoBehaviour
             gearSlot.OnGearSlotsChanged += GearSlotChange;
         }
         playerInventory.OnInventoryChanged += OnInventoryChangedPassThrough;
+        playerInventory.OnItemDropped += DropItem;
+    }
+
+    private void Start()
+    {
+        
     }
 
     public void OnInventoryChangedPassThrough()
@@ -115,6 +122,16 @@ public class PlayerGearController : MonoBehaviour
                     {
                         ShowCrosshair();
                         crosshairController.Bloom();
+
+                        // Write decrement of AmmoCount to the inventory slot Item Instance
+                        if (selectedFirstSlot)
+                        {
+                            playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gunInHands.GetNumberOfRounds());
+                        } else
+                        {
+                            playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT2).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gunInHands.GetNumberOfRounds());
+                        }
+
                         if (OnPrimaryGunFired != null)
                         {
                             OnPrimaryGunFired();
@@ -141,6 +158,17 @@ public class PlayerGearController : MonoBehaviour
                 if (numberOfRoundsUsed > 0)
                 {
                     playerInventory.RemoveItemOfType(ItemType.AMMO, numberOfRoundsUsed);
+
+                    // Write decrement of AmmoCount to the inventory slot Item Instance
+                    if (selectedFirstSlot)
+                    {
+                        playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gunInHands.GetNumberOfRounds());
+                    }
+                    else
+                    {
+                        playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT2).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gunInHands.GetNumberOfRounds());
+                    }
+
                     if (OnPrimaryGunReloaded != null)
                     {
                         OnPrimaryGunReloaded();
@@ -256,16 +284,10 @@ public class PlayerGearController : MonoBehaviour
                 //InventoryItem.CurrentHoveredItem.item
                 InventoryItem inventoryItemBeingDropped = InventoryItem.CurrentHoveredItem;
                 inventoryItemBeingDropped.GetCurrentInventorySlot().RemoveItemFromSlot();
-                WorldItem itemBeingDropped = ItemSpawner.Instance.SpawnItem(InventoryItem.CurrentHoveredItem.item, throwPosition.position, Quaternion.identity);
-                //WorldItem itemBeingDropped = Instantiate<WorldItem>(InventoryItem.CurrentHoveredItem.item.itemPrefab, throwPosition.position, Quaternion.identity);
-                // Maybe yeet it a little bit
-                itemBeingDropped.GetComponent<Rigidbody>().AddForce(head.forward * throwForce * Time.deltaTime, ForceMode.Impulse);
-                // This is so the pick up menu doesn't trigger immediately.
-                itemBeingDropped.SetUninteractableTemporarily();
-                itemBeingDropped.SetNumberOfStartingItems(inventoryItemBeingDropped.GetItemCount());
+                DropItem(InventoryItem.CurrentHoveredItem.itemInstance);
                 Destroy(InventoryItem.CurrentHoveredItem.gameObject);
 
-                if (inventoryItemBeingDropped.item.ItemType == ItemType.PRIMARY_WEAPON)
+                if (inventoryItemBeingDropped.itemInstance.sharedData.ItemType == ItemType.PRIMARY_WEAPON)
                 {
                     if (OnLoadOutChanged != null)
                     {
@@ -274,6 +296,18 @@ public class PlayerGearController : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void DropItem(ItemInstance itemInstance)
+    {
+        WorldItem itemBeingDropped = ItemSpawner.Instance.SpawnItem(itemInstance, throwPosition.position, Quaternion.identity);
+        //WorldItem itemBeingDropped = Instantiate<WorldItem>(InventoryItem.CurrentHoveredItem.item.itemPrefab, throwPosition.position, Quaternion.identity);
+        // Maybe yeet it a little bit
+        itemBeingDropped.InitializeFromItemInstance(itemInstance);
+        itemBeingDropped.GetComponent<Rigidbody>().AddForce(head.forward * throwForce * Time.deltaTime, ForceMode.Impulse);
+        // This is so the pick up menu doesn't trigger immediately.
+        itemBeingDropped.SetUninteractableTemporarily();
+        itemBeingDropped.SetNumberOfStartingItems((int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack));
     }
 
     private void GearSlotChange(GearSlot gearSlot)
@@ -331,7 +365,7 @@ public class PlayerGearController : MonoBehaviour
         if (gearSlot.HasItem())
         {
             //WorldItem itemBeingDropped = ItemSpawner.Instance.SpawnItem(gearSlot.GetItemInSlot().item, Vector3.zero);
-            gearItems[(int)identifier] = ItemSpawner.Instance.SpawnItem(gearSlot.GetItemInSlot().item, gearStorageLocations[(int)identifier]);
+            gearItems[(int)identifier] = ItemSpawner.Instance.SpawnItem(gearSlot.GetItemInSlot().itemInstance, gearStorageLocations[(int)identifier]);
             //gearItems[(int)identifier] = Instantiate<WorldItem>(gearSlot.GetItemInSlot().item.itemPrefab, gearStorageLocations[(int)identifier]);
             gearItems[(int)identifier].Equip();
             if (selectedFirstSlot)
@@ -393,26 +427,32 @@ public class PlayerGearController : MonoBehaviour
         if (Character.disableUserClickingInputStatus) return;
         if (gunInHands == null) return;
         StopCoroutine("MoveWeapon");
-        StartCoroutine(MoveWeapon(true));
+        currentTransitionCoroutine = StartCoroutine(MoveWeapon(true));
     }
 
     public void MoveToHipFire()
     {
         StopCoroutine("MoveWeapon");
-        StartCoroutine(MoveWeapon(false));
+        currentTransitionCoroutine = StartCoroutine(MoveWeapon(false));
     }
 
-    IEnumerator MoveWeapon(bool ADS)
+    IEnumerator MoveWeapon(bool toADS)
     {
-            float time = 0;
-        Vector3 startLocalPosition = weaponPositionHands.localPosition;  // Start from the current local position
-        Quaternion startLocalRotation = weaponPositionHands.localRotation;  // Start from the current local rotation
-        Transform targetTransform = ADS ? ADSFirePosition : hipFirePosition;  // Determine target based on ADS state
+        if (currentTransitionCoroutine != null)
+        {
+            StopCoroutine(currentTransitionCoroutine); // Stop any ongoing transition
+        }
+
+        float time = 0;
+        Vector3 startLocalPosition = weaponPositionHands.localPosition; // Start from the current local position
+        Quaternion startLocalRotation = weaponPositionHands.localRotation; // Start from the current local rotation
+
+        Transform targetTransform = toADS ? ADSFirePosition : hipFirePosition;
 
         while (time < timeToADS)
         {
-            float t = time / timeToADS;  // Normalize time
-            t = Mathf.SmoothStep(0.0f, 1.0f, t);  // Apply SmoothStep for smoother interpolation
+            float t = time / timeToADS; // Normalize time
+            t = Mathf.SmoothStep(0.0f, 1.0f, t); // Apply SmoothStep for smoother interpolation
 
             weaponPositionHands.localPosition = Vector3.Lerp(startLocalPosition, targetTransform.localPosition, t);
             weaponPositionHands.localRotation = Quaternion.Lerp(startLocalRotation, targetTransform.localRotation, t);
@@ -421,7 +461,6 @@ public class PlayerGearController : MonoBehaviour
             yield return null;
         }
 
-        // Ensure the final position and rotation are exactly as the target
         weaponPositionHands.localPosition = targetTransform.localPosition;
         weaponPositionHands.localRotation = targetTransform.localRotation;
     }

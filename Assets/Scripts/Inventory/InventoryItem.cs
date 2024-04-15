@@ -7,8 +7,7 @@ using TMPro;
 
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    [HideInInspector] public BaseItem item;
-    protected int count = 0;
+    [HideInInspector] public ItemInstance itemInstance;
 
     [SerializeField] protected Image itemImage;
 
@@ -21,10 +20,17 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public static InventoryItem CurrentHoveredItem { get; private set; }
 
     // Initialized by the inventory when it's created
-    public void InitializeItem(BaseItem item)
+    public void InitializeItem(SharedItemData sharedItemData)
     {
-        this.item = item;
-        itemImage.sprite = item.SmallImage;
+        this.itemInstance.sharedData = sharedItemData;
+        itemImage.sprite = sharedItemData.SmallImage;
+        parentAfterDrag = transform.parent;
+    }
+
+    public void InitializeItem(ItemInstance itemInstance)
+    {
+        this.itemInstance = itemInstance;
+        itemImage.sprite = itemInstance.sharedData.SmallImage;
         parentAfterDrag = transform.parent;
     }
 
@@ -48,7 +54,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         // Changing the sprite is only useful for primary weapons.
         // If the primary weapon is put into a big weapon slot, the image get's changed to the big image
         // It needs to be switched back to the small image when it's dragged
-        itemImage.sprite = item.SmallImage;
+        itemImage.sprite = itemInstance.sharedData.SmallImage;
         AdjustImageSizeForDragging();
     }
 
@@ -69,11 +75,32 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             return;
         }
 
-        currentInventorySlot.SetItemInSlotAfterDrag(this);
-        currentInventorySlot.EndInventoryItemMovedPassThrough(this);
-
-        DoThingsAfterMove();
+        // Check if the drag ended outside the inventory UI, i.e., no UI element was under the pointer
+        GameObject droppedOn = eventData.pointerCurrentRaycast.gameObject;
+        if (droppedOn != null && IsPartOfInventoryUI(droppedOn))
+        {
+            currentInventorySlot.SetItemInSlotAfterDrag(this);
+            currentInventorySlot.EndInventoryItemMovedPassThrough(this);
+            DoThingsAfterMove();
+        }
+        else
+        {
+            //currentInventorySlot.RemoveItemFromSlot();
+            currentInventorySlot.DropItem();
+            Destroy(this.gameObject);
+        }
         itemImage.raycastTarget = true;
+    }
+
+    private bool IsPartOfInventoryUI(GameObject obj)
+    {
+        while (obj != null)
+        {
+            if (obj.CompareTag("InventoryUI"))
+                return true;
+            obj = obj.transform.parent?.gameObject;
+        }
+        return false;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -96,7 +123,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public ItemType GetItemType()
     {
-        return item.ItemType;
+        return itemInstance.sharedData.ItemType;
     }
 
     private void AdjustImageSizeForDragging()
@@ -114,10 +141,10 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         if (currentInventorySlot.UseLargeImage)
         {
-            itemImage.sprite = item.LargeImage;
+            itemImage.sprite = itemInstance.sharedData.LargeImage;
         } else
         {
-            itemImage.sprite = item.SmallImage;
+            itemImage.sprite = itemInstance.sharedData.SmallImage;
         }
 
         // Set the item as a child of the new parent
@@ -147,7 +174,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public int GetItemCount()
     {
-        return count;
+        return (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
     }
 
     public void IncrementItemCount()
@@ -157,7 +184,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void ChangeItemCount(int change)
     {
-        count += change;
+        int currentCount = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+        itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, currentCount + change);
         if (OnItemCountChanged != null)
         {
             OnItemCountChanged();
@@ -168,13 +196,13 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         // I've put several protections in place to make sure non stackable items only have one item in them
         // But this is yet another that their weight won't be fucked up.
-        if (item.stackable)
+        if (itemInstance.sharedData.stackable)
         {
-            return GetItemCount() * item.Weight;
+            return GetItemCount() * itemInstance.sharedData.Weight;
         }
         else
         {
-            return item.Weight;
+            return itemInstance.sharedData.Weight;
         }
     }
 
