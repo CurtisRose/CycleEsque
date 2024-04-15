@@ -5,6 +5,7 @@ using UnityEngine;
 public class Gun : WorldItem
 {
     [SerializeField] Transform shootPositionTransform;
+    [SerializeField] Transform aimPositionTransform;
     [SerializeField] Projectile projectilePrefab;
 
     [SerializeField] float fireRate = 0.5f; // Time in seconds between shots
@@ -100,12 +101,6 @@ public class Gun : WorldItem
         gunAudioSource.PlayOneShot(weaponEquipSound);
     }
 
-    public Transform GetAimPoint()
-    {
-        return shootPositionTransform;
-    }
-
-
     // Returns the number of rounds used
     public int Reload(int numRoundsAvailable)
     {
@@ -139,14 +134,16 @@ public class Gun : WorldItem
 
         if (numberOfRounds <= 0) return false;
 
-        Debug.DrawRay(shootPositionTransform.position, shootPositionTransform.forward * 10, Color.red, 2.0f);
+        Debug.DrawRay(aimPositionTransform.position, aimPositionTransform.forward * 10, Color.red, 2.0f);
 
-        GameObject projectileObj = ProjectilePool.Instance.GetProjectile();
+        Projectile projectileObj = ProjectilePool.Instance.GetProjectile();
         if (projectileObj != null)
         {
-            projectileObj.transform.position = shootPositionTransform.position;
-            projectileObj.transform.rotation = shootPositionTransform.rotation;
-            projectileObj.SetActive(true);
+            projectileObj.SetInitialVisualPosition(aimPositionTransform.position.y - shootPositionTransform.position.y);
+
+            projectileObj.transform.position = aimPositionTransform.position;
+            projectileObj.transform.rotation = aimPositionTransform.rotation;
+            projectileObj.gameObject.SetActive(true);
 
             /*
             if (Time.time - lastShotTime < returnSpeed)
@@ -154,7 +151,7 @@ public class Gun : WorldItem
                 ApplyBulletSpread(projectileObj.transform);
             }*/
 
-            projectileObj.SetActive(true); // Ensure the projectile is active
+            projectileObj.gameObject.SetActive(true); // Ensure the projectile is active
 
             numberOfRounds--;
             gunAudioSource.PlayOneShot(weaponFireSound);

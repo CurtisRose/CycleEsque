@@ -884,7 +884,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3ba442c2bc369945b2367b31bb17171, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 2506865928616534172, guid: 9ce584057e259bb47b9937b06cfa6540,
+  projectilePrefab: {fileID: 7343739617303108452, guid: 9ce584057e259bb47b9937b06cfa6540,
     type: 3}
   poolSize: 30
   expandable: 1
