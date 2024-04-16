@@ -16,6 +16,7 @@ public class FleeingState : MonsterState
         {
             Debug.LogError("NavMeshAgent component is missing from the monster!");
         }
+        navMeshAgent.speed = monsterData.runSpeed;
     }
 
     public override void Enter()

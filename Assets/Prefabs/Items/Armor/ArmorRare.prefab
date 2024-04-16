@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sharedItemData: {fileID: 11400000, guid: dbf0907243b11cd4f9817c9bf92de33c, type: 2}
   timeDelay: 1
+  numItemsInStack: 0
 --- !u!54 &6298266587880118075
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -73,7 +74,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!1 &531991524733331880
 GameObject:

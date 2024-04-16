@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class CrosshairController : MonoBehaviour
 {
+    private static CrosshairController Instance;
     [SerializeField] RectTransform crossHairRoot;
     public List<RectTransform> indicators; // UI element's RectTransform
     public List<Vector2> movementDirections; // Directions for each indicator
@@ -17,14 +18,21 @@ public class CrosshairController : MonoBehaviour
     public float currentValue; // The current position value
     public float noHitZeroingPoint = 50f;
 
-    [SerializeField] Transform laser;
-
     public Vector2 currentPosition;
 
     Vector3 velocity;
 
     void Start()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+
         if (crossHairRoot == null || indicators == null || indicators.Count == 0)
         {
             Debug.LogError("Indicator RectTransform is not set on " + gameObject.name);
@@ -79,7 +87,6 @@ public class CrosshairController : MonoBehaviour
         {
             // If the raycast hits, use the hit point
             targetPoint = hit.point;
-            laser.position = targetPoint;
         }
         else
         {

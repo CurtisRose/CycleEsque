@@ -32,10 +32,15 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable damageableObject))
+        if (collision.gameObject.TryGetComponent<MonsterPart>(out MonsterPart monsterPart))
         {
-            damageableObject.TakeDamage(damage, armorPenetration);
+            monsterPart.HandleHit(this);
+        } else if (collision.gameObject.TryGetComponent<MonsterController>(out MonsterController _))
+        {
+            // don't destroy the bullet, it's hitting the agent collider.
+            return;
         }
+        
 
         PlayImpactEffect();
         ReturnToPool();
@@ -63,5 +68,14 @@ public class Projectile : MonoBehaviour
             visualProjectile.transform.localPosition = new Vector3(0, offset, 0);
             alignmentTimer = alignmentDuration; // Reset the alignment timer
         }
+    }
+
+    public float GetDamage()
+    {
+        return damage;
+    }
+    public float GetPenetration()
+    {
+        return armorPenetration;
     }
 }

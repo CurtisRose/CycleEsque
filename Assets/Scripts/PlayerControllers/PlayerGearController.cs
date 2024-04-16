@@ -27,7 +27,8 @@ public class PlayerGearController : MonoBehaviour
 
     // Crosshair Aimer Test
     [SerializeField] CrosshairController crosshairController;
-    [SerializeField] float smoothTime = 0.1f; // This should be based on the gun maybe
+    bool ADSing = false;
+    //[SerializeField] float smoothTime = 0.1f; // This should be based on the gun maybe
     [SerializeField] float crosshairVisiblityTime = 0.2f;
 
     [SerializeField] private float switchCooldown = 0.5f; // Time in seconds between allowed switches
@@ -120,7 +121,10 @@ public class PlayerGearController : MonoBehaviour
                     bool fired = gunInHands.Use();
                     if (fired)
                     {
-                        ShowCrosshair();
+                        if (!ADSing)
+                        {
+                            ShowCrosshair();
+                        }
                         crosshairController.Bloom();
 
                         // Write decrement of AmmoCount to the inventory slot Item Instance
@@ -438,6 +442,11 @@ public class PlayerGearController : MonoBehaviour
 
     IEnumerator MoveWeapon(bool toADS)
     {
+        if (!toADS)
+        {
+            ADSing = false;
+        }
+
         if (currentTransitionCoroutine != null)
         {
             StopCoroutine(currentTransitionCoroutine); // Stop any ongoing transition
@@ -461,6 +470,13 @@ public class PlayerGearController : MonoBehaviour
             yield return null;
         }
 
+        if (toADS)
+        {
+            ADSing = true;
+            // You are fully ADSed, don't show aiming crosshair
+            crosshairController.gameObject.SetActive(false);
+            StopCoroutine("ShowCrosshair");
+        }
         weaponPositionHands.localPosition = targetTransform.localPosition;
         weaponPositionHands.localRotation = targetTransform.localRotation;
     }

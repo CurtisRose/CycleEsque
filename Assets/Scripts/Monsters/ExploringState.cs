@@ -6,18 +6,23 @@ public class ExploringState : MonsterState
     private Transform targetArea;
     private Vector3 nextPosition;
     private float timer;
+    Animator animator;
 
     public ExploringState(GameObject monster, MonsterData data, Transform targetArea) : base(monster, data)
     {
         this.targetArea = targetArea;
-        ChooseNextPosition();
+        animator = monster.GetComponent<Animator>();
         monster.GetComponent<Health>().OnDamageTaken += OnDamageTaken;
+        animator = monster.GetComponentInChildren<Animator>();
+        animator.SetBool("IsIdle", true);
+        navMeshAgent.speed = monsterData.walkSpeed;
+        ChooseNextPosition();
     }
 
     public override void Enter()
     {
         base.Enter();
-        navMeshAgent.speed = monsterData.moveSpeed;
+        navMeshAgent.speed = monsterData.walkSpeed;
         navMeshAgent.angularSpeed = monsterData.turnSpeed;
         timer = monsterData.pauseTime;
         ChooseNextPosition();
@@ -46,9 +51,11 @@ public class ExploringState : MonsterState
         UnityEngine.AI.NavMesh.SamplePosition(randomDirection, out hit, monsterData.exploringRadius, UnityEngine.AI.NavMesh.AllAreas);
         nextPosition = hit.position;
         navMeshAgent.SetDestination(nextPosition);
+        animator.SetBool("IsWalking", true);
+        animator.SetBool("IsIdle", false);
     }
 
-    private void OnDamageTaken(float currentHealth)
+    private void OnDamageTaken(float damageAmount, float currentHealth)
     {
         // Change state to Aggressive when taking damage
         monster.GetComponent<MonsterController>().ChangeState(new AggressiveState(monster, monsterData));
@@ -63,6 +70,8 @@ public class ExploringState : MonsterState
         }
         else
         {
+            animator.SetBool("IsIdle", true);
+            animator.SetBool("IsWalking", false);
             timer -= Time.deltaTime;
         }
     }
