@@ -5,8 +5,8 @@ using UnityEngine.AI;
 
 public class MonsterController : MonoBehaviour
 {
-    [SerializeField] public Transform explorationTarget;
     [SerializeField] MonsterData monsterData;
+    [SerializeField] public Transform explorationTarget;
     [SerializeField] Transform rootmotionObject;
 
     private MonsterState currentState;
@@ -24,8 +24,9 @@ public class MonsterController : MonoBehaviour
     private void Awake()
     {
         healthComponent = GetComponent<Health>();
+        healthComponent.SetMaxHealth(monsterData.health);
         healthUIController = GetComponent<HealthUIController>();
-        agent = GetComponent<NavMeshAgent>();
+        InitializeAgent();
         visualizer = GetComponent<NavMeshPathVisualizer>();
         animator = GetComponentInChildren<Animator>();
         layerMask = 1 << LayerMask.NameToLayer("Player");
@@ -37,6 +38,15 @@ public class MonsterController : MonoBehaviour
         healthComponent.OnHealthChanged += HandleHealthChanged;
         healthComponent.OnDeath += HandleDeath;
         FetchPlayers();
+    }
+
+    void InitializeAgent()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        agent.speed = monsterData.walkSpeed;
+        agent.angularSpeed = monsterData.turnSpeed;
+        agent.acceleration = monsterData.acceleration;
+        agent.stoppingDistance = monsterData.stoppingDistance;
     }
 
     void Update()
@@ -159,5 +169,6 @@ public class MonsterController : MonoBehaviour
     {
         // TODO: Add armor penetration calculations
         healthComponent.TakeDamage(projectile.GetDamage());
+        HitMarker.Instance.ShowHitMarker();
     }
 }

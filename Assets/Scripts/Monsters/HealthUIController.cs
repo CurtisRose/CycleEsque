@@ -13,12 +13,16 @@ public class HealthUIController : MonoBehaviour
 
     private void Awake()
     {
-        healthSlider.maxValue = targetHealth.maxHealth;
-        healthSlider.value = targetHealth.GetCurrentHealth();
         if (mainCamera == null)
         {
             mainCamera = Camera.main;
         }
+    }
+
+    private void Start()
+    {
+        healthSlider.maxValue = targetHealth.maxHealth;
+        healthSlider.value = targetHealth.GetCurrentHealth();
     }
 
     void Update()

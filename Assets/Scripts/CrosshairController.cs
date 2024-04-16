@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class CrosshairController : MonoBehaviour
 {
-    private static CrosshairController Instance;
     [SerializeField] RectTransform crossHairRoot;
     public List<RectTransform> indicators; // UI element's RectTransform
     public List<Vector2> movementDirections; // Directions for each indicator
@@ -24,15 +23,6 @@ public class CrosshairController : MonoBehaviour
 
     void Start()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-
         if (crossHairRoot == null || indicators == null || indicators.Count == 0)
         {
             Debug.LogError("Indicator RectTransform is not set on " + gameObject.name);

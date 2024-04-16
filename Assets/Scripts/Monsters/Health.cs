@@ -69,4 +69,10 @@ public class Health : MonoBehaviour
     {
         return healthBarVisibleTime;
     }
+
+    public void SetMaxHealth(float health)
+    {
+        maxHealth = health;
+        currentHealth = health;
+    }
 }
