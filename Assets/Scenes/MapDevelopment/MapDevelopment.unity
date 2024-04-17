@@ -1702,6 +1702,76 @@ PrefabInstance:
       propertyPath: gearBackpackIconBackground
       value: 
       objectReference: {fileID: 874057084}
+    - target: {fileID: 1315985713516066803, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: outOfAmmoSounds.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1315985713516066803, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: gearRemovalSounds.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1315985713516066803, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: outOfAmmoSounds.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: cd756cf9873948d4fb46bf7797b5a77d, type: 3}
+    - target: {fileID: 1315985713516066803, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: outOfAmmoSounds.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 1a251a19203e9584c9e0b02e9ae8493d, type: 3}
+    - target: {fileID: 1315985713516066803, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: outOfAmmoSounds.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 0b5c8ad45664d724185585adbbad3d26, type: 3}
+    - target: {fileID: 1315985713516066803, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: outOfAmmoSounds.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: 0fd6522ec5603044dac9d869d4d130d0, type: 3}
+    - target: {fileID: 1315985713516066803, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: outOfAmmoSounds.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: e8775ce9d9caacb47aeedbae9142fc1b, type: 3}
+    - target: {fileID: 1315985713516066803, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: gearRemovalSounds.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: d7727b8fd2d4fff4587910a62bdc777a, type: 3}
+    - target: {fileID: 1315985713516066803, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: gearRemovalSounds.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 1aa65873225eb8643a1567991ba7c8fe, type: 3}
+    - target: {fileID: 1315985713516066803, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: gearRemovalSounds.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 8ddd50080adc76942be46b14837fd3b8, type: 3}
+    - target: {fileID: 1315985713516066803, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: gearRemovalSounds.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: d71a60a527514d74e95796c875fd105d, type: 3}
+    - target: {fileID: 1315985713516066803, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: gearRemovalSounds.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: b51c60f9c1bcb04469f9209b7f1e144e, type: 3}
+    - target: {fileID: 1315985713516066803, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: gearRemovalSounds.Array.data[5]
+      value: 
+      objectReference: {fileID: 8300000, guid: 453d29ed115fb1d45884ef8314f091e8, type: 3}
+    - target: {fileID: 1315985713516066803, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: gearRemovalSounds.Array.data[6]
+      value: 
+      objectReference: {fileID: 8300000, guid: 79de256383fc3d54499e16a90fedd7e7, type: 3}
     - target: {fileID: 9064487098345231791, guid: e4c6fb353c04e3049b2329c6e6edcf05,
         type: 3}
       propertyPath: m_LocalPosition.x

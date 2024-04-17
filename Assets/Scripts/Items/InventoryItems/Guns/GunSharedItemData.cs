@@ -9,6 +9,8 @@ public class GunSharedItemData : SharedItemData
     [field: SerializeField] public int MagazineCapacity { get; private set; }
     // Time in seconds between shots
     [field: SerializeField] public float RateOfFire { get; private set; }
+    [field: SerializeField] public float reloadTime { get; private set; }
+    [field: SerializeField] public float switchToTime { get; private set; }
 
     // Hipfire Recoil
     [field: SerializeField] public float hipFireMultiplier { get; private set; }

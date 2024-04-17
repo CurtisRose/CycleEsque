@@ -51,8 +51,10 @@ public class PlayerGearController : MonoBehaviour
 
     // Sounds
     AudioSource audioSource;
-    [SerializeField] AudioClip gearRemovalSound;
-    [SerializeField] AudioClip outOfAmmoSound;
+    [SerializeField] List<AudioClip> gearRemovalSounds;
+    SoundRandomizer gearRemovalRandomClips;
+    [SerializeField] List<AudioClip> outOfAmmoSounds;
+    SoundRandomizer outOfAmmoRandomClips;
 
 
     public delegate void LoadOutChanged();
@@ -82,6 +84,8 @@ public class PlayerGearController : MonoBehaviour
         playerInventory.OnItemDropped += DropItem;
         recoil = GetComponent<Recoil>();
         audioSource = GetComponent<AudioSource>();
+        gearRemovalRandomClips = new SoundRandomizer(gearRemovalSounds);
+        outOfAmmoRandomClips = new SoundRandomizer(outOfAmmoSounds);
     }
 
     private void Start()
@@ -176,7 +180,7 @@ public class PlayerGearController : MonoBehaviour
                     {
                         if (Input.GetMouseButtonDown(0))
                         {
-                            audioSource.PlayOneShot(outOfAmmoSound);
+                            audioSource.PlayOneShot(outOfAmmoRandomClips.GetRandomClip());
                         }
                     }
                 }
@@ -437,21 +441,21 @@ public class PlayerGearController : MonoBehaviour
 
             if (identifier == GearSlotIdentifier.BACKPACK)
             {
-                audioSource.PlayOneShot(gearRemovalSound);
+                MakeSound(gearRemovalRandomClips.GetRandomClip());
                 gearBackpackIconBackground.enabled = true;
                 //gearBackpackIconBorder.color = RarityColorManager.Instance.GetColorByRarity(gearItems[(int)identifier].GetBaseItem().Rarity);
                 gearBackpackIconBackground.color = RarityColorManager.Instance.GetColorByRarity(gearItems[(int)identifier].GetBaseItem().Rarity);
             }
             if (identifier == GearSlotIdentifier.HELMET)
             {
-                audioSource.PlayOneShot(gearRemovalSound);
+                MakeSound(gearRemovalRandomClips.GetRandomClip());
                 gearHelmetIconBackground.enabled = true;
                 //gearHelmetIconBorder.color = RarityColorManager.Instance.GetColorByRarity(gearItems[(int)identifier].GetBaseItem().Rarity);
                 gearHelmetIconBackground.color = RarityColorManager.Instance.GetColorByRarity(gearItems[(int)identifier].GetBaseItem().Rarity);
             }
             if (identifier == GearSlotIdentifier.ARMOR)
             {
-                audioSource.PlayOneShot(gearRemovalSound);
+                MakeSound(gearRemovalRandomClips.GetRandomClip());
                 gearArmorIconBackground.enabled = true;
                 //gearArmorIconBorder.color = RarityColorManager.Instance.GetColorByRarity(gearItems[(int)identifier].GetBaseItem().Rarity);
                 gearArmorIconBackground.color = RarityColorManager.Instance.GetColorByRarity(gearItems[(int)identifier].GetBaseItem().Rarity);
@@ -461,19 +465,19 @@ public class PlayerGearController : MonoBehaviour
 
             if (identifier == GearSlotIdentifier.BACKPACK)
             {
-                audioSource.PlayOneShot(gearRemovalSound);
+                MakeSound(gearRemovalRandomClips.GetRandomClip());
                 gearBackpackIconBackground.enabled = false;
                 //gearBackpackIconBorder.color = RarityColorManager.Instance.GetColorByRarity(Rarity.COMMON);
             }
             if (identifier == GearSlotIdentifier.HELMET)
             {
-                audioSource.PlayOneShot(gearRemovalSound);
+                MakeSound(gearRemovalRandomClips.GetRandomClip());
                 gearHelmetIconBackground.enabled = false;
                 //gearHelmetIconBorder.color = RarityColorManager.Instance.GetColorByRarity(Rarity.COMMON);
             }
             if (identifier == GearSlotIdentifier.ARMOR)
             {
-                audioSource.PlayOneShot(gearRemovalSound);
+                MakeSound(gearRemovalRandomClips.GetRandomClip());
                 gearArmorIconBackground.enabled = false;
                 //gearArmorIconBorder.color = RarityColorManager.Instance.GetColorByRarity(Rarity.COMMON);
             }
@@ -595,5 +599,12 @@ public class PlayerGearController : MonoBehaviour
     public Gun GetCurrentGun()
     {
         return gunInHands;
+    }
+
+    public void MakeSound(AudioClip audioClip)
+    {
+        audioSource.pitch = Random.Range(0.95f, 1.05f); // Adjust pitch slightly
+        audioSource.volume = Random.Range(0.8f, 1.0f); // Adjust volume slightly
+        audioSource.PlayOneShot(audioClip);
     }
 }
