@@ -22,5 +22,5 @@ MonoBehaviour:
   detectionRadius: 15
   fleeDistance: 40
   minimumAggressionTime: 60
-  health: 200
+  health: 100
   armor: 100

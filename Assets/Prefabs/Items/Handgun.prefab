@@ -303,7 +303,7 @@ Transform:
   m_GameObject: {fileID: 2474077918294206929}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.04700005}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -327,11 +327,20 @@ MonoBehaviour:
   sharedItemData: {fileID: 11400000, guid: 6749e79904a1ad54e9db6412b3537fbc, type: 2}
   timeDelay: 1
   numItemsInStack: 0
+  gunModelTransform: {fileID: 8956380231395738226}
   shootPositionTransform: {fileID: 7579410308665524227}
   aimPositionTransform: {fileID: 750004904246053663}
   projectilePrefab: {fileID: 7343739617303108452, guid: 9ce584057e259bb47b9937b06cfa6540,
     type: 3}
+  DrawGizmos: 0
+  projectileSpeed: 100
+  projectileDamage: 50
+  projectileArmorPenetration: 0.5
   fireRate: 1
+  recoilPositionOffset: {x: 0, y: 0, z: -0.1}
+  recoilRotationOffset: {x: -10, y: 0, z: 0}
+  recoilSpeed: 10
+  returnSpeed: 5
   damage: 10
   armorPenetration: 5
   gunAudioSource: {fileID: -7239728464899762388}
@@ -339,6 +348,7 @@ MonoBehaviour:
   weaponReloadSound: {fileID: 8300000, guid: d72f5a7051f351b498f2f8cecc0d3425, type: 3}
   weaponEquipSound: {fileID: 8300000, guid: 9670aa1e470f26f4b8f44d6cf7470fb9, type: 3}
   numberOfRounds: 0
+  EquipPosition: {x: 0, y: 0, z: -0.061}
 --- !u!54 &-8819084480297045738
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -181,7 +181,7 @@ public class MonsterController : MonoBehaviour
     public void HandleHit(Projectile projectile)
     {
         // TODO: Add armor penetration calculations
-        healthComponent.TakeDamage(projectile.GetDamage());
+        healthComponent.TakeDamage(projectile.Damage);
         HitMarker.Instance.ShowHitMarker();
     }
 

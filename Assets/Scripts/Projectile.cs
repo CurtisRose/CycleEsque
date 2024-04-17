@@ -3,20 +3,21 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     private Rigidbody rb;
-    [SerializeField] private float lifespan = 5f;
-    [SerializeField] private float speed = 100f;
-    [SerializeField] private float damage = 25f;
-    [SerializeField] private float armorPenetration = 0.5f;
-    [SerializeField] private GameObject visualProjectile; // The visual component of the projectile
-    [SerializeField] private float alignmentDuration = 0.1f; // Duration over which the visual aligns with the logical path
-    private float alignmentTimer;
+    [SerializeField] private float lifespan = 5f; // This can remain fixed or be adjusted by the Gun class as well
+    [SerializeField] private GameObject visualProjectile;
+    [SerializeField] private float alignmentDuration = 0.1f;
     [SerializeField] private float raycastBackOffset = 1.0f;
+    private float alignmentTimer;
+
+    public float Speed { get; set; }
+    public float Damage { get; set; }
+    public float ArmorPenetration { get; set; }
 
     private void OnEnable()
     {
         rb = GetComponent<Rigidbody>();
         rb.velocity = Vector3.zero;
-        rb.velocity = transform.forward * speed;
+        rb.velocity = transform.forward * Speed;
         Invoke("ReturnToPool", lifespan);
         alignmentTimer = alignmentDuration; // Initialize alignment timer
         Debug.DrawRay(transform.position, transform.forward * 10, Color.blue, 2.0f);
@@ -36,7 +37,7 @@ public class Projectile : MonoBehaviour
             Debug.DrawRay(startRaycastPoint, transform.forward * raycastLength, Color.red, 60.0f); // Draw raycast in red if it hits something
             if (hit.collider.TryGetComponent<IDamageable>(out IDamageable damageable))
             {
-                damageable.ReceiveDamage(damage, armorPenetration);
+                damageable.ReceiveDamage(Damage, ArmorPenetration);
                 Debug.Log("Projectile spawned and hit a monster immediately!");
                 PlayImpactEffect();
                 ReturnToPool(); // Immediately return to pool after delivering damage
@@ -96,14 +97,5 @@ public class Projectile : MonoBehaviour
             visualProjectile.transform.localPosition = new Vector3(0, offset, 0);
             alignmentTimer = alignmentDuration; // Reset the alignment timer
         }
-    }
-
-    public float GetDamage()
-    {
-        return damage;
-    }
-    public float GetPenetration()
-    {
-        return armorPenetration;
     }
 }
