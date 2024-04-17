@@ -23,12 +23,13 @@ public class AggressiveState : MonsterState
         animator.SetBool("IsRunning", true);
         animator.SetBool("IsWalking", false);
         animator.SetBool("IsIdle", false);
+        animator.Play("Run");
     }
 
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Monster becomes aggressive!");
+        //Debug.Log("Monster becomes aggressive!");
 
         aggressiveTimer = 0;  // Reset the aggression timer
 
@@ -60,7 +61,7 @@ public class AggressiveState : MonsterState
     public override void Exit()
     {
         base.Exit();
-        Debug.Log("Monster stops being aggressive.");
+        //Debug.Log("Monster stops being aggressive.");
 
         if (agent.isActiveAndEnabled)
         {

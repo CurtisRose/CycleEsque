@@ -21,6 +21,11 @@ public class MonsterController : MonoBehaviour
 
     Animator animator;
 
+    [SerializeField] bool DrawGizmos;
+
+    public delegate void Death();
+    public event Death OnDeath;
+
     private void Awake()
     {
         healthComponent = GetComponent<Health>();
@@ -38,6 +43,11 @@ public class MonsterController : MonoBehaviour
         healthComponent.OnHealthChanged += HandleHealthChanged;
         healthComponent.OnDeath += HandleDeath;
         FetchPlayers();
+    }
+
+    void OnDeadPassThrough()
+    {
+        OnDeath?.Invoke();
     }
 
     void InitializeAgent()
@@ -137,19 +147,22 @@ public class MonsterController : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        // Detection radius
-        Gizmos.color = Color.red;
+        if (DrawGizmos)
+        {
+            // Detection radius
+            Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, monsterData.detectionRadius);
 
         // Flee distance
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, monsterData.fleeDistance);
 
-        // Exploring radius
-        if (explorationTarget != null)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(explorationTarget.position, monsterData.exploringRadius);
+            // Exploring radius
+            if (explorationTarget != null)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawWireSphere(explorationTarget.position, monsterData.exploringRadius);
+            }
         }
     }
 
@@ -170,5 +183,15 @@ public class MonsterController : MonoBehaviour
         // TODO: Add armor penetration calculations
         healthComponent.TakeDamage(projectile.GetDamage());
         HitMarker.Instance.ShowHitMarker();
+    }
+
+    private void OnEnable()
+    {
+        healthComponent.OnDeath += OnDeadPassThrough;
+    }
+
+    private void OnDisable()
+    {
+        healthComponent.OnDeath -= OnDeadPassThrough;
     }
 }

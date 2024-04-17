@@ -7,6 +7,7 @@ public class Gun : WorldItem
     [SerializeField] Transform shootPositionTransform;
     [SerializeField] Transform aimPositionTransform;
     [SerializeField] Projectile projectilePrefab;
+    [SerializeField] bool DrawGizmos;
 
     [SerializeField] float fireRate = 0.5f; // Time in seconds between shots
     private float lastShotTime = 0f; // Time since the last shot was fired
@@ -232,5 +233,23 @@ public class Gun : WorldItem
     public int GetNumberOfRounds()
     {
         return numberOfRounds;
+    }
+
+    void OnDrawGizmos()
+    {
+        if (DrawGizmos)
+        {
+            if (shootPositionTransform != null)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawRay(shootPositionTransform.position, shootPositionTransform.forward * 500); // Draw a 2-meter long red ray
+            }
+
+            if (aimPositionTransform != null)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawRay(aimPositionTransform.position, aimPositionTransform.forward * 500); // Draw a 2-meter long green ray
+            }
+        }
     }
 }

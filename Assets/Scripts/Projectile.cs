@@ -10,6 +10,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] private GameObject visualProjectile; // The visual component of the projectile
     [SerializeField] private float alignmentDuration = 0.1f; // Duration over which the visual aligns with the logical path
     private float alignmentTimer;
+    [SerializeField] private float raycastBackOffset = 1.0f;
 
     private void OnEnable()
     {
@@ -17,7 +18,34 @@ public class Projectile : MonoBehaviour
         rb.velocity = Vector3.zero;
         rb.velocity = transform.forward * speed;
         Invoke("ReturnToPool", lifespan);
+        alignmentTimer = alignmentDuration; // Initialize alignment timer
         Debug.DrawRay(transform.position, transform.forward * 10, Color.blue, 2.0f);
+
+        // Check if the projectile is spawned inside a monster
+        CheckInitialRaycast();
+    }
+
+    private void CheckInitialRaycast()
+    {
+        Vector3 startRaycastPoint = transform.position - transform.forward * raycastBackOffset; // Start the raycast from a point behind the projectile
+        RaycastHit hit;
+        float raycastLength = raycastBackOffset + 0.5f; // Length of the raycast; includes the backward offset and a small forward distance
+
+        if (Physics.Raycast(startRaycastPoint, transform.forward, out hit, raycastLength, LayerMask.GetMask("Monster")))
+        {
+            Debug.DrawRay(startRaycastPoint, transform.forward * raycastLength, Color.red, 60.0f); // Draw raycast in red if it hits something
+            if (hit.collider.TryGetComponent<IDamageable>(out IDamageable damageable))
+            {
+                damageable.ReceiveDamage(damage, armorPenetration);
+                Debug.Log("Projectile spawned and hit a monster immediately!");
+                PlayImpactEffect();
+                ReturnToPool(); // Immediately return to pool after delivering damage
+            }
+        }
+        else
+        {
+            Debug.DrawRay(startRaycastPoint, transform.forward * raycastLength, Color.green, 60.0f); // Draw raycast in green if it hits nothing
+        }
     }
 
     private void Update()

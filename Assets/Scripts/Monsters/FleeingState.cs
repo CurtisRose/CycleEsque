@@ -58,7 +58,7 @@ public class FleeingState : MonsterState
         }
         else
         {
-            Debug.Log("No valid navmesh point found in the flee direction!");
+            //Debug.Log("No valid navmesh point found in the flee direction!");
         }
     }
 
