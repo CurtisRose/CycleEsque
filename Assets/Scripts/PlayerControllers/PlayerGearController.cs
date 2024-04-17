@@ -40,6 +40,15 @@ public class PlayerGearController : MonoBehaviour
     private bool switchQueued = false; // Flag to check if a switch has been queued
     private bool nextSelectedFirstSlot; // Stores the intended slot selection after cooldown
 
+
+    // Player Gear Icons Bottom
+    [SerializeField] Image gearBackpackIconBackground;
+    //[SerializeField] Image gearBackpackIconBorder;
+    [SerializeField] Image gearHelmetIconBackground;
+    //[SerializeField] Image gearHelmetIconBorder;
+    [SerializeField] Image gearArmorIconBackground;
+    //[SerializeField] Image gearArmorIconBorder;
+
     public delegate void LoadOutChanged();
     public event LoadOutChanged OnLoadOutChanged;
 
@@ -411,6 +420,43 @@ public class PlayerGearController : MonoBehaviour
                 {
                     SetHipGun((Gun)gearItems[(int)GearSlotIdentifier.WEAPONSLOT1]);
                 }
+            }
+
+            if (identifier == GearSlotIdentifier.BACKPACK)
+            {
+                gearBackpackIconBackground.enabled = true;
+                //gearBackpackIconBorder.color = RarityColorManager.Instance.GetColorByRarity(gearItems[(int)identifier].GetBaseItem().Rarity);
+                gearBackpackIconBackground.color = RarityColorManager.Instance.GetColorByRarity(gearItems[(int)identifier].GetBaseItem().Rarity);
+            }
+            if (identifier == GearSlotIdentifier.HELMET)
+            {
+                gearHelmetIconBackground.enabled = true;
+                //gearHelmetIconBorder.color = RarityColorManager.Instance.GetColorByRarity(gearItems[(int)identifier].GetBaseItem().Rarity);
+                gearHelmetIconBackground.color = RarityColorManager.Instance.GetColorByRarity(gearItems[(int)identifier].GetBaseItem().Rarity);
+            }
+            if (identifier == GearSlotIdentifier.ARMOR)
+            {
+                gearArmorIconBackground.enabled = true;
+                //gearArmorIconBorder.color = RarityColorManager.Instance.GetColorByRarity(gearItems[(int)identifier].GetBaseItem().Rarity);
+                gearArmorIconBackground.color = RarityColorManager.Instance.GetColorByRarity(gearItems[(int)identifier].GetBaseItem().Rarity);
+            }
+        } else
+        {
+
+            if (identifier == GearSlotIdentifier.BACKPACK)
+            {
+                gearBackpackIconBackground.enabled = false;
+                //gearBackpackIconBorder.color = RarityColorManager.Instance.GetColorByRarity(Rarity.COMMON);
+            }
+            if (identifier == GearSlotIdentifier.HELMET)
+            {
+                gearHelmetIconBackground.enabled = false;
+                //gearHelmetIconBorder.color = RarityColorManager.Instance.GetColorByRarity(Rarity.COMMON);
+            }
+            if (identifier == GearSlotIdentifier.ARMOR)
+            {
+                gearArmorIconBackground.enabled = false;
+                //gearArmorIconBorder.color = RarityColorManager.Instance.GetColorByRarity(Rarity.COMMON);
             }
         }
     }

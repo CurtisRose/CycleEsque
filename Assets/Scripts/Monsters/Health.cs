@@ -25,6 +25,7 @@ public class Health : MonoBehaviour , IDamageable
     void Start()
     {
         currentHealth = maxHealth;
+        OnHealthChanged?.Invoke(currentHealth);
         lastDamageTime = -healthBarVisibleTime;
     }
 

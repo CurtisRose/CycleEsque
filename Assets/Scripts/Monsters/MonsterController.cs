@@ -11,7 +11,7 @@ public class MonsterController : MonoBehaviour
 
     private MonsterState currentState;
     private Health healthComponent;
-    private HealthUIController healthUIController;
+    private MonsterHealthUIController healthUIController;
     private Collider[] hitColliders;
     private NavMeshAgent agent;
     private NavMeshPathVisualizer visualizer;
@@ -32,7 +32,7 @@ public class MonsterController : MonoBehaviour
     {
         healthComponent = GetComponent<Health>();
         healthComponent.SetMaxHealth(monsterData.health);
-        healthUIController = GetComponent<HealthUIController>();
+        healthUIController = GetComponent<MonsterHealthUIController>();
         InitializeAgent();
         visualizer = GetComponent<NavMeshPathVisualizer>();
         animator = GetComponentInChildren<Animator>();

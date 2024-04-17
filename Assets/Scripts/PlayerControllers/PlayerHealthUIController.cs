@@ -1,22 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI; // Required for interacting with UI elements
 
-public class HealthUIController : MonoBehaviour
+public class PlayerHealthUIController : MonoBehaviour
 {
     [SerializeField] Slider healthSlider; // Reference to the UI Slider
     [SerializeField] Health targetHealth; // Reference to the Health component of your GameObject
-    [SerializeField] Transform monsterTransform;
-
-    [SerializeField] Vector3 offset = new Vector3(0, 2, 0);
-    private Camera mainCamera;
-    [SerializeField] RectTransform healthBarTransform;
 
     private void Awake()
     {
-        if (mainCamera == null)
-        {
-            mainCamera = Camera.main;
-        }
+
     }
 
     private void Start()
@@ -27,17 +19,7 @@ public class HealthUIController : MonoBehaviour
 
     void Update()
     {
-        // Convert the world position of the monster to a screen position and add an offset
-        Vector3 screenPosition = mainCamera.WorldToScreenPoint(monsterTransform.transform.position + offset);
-        if (screenPosition.z > 0 && targetHealth.ShouldDisplayHealthBar()) // Check if the monster is in front of the camera
-        {
-            healthBarTransform.gameObject.SetActive(true);
-            healthBarTransform.position = screenPosition;
-        }
-        else
-        {
-            healthBarTransform.gameObject.SetActive(false); // Hide if target is behind the camera
-        }
+
     }
 
     private void OnEnable()

@@ -914,6 +914,7 @@ GameObject:
   - component: {fileID: 1315985713516066803}
   - component: {fileID: 9064487098345231790}
   - component: {fileID: 656676636408815486}
+  - component: {fileID: 1362002582233426473}
   m_Layer: 8
   m_Name: Character
   m_TagString: Player
@@ -999,6 +1000,9 @@ MonoBehaviour:
   smoothTime: 0.1
   crosshairVisiblityTime: 0.5
   switchCooldown: 0.5
+  gearBackpackIconBackground: {fileID: 0}
+  gearHelmetIconBackground: {fileID: 0}
+  gearArmorIconBackground: {fileID: 0}
 --- !u!143 &9064487098345231790
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1038,11 +1042,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recoilTarget: {fileID: 7457804795946452245}
-  recoilX: 2
-  recoilY: 2
-  recoilZ: 0.35
+  aimMultiplier: 1
+  crouchMultiplier: 0.5
+  sprintMultiplier: 1.75
+  jumpMultiplier: 2
+  moveMultiplier: 1.5
+  hipFireMultiplier: 2
+  aimRecoilX: 2
+  aimRecoilY: 0.75
+  aimRecoilZ: 0.2
   snappiness: 6
   returnSpeed: 3
+--- !u!114 &1362002582233426473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064487098345231825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bae7d2e2294928247b393ad5ba9e0767, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 200
+  currentHealth: 0
 --- !u!1 &9166655474706790046
 GameObject:
   m_ObjectHideFlags: 0
