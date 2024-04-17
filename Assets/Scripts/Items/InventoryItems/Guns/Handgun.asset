@@ -23,13 +23,15 @@ MonoBehaviour:
   <Weight>k__BackingField: 5
   <stackable>k__BackingField: 0
   <maxStackSize>k__BackingField: 0
-  <itemPrefab>k__BackingField: {fileID: 1570672019362220136, guid: e0fb84f16e09975479eda3f75c318d2b,
-    type: 3}
+  <ColorGameObjectBasedOnRarity>k__BackingField: 0
+  allowedKeys:
+  - NumItemsInStack
+  - AmmoCount
   <MagazineCapacity>k__BackingField: 12
   <RateOfFire>k__BackingField: 0.2
-  <recoilAmountY>k__BackingField: 1
-  <maxRecoilY>k__BackingField: 1
-  <recoilAmountX>k__BackingField: 0.5
-  <maxRecoilX>k__BackingField: 1
-  <spreadAmount>k__BackingField: 1
-  <returnSpeed>k__BackingField: 1
+  <hipFireMultiplier>k__BackingField: 3
+  <aimRecoilX>k__BackingField: 3
+  <aimRecoilY>k__BackingField: 2
+  <aimRecoilZ>k__BackingField: 0.75
+  <snappiness>k__BackingField: 6
+  <returnSpeed>k__BackingField: 3

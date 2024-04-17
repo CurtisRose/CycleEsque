@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Gun : WorldItem
 {
-    [SerializeField] Transform gunModelTransform;
     [SerializeField] Transform shootPositionTransform;
     [SerializeField] Transform aimPositionTransform;
     [SerializeField] Projectile projectilePrefab;
@@ -127,18 +126,19 @@ public class Gun : WorldItem
         Debug.DrawRay(aimPositionTransform.position, aimPositionTransform.forward * 10, Color.red, 2.0f);
 
         Projectile projectile = ProjectilePool.Instance.GetProjectile();
+
         if (projectile  != null)
         {
-            projectile .SetInitialVisualPosition(aimPositionTransform.position.y - shootPositionTransform.position.y);
+            projectile.SetInitialVisualPosition(aimPositionTransform.position.y - shootPositionTransform.position.y);
 
-            projectile .transform.position = aimPositionTransform.position;
-            projectile .transform.rotation = aimPositionTransform.rotation;
+            projectile.transform.position = aimPositionTransform.position;
+            projectile.transform.rotation = aimPositionTransform.rotation;
 
-            projectile .Speed = projectileSpeed;
-            projectile .Damage = projectileDamage;
-            projectile .ArmorPenetration = projectileArmorPenetration;
+            projectile.Speed = projectileSpeed;
+            projectile.Damage = projectileDamage;
+            projectile.ArmorPenetration = projectileArmorPenetration;
 
-            projectile .gameObject.SetActive(true);
+            projectile.gameObject.SetActive(true);
 
             numberOfRounds--;
             gunAudioSource.PlayOneShot(weaponFireSound);
@@ -180,5 +180,10 @@ public class Gun : WorldItem
                 Gizmos.DrawRay(aimPositionTransform.position, aimPositionTransform.forward * 500); // Draw a 2-meter long green ray
             }
         }
+    }
+
+    public GunItem GetGunData()
+    {
+        return (GunItem)sharedItemData;
     }
 }

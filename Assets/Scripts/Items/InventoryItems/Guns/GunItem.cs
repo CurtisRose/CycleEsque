@@ -10,19 +10,19 @@ public class GunItem : SharedItemData
     // Time in seconds between shots
     [field: SerializeField] public float RateOfFire { get; private set; }
 
+    // Hipfire Recoil
+    [field: SerializeField] public float hipFireMultiplier { get; private set; }
 
-    // How much the gun recoils on the Y-Axis
-    [field: SerializeField] public float recoilAmountY { get; private set; }
-    // Maximum recoil on the Y-Axis
-    [field: SerializeField] public float maxRecoilY { get; private set; }
-    // How much the gun recoils on the X-Axis
-    [field: SerializeField] public float recoilAmountX { get; private set; }
-    // Maximum recoil on the X-Axis
-    [field: SerializeField] public float maxRecoilX { get; private set; }
-    // The variance in bullet direction
-    [field: SerializeField] public float spreadAmount { get; private set; }
-    // Speed at which the gun returns to original rotation
+    // ADS Recoil
+    [field: SerializeField] public float aimRecoilX { get; private set; }
+    [field: SerializeField] public float aimRecoilY { get; private set; }
+    [field: SerializeField] public float aimRecoilZ { get; private set; }
+
+    // Settings
+    [field: SerializeField] public float snappiness { get; private set; }
     [field: SerializeField] public float returnSpeed { get; private set; }
+
+
 
     protected override void PopulateAllowedKeys()
     {

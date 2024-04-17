@@ -41,6 +41,10 @@ public class Character : MonoBehaviour
     [SerializeField] float sprintingSlopeLimit;
     float currentSlopeLimit;
 
+    bool isCrouched;
+    bool isMoving;
+    bool isSprinting;
+
 
     private void Awake()
     {
@@ -66,9 +70,12 @@ public class Character : MonoBehaviour
             HandleJumpInput();
 
             currentMovementSpeed = movementSpeed;
+            isCrouched = false;
+            isSprinting = false;
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 currentMovementSpeed = sprintSpeed;
+                isSprinting = true;
                 if (currentSlopeLimit != sprintingSlopeLimit)
                 {
                     currentSlopeLimit = sprintingSlopeLimit;
@@ -85,6 +92,7 @@ public class Character : MonoBehaviour
 
             if (Input.GetKey(KeyCode.LeftControl))
             {
+                isCrouched = true;
                 currentMovementSpeed = crouchSpeed;
             }
         }
@@ -93,11 +101,15 @@ public class Character : MonoBehaviour
     private void FixedUpdate()
     {
         Vector3 move = Vector3.zero;
-
+        isMoving = false;
         if (!disableUserMovementInputStatus)
         {
             move = (transform.forward * Input.GetAxis("Vertical") * currentMovementSpeed * Time.deltaTime +
                     transform.right * Input.GetAxis("Horizontal") * currentMovementSpeed * Time.deltaTime);
+        }
+        if (move.magnitude > 0)
+        {
+            isMoving = true;
         }
         currentVerticalSpeed -= gravity * Time.deltaTime;
         move.y = currentVerticalSpeed;
@@ -196,5 +208,25 @@ public class Character : MonoBehaviour
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
         }
+    }
+
+    public bool GetIsCrouched()
+    {
+        return isCrouched;
+    }
+
+    public bool GetIsJumping()
+    {
+        return !characterController.isGrounded;
+    }
+
+    public bool GetIsSprinting()
+    {
+        return isSprinting && !GetIsCrouched();
+    }
+
+    public bool GetIsMoving()
+    {
+        return isMoving;
     }
 }
