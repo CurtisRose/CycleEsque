@@ -33,7 +33,6 @@ public class ProjectilePool : MonoBehaviour
         if (projectiles.Count > 0)
         {
             Projectile proj = projectiles.Dequeue();
-            proj.gameObject.SetActive(false); // Ensure projectile is inactive when returned
             return proj;
         }
         else if (expandable)

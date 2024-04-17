@@ -152,8 +152,6 @@ public class Gun : WorldItem
                 ApplyBulletSpread(projectileObj.transform);
             }*/
 
-            projectileObj.gameObject.SetActive(true); // Ensure the projectile is active
-
             numberOfRounds--;
             gunAudioSource.PlayOneShot(weaponFireSound);
             lastShotTime = Time.time;
