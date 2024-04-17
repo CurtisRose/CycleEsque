@@ -16,6 +16,8 @@ public class MonsterSpawner : MonoBehaviour
         if (spawnPoints == null || spawnPoints.Count <= 0)
         {
             spawnPoints = new List<Transform>(spawnPointsParent.GetComponentsInChildren<Transform>());
+            // Remove the spawnPointParent from the list.
+            spawnPoints.RemoveAt(0);
         }
         foreach (MonsterController monsterPrefab in monsterPrefabs)
         {
