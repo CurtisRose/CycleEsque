@@ -2415,7 +2415,6 @@ MonoBehaviour:
   - {fileID: 7582103114594428966, guid: b32329d8c6757bf44a7daffc3524c4e0, type: 3}
   spawnPointsParent: {fileID: 2095189010}
   spawnPoints:
-  - {fileID: 2095189010}
   - {fileID: 1887417673}
   - {fileID: 1074851950}
   - {fileID: 1927898638}
