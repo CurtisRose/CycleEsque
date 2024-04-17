@@ -38,11 +38,11 @@ public class Gun : WorldItem
     protected override void InitializeItemFromBaseItemData()
     {
         base.InitializeItemFromBaseItemData();
-        magazineCapacity = ((GunItem)sharedItemData).MagazineCapacity;
-        fireRate = ((GunItem)sharedItemData).RateOfFire;
-        projectileSpeed = ((GunItem)sharedItemData).speed;
-        projectileArmorPenetration = ((GunItem)sharedItemData).penetration;
-        projectileDamage = ((GunItem)sharedItemData).damage;
+        magazineCapacity = ((GunSharedItemData)sharedItemData).MagazineCapacity;
+        fireRate = ((GunSharedItemData)sharedItemData).RateOfFire;
+        projectileSpeed = ((GunSharedItemData)sharedItemData).speed;
+        projectileArmorPenetration = ((GunSharedItemData)sharedItemData).penetration;
+        projectileDamage = ((GunSharedItemData)sharedItemData).damage;
     }
 
     public override ItemInstance CreateItemInstance()
@@ -182,8 +182,8 @@ public class Gun : WorldItem
         }
     }
 
-    public GunItem GetGunData()
+    public GunSharedItemData GetGunData()
     {
-        return (GunItem)sharedItemData;
+        return (GunSharedItemData)sharedItemData;
     }
 }

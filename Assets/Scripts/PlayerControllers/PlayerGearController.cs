@@ -52,7 +52,7 @@ public class PlayerGearController : MonoBehaviour
     public delegate void InventoryChanged();
     public event InventoryChanged OnInventoryChanged;
 
-    public delegate void PrimaryChanged(GunItem gunData);
+    public delegate void PrimaryChanged(GunSharedItemData gunData);
     public event PrimaryChanged OnPrimaryChanged;
 
 
@@ -315,7 +315,7 @@ public class PlayerGearController : MonoBehaviour
                     }
                     if (gunInHands == null)
                     {
-                        OnPrimaryChanged((GunItem)inventoryItemBeingDropped.itemInstance.sharedData);
+                        OnPrimaryChanged((GunSharedItemData)inventoryItemBeingDropped.itemInstance.sharedData);
                     }
                 }
             }

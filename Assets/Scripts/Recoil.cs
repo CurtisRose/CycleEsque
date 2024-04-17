@@ -32,8 +32,8 @@ public class Recoil : MonoBehaviour
     [SerializeField] private float snappiness = 2;
     [SerializeField] private float returnSpeed = 2;
 
-    GunItem gunData;
-    protected void InitializeItemFromBaseItemData(GunItem gunData)
+    GunSharedItemData gunData;
+    protected void InitializeItemFromBaseItemData(GunSharedItemData gunData)
     {
         if (gunData == null) return;
         this.gunData = gunData;
