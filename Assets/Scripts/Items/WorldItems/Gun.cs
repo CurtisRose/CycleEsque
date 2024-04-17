@@ -235,6 +235,11 @@ public class Gun : WorldItem
         return numberOfRounds;
     }
 
+    public Transform GetGunAimPosition()
+    {
+        return shootPositionTransform;
+    }
+
     void OnDrawGizmos()
     {
         if (DrawGizmos)

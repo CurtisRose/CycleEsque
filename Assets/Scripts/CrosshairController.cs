@@ -89,4 +89,10 @@ public class CrosshairController : MonoBehaviour
         // Smoothly move the crosshair to the target screen point
         crossHairRoot.transform.position = Vector3.SmoothDamp(crossHairRoot.transform.position, screenPoint, ref velocity, smoothTime);
     }
+
+    public void CenterCrosshairOnScreen()
+    {
+        Vector3 centerScreen = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
+        crossHairRoot.position = centerScreen; // Directly set to center
+    }
 }

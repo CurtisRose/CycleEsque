@@ -40,7 +40,7 @@ public class Health : MonoBehaviour
         if (currentHealth <= 0)
         {
             OnDeath?.Invoke();
-            Debug.Log(gameObject.name + " has died.");
+            //Debug.Log(gameObject.name + " has died.");
         }
     }
 

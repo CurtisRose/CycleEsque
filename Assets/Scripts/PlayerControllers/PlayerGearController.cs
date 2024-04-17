@@ -28,14 +28,14 @@ public class PlayerGearController : MonoBehaviour
     // Crosshair Aimer Test
     [SerializeField] CrosshairController crosshairController;
     bool ADSing = false;
-    //[SerializeField] float smoothTime = 0.1f; // This should be based on the gun maybe
+    [SerializeField] float smoothTime = 0.1f; // This should be based on the gun maybe
     [SerializeField] float crosshairVisiblityTime = 0.2f;
+    bool WeaponAim = true;
 
     [SerializeField] private float switchCooldown = 0.5f; // Time in seconds between allowed switches
     private float lastSwitchTime = 0;
     private bool switchQueued = false; // Flag to check if a switch has been queued
     private bool nextSelectedFirstSlot; // Stores the intended slot selection after cooldown
-
 
     public delegate void LoadOutChanged();
     public event LoadOutChanged OnLoadOutChanged;
@@ -74,13 +74,19 @@ public class PlayerGearController : MonoBehaviour
         }
     }
 
-    private void Update() 
+    private void Update()
     {
         // Set the crosshair to where the gun is pointing
-        /*if (gunInHands != null)
+        if (gunInHands != null && WeaponAim)
         {
             crosshairController.SetCrosshairPositionWhereGunIsLooking(gunInHands.transform, smoothTime);
-        }*/
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            WeaponAim = !WeaponAim;
+            crosshairController.CenterCrosshairOnScreen();
+        }
 
         HandleWeaponSwitchingInput();
 

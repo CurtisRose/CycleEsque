@@ -256,6 +256,7 @@ MonoBehaviour:
   pickupText: {fileID: 0}
   pickupImage: {fileID: 0}
   menuHeightAboveItemMultiplier: 0.75
+  proximityInteractionIndicator: {fileID: 0}
 --- !u!1 &4060710622146128505
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,7 +691,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 255
+    m_Bits: 1279
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
