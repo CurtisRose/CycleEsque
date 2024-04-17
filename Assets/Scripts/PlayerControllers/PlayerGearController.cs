@@ -19,6 +19,9 @@ public class PlayerGearController : MonoBehaviour
     [SerializeField] float throwForce;
     [SerializeField] Transform throwPosition;
 
+    // Recoil
+    [SerializeField] Recoil recoil;
+
     // Aiming Down Sights Positions
     [SerializeField] Transform hipFirePosition;
     [SerializeField] Transform ADSFirePosition;
@@ -49,6 +52,9 @@ public class PlayerGearController : MonoBehaviour
     public delegate void InventoryChanged();
     public event InventoryChanged OnInventoryChanged;
 
+    public delegate void PrimaryChanged(GunItem gunData);
+    public event PrimaryChanged OnPrimaryChanged;
+
 
     private void Awake()
     {
@@ -59,6 +65,7 @@ public class PlayerGearController : MonoBehaviour
         }
         playerInventory.OnInventoryChanged += OnInventoryChangedPassThrough;
         playerInventory.OnItemDropped += DropItem;
+        recoil = GetComponent<Recoil>();
     }
 
     private void Start()
@@ -127,6 +134,9 @@ public class PlayerGearController : MonoBehaviour
                     bool fired = gunInHands.Use();
                     if (fired)
                     {
+                        // Apply Recoil
+                        recoil.RecoilFire();
+
                         if (!ADSing)
                         {
                             ShowCrosshair();
@@ -303,6 +313,10 @@ public class PlayerGearController : MonoBehaviour
                     {
                         OnLoadOutChanged();
                     }
+                    if (gunInHands == null)
+                    {
+                        OnPrimaryChanged((GunItem)inventoryItemBeingDropped.itemInstance.sharedData);
+                    }
                 }
             }
         }
@@ -409,6 +423,10 @@ public class PlayerGearController : MonoBehaviour
     private void SetCurrentGun(Gun gun)
     {
         gunInHands = gun;
+        if (gun != null)
+        {
+            OnPrimaryChanged(gun.GetGunData());
+        }
         if (OnLoadOutChanged != null)
         {
             OnLoadOutChanged();
@@ -501,5 +519,16 @@ public class PlayerGearController : MonoBehaviour
     {
         yield return new WaitForSeconds(crosshairVisiblityTime);  // Wait for the specified time
         crosshairController.gameObject.SetActive(false);  // Hide the crosshair
+    }
+
+    public bool IsADSing()
+    {
+        return ADSing;
+    }
+
+
+    public Gun GetCurrentGun()
+    {
+        return gunInHands;
     }
 }
