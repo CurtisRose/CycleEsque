@@ -27,14 +27,15 @@ public class PlayerGearController : MonoBehaviour
 
     // Crosshair Aimer Test
     [SerializeField] CrosshairController crosshairController;
+    bool ADSing = false;
     [SerializeField] float smoothTime = 0.1f; // This should be based on the gun maybe
     [SerializeField] float crosshairVisiblityTime = 0.2f;
+    bool WeaponAim = true;
 
     [SerializeField] private float switchCooldown = 0.5f; // Time in seconds between allowed switches
     private float lastSwitchTime = 0;
     private bool switchQueued = false; // Flag to check if a switch has been queued
     private bool nextSelectedFirstSlot; // Stores the intended slot selection after cooldown
-
 
     public delegate void LoadOutChanged();
     public event LoadOutChanged OnLoadOutChanged;
@@ -73,13 +74,19 @@ public class PlayerGearController : MonoBehaviour
         }
     }
 
-    private void Update() 
+    private void Update()
     {
         // Set the crosshair to where the gun is pointing
-        /*if (gunInHands != null)
+        if (gunInHands != null && WeaponAim)
         {
             crosshairController.SetCrosshairPositionWhereGunIsLooking(gunInHands.transform, smoothTime);
-        }*/
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            WeaponAim = !WeaponAim;
+            crosshairController.CenterCrosshairOnScreen();
+        }
 
         HandleWeaponSwitchingInput();
 
@@ -120,7 +127,10 @@ public class PlayerGearController : MonoBehaviour
                     bool fired = gunInHands.Use();
                     if (fired)
                     {
-                        ShowCrosshair();
+                        if (!ADSing)
+                        {
+                            ShowCrosshair();
+                        }
                         crosshairController.Bloom();
 
                         // Write decrement of AmmoCount to the inventory slot Item Instance
@@ -438,6 +448,11 @@ public class PlayerGearController : MonoBehaviour
 
     IEnumerator MoveWeapon(bool toADS)
     {
+        if (!toADS)
+        {
+            ADSing = false;
+        }
+
         if (currentTransitionCoroutine != null)
         {
             StopCoroutine(currentTransitionCoroutine); // Stop any ongoing transition
@@ -461,6 +476,13 @@ public class PlayerGearController : MonoBehaviour
             yield return null;
         }
 
+        if (toADS)
+        {
+            ADSing = true;
+            // You are fully ADSed, don't show aiming crosshair
+            crosshairController.gameObject.SetActive(false);
+            StopCoroutine("ShowCrosshair");
+        }
         weaponPositionHands.localPosition = targetTransform.localPosition;
         weaponPositionHands.localRotation = targetTransform.localRotation;
     }

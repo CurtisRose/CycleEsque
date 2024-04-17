@@ -17,8 +17,6 @@ public class CrosshairController : MonoBehaviour
     public float currentValue; // The current position value
     public float noHitZeroingPoint = 50f;
 
-    [SerializeField] Transform laser;
-
     public Vector2 currentPosition;
 
     Vector3 velocity;
@@ -79,7 +77,6 @@ public class CrosshairController : MonoBehaviour
         {
             // If the raycast hits, use the hit point
             targetPoint = hit.point;
-            laser.position = targetPoint;
         }
         else
         {
@@ -91,5 +88,11 @@ public class CrosshairController : MonoBehaviour
         Vector3 screenPoint = Camera.main.WorldToScreenPoint(targetPoint);
         // Smoothly move the crosshair to the target screen point
         crossHairRoot.transform.position = Vector3.SmoothDamp(crossHairRoot.transform.position, screenPoint, ref velocity, smoothTime);
+    }
+
+    public void CenterCrosshairOnScreen()
+    {
+        Vector3 centerScreen = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
+        crossHairRoot.position = centerScreen; // Directly set to center
     }
 }

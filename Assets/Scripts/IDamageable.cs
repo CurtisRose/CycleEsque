@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    public void TakeDamage(float damage, float armorPenetration);
+    public void ReceiveDamage(float damage, float armorPenetration);
 }

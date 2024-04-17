@@ -17,7 +17,7 @@ public class Flesh : MonoBehaviour, IDamageable
     public delegate void Destroyed(Flesh flesh);
     public event Destroyed OnFleshDestroyed;
 
-    public void TakeDamage(float damage, float armorPenetration)
+    public void ReceiveDamage(float damage, float armorPenetration)
     {
         // For now, just stop taking damage.
         // Later, maybe this does damage to the overall entity or something.

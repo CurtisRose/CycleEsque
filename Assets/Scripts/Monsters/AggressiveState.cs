@@ -8,6 +8,7 @@ public class AggressiveState : MonsterState
     private NavMeshAgent agent;  // Reference to the NavMeshAgent component
     private Transform playerTransform;
     private float aggressiveTimer;  // Timer to track aggression duration
+    Animator animator;
 
     public AggressiveState(GameObject monster, MonsterData monsterData) : base(monster, monsterData)
     {
@@ -17,18 +18,24 @@ public class AggressiveState : MonsterState
             Debug.LogError("NavMeshAgent component is missing from the monster!");
         }
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        navMeshAgent.speed = monsterData.runSpeed;
+        animator = monster.GetComponentInChildren<Animator>();
+        animator.SetBool("IsRunning", true);
+        animator.SetBool("IsWalking", false);
+        animator.SetBool("IsIdle", false);
+        animator.Play("Run");
     }
 
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Monster becomes aggressive!");
+        //Debug.Log("Monster becomes aggressive!");
 
         aggressiveTimer = 0;  // Reset the aggression timer
 
         if (agent != null)
         {
-            agent.speed = monsterData.moveSpeed;  // Set the chasing speed
+            agent.speed = monsterData.runSpeed;  // Set the chasing speed
             agent.angularSpeed = monsterData.turnSpeed;  // Set how quickly the monster can turn
         }
     }
@@ -54,7 +61,7 @@ public class AggressiveState : MonsterState
     public override void Exit()
     {
         base.Exit();
-        Debug.Log("Monster stops being aggressive.");
+        //Debug.Log("Monster stops being aggressive.");
 
         if (agent.isActiveAndEnabled)
         {

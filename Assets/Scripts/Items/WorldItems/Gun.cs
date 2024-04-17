@@ -4,24 +4,20 @@ using UnityEngine;
 
 public class Gun : WorldItem
 {
+    [SerializeField] Transform gunModelTransform;
     [SerializeField] Transform shootPositionTransform;
+    [SerializeField] Transform aimPositionTransform;
     [SerializeField] Projectile projectilePrefab;
+    [SerializeField] bool DrawGizmos;
 
+    [SerializeField] float projectileSpeed = 100f;
+    [SerializeField] float projectileDamage = 25f;
+    [SerializeField] float projectileArmorPenetration = 0.5f;
     [SerializeField] float fireRate = 0.5f; // Time in seconds between shots
     private float lastShotTime = 0f; // Time since the last shot was fired
 
-    private float recoilAmountY; // How much the gun recoils
-    private float maxRecoilY; // Maximum recoil rotation on the x-axis
-    private float recoilAmountX; // How much the gun recoils sideways
-    private float maxRecoilX; // Maximum side-to-side recoil rotation
-    private float spreadAmount; // The variance in bullet direction
-    private float returnSpeed; // Speed at which the gun returns to original rotation
-
     [SerializeField] float damage;
     [SerializeField] float armorPenetration;
-
-    private Quaternion originalRotation;
-    private Quaternion targetRotation;
 
     [SerializeField] AudioSource gunAudioSource;
     [SerializeField] AudioClip weaponFireSound;
@@ -31,6 +27,8 @@ public class Gun : WorldItem
     int magazineCapacity;
     [SerializeField] int numberOfRounds;
 
+    [SerializeField] Vector3 EquipPosition;
+
     protected override void Awake()
     {
         base.Awake();
@@ -39,8 +37,6 @@ public class Gun : WorldItem
     protected override void Start()
     {
         base.Start();
-        originalRotation = transform.localRotation;
-        targetRotation = originalRotation;
     }
 
     protected override void InitializeItemFromBaseItemData()
@@ -48,12 +44,6 @@ public class Gun : WorldItem
         base.InitializeItemFromBaseItemData();
         magazineCapacity = ((GunItem)sharedItemData).MagazineCapacity;
         fireRate = ((GunItem)sharedItemData).RateOfFire;
-        recoilAmountY = ((GunItem)sharedItemData).recoilAmountY;
-        maxRecoilY = ((GunItem)sharedItemData).maxRecoilY;
-        recoilAmountX = ((GunItem)sharedItemData).recoilAmountX;
-        maxRecoilX = ((GunItem)sharedItemData).maxRecoilX;
-        spreadAmount = ((GunItem)sharedItemData).spreadAmount;
-        returnSpeed = ((GunItem)sharedItemData).returnSpeed;
     }
 
     public override ItemInstance CreateItemInstance()
@@ -93,18 +83,13 @@ public class Gun : WorldItem
         base.Equip();
         SetLayerRecursively(gameObject, LayerMask.NameToLayer("Gun"));
         gunAudioSource.PlayOneShot(weaponEquipSound);
+        transform.localPosition = EquipPosition;
     }
 
     public void PlayWeaponSwapSound()
     {
         gunAudioSource.PlayOneShot(weaponEquipSound);
     }
-
-    public Transform GetAimPoint()
-    {
-        return shootPositionTransform;
-    }
-
 
     // Returns the number of rounds used
     public int Reload(int numRoundsAvailable)
@@ -139,22 +124,21 @@ public class Gun : WorldItem
 
         if (numberOfRounds <= 0) return false;
 
-        Debug.DrawRay(shootPositionTransform.position, shootPositionTransform.forward * 10, Color.red, 2.0f);
+        Debug.DrawRay(aimPositionTransform.position, aimPositionTransform.forward * 10, Color.red, 2.0f);
 
-        GameObject projectileObj = ProjectilePool.Instance.GetProjectile();
-        if (projectileObj != null)
+        Projectile projectile = ProjectilePool.Instance.GetProjectile();
+        if (projectile  != null)
         {
-            projectileObj.transform.position = shootPositionTransform.position;
-            projectileObj.transform.rotation = shootPositionTransform.rotation;
-            projectileObj.SetActive(true);
+            projectile .SetInitialVisualPosition(aimPositionTransform.position.y - shootPositionTransform.position.y);
 
-            /*
-            if (Time.time - lastShotTime < returnSpeed)
-            {
-                ApplyBulletSpread(projectileObj.transform);
-            }*/
+            projectile .transform.position = aimPositionTransform.position;
+            projectile .transform.rotation = aimPositionTransform.rotation;
 
-            projectileObj.SetActive(true); // Ensure the projectile is active
+            projectile .Speed = projectileSpeed;
+            projectile .Damage = projectileDamage;
+            projectile .ArmorPenetration = projectileArmorPenetration;
+
+            projectile .gameObject.SetActive(true);
 
             numberOfRounds--;
             gunAudioSource.PlayOneShot(weaponFireSound);
@@ -165,68 +149,6 @@ public class Gun : WorldItem
         return false;
     }
 
-    void ApplyRecoil()
-    {
-        // Get current rotation in Euler angles for easy manipulation
-        Vector3 currentEuler = targetRotation.eulerAngles;
-
-        // Calculate the intended new Euler angles with recoil
-        float intendedVerticalRecoil = currentEuler.x - recoilAmountY; // Assuming X is vertical
-        float intendedHorizontalRecoil = currentEuler.y + Random.Range(-recoilAmountX, recoilAmountX); // Y is horizontal
-
-        // Clamp vertical recoil
-        if (Mathf.Abs(intendedVerticalRecoil - originalRotation.eulerAngles.x) > maxRecoilY)
-        {
-            intendedVerticalRecoil = originalRotation.eulerAngles.x - maxRecoilY * Mathf.Sign(recoilAmountY);
-        }
-
-        // Clamp horizontal recoil
-        float horizontalDifference = Mathf.DeltaAngle(originalRotation.eulerAngles.y, intendedHorizontalRecoil);
-        if (Mathf.Abs(horizontalDifference) > maxRecoilX)
-        {
-            intendedHorizontalRecoil = originalRotation.eulerAngles.y + maxRecoilX * Mathf.Sign(horizontalDifference);
-        }
-
-        // Apply the adjusted recoil to targetRotation
-        targetRotation = Quaternion.Euler(intendedVerticalRecoil, intendedHorizontalRecoil, currentEuler.z);
-        StopAllCoroutines(); // Stop any ongoing recoil correction
-        StartCoroutine(RecoilCoroutine());
-    }
-
-
-    private void ApplyBulletSpread(Transform projectileTransform)
-    {
-        Vector3 spread = Vector3.zero;
-        spread += projectileTransform.up * Random.Range(-spreadAmount, spreadAmount);
-        spread += projectileTransform.right * Random.Range(-spreadAmount, spreadAmount);
-
-        projectileTransform.rotation = Quaternion.Euler(spread) * projectileTransform.rotation;
-    }
-
-
-
-    IEnumerator RecoilCoroutine()
-    {
-        float elapsedTime = 0f;
-        while (elapsedTime < fireRate)
-        {
-            // Move towards the target rotation
-            transform.localRotation = Quaternion.Lerp(transform.localRotation, targetRotation, elapsedTime / fireRate);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        // Now, return to original rotation smoothly
-        elapsedTime = 0f;
-        while (transform.localRotation != originalRotation)
-        {
-            transform.localRotation = Quaternion.Lerp(transform.localRotation, originalRotation, elapsedTime * returnSpeed);
-            targetRotation = transform.localRotation;
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-    }
-
     public int GetMagazineCapacity()
     {
         return magazineCapacity;
@@ -235,5 +157,28 @@ public class Gun : WorldItem
     public int GetNumberOfRounds()
     {
         return numberOfRounds;
+    }
+
+    public Transform GetGunAimPosition()
+    {
+        return shootPositionTransform;
+    }
+
+    void OnDrawGizmos()
+    {
+        if (DrawGizmos)
+        {
+            if (shootPositionTransform != null)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawRay(shootPositionTransform.position, shootPositionTransform.forward * 500); // Draw a 2-meter long red ray
+            }
+
+            if (aimPositionTransform != null)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawRay(aimPositionTransform.position, aimPositionTransform.forward * 500); // Draw a 2-meter long green ray
+            }
+        }
     }
 }

@@ -23,6 +23,8 @@ public class PlayerInteractionController : MonoBehaviour
 
     [SerializeField] float menuHeightAboveItemMultiplier;
 
+    [SerializeField] Image proximityInteractionIndicator;
+
     private void Awake()
     {
         pickupPromptMenu.Close();
@@ -56,6 +58,13 @@ public class PlayerInteractionController : MonoBehaviour
         else
         {
             ShowPickupPrompt(false);
+        }
+        if (Physics.Raycast(ray, out hit, interactionDistance))
+        {
+            proximityInteractionIndicator.enabled = true;
+        } else
+        {
+            proximityInteractionIndicator.enabled = false;
         }
     }
 

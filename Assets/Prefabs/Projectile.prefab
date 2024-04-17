@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4513553404504599523}
@@ -47,10 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 153fc1ffb49dd5a4e8831f23a2acb8b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifespan: 2
-  speed: 400
-  damage: 20
-  armorPenetration: 11
+  lifespan: 5
+  visualProjectile: {fileID: 5810407875484260858}
+  alignmentDuration: 0.5
+  raycastBackOffset: 1
 --- !u!54 &5262769569975799373
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -73,7 +73,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 2
   m_Constraints: 0

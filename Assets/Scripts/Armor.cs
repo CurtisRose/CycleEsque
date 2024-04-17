@@ -11,7 +11,7 @@ public class Armor : MonoBehaviour, IDamageable
     [SerializeField] Color successfulHitColor;
     [SerializeField] Color failedHitColor;
 
-    public void TakeDamage(float damage, float armorPenetration)
+    public void ReceiveDamage(float damage, float armorPenetration)
     {
         if (armorPenetration >= armorRating)
         {
@@ -22,13 +22,13 @@ public class Armor : MonoBehaviour, IDamageable
             if (armorHealth <= 0)
             {
                 Destroy(gameObject);
-                flesh.TakeDamage(damage, armorPenetration);
+                flesh.ReceiveDamage(damage, armorPenetration);
             }
             else
             {
                 // Basically, the more the armor pen is than the armor rating, the more damage you will do to the flesh
                 float armorPenRatio = ((armorPenetration - armorRating) / armorPenetration);
-                flesh.TakeDamage(armorPenRatio * damage, armorPenetration);
+                flesh.ReceiveDamage(armorPenRatio * damage, armorPenetration);
             }
         }
         else

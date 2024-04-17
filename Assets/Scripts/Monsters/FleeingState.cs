@@ -16,6 +16,7 @@ public class FleeingState : MonsterState
         {
             Debug.LogError("NavMeshAgent component is missing from the monster!");
         }
+        navMeshAgent.speed = monsterData.runSpeed;
     }
 
     public override void Enter()
@@ -57,7 +58,7 @@ public class FleeingState : MonsterState
         }
         else
         {
-            Debug.Log("No valid navmesh point found in the flee direction!");
+            //Debug.Log("No valid navmesh point found in the flee direction!");
         }
     }
 

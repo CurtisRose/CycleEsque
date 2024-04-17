@@ -19,7 +19,7 @@ public abstract class MonsterState
     // Called when the state is entered
     public virtual void Enter()
     {
-        Debug.Log("Entering state: " + GetType().Name);
+        //Debug.Log("Entering state: " + GetType().Name);
     }
 
     // Called each frame the state is active
@@ -28,6 +28,6 @@ public abstract class MonsterState
     // Called when exiting the state
     public virtual void Exit()
     {
-        Debug.Log("Exiting state: " + GetType().Name);
+        //Debug.Log("Exiting state: " + GetType().Name);
     }
 }
