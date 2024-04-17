@@ -9,14 +9,11 @@ public class Gun : WorldItem
     [SerializeField] Projectile projectilePrefab;
     [SerializeField] bool DrawGizmos;
 
-    [SerializeField] float projectileSpeed = 100f;
-    [SerializeField] float projectileDamage = 25f;
-    [SerializeField] float projectileArmorPenetration = 0.5f;
-    [SerializeField] float fireRate = 0.5f; // Time in seconds between shots
+    float projectileSpeed = 100f;
+    float projectileDamage = 25f;
+    float projectileArmorPenetration = 0.5f;
+    float fireRate = 0.5f; // Time in seconds between shots
     private float lastShotTime = 0f; // Time since the last shot was fired
-
-    [SerializeField] float damage;
-    [SerializeField] float armorPenetration;
 
     [SerializeField] AudioSource gunAudioSource;
     [SerializeField] AudioClip weaponFireSound;
@@ -43,6 +40,9 @@ public class Gun : WorldItem
         base.InitializeItemFromBaseItemData();
         magazineCapacity = ((GunItem)sharedItemData).MagazineCapacity;
         fireRate = ((GunItem)sharedItemData).RateOfFire;
+        projectileSpeed = ((GunItem)sharedItemData).speed;
+        projectileArmorPenetration = ((GunItem)sharedItemData).penetration;
+        projectileDamage = ((GunItem)sharedItemData).damage;
     }
 
     public override ItemInstance CreateItemInstance()

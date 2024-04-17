@@ -16,7 +16,6 @@ public class ExploringState : MonsterState
         animator = monster.GetComponentInChildren<Animator>();
         animator.SetBool("IsIdle", true);
         navMeshAgent.speed = monsterData.walkSpeed;
-        ChooseNextPosition();
     }
 
     public override void Enter()
@@ -30,7 +29,16 @@ public class ExploringState : MonsterState
 
     public override void Execute()
     {
-        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
+        // Check for player proximity to transition to AggressiveState if needed
+        Collider[] hitColliders = Physics.OverlapSphere(monster.transform.position, monsterData.detectionRadius, LayerMask.GetMask("Player"));
+        if (hitColliders.Length > 0)
+        {
+            monster.GetComponent<MonsterController>().ChangeState(new AggressiveState(monster, monsterData));
+            return; // Exit execution as state change is handling the next steps
+        }
+
+        // If arrived at the destination or very close
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= monsterData.stoppingDistance)
         {
             PauseAndLookAround();
         }

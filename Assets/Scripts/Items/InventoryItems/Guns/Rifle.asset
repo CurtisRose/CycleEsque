@@ -35,3 +35,6 @@ MonoBehaviour:
   <aimRecoilZ>k__BackingField: 0.2
   <snappiness>k__BackingField: 6
   <returnSpeed>k__BackingField: 3
+  <damage>k__BackingField: 25
+  <speed>k__BackingField: 400
+  <penetration>k__BackingField: 10

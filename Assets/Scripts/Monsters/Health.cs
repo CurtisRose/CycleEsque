@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Health : MonoBehaviour
+public class Health : MonoBehaviour , IDamageable
 {
     public float maxHealth = 100f;
-    private float currentHealth;
+    [SerializeField] private float currentHealth;
 
     private float healthBarVisibleTime = 5.0f;
     private float lastDamageTime;
@@ -28,7 +28,7 @@ public class Health : MonoBehaviour
         lastDamageTime = -healthBarVisibleTime;
     }
 
-    public void TakeDamage(float amount)
+    public void ReceiveDamage(float amount)
     {
         currentHealth -= amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
@@ -44,7 +44,7 @@ public class Health : MonoBehaviour
         }
     }
 
-    public void Heal(float amount)
+    public void ReceiveHealing(float amount)
     {
         if (currentHealth < maxHealth)
         {

@@ -26,6 +26,8 @@ public class MonsterController : MonoBehaviour
     public delegate void Death();
     public event Death OnDeath;
 
+    private Transform targetTransform;
+
     private void Awake()
     {
         healthComponent = GetComponent<Health>();
@@ -63,23 +65,6 @@ public class MonsterController : MonoBehaviour
     {
         if (currentState != null)
             currentState.Execute();
-
-        // Proximity check to switch to aggressive state
-        hitColliders = Physics.OverlapSphere(transform.position, monsterData.detectionRadius, layerMask);
-        bool playerNearby = false;
-        foreach (var hitCollider in hitColliders)
-        {
-            if (hitCollider.gameObject.CompareTag("Player"))
-            {
-                playerNearby = true;
-                break;
-            }
-        }
-
-        if (playerNearby && !(currentState is AggressiveState))
-        {
-            ChangeState(new AggressiveState(gameObject, monsterData));
-        }
     }
 
     void FetchPlayers()
@@ -181,8 +166,31 @@ public class MonsterController : MonoBehaviour
     public void HandleHit(Projectile projectile)
     {
         // TODO: Add armor penetration calculations
-        healthComponent.TakeDamage(projectile.Damage);
+        healthComponent.ReceiveDamage(projectile.Damage);
         HitMarker.Instance.ShowHitMarker();
+    }
+
+    public void ApplyDamage()
+    {
+        if (targetTransform == null)
+            return;
+
+        // Assuming the player has a script component that can receive damage
+        IDamageable playerDamageable = targetTransform.GetComponent<IDamageable>();
+        if (playerDamageable != null)
+        {
+            playerDamageable.ReceiveDamage(monsterData.attackDamage);
+        }
+    }
+
+    public void SetTarget(Transform targetTransform)
+    {
+        this.targetTransform = targetTransform;
+    }
+
+    public List<Character> GetPlayers()
+    {
+        return players;
     }
 
     private void OnEnable()

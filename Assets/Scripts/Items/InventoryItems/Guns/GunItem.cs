@@ -22,6 +22,11 @@ public class GunItem : SharedItemData
     [field: SerializeField] public float snappiness { get; private set; }
     [field: SerializeField] public float returnSpeed { get; private set; }
 
+    // Gun Projectile Data
+    [field: SerializeField] public float damage { get; private set; }
+    [field: SerializeField] public float speed { get; private set; }
+    [field: SerializeField] public float penetration { get; private set; }
+
 
 
     protected override void PopulateAllowedKeys()

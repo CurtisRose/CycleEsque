@@ -37,7 +37,7 @@ public class Projectile : MonoBehaviour
             Debug.DrawRay(startRaycastPoint, transform.forward * raycastLength, Color.red, 60.0f); // Draw raycast in red if it hits something
             if (hit.collider.TryGetComponent<IDamageable>(out IDamageable damageable))
             {
-                damageable.ReceiveDamage(Damage, ArmorPenetration);
+                damageable.ReceiveDamage(Damage);
                 Debug.Log("Projectile spawned and hit a monster immediately!");
                 PlayImpactEffect();
                 ReturnToPool(); // Immediately return to pool after delivering damage

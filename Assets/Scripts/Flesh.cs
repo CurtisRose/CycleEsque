@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Flesh : MonoBehaviour, IDamageable
+public class Flesh : MonoBehaviour
 {
     [SerializeField] Color successfulHitColor;
     [SerializeField] Renderer targetRenderer;
