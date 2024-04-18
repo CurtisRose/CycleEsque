@@ -8975,6 +8975,7 @@ MonoBehaviour:
     type: 3}
   poolSize: 30
   expandable: 1
+  UsePool: 1
 --- !u!1 &1987167264
 GameObject:
   m_ObjectHideFlags: 0

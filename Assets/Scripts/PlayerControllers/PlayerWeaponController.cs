@@ -22,7 +22,6 @@ public class PlayerWeaponController : MonoBehaviour
 
     // Crosshair Aimer Test
     [SerializeField] CrosshairController crosshairController;
-    [SerializeField] HitMarker hitMarker;
     bool ADSing = false;
     [SerializeField] float smoothTime = 0.1f; // This should be based on the gun maybe
     [SerializeField] float crosshairVisiblityTime = 0.2f;
@@ -207,7 +206,7 @@ public class PlayerWeaponController : MonoBehaviour
         {
             ADSing = true;
             // You are fully ADSed, don't show aiming crosshair
-            crosshairController.gameObject.SetActive(false);
+            crosshairController.SetCrossHairVisual(false);
             StopCoroutine("ShowCrosshair");
         }
         weaponPositionHands.localPosition = targetTransform.localPosition;
@@ -219,7 +218,7 @@ public class PlayerWeaponController : MonoBehaviour
         if (crosshairController != null)
         {
             StopCoroutine("HideCrosshair");  // Stop the coroutine in case it's already running
-            crosshairController.gameObject.SetActive(true);  // Show the crosshair
+            crosshairController.SetCrossHairVisual(true);  // Show the crosshair
             StartCoroutine("HideCrosshair");  // Start the coroutine to hide it later
         }
     }
@@ -227,7 +226,7 @@ public class PlayerWeaponController : MonoBehaviour
     IEnumerator HideCrosshair()
     {
         yield return new WaitForSeconds(crosshairVisiblityTime);  // Wait for the specified time
-        crosshairController.gameObject.SetActive(false);  // Hide the crosshair
+        crosshairController.SetCrossHairVisual(false);  // Hide the crosshair
     }
 
     public bool IsADSing()
