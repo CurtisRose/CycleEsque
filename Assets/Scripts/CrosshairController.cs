@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public class CrosshairController : MonoBehaviour
 {
-    [SerializeField] RectTransform crossHairRoot;
+    [SerializeField] RectTransform crossHairPosition;
+    [SerializeField] RectTransform crosshairVisual;
     public List<RectTransform> indicators; // UI element's RectTransform
     public List<Vector2> movementDirections; // Directions for each indicator
     public float riseAmount = 10f; // Amount to rise with each click
@@ -23,7 +24,7 @@ public class CrosshairController : MonoBehaviour
 
     void Start()
     {
-        if (crossHairRoot == null || indicators == null || indicators.Count == 0)
+        if (crossHairPosition == null || indicators == null || indicators.Count == 0)
         {
             Debug.LogError("Indicator RectTransform is not set on " + gameObject.name);
             this.enabled = false;
@@ -64,6 +65,8 @@ public class CrosshairController : MonoBehaviour
         targetValue = Mathf.Min(targetValue, targetMaxHeight); // Cap the target value at maxHeight
     }
 
+
+
     public void SetCrosshairPositionWhereGunIsLooking(Transform aimPosition, float smoothTime)
     {
         RaycastHit hit;
@@ -87,12 +90,16 @@ public class CrosshairController : MonoBehaviour
         // Convert the target point from world space to screen space
         Vector3 screenPoint = Camera.main.WorldToScreenPoint(targetPoint);
         // Smoothly move the crosshair to the target screen point
-        crossHairRoot.transform.position = Vector3.SmoothDamp(crossHairRoot.transform.position, screenPoint, ref velocity, smoothTime);
+        crossHairPosition.transform.position = Vector3.SmoothDamp(crossHairPosition.transform.position, screenPoint, ref velocity, smoothTime);
     }
 
     public void CenterCrosshairOnScreen()
     {
-        Vector3 centerScreen = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
-        crossHairRoot.position = centerScreen; // Directly set to center
+        crossHairPosition.anchoredPosition = Vector2.zero;
+    }
+
+    public void SetCrossHairVisual(bool set)
+    {
+        crosshairVisual.gameObject.SetActive(set);
     }
 }

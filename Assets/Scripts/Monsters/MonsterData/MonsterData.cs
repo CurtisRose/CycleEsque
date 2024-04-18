@@ -15,4 +15,6 @@ public class MonsterData : ScriptableObject
     public float minimumAggressionTime;
     public float health;
     public float armor;
+    public float attackRange;
+    public float attackDamage;
 }

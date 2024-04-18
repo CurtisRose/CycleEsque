@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Armor : MonoBehaviour, IDamageable
+public class Armor : MonoBehaviour
 {
     [SerializeField] float armorRating;
     [SerializeField] float armorHealth;

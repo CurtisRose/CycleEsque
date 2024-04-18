@@ -6,7 +6,9 @@ using TMPro;
 
 public class EquippedItemsMenu : Menu
 {
-    [SerializeField] PlayerGearController playerGearController;
+    [SerializeField] PlayerWeaponController playerWeaponController;
+    [SerializeField] PlayerWeaponSwitcher playerWeaponSwitcher;
+    [SerializeField] PlayerInventory playerInventory;
 
     [SerializeField] Image weapon1Image;
     [SerializeField] Image weapon1RarityBorder1;
@@ -26,10 +28,10 @@ public class EquippedItemsMenu : Menu
 
     private void Awake()
     {
-        playerGearController.OnLoadOutChanged += LoadOutChanged;
-        playerGearController.OnPrimaryGunFired += UpdateAmmoText;
-        playerGearController.OnPrimaryGunReloaded += UpdateAmmoText;
-        playerGearController.OnInventoryChanged += UpdateAmmoText;
+        playerWeaponSwitcher.OnLoadOutChanged += LoadOutChanged;
+        playerWeaponController.OnPrimaryGunFired += UpdateAmmoText;
+        playerWeaponController.OnPrimaryGunReloaded += UpdateAmmoText;
+        playerInventory.OnInventoryChanged += UpdateAmmoText;
         LoadOutChanged();
     }
 
@@ -40,19 +42,19 @@ public class EquippedItemsMenu : Menu
             return;
         }
         ammoInMagText.text = gunHeld.GetNumberOfRounds().ToString();
-        ammoInBackpackText.text = playerGearController.GetNumberOfRoundsOfAmmoInInventory().ToString();
+        ammoInBackpackText.text = playerWeaponController.GetNumberOfRoundsOfAmmoInInventory().ToString();
 
     }
 
     private void LoadOutChanged()
     {
-        gunHeld = playerGearController.gunInHands;
+        gunHeld = playerWeaponSwitcher.GetGunInHands();
         if (gunHeld != null)
         {
             weapon1Image.sprite = gunHeld.GetBaseItem().LargeImage;
             weapon1Image.enabled = true;
             ammoInMagText.text = gunHeld.GetNumberOfRounds().ToString();
-            ammoInBackpackText.text = playerGearController.GetNumberOfRoundsOfAmmoInInventory().ToString();
+            ammoInBackpackText.text = playerWeaponController.GetNumberOfRoundsOfAmmoInInventory().ToString();
             weapon1NameText.text = gunHeld.GetBaseItem().name;
             weapon1RarityBorder1.color = RarityColorManager.Instance.GetColorByRarity(gunHeld.GetBaseItem().Rarity);
             weapon1RarityBorder2.color = RarityColorManager.Instance.GetColorByRarity(gunHeld.GetBaseItem().Rarity); ;
@@ -69,7 +71,7 @@ public class EquippedItemsMenu : Menu
             backpackIndicatorImage.enabled = false;
         }
 
-        Gun gun2 = playerGearController.gunOnHip;
+            Gun gun2 = playerWeaponSwitcher.GetGunOnHip();
         if (gun2 != null)
         {
             weapon2Image.sprite = gun2.GetBaseItem().LargeImage;

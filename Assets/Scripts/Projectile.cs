@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -24,6 +25,19 @@ public class Projectile : MonoBehaviour
 
         // Check if the projectile is spawned inside a monster
         CheckInitialRaycast();
+        StartCoroutine(ActivateVisualProjectileNextFrame());
+    }
+
+    void OnDisable()
+    {
+        visualProjectile.SetActive(false);
+        CancelInvoke();
+    }
+
+    IEnumerator ActivateVisualProjectileNextFrame()
+    {
+        yield return null; // Wait for the next frame
+        visualProjectile.SetActive(true);
     }
 
     private void CheckInitialRaycast()
@@ -37,7 +51,7 @@ public class Projectile : MonoBehaviour
             Debug.DrawRay(startRaycastPoint, transform.forward * raycastLength, Color.red, 60.0f); // Draw raycast in red if it hits something
             if (hit.collider.TryGetComponent<IDamageable>(out IDamageable damageable))
             {
-                damageable.ReceiveDamage(Damage, ArmorPenetration);
+                damageable.ReceiveDamage(Damage);
                 Debug.Log("Projectile spawned and hit a monster immediately!");
                 PlayImpactEffect();
                 ReturnToPool(); // Immediately return to pool after delivering damage
@@ -78,11 +92,6 @@ public class Projectile : MonoBehaviour
     private void ReturnToPool()
     {
         ProjectilePool.Instance.ReturnProjectile(this);
-    }
-
-    private void OnDisable()
-    {
-        CancelInvoke();
     }
 
     private void PlayImpactEffect()

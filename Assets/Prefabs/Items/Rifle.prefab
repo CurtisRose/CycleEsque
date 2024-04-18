@@ -698,26 +698,24 @@ MonoBehaviour:
   sharedItemData: {fileID: 11400000, guid: 94a51b5ebdd69db48ba42c2ca07057f4, type: 2}
   timeDelay: 1
   numItemsInStack: 0
-  gunModelTransform: {fileID: 5171740597644287474}
   shootPositionTransform: {fileID: 3816439002682325706}
   aimPositionTransform: {fileID: 4503479181497635757}
   projectilePrefab: {fileID: 7343739617303108452, guid: 9ce584057e259bb47b9937b06cfa6540,
     type: 3}
-  DrawGizmos: 0
-  projectileSpeed: 300
-  projectileDamage: 25
-  projectileArmorPenetration: 0.5
-  fireRate: 0.1
-  recoilPositionOffset: {x: 0, y: 0, z: -0.1}
-  recoilRotationOffset: {x: -10, y: 0, z: 0}
-  recoilSpeed: 10
-  returnSpeed: 5
-  damage: 20
-  armorPenetration: 11
+  DrawGizmos: 1
   gunAudioSource: {fileID: 4186205593602730689}
-  weaponFireSound: {fileID: 8300000, guid: 9d3e45f5c63735545851c0f2a9f64e02, type: 3}
-  weaponReloadSound: {fileID: 8300000, guid: d72f5a7051f351b498f2f8cecc0d3425, type: 3}
-  weaponEquipSound: {fileID: 8300000, guid: 9670aa1e470f26f4b8f44d6cf7470fb9, type: 3}
+  weaponFireSounds:
+  - {fileID: 8300000, guid: 52eee3472cd0d7744a172523797ea3ea, type: 3}
+  - {fileID: 8300000, guid: 9d3e45f5c63735545851c0f2a9f64e02, type: 3}
+  - {fileID: 8300000, guid: 3a2bf69b11d822b428312c6ed90bc636, type: 3}
+  weaponReloadSounds:
+  - {fileID: 8300000, guid: 9ebc97f6f1b933d4fb1bbff7857f0a0d, type: 3}
+  - {fileID: 8300000, guid: d72f5a7051f351b498f2f8cecc0d3425, type: 3}
+  - {fileID: 8300000, guid: 52d8c6d9a166dc04887b091737acd962, type: 3}
+  weaponEquipSounds:
+  - {fileID: 8300000, guid: 1203685792cbfbb46b2e46bb8e554559, type: 3}
+  - {fileID: 8300000, guid: 0b82431ad520a584887ef0780a8d1818, type: 3}
+  - {fileID: 8300000, guid: 0f8ea97fa008e6c4b927f5c94248a800, type: 3}
   numberOfRounds: 0
   EquipPosition: {x: 0, y: 0, z: -0.29}
 --- !u!54 &3244251632519829106

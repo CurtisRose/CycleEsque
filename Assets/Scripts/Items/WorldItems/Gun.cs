@@ -9,19 +9,19 @@ public class Gun : WorldItem
     [SerializeField] Projectile projectilePrefab;
     [SerializeField] bool DrawGizmos;
 
-    [SerializeField] float projectileSpeed = 100f;
-    [SerializeField] float projectileDamage = 25f;
-    [SerializeField] float projectileArmorPenetration = 0.5f;
-    [SerializeField] float fireRate = 0.5f; // Time in seconds between shots
-    private float lastShotTime = 0f; // Time since the last shot was fired
-
-    [SerializeField] float damage;
-    [SerializeField] float armorPenetration;
+    float projectileSpeed;
+    float projectileDamage;
+    float projectileArmorPenetration;
+    float fireRate;
+    private float lastShotTime;
 
     [SerializeField] AudioSource gunAudioSource;
-    [SerializeField] AudioClip weaponFireSound;
-    [SerializeField] AudioClip weaponReloadSound;
-    [SerializeField] AudioClip weaponEquipSound;
+    [SerializeField] List<AudioClip> weaponFireSounds;
+    SoundRandomizer weaponFireRandomClips;
+    [SerializeField] List<AudioClip> weaponReloadSounds;
+    SoundRandomizer weaponReloadRandomClips;
+    [SerializeField] List<AudioClip> weaponEquipSounds;
+    SoundRandomizer weaponEquipRandomClips;
 
     int magazineCapacity;
     [SerializeField] int numberOfRounds;
@@ -31,6 +31,9 @@ public class Gun : WorldItem
     protected override void Awake()
     {
         base.Awake();
+        weaponFireRandomClips = new SoundRandomizer(weaponFireSounds);
+        weaponReloadRandomClips = new SoundRandomizer(weaponReloadSounds);
+        weaponEquipRandomClips = new SoundRandomizer(weaponEquipSounds);
     }
 
     protected override void Start()
@@ -41,8 +44,11 @@ public class Gun : WorldItem
     protected override void InitializeItemFromBaseItemData()
     {
         base.InitializeItemFromBaseItemData();
-        magazineCapacity = ((GunItem)sharedItemData).MagazineCapacity;
-        fireRate = ((GunItem)sharedItemData).RateOfFire;
+        magazineCapacity = ((GunSharedItemData)sharedItemData).MagazineCapacity;
+        fireRate = ((GunSharedItemData)sharedItemData).RateOfFire;
+        projectileSpeed = ((GunSharedItemData)sharedItemData).speed;
+        projectileArmorPenetration = ((GunSharedItemData)sharedItemData).penetration;
+        projectileDamage = ((GunSharedItemData)sharedItemData).damage;
     }
 
     public override ItemInstance CreateItemInstance()
@@ -81,13 +87,13 @@ public class Gun : WorldItem
     {
         base.Equip();
         SetLayerRecursively(gameObject, LayerMask.NameToLayer("Gun"));
-        gunAudioSource.PlayOneShot(weaponEquipSound);
+        MakeSound(weaponEquipRandomClips.GetRandomClip());
         transform.localPosition = EquipPosition;
     }
 
     public void PlayWeaponSwapSound()
     {
-        gunAudioSource.PlayOneShot(weaponEquipSound);
+        MakeSound(weaponEquipRandomClips.GetRandomClip());
     }
 
     // Returns the number of rounds used
@@ -104,7 +110,7 @@ public class Gun : WorldItem
             return 0;
         }
 
-        gunAudioSource.PlayOneShot(weaponReloadSound);
+        MakeSound(weaponReloadRandomClips.GetRandomClip());
 
         if (missingAmmoAmount > numRoundsAvailable)
         {
@@ -141,7 +147,7 @@ public class Gun : WorldItem
             projectile.gameObject.SetActive(true);
 
             numberOfRounds--;
-            gunAudioSource.PlayOneShot(weaponFireSound);
+            MakeSound(weaponFireRandomClips.GetRandomClip());
             lastShotTime = Time.time;
             return true;
         }
@@ -182,8 +188,15 @@ public class Gun : WorldItem
         }
     }
 
-    public GunItem GetGunData()
+    public GunSharedItemData GetGunData()
     {
-        return (GunItem)sharedItemData;
+        return (GunSharedItemData)sharedItemData;
+    }
+
+    public void MakeSound(AudioClip audioClip)
+    {
+        gunAudioSource.pitch = Random.Range(0.95f, 1.05f); // Adjust pitch slightly
+        gunAudioSource.volume = Random.Range(0.8f, 1.0f); // Adjust volume slightly
+        gunAudioSource.PlayOneShot(audioClip);
     }
 }

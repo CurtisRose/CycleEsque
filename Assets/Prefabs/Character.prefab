@@ -911,9 +911,14 @@ GameObject:
   m_Component:
   - component: {fileID: 9064487098345231791}
   - component: {fileID: 9064487098345231824}
-  - component: {fileID: 1315985713516066803}
-  - component: {fileID: 9064487098345231790}
+  - component: {fileID: 2721748668309944525}
+  - component: {fileID: 4359797795167298469}
+  - component: {fileID: 5803280727450449951}
+  - component: {fileID: 524081812311261863}
   - component: {fileID: 656676636408815486}
+  - component: {fileID: 1362002582233426473}
+  - component: {fileID: 3050583421449731175}
+  - component: {fileID: 9064487098345231790}
   m_Layer: 8
   m_Name: Character
   m_TagString: Player
@@ -963,7 +968,7 @@ MonoBehaviour:
   thirdPersonCamera: {fileID: 4188802689043222257}
   walkingSlopeLimit: 0
   sprintingSlopeLimit: 0
---- !u!114 &1315985713516066803
+--- !u!114 &2721748668309944525
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -972,13 +977,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 9064487098345231825}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7044b5430ccdaba49a64d58b5e35ac5f, type: 3}
+  m_Script: {fileID: 11500000, guid: c182277cfcb3d7b49b38aa5f84a705f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerInventory: {fileID: 0}
-  selectedFirstSlot: 1
-  gunInHands: {fileID: 0}
-  gunOnHip: {fileID: 0}
+  playerWeaponSwitcher: {fileID: 4359797795167298469}
   gearItems: []
   gearStorageLocations:
   - {fileID: 4307309158942832435}
@@ -988,17 +991,210 @@ MonoBehaviour:
   - {fileID: 8897493055078843416}
   weaponPositionHands: {fileID: 4845008993545661789}
   weaponPositionHip: {fileID: 6265170968284108111}
-  head: {fileID: 9064487097268030572}
-  throwForce: 2000
-  throwPosition: {fileID: 6780773922304257058}
-  recoil: {fileID: 0}
+  gearRemovalSounds:
+  - {fileID: 8300000, guid: d7727b8fd2d4fff4587910a62bdc777a, type: 3}
+  - {fileID: 8300000, guid: 1aa65873225eb8643a1567991ba7c8fe, type: 3}
+  - {fileID: 8300000, guid: 4438ce9d95316ee4fa3145d65e2d4957, type: 3}
+  - {fileID: 8300000, guid: 5ea2df1c398391e468c6aa6187ab2e7b, type: 3}
+  - {fileID: 8300000, guid: d71a60a527514d74e95796c875fd105d, type: 3}
+  - {fileID: 8300000, guid: b51c60f9c1bcb04469f9209b7f1e144e, type: 3}
+  - {fileID: 8300000, guid: 8ddd50080adc76942be46b14837fd3b8, type: 3}
+--- !u!114 &4359797795167298469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064487098345231825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2992680994f723442bf8c502e2e3fc04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gearManager: {fileID: 2721748668309944525}
+  weaponPositionHands: {fileID: 4845008993545661789}
+  weaponPositionHip: {fileID: 6265170968284108111}
+  weaponSlot1: {fileID: 2305574298787733903}
+  weaponSlot2: {fileID: 8897493055078843416}
+  gunInHands: {fileID: 0}
+  gunOnHip: {fileID: 0}
+  primarySelected: 1
+  switchCooldown: 0.5
+  selectedFirstSlot: 1
+--- !u!114 &5803280727450449951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064487098345231825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9cbc88996bb93469395ac3dd9bce61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInventory: {fileID: 0}
+  gearManager: {fileID: 2721748668309944525}
+  playerWeaponSwitcher: {fileID: 4359797795167298469}
+  weaponPositionHands: {fileID: 4845008993545661789}
+  recoil: {fileID: 656676636408815486}
   hipFirePosition: {fileID: 6667082619905216441}
   ADSFirePosition: {fileID: 1594420528566663912}
-  timeToADS: 0.2
+  timeToADS: 0.5
   crosshairController: {fileID: 0}
-  smoothTime: 0.1
-  crosshairVisiblityTime: 0.5
-  switchCooldown: 0.5
+  smoothTime: 0.025
+  crosshairVisiblityTime: 0.2
+--- !u!114 &524081812311261863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064487098345231825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad3e747bc3bb31e47988565216e27eea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInventory: {fileID: 0}
+  playerWeaponController: {fileID: 5803280727450449951}
+  head: {fileID: 9064487097268030572}
+  throwForce: 5
+  throwPosition: {fileID: 6780773922304257058}
+--- !u!114 &656676636408815486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064487098345231825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c0f61a60b816c34b8ff965bf6d23d77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recoilTarget: {fileID: 7457804795946452245}
+  aimMultiplier: 1
+  crouchMultiplier: 0.5
+  sprintMultiplier: 1.75
+  jumpMultiplier: 2
+  moveMultiplier: 1.5
+  hipFireMultiplier: 2
+  aimRecoilX: 2
+  aimRecoilY: 0.75
+  aimRecoilZ: 0.2
+  snappiness: 6
+  returnSpeed: 3
+--- !u!114 &1362002582233426473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064487098345231825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bae7d2e2294928247b393ad5ba9e0767, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 200
+  currentHealth: 0
+--- !u!82 &3050583421449731175
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064487098345231825}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!143 &9064487098345231790
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1025,24 +1221,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.5, z: 0}
---- !u!114 &656676636408815486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9064487098345231825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c0f61a60b816c34b8ff965bf6d23d77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  recoilTarget: {fileID: 7457804795946452245}
-  recoilX: 2
-  recoilY: 2
-  recoilZ: 0.35
-  snappiness: 6
-  returnSpeed: 3
 --- !u!1 &9166655474706790046
 GameObject:
   m_ObjectHideFlags: 0

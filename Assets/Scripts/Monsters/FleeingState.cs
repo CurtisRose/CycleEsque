@@ -31,7 +31,7 @@ public class FleeingState : MonsterState
         if (agent == null) return;
 
         // Check if monster has reached near the destination or not
-        if (!agent.pathPending && agent.remainingDistance < 0.5f)
+        if (!agent.pathPending && agent.remainingDistance < monsterData.stoppingDistance)
         {
             if (Vector3.Distance(monster.transform.position, playerTransform.position) > monsterData.detectionRadius)
             {

@@ -11,7 +11,7 @@ public class MonsterController : MonoBehaviour
 
     private MonsterState currentState;
     private Health healthComponent;
-    private HealthUIController healthUIController;
+    private MonsterHealthUIController healthUIController;
     private Collider[] hitColliders;
     private NavMeshAgent agent;
     private NavMeshPathVisualizer visualizer;
@@ -26,11 +26,13 @@ public class MonsterController : MonoBehaviour
     public delegate void Death();
     public event Death OnDeath;
 
+    private Transform targetTransform;
+
     private void Awake()
     {
         healthComponent = GetComponent<Health>();
         healthComponent.SetMaxHealth(monsterData.health);
-        healthUIController = GetComponent<HealthUIController>();
+        healthUIController = GetComponent<MonsterHealthUIController>();
         InitializeAgent();
         visualizer = GetComponent<NavMeshPathVisualizer>();
         animator = GetComponentInChildren<Animator>();
@@ -63,23 +65,6 @@ public class MonsterController : MonoBehaviour
     {
         if (currentState != null)
             currentState.Execute();
-
-        // Proximity check to switch to aggressive state
-        hitColliders = Physics.OverlapSphere(transform.position, monsterData.detectionRadius, layerMask);
-        bool playerNearby = false;
-        foreach (var hitCollider in hitColliders)
-        {
-            if (hitCollider.gameObject.CompareTag("Player"))
-            {
-                playerNearby = true;
-                break;
-            }
-        }
-
-        if (playerNearby && !(currentState is AggressiveState))
-        {
-            ChangeState(new AggressiveState(gameObject, monsterData));
-        }
     }
 
     void FetchPlayers()
@@ -178,11 +163,34 @@ public class MonsterController : MonoBehaviour
         rootmotionObject.localRotation = Quaternion.identity;
     }
 
-    public void HandleHit(Projectile projectile)
+    public void HandleHit(Projectile projectile, float criticalMultiplier)
     {
         // TODO: Add armor penetration calculations
-        healthComponent.TakeDamage(projectile.Damage);
-        HitMarker.Instance.ShowHitMarker();
+        healthComponent.ReceiveDamage(projectile.Damage * criticalMultiplier);
+        HitMarker.Instance.ShowHitMarker(criticalMultiplier);
+    }
+
+    public void ApplyDamage()
+    {
+        if (targetTransform == null)
+            return;
+
+        // Assuming the player has a script component that can receive damage
+        IDamageable playerDamageable = targetTransform.GetComponent<IDamageable>();
+        if (playerDamageable != null)
+        {
+            playerDamageable.ReceiveDamage(monsterData.attackDamage);
+        }
+    }
+
+    public void SetTarget(Transform targetTransform)
+    {
+        this.targetTransform = targetTransform;
+    }
+
+    public List<Character> GetPlayers()
+    {
+        return players;
     }
 
     private void OnEnable()
