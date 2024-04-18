@@ -8,11 +8,15 @@ public class ItemPool : ScriptableObject
     {
         public WorldItem item;
         public float probability; // The probability of this item being chosen
+        [Range(1, 100)] // Adjust this range based on your needs
+        public int minQuantity;
+        [Range(1, 100)] // Ensure this is the same or higher than minQuantity
+        public int maxQuantity;
     }
 
     public ItemEntry[] items;
 
-    public WorldItem GetRandomItem()
+    public (WorldItem item, int quantity) GetRandomItemWithQuantity()
     {
         float totalProbability = 0;
         foreach (ItemEntry entry in items)
@@ -26,11 +30,12 @@ public class ItemPool : ScriptableObject
         {
             if (randomPoint < entry.probability)
             {
-                return entry.item;
+                int quantity = Random.Range(entry.minQuantity, entry.maxQuantity + 1);
+                return (entry.item, quantity);
             }
             randomPoint -= entry.probability;
         }
 
-        return null; // Should not happen, but just in case
+        return (null, 0); // Should not happen, but just in case
     }
 }

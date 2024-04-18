@@ -28,15 +28,20 @@ public class ItemSpawner : MonoBehaviour
 
     private void SpawnItem()
     {
-        WorldItem selectedItem = itemPool.GetRandomItem();
+        var (selectedItem, quantity) = itemPool.GetRandomItemWithQuantity();
 
-        if (selectedItem != null)
+        if (selectedItem != null && quantity > 0)
         {
             Quaternion randomRotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
-            currentItem = Instantiate(selectedItem, transform.position, randomRotation);
-            if (currentItem.GetComponent<WorldItem>() != null)
+            WorldItem spawnedItem = Instantiate(selectedItem, transform.position, randomRotation);
+            
+            if (spawnedItem.GetComponent<WorldItem>() != null)
             {
-                currentItem.GetComponent<WorldItem>().OnPickedUp += ItemTaken;
+                if (spawnedItem.GetBaseItem().stackable)
+                {
+                    spawnedItem.SetNumberOfStartingItems(quantity);
+                }
+                spawnedItem.GetComponent<WorldItem>().OnPickedUp += ItemTaken;
             }
         }
         else
