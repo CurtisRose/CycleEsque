@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   items:
   - item: {fileID: 0}
-    probability: 50
+    probability: 0
     minQuantity: 0
     maxQuantity: 0
   - item: {fileID: 625792777598891736, guid: 83d9d0040336f4645b16a5f568c6952b, type: 3}

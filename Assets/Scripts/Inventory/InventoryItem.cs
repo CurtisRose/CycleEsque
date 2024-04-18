@@ -179,13 +179,22 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void IncrementItemCount()
     {
-        ChangeItemCount(1);
+        AddToItemCount(1);
+    }
+
+    public void AddToItemCount(int change)
+    {
+        int currentCount = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+        itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, currentCount + change);
+        if (OnItemCountChanged != null)
+        {
+            OnItemCountChanged();
+        }
     }
 
     public void ChangeItemCount(int change)
     {
-        int currentCount = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
-        itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, currentCount + change);
+        itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack,  change);
         if (OnItemCountChanged != null)
         {
             OnItemCountChanged();

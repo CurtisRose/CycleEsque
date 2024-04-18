@@ -58,6 +58,7 @@ public class Inventory : MonoBehaviour
         }
 
         ItemInstance itemPickedUp = item.CreateItemInstance();
+        itemPickedUp.SetProperty(ItemAttributeKey.NumItemsInStack, numItems);
         bool successCheck = AddItem(itemPickedUp);
 
         if (partialOnly)
@@ -71,93 +72,99 @@ public class Inventory : MonoBehaviour
 
     public bool AddItem(ItemInstance itemInstance)
     {
-        float temp = GetInventoryWeightLimit();
         int numItems = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
-        if (itemInstance.sharedData.Weight * numItems > temp - currentWeight)
+        float itemTotalWeight = itemInstance.sharedData.Weight * numItems;
+
+        // Check if the total weight of the items can be added to the inventory
+        if (itemTotalWeight > GetInventoryWeightLimit() - currentWeight)
         {
+            Debug.Log("Not enough weight capacity to add these items");
             return false; // Not enough weight capacity to add these items
         }
 
-        bool updated = false;
-        // Check if any slot already has the item and can hold more
+        bool updated = false; // Flag to track if the inventory was updated
+
+        // If the item is stackable, try to add it to existing slots with the same item
         if (itemInstance.sharedData.stackable)
         {
-            InventorySlot firstEmptySlot = null;
-            for (int i = 0; i < inventorySlots.Count; i++)
+            int remainingItems = FillExistingStacks(itemInstance);
+            if (remainingItems < numItems)
             {
-                InventorySlot slot = inventorySlots[i];
-                InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-
-                // Check if the slot already contains the item and is not full
-                if (itemInSlot != null && itemInSlot.itemInstance.sharedData == itemInstance.sharedData)
-                {
-                    int spaceLeftInSlot = itemInSlot.itemInstance.sharedData.maxStackSize - itemInSlot.GetItemCount();
-                    if (spaceLeftInSlot > 0)
-                    {
-                        int itemsToAdd = Mathf.Min(spaceLeftInSlot, numItems);
-                        itemInSlot.ChangeItemCount(itemsToAdd);
-                        UpdateWeight(itemInstance.sharedData.Weight * itemsToAdd);
-                        numItems -= itemsToAdd;
-                        updated = true;
-
-                        if (numItems <= 0)
-                        {
-                            if (OnInventoryChanged != null)
-                                OnInventoryChanged();
-                            return true;
-                        }
-                    }
-                }
-
-                // Remember the first empty slot if we need to add a new item there
-                if (!slot.HasItem() && firstEmptySlot == null)
-                {
-                    firstEmptySlot = slot;
-                }
+                updated = true;  // Update occurred if we added some items to existing stacks
             }
-
-            // If there are still items left to add, use the first empty slot
-            if (firstEmptySlot != null && numItems > 0)
-            {
-                CreateNewItem(itemInstance, firstEmptySlot);
-                if (OnInventoryChanged != null)
-                    OnInventoryChanged();
-                return true;
-            }
-        }
-        else
-        {
-            // Non-stackable item, simply find an empty slot
-            foreach (InventorySlot slot in inventorySlots)
-            {
-                if (!slot.HasItem())
-                {
-                    CreateNewItem(itemInstance, slot);
-                    if (OnInventoryChanged != null)
-                        OnInventoryChanged();
-                    return true;
-                }
-            }
+            numItems = remainingItems;
         }
 
-        // If no suitable slot is found and there are leftover items, log the full inventory
+        // If there are items left after trying to stack them in existing slots, or if the item is not stackable
         if (numItems > 0)
         {
-            Debug.Log("Inventory Is Full or not enough slots to accommodate all items.");
-            return false;
+            updated = FillEmptySlots(itemInstance) || updated;
         }
 
-        // If inventory changes occurred, update listeners
+        // Update listeners if any changes have occurred
         if (updated)
         {
-            if (OnInventoryChanged != null)
-                OnInventoryChanged();
-            return true;
+            OnInventoryChanged?.Invoke();
         }
 
-        return false; // Default return, though logically unreachable in current setup
+        return updated;
     }
 
+    private int FillExistingStacks(ItemInstance itemInstance)
+    {
+        int numItems = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+        foreach (InventorySlot slot in inventorySlots)
+        {
+            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+            if (itemInSlot != null && itemInSlot.itemInstance.sharedData == itemInstance.sharedData)
+            {
+                int spaceLeftInSlot = itemInSlot.itemInstance.sharedData.maxStackSize - itemInSlot.GetItemCount();
+                if (spaceLeftInSlot > 0)
+                {
+                    int itemsToAdd = Mathf.Min(spaceLeftInSlot, numItems);
+                    if (itemInstance.sharedData.stackable)
+                    {
+                        itemInSlot.AddToItemCount(itemsToAdd);
+                    }
+                    /*else
+                    {
+                        itemInSlot.ChangeItemCount(itemsToAdd);
+                    }*/
+                    UpdateWeight(itemInstance.sharedData.Weight * itemsToAdd);
+                    numItems -= itemsToAdd;
+                    itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, numItems);
+
+                    if (numItems == 0) break; // All items added, exit loop
+                }
+            }
+        }
+        return numItems; // Return the number of items left to add
+    }
+
+    private bool FillEmptySlots(ItemInstance itemInstance)
+    {
+        int numItems = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+        foreach (InventorySlot slot in inventorySlots)
+        {
+            if (!slot.HasItem())
+            {
+                int itemsToAdd = itemInstance.sharedData.stackable ? Mathf.Min(itemInstance.sharedData.maxStackSize, numItems) : 1;
+                CreateNewItem(itemInstance, slot);
+                //UpdateWeight(itemInstance.sharedData.Weight * itemsToAdd);
+                numItems -= itemsToAdd;
+
+                if (numItems == 0) return true; // Successfully added all items
+            }
+        }
+
+        if (numItems > 0)
+        {
+            Debug.Log("Inventory is full or not enough slots to accommodate all items.");
+            return false; // Not all items could be added
+        }
+
+        return true; // All items were added
+    }
 
     public int GetNumberOfItemsOfType(ItemType type)
     {
@@ -200,7 +207,7 @@ public class Inventory : MonoBehaviour
             {
                 if (itemInSlot.GetItemCount() > numItems)
                 {
-                    itemInSlot.ChangeItemCount(-numItems);
+                    itemInSlot.AddToItemCount(-numItems);
                     UpdateWeight(-(numItems * itemInSlot.itemInstance.sharedData.Weight));
                     return true;
                 } else if (itemInSlot.GetItemCount() == numItems)
