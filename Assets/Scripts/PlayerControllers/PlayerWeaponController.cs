@@ -27,44 +27,16 @@ public class PlayerWeaponController : MonoBehaviour
     [SerializeField] float crosshairVisiblityTime = 0.2f;
     bool WeaponAimTesting = true;
 
-    public delegate void LoadOutChanged();
-    public event LoadOutChanged OnLoadOutChanged;
-
     public delegate void PrimaryGunFired();
     public event PrimaryGunFired OnPrimaryGunFired;
 
     public delegate void PrimaryGunReloaded();
     public event PrimaryGunReloaded OnPrimaryGunReloaded;
 
-    public delegate void InventoryChanged();
-    public event InventoryChanged OnInventoryChanged;
-
     private void Awake()
     {
-        playerInventory.OnInventoryChanged += OnInventoryChangedPassThrough;
         recoil = GetComponent<Recoil>();
         playerWeaponSwitcher = GetComponent<PlayerWeaponSwitcher>();
-    }
-
-    private void Start()
-    {
-        
-    }
-
-    public void OnInventoryChangedPassThrough()
-    {
-        if (OnInventoryChanged != null)
-        {
-            OnInventoryChanged();
-        }
-    }
-
-    public void OnLoadOutChangedPassThrough()
-    {
-        if (OnLoadOutChanged != null)
-        {
-            OnLoadOutChanged();
-        }
     }
 
     private void Update()

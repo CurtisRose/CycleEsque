@@ -34,11 +34,6 @@ public class PlayerItemDropping : MonoBehaviour
                 inventoryItemBeingDropped.GetCurrentInventorySlot().RemoveItemFromSlot();
                 DropItem(InventoryItem.CurrentHoveredItem.itemInstance);
                 Destroy(InventoryItem.CurrentHoveredItem.gameObject);
-
-                if (inventoryItemBeingDropped.itemInstance.sharedData.ItemType == ItemType.PRIMARY_WEAPON)
-                {
-                    playerWeaponController.OnLoadOutChangedPassThrough();
-                }
             }
         }
     }

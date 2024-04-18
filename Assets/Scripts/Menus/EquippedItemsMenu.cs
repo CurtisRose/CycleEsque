@@ -8,6 +8,7 @@ public class EquippedItemsMenu : Menu
 {
     [SerializeField] PlayerWeaponController playerWeaponController;
     [SerializeField] PlayerWeaponSwitcher playerWeaponSwitcher;
+    [SerializeField] PlayerInventory playerInventory;
 
     [SerializeField] Image weapon1Image;
     [SerializeField] Image weapon1RarityBorder1;
@@ -30,7 +31,7 @@ public class EquippedItemsMenu : Menu
         playerWeaponSwitcher.OnLoadOutChanged += LoadOutChanged;
         playerWeaponController.OnPrimaryGunFired += UpdateAmmoText;
         playerWeaponController.OnPrimaryGunReloaded += UpdateAmmoText;
-        playerWeaponController.OnInventoryChanged += UpdateAmmoText;
+        playerInventory.OnInventoryChanged += UpdateAmmoText;
         LoadOutChanged();
     }
 

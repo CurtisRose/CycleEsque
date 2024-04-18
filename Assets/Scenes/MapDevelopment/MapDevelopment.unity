@@ -7613,6 +7613,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 791366877803085108, guid: bde5e32ec934b534b9b002989d51374f,
         type: 3}
+      propertyPath: playerInventory
+      value: 
+      objectReference: {fileID: 751521083}
+    - target: {fileID: 791366877803085108, guid: bde5e32ec934b534b9b002989d51374f,
+        type: 3}
       propertyPath: playerWeaponSwitcher
       value: 
       objectReference: {fileID: 504710235}
