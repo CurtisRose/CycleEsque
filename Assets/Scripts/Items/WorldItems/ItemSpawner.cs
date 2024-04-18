@@ -33,7 +33,7 @@ public class ItemSpawner : MonoBehaviour
         if (selectedItem != null && quantity > 0)
         {
             Quaternion randomRotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
-            WorldItem spawnedItem = Instantiate(selectedItem, transform.position, randomRotation);
+            WorldItem spawnedItem = Instantiate(selectedItem, transform.position, randomRotation, transform);
             
             if (spawnedItem.GetComponent<WorldItem>() != null)
             {
