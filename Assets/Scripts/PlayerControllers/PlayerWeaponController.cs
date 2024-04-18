@@ -21,7 +21,7 @@ public class PlayerWeaponController : MonoBehaviour
     // Aiming Down Sights Positions
     [SerializeField] Transform hipFirePosition;
     [SerializeField] Transform ADSFirePosition;
-    [SerializeField] float timeToADS = 0.5f;
+    [SerializeField] float timeToADS = 0.3f;
     private Coroutine currentTransitionCoroutine;
 
     // Crosshair Aimer Test
@@ -206,7 +206,9 @@ public class PlayerWeaponController : MonoBehaviour
         //WorldItem itemBeingDropped = Instantiate<WorldItem>(InventoryItem.CurrentHoveredItem.item.itemPrefab, throwPosition.position, Quaternion.identity);
         // Maybe yeet it a little bit
         itemBeingDropped.InitializeFromItemInstance(itemInstance);
-        itemBeingDropped.GetComponent<Rigidbody>().AddForce(head.forward * throwForce * Time.deltaTime, ForceMode.Impulse);
+        itemBeingDropped.GetComponent<Rigidbody>().isKinematic = false;
+        itemBeingDropped.GetComponent<Rigidbody>().useGravity = true;
+        itemBeingDropped.GetComponent<Rigidbody>().AddForce(head.forward * throwForce, ForceMode.Impulse);
         // This is so the pick up menu doesn't trigger immediately.
         itemBeingDropped.SetUninteractableTemporarily();
         itemBeingDropped.SetNumberOfStartingItems((int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack));

@@ -80,7 +80,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         if (droppedOn != null && IsPartOfInventoryUI(droppedOn))
         {
             currentInventorySlot.SetItemInSlotAfterDrag(this);
-            currentInventorySlot.EndInventoryItemMovedPassThrough(this);
             DoThingsAfterMove();
         }
         else
@@ -89,6 +88,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             currentInventorySlot.DropItem();
             Destroy(this.gameObject);
         }
+        currentInventorySlot.EndInventoryItemMovedPassThrough(this);
         itemImage.raycastTarget = true;
     }
 
