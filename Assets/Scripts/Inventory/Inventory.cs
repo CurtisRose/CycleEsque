@@ -23,7 +23,7 @@ public class Inventory : MonoBehaviour
         foreach (SharedItemData startItem in startItems)
         {
             //ItemInstance itemInstance = new ItemInstance(startItem);
-            WorldItem testItem = ItemSpawner.Instance.GetPrefab(startItem);
+            WorldItem testItem = PlayerItemSpawner.Instance.GetPrefab(startItem);
             ItemInstance testInstance = testItem.CreateNewItemInstance(startItem);
   
             //itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, 1);

@@ -260,6 +260,7 @@ GameObject:
   - component: {fileID: 7768601906473230819}
   - component: {fileID: 3284674368731141778}
   - component: {fileID: -8489133307399510447}
+  - component: {fileID: -6106936881564204791}
   m_Layer: 0
   m_Name: SM_Env_Tree_Meadow_01
   m_TagString: Untagged
@@ -345,6 +346,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2808096436021784977, guid: 194c227c2d57b9043b4b82b21e2f8f46, type: 3}
+--- !u!208 &-6106936881564204791
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6954770494557141849}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &7875800952161461445
 GameObject:
   m_ObjectHideFlags: 0

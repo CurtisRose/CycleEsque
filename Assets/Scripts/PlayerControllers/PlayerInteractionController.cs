@@ -74,6 +74,7 @@ public class PlayerInteractionController : MonoBehaviour
         bool pickedUp = playerInventory.AddItem(item);
         if (pickedUp)
         {
+            item.PickupItem();
             Destroy(item.gameObject);
         }
         ShowPickupPrompt(true);

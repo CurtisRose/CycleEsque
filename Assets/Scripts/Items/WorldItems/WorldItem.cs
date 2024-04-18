@@ -14,6 +14,9 @@ public class WorldItem : MonoBehaviour
 
     [SerializeField] protected int numItemsInStack;
 
+    public delegate void PickedUp();
+    public event PickedUp OnPickedUp;
+
     protected virtual void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -131,6 +134,14 @@ public class WorldItem : MonoBehaviour
         foreach (Transform child in obj.transform)
         {
             SetLayerRecursively(child.gameObject, newLayer);
+        }
+    }
+
+    public void PickupItem()
+    {
+        if (OnPickedUp != null)
+        {
+            OnPickedUp();
         }
     }
 }
