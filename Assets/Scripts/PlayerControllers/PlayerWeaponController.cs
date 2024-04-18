@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class PlayerWeaponController : MonoBehaviour
 {
     [SerializeField] PlayerInventory playerInventory;
-    [SerializeField] GearManager gearManager;
-    [SerializeField] bool selectedFirstSlot;
+    [SerializeField] PlayerGearManager gearManager;
+    [SerializeField] PlayerWeaponSwitcher playerWeaponSwitcher;
 
     [SerializeField] Transform head;
     [SerializeField] float throwForce;
@@ -48,6 +48,7 @@ public class PlayerWeaponController : MonoBehaviour
         playerInventory.OnInventoryChanged += OnInventoryChangedPassThrough;
         playerInventory.OnItemDropped += DropItem;
         recoil = GetComponent<Recoil>();
+        playerWeaponSwitcher = GetComponent<PlayerWeaponSwitcher>();
     }
 
     private void Start()
@@ -122,7 +123,7 @@ public class PlayerWeaponController : MonoBehaviour
                         crosshairController.Bloom();
 
                         // Write decrement of AmmoCount to the inventory slot Item Instance
-                        if (selectedFirstSlot)
+                        if (playerWeaponSwitcher.PrimarySelected())
                         {
                             playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gearManager.GetGunInHands().GetNumberOfRounds());
                         } else
@@ -158,7 +159,7 @@ public class PlayerWeaponController : MonoBehaviour
                     playerInventory.RemoveItemOfType(ItemType.AMMO, numberOfRoundsUsed);
 
                     // Write decrement of AmmoCount to the inventory slot Item Instance
-                    if (selectedFirstSlot)
+                    if (playerWeaponSwitcher.PrimarySelected())
                     {
                         playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gearManager.GetGunInHands().GetNumberOfRounds());
                     }

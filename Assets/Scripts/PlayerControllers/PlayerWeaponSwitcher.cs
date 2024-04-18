@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerWeaponSwitcher : MonoBehaviour
 {
-    [SerializeField] GearManager gearManager;
+    [SerializeField] PlayerGearManager gearManager;
     [SerializeField] Transform weaponPositionHands;
     [SerializeField] Transform weaponPositionHip;
 
@@ -31,7 +31,7 @@ public class PlayerWeaponSwitcher : MonoBehaviour
 
     private void Awake()
     {
-        gearManager = GetComponent<GearManager>();
+        gearManager = GetComponent<PlayerGearManager>();
         gearManager.OnPrimaryChanged += HandleWeaponChangePrimary;
         gearManager.OnSecondaryChanged += HandleWeaponChangeSecondary;
     }
@@ -187,5 +187,10 @@ public class PlayerWeaponSwitcher : MonoBehaviour
     public Gun GetGunOnHip()
     {
         return gunOnHip;
+    }
+
+    public bool PrimarySelected()
+    {
+        return primarySelected;
     }
 }

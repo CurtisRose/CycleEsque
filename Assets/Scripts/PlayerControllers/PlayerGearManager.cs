@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GearManager : MonoBehaviour
+public class PlayerGearManager : MonoBehaviour
 {
     [SerializeField] PlayerInventory playerInventory;
     [SerializeField] PlayerWeaponSwitcher playerWeaponSwitcher;

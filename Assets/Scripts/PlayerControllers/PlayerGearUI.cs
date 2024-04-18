@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerGearUI : MonoBehaviour
 {
-    [SerializeField] GearManager gearManager;
+    [SerializeField] PlayerGearManager gearManager;
 
     [SerializeField] Image backpackBackgroundImage;
     [SerializeField] Image helmetBackgroundImage;

@@ -70,7 +70,7 @@ public class EquippedItemsMenu : Menu
             backpackIndicatorImage.enabled = false;
         }
 
-        Gun gun2 = playerWeaponSwitcher.GetGunOnHip();
+            Gun gun2 = playerWeaponSwitcher.GetGunOnHip();
         if (gun2 != null)
         {
             weapon2Image.sprite = gun2.GetBaseItem().LargeImage;
