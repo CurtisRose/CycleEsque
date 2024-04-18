@@ -1484,6 +1484,46 @@ PrefabInstance:
       propertyPath: playerInventory
       value: 
       objectReference: {fileID: 751521083}
+    - target: {fileID: 2721748668309944525, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: gearRemovalSounds.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2721748668309944525, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: gearRemovalSounds.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: d7727b8fd2d4fff4587910a62bdc777a, type: 3}
+    - target: {fileID: 2721748668309944525, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: gearRemovalSounds.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 1aa65873225eb8643a1567991ba7c8fe, type: 3}
+    - target: {fileID: 2721748668309944525, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: gearRemovalSounds.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 4438ce9d95316ee4fa3145d65e2d4957, type: 3}
+    - target: {fileID: 2721748668309944525, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: gearRemovalSounds.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: 5ea2df1c398391e468c6aa6187ab2e7b, type: 3}
+    - target: {fileID: 2721748668309944525, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: gearRemovalSounds.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: d71a60a527514d74e95796c875fd105d, type: 3}
+    - target: {fileID: 2721748668309944525, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: gearRemovalSounds.Array.data[5]
+      value: 
+      objectReference: {fileID: 8300000, guid: b51c60f9c1bcb04469f9209b7f1e144e, type: 3}
+    - target: {fileID: 2721748668309944525, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: gearRemovalSounds.Array.data[6]
+      value: 
+      objectReference: {fileID: 8300000, guid: 8ddd50080adc76942be46b14837fd3b8, type: 3}
     - target: {fileID: 5803280727450449951, guid: e4c6fb353c04e3049b2329c6e6edcf05,
         type: 3}
       propertyPath: playerInventory

@@ -30,6 +30,10 @@ public class GearManager : MonoBehaviour
     public delegate void BackpackChanged(SharedItemData itemData);
     public event BackpackChanged OnBackpackChanged;
 
+    // Sounds
+    AudioSource audioSource;
+    [SerializeField] List<AudioClip> gearRemovalSounds;
+    SoundRandomizer gearRemovalRandomClips;
 
     private void Awake()
     {
@@ -39,6 +43,8 @@ public class GearManager : MonoBehaviour
             gearSlot.OnGearSlotsChanged += GearSlotChange;
         }
         playerWeaponSwitcher = GetComponent<PlayerWeaponSwitcher>();
+        audioSource = GetComponent<AudioSource>();
+        gearRemovalRandomClips = new SoundRandomizer(gearRemovalSounds);
     }
 
     private void GearSlotChange(GearSlot gearSlot)
@@ -97,14 +103,17 @@ public class GearManager : MonoBehaviour
         }
         else if (identifier == GearSlotIdentifier.BACKPACK)
         {
+            MakeSound(gearRemovalRandomClips.GetRandomClip());
             if (OnBackpackChanged != null) OnBackpackChanged(sharedItemData);
         }
         else if (identifier == GearSlotIdentifier.HELMET)
         {
+            MakeSound(gearRemovalRandomClips.GetRandomClip());
             if (OnHelmetChanged != null) OnHelmetChanged(sharedItemData);
         }
         else if (identifier == GearSlotIdentifier.ARMOR)
         {
+            MakeSound(gearRemovalRandomClips.GetRandomClip());
             if (OnArmorChanged != null) OnArmorChanged(sharedItemData);
         }
     }
@@ -117,5 +126,12 @@ public class GearManager : MonoBehaviour
     public Gun GunGetGunOnHip()
     {
         return playerWeaponSwitcher.GetGunOnHip();
+    }
+
+    public void MakeSound(AudioClip audioClip)
+    {
+        audioSource.pitch = Random.Range(0.95f, 1.05f); // Adjust pitch slightly
+        audioSource.volume = Random.Range(0.8f, 1.0f); // Adjust volume slightly
+        audioSource.PlayOneShot(audioClip);
     }
 }

@@ -14,6 +14,8 @@ public class PlayerWeaponSwitcher : MonoBehaviour
     [SerializeField] public Gun gunInHands = null;
     [SerializeField] public Gun gunOnHip = null;
 
+    [SerializeField] bool primarySelected = true;
+
     [SerializeField] private float switchCooldown = 0.5f; // Time in seconds between allowed switches
     private float lastSwitchTime = 0;
     private bool switchQueued = false; // Flag to check if a switch has been queued
@@ -30,8 +32,8 @@ public class PlayerWeaponSwitcher : MonoBehaviour
     private void Awake()
     {
         gearManager = GetComponent<GearManager>();
-        gearManager.OnPrimaryChanged += HandleEquippingWeapon;
-        gearManager.OnSecondaryChanged += HandleEquippingWeapon;
+        gearManager.OnPrimaryChanged += HandleWeaponChangePrimary;
+        gearManager.OnSecondaryChanged += HandleWeaponChangeSecondary;
     }
 
     private void Update()
@@ -41,19 +43,50 @@ public class PlayerWeaponSwitcher : MonoBehaviour
         ProcessQueuedWeaponSwitch();
     }
 
-    private void HandleEquippingWeapon(Gun gun)
+    private void HandleWeaponChangePrimary(Gun gun)
     {
-        gunInHands = weaponPositionHands.GetComponentInChildren<Gun>();
+        if (primarySelected)
+        {
+            HandleEquippingPrimary(gun);
+        } else
+        {
+            HandleEquippingSecondary(gun);
+        }
+    }
+    private void HandleWeaponChangeSecondary(Gun gun)
+    {
+        if (primarySelected)
+        {
+            HandleEquippingSecondary(gun);
+        }
+        else
+        {
+            HandleEquippingPrimary(gun);
+        }
+    }
+
+    private void HandleEquippingPrimary(Gun gun)
+    {
+        gunInHands = gun;
         if (gunInHands != null)
         {
             gunInHands.SetLayerRecursively(gunInHands.gameObject, LayerMask.NameToLayer("Gun"));
             gunInHands.PlayWeaponSwapSound();
             OnPrimaryChanged(gunInHands.GetGunData());
         }
-        gunOnHip = weaponPositionHip.GetComponentInChildren<Gun>();
+        if (OnLoadOutChanged != null)
+        {
+            OnLoadOutChanged();
+        }
+    }
+
+    private void HandleEquippingSecondary(Gun gun)
+    {
+        gunOnHip = gun;
         if (gunOnHip != null)
         {
-            gunOnHip.SetLayerRecursively(gunOnHip.gameObject, LayerMask.NameToLayer("Player"));
+            gunOnHip.SetLayerRecursively(gunOnHip.gameObject, LayerMask.NameToLayer("Gun"));
+            gunOnHip.PlayWeaponSwapSound();
         }
         if (OnLoadOutChanged != null)
         {
@@ -118,6 +151,7 @@ public class PlayerWeaponSwitcher : MonoBehaviour
 
     private void ExecuteSwitch()
     {
+        primarySelected = !primarySelected;
         SwitchGuns();
         lastSwitchTime = Time.time;
     }
