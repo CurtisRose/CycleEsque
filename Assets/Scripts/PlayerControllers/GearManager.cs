@@ -84,6 +84,7 @@ public class GearManager : MonoBehaviour
         if (gearItems[(int)identifier] != null)
         {
             Destroy(gearItems[(int)identifier].gameObject);
+            gearItems[(int)identifier] = null;
         }
         SharedItemData sharedItemData = null;
         if (gearSlot.HasItem())

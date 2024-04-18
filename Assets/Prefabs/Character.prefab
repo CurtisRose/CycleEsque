@@ -990,7 +990,14 @@ MonoBehaviour:
   - {fileID: 8897493055078843416}
   weaponPositionHands: {fileID: 4845008993545661789}
   weaponPositionHip: {fileID: 6265170968284108111}
-  gearRemovalSounds: []
+  gearRemovalSounds:
+  - {fileID: 8300000, guid: d7727b8fd2d4fff4587910a62bdc777a, type: 3}
+  - {fileID: 8300000, guid: 1aa65873225eb8643a1567991ba7c8fe, type: 3}
+  - {fileID: 8300000, guid: 4438ce9d95316ee4fa3145d65e2d4957, type: 3}
+  - {fileID: 8300000, guid: 5ea2df1c398391e468c6aa6187ab2e7b, type: 3}
+  - {fileID: 8300000, guid: d71a60a527514d74e95796c875fd105d, type: 3}
+  - {fileID: 8300000, guid: b51c60f9c1bcb04469f9209b7f1e144e, type: 3}
+  - {fileID: 8300000, guid: 8ddd50080adc76942be46b14837fd3b8, type: 3}
 --- !u!114 &4359797795167298469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1003,13 +1010,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2992680994f723442bf8c502e2e3fc04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gearManager: {fileID: 0}
+  gearManager: {fileID: 2721748668309944525}
   weaponPositionHands: {fileID: 4845008993545661789}
   weaponPositionHip: {fileID: 6265170968284108111}
   weaponSlot1: {fileID: 2305574298787733903}
   weaponSlot2: {fileID: 8897493055078843416}
   gunInHands: {fileID: 0}
   gunOnHip: {fileID: 0}
+  primarySelected: 1
   switchCooldown: 0.5
   selectedFirstSlot: 1
 --- !u!114 &5803280727450449951
