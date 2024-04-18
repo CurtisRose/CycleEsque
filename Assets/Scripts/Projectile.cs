@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -24,6 +25,19 @@ public class Projectile : MonoBehaviour
 
         // Check if the projectile is spawned inside a monster
         CheckInitialRaycast();
+        StartCoroutine(ActivateVisualProjectileNextFrame());
+    }
+
+    void OnDisable()
+    {
+        visualProjectile.SetActive(false);
+        CancelInvoke();
+    }
+
+    IEnumerator ActivateVisualProjectileNextFrame()
+    {
+        yield return null; // Wait for the next frame
+        visualProjectile.SetActive(true);
     }
 
     private void CheckInitialRaycast()
@@ -78,11 +92,6 @@ public class Projectile : MonoBehaviour
     private void ReturnToPool()
     {
         ProjectilePool.Instance.ReturnProjectile(this);
-    }
-
-    private void OnDisable()
-    {
-        CancelInvoke();
     }
 
     private void PlayImpactEffect()

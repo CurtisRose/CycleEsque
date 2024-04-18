@@ -22,6 +22,7 @@ public class PlayerWeaponController : MonoBehaviour
 
     // Crosshair Aimer Test
     [SerializeField] CrosshairController crosshairController;
+    [SerializeField] HitMarker hitMarker;
     bool ADSing = false;
     [SerializeField] float smoothTime = 0.1f; // This should be based on the gun maybe
     [SerializeField] float crosshairVisiblityTime = 0.2f;
@@ -115,6 +116,7 @@ public class PlayerWeaponController : MonoBehaviour
             }
         }
     }
+
 
     private void HandleWeaponReloading()
     {

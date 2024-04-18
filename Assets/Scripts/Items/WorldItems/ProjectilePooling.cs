@@ -7,6 +7,7 @@ public class ProjectilePool : MonoBehaviour
     [SerializeField] private Projectile projectilePrefab;
     [SerializeField] private int poolSize = 30;
     [SerializeField] private bool expandable = true; // Option to control whether the pool can expand
+    [SerializeField] bool UsePool = true;
 
     private Queue<Projectile> projectiles = new Queue<Projectile>();
 
@@ -29,21 +30,30 @@ public class ProjectilePool : MonoBehaviour
 
     public Projectile GetProjectile()
     {
-
-        if (projectiles.Count > 0)
+        if (UsePool)
         {
-            Projectile proj = projectiles.Dequeue();
+            if (projectiles.Count > 0)
+            {
+                Projectile proj = projectiles.Dequeue();
+                return proj;
+            }
+            else if (expandable)
+            {
+                // Dynamically expand the pool by adding a new projectile
+                return AddProjectileToPool();
+            }
+
+            // Return null or handle this situation as appropriate if the pool can't expand
+            Debug.LogWarning("No projectiles available in pool and expansion is disabled!");
+            return null;
+        }
+        else
+        {
+            Projectile proj = Instantiate(projectilePrefab);
+            proj.transform.SetParent(this.transform);
+            proj.gameObject.SetActive(false);
             return proj;
         }
-        else if (expandable)
-        {
-            // Dynamically expand the pool by adding a new projectile
-            return AddProjectileToPool();
-        }
-
-        // Return null or handle this situation as appropriate if the pool can't expand
-        Debug.LogWarning("No projectiles available in pool and expansion is disabled!");
-        return null;
     }
 
     private Projectile AddProjectileToPool()
