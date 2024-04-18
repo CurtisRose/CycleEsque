@@ -75,15 +75,16 @@ public class HitMarker : MonoBehaviour
 
     private Color GetColorBasedOnMultiplier(float multiplier)
     {
-        if (multiplier < 1.0f)
+        // Check if the multiplier is greater than 1
+        if (multiplier > 1.0f)
         {
-            // Lerp between black and white
-            return Color.Lerp(Color.black, Color.white, multiplier);
+            // If greater than 1, use red
+            return Color.red;
         }
         else
         {
-            // Lerp between white and red
-            return Color.Lerp(Color.white, Color.red, multiplier - 1.0f);
+            // If 1 or less, use white
+            return Color.white;
         }
     }
 }
