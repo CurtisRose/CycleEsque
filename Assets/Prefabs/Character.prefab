@@ -911,11 +911,13 @@ GameObject:
   m_Component:
   - component: {fileID: 9064487098345231791}
   - component: {fileID: 9064487098345231824}
-  - component: {fileID: 1315985713516066803}
+  - component: {fileID: 2721748668309944525}
   - component: {fileID: 9064487098345231790}
   - component: {fileID: 656676636408815486}
   - component: {fileID: 1362002582233426473}
   - component: {fileID: 3050583421449731175}
+  - component: {fileID: 4359797795167298469}
+  - component: {fileID: 5803280727450449951}
   m_Layer: 8
   m_Name: Character
   m_TagString: Player
@@ -965,7 +967,7 @@ MonoBehaviour:
   thirdPersonCamera: {fileID: 4188802689043222257}
   walkingSlopeLimit: 0
   sprintingSlopeLimit: 0
---- !u!114 &1315985713516066803
+--- !u!114 &2721748668309944525
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -974,13 +976,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 9064487098345231825}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7044b5430ccdaba49a64d58b5e35ac5f, type: 3}
+  m_Script: {fileID: 11500000, guid: c182277cfcb3d7b49b38aa5f84a705f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerInventory: {fileID: 0}
-  selectedFirstSlot: 1
-  gunInHands: {fileID: 0}
-  gunOnHip: {fileID: 0}
+  playerWeaponSwitcher: {fileID: 4359797795167298469}
   gearItems: []
   gearStorageLocations:
   - {fileID: 4307309158942832435}
@@ -990,22 +990,6 @@ MonoBehaviour:
   - {fileID: 8897493055078843416}
   weaponPositionHands: {fileID: 4845008993545661789}
   weaponPositionHip: {fileID: 6265170968284108111}
-  head: {fileID: 9064487097268030572}
-  throwForce: 2000
-  throwPosition: {fileID: 6780773922304257058}
-  recoil: {fileID: 0}
-  hipFirePosition: {fileID: 6667082619905216441}
-  ADSFirePosition: {fileID: 1594420528566663912}
-  timeToADS: 0.2
-  crosshairController: {fileID: 0}
-  smoothTime: 0.1
-  crosshairVisiblityTime: 0.5
-  switchCooldown: 0.5
-  gearBackpackIconBackground: {fileID: 0}
-  gearHelmetIconBackground: {fileID: 0}
-  gearArmorIconBackground: {fileID: 0}
-  gearRemovalSound: {fileID: 8300000, guid: d7727b8fd2d4fff4587910a62bdc777a, type: 3}
-  outOfAmmoSound: {fileID: 8300000, guid: c8cbcd3820791d1419c898215565ee10, type: 3}
 --- !u!143 &9064487098345231790
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1166,6 +1150,53 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4359797795167298469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064487098345231825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2992680994f723442bf8c502e2e3fc04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gearManager: {fileID: 0}
+  weaponPositionHands: {fileID: 4845008993545661789}
+  weaponPositionHip: {fileID: 6265170968284108111}
+  weaponSlot1: {fileID: 2305574298787733903}
+  weaponSlot2: {fileID: 8897493055078843416}
+  gunInHands: {fileID: 0}
+  gunOnHip: {fileID: 0}
+  switchCooldown: 0.5
+  selectedFirstSlot: 1
+--- !u!114 &5803280727450449951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064487098345231825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9cbc88996bb93469395ac3dd9bce61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInventory: {fileID: 0}
+  gearManager: {fileID: 2721748668309944525}
+  selectedFirstSlot: 1
+  head: {fileID: 9064487097268030572}
+  throwForce: 5
+  throwPosition: {fileID: 6780773922304257058}
+  weaponPositionHands: {fileID: 4845008993545661789}
+  recoil: {fileID: 656676636408815486}
+  hipFirePosition: {fileID: 6667082619905216441}
+  ADSFirePosition: {fileID: 1594420528566663912}
+  timeToADS: 0.5
+  crosshairController: {fileID: 0}
+  smoothTime: 0.1
+  crosshairVisiblityTime: 0.2
 --- !u!1 &9166655474706790046
 GameObject:
   m_ObjectHideFlags: 0

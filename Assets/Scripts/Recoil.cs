@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Recoil : MonoBehaviour
 {
-    PlayerGearController playerGearController;
+    PlayerWeaponController playerGearController;
+    PlayerWeaponSwitcher playerWeaponSwitching;
     Character character;
 
     [SerializeField] Transform recoilTarget;
@@ -52,9 +53,10 @@ public class Recoil : MonoBehaviour
 
     private void Awake()
     {
-        playerGearController = GetComponent<PlayerGearController>();
+        playerGearController = GetComponent<PlayerWeaponController>();
+        playerWeaponSwitching = GetComponent<PlayerWeaponSwitcher>();
         character = GetComponent<Character>();
-        playerGearController.OnPrimaryChanged += InitializeItemFromBaseItemData;
+        playerWeaponSwitching.OnPrimaryChanged += InitializeItemFromBaseItemData;
     }
 
     private void Update()

@@ -2100,7 +2100,8 @@ MonoBehaviour:
   affectsUserMovement: 0
   affectsUserClicking: 0
   affectsUserLooking: 0
-  playerGearController: {fileID: 0}
+  playerWeaponController: {fileID: 0}
+  playerWeaponSwitcher: {fileID: 0}
   weapon1Image: {fileID: 1060673056595819418}
   weapon1RarityBorder1: {fileID: 6282987652159411536}
   weapon1RarityBorder2: {fileID: 5495017564291010091}

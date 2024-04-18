@@ -5,16 +5,20 @@ using UnityEngine;
 public class GearManager : MonoBehaviour
 {
     [SerializeField] PlayerInventory playerInventory;
+    [SerializeField] PlayerWeaponSwitcher playerWeaponSwitcher;
 
     // GearSlotIdentifier { BACKPACK, ARMOR, HELMET, WEAPONSLOT1, WEAPONSLOT2 }
     [SerializeField] WorldItem[] gearItems;
 
     [SerializeField] List<Transform> gearStorageLocations;
 
-    public delegate void PrimaryChanged(GunSharedItemData gunData);
+    [SerializeField] Transform weaponPositionHands;
+    [SerializeField] Transform weaponPositionHip;
+
+    public delegate void PrimaryChanged(Gun gun);
     public event PrimaryChanged OnPrimaryChanged;
 
-    public delegate void SecondaryChanged(GunSharedItemData gunData);
+    public delegate void SecondaryChanged(Gun gun);
     public event SecondaryChanged OnSecondaryChanged;
 
     public delegate void HelmetChanged(SharedItemData itemData);
@@ -34,6 +38,7 @@ public class GearManager : MonoBehaviour
         {
             gearSlot.OnGearSlotsChanged += GearSlotChange;
         }
+        playerWeaponSwitcher = GetComponent<PlayerWeaponSwitcher>();
     }
 
     private void GearSlotChange(GearSlot gearSlot)
@@ -84,11 +89,11 @@ public class GearManager : MonoBehaviour
 
         if (identifier == GearSlotIdentifier.WEAPONSLOT1)
         {
-            if (OnPrimaryChanged != null) OnPrimaryChanged((GunSharedItemData)sharedItemData);
+            if (OnPrimaryChanged != null) OnPrimaryChanged((Gun)gearItems[(int)identifier]);
         }
         else if (identifier == GearSlotIdentifier.WEAPONSLOT2)
         {
-            if (OnPrimaryChanged != null) OnSecondaryChanged((GunSharedItemData)sharedItemData);
+            if (OnPrimaryChanged != null) OnSecondaryChanged((Gun)gearItems[(int)identifier]);
         }
         else if (identifier == GearSlotIdentifier.BACKPACK)
         {
@@ -102,6 +107,15 @@ public class GearManager : MonoBehaviour
         {
             if (OnArmorChanged != null) OnArmorChanged(sharedItemData);
         }
+    }
 
+    public Gun GetGunInHands()
+    {
+        return playerWeaponSwitcher.GetGunInHands();
+    }
+
+    public Gun GunGetGunOnHip()
+    {
+        return playerWeaponSwitcher.GetGunOnHip();
     }
 }

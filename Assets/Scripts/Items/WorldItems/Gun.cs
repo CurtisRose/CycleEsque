@@ -9,19 +9,16 @@ public class Gun : WorldItem
     [SerializeField] Projectile projectilePrefab;
     [SerializeField] bool DrawGizmos;
 
-    float projectileSpeed;
-    float projectileDamage;
-    float projectileArmorPenetration;
-    float fireRate;
-    private float lastShotTime;
+    float projectileSpeed = 100f;
+    float projectileDamage = 25f;
+    float projectileArmorPenetration = 0.5f;
+    float fireRate = 0.5f; // Time in seconds between shots
+    private float lastShotTime = 0f; // Time since the last shot was fired
 
     [SerializeField] AudioSource gunAudioSource;
-    [SerializeField] List<AudioClip> weaponFireSounds;
-    SoundRandomizer weaponFireRandomClips;
-    [SerializeField] List<AudioClip> weaponReloadSounds;
-    SoundRandomizer weaponReloadRandomClips;
-    [SerializeField] List<AudioClip> weaponEquipSounds;
-    SoundRandomizer weaponEquipRandomClips;
+    [SerializeField] AudioClip weaponFireSound;
+    [SerializeField] AudioClip weaponReloadSound;
+    [SerializeField] AudioClip weaponEquipSound;
 
     int magazineCapacity;
     [SerializeField] int numberOfRounds;
@@ -31,9 +28,6 @@ public class Gun : WorldItem
     protected override void Awake()
     {
         base.Awake();
-        weaponFireRandomClips = new SoundRandomizer(weaponFireSounds);
-        weaponReloadRandomClips = new SoundRandomizer(weaponReloadSounds);
-        weaponEquipRandomClips = new SoundRandomizer(weaponEquipSounds);
     }
 
     protected override void Start()
@@ -87,13 +81,13 @@ public class Gun : WorldItem
     {
         base.Equip();
         SetLayerRecursively(gameObject, LayerMask.NameToLayer("Gun"));
-        MakeSound(weaponEquipRandomClips.GetRandomClip());
+        gunAudioSource.PlayOneShot(weaponEquipSound);
         transform.localPosition = EquipPosition;
     }
 
     public void PlayWeaponSwapSound()
     {
-        MakeSound(weaponEquipRandomClips.GetRandomClip());
+        gunAudioSource.PlayOneShot(weaponEquipSound);
     }
 
     // Returns the number of rounds used
@@ -110,7 +104,7 @@ public class Gun : WorldItem
             return 0;
         }
 
-        MakeSound(weaponReloadRandomClips.GetRandomClip());
+        gunAudioSource.PlayOneShot(weaponReloadSound);
 
         if (missingAmmoAmount > numRoundsAvailable)
         {
@@ -147,7 +141,7 @@ public class Gun : WorldItem
             projectile.gameObject.SetActive(true);
 
             numberOfRounds--;
-            MakeSound(weaponFireRandomClips.GetRandomClip());
+            gunAudioSource.PlayOneShot(weaponFireSound);
             lastShotTime = Time.time;
             return true;
         }
@@ -191,12 +185,5 @@ public class Gun : WorldItem
     public GunSharedItemData GetGunData()
     {
         return (GunSharedItemData)sharedItemData;
-    }
-
-    public void MakeSound(AudioClip audioClip)
-    {
-        gunAudioSource.pitch = Random.Range(0.95f, 1.05f); // Adjust pitch slightly
-        gunAudioSource.volume = Random.Range(0.8f, 1.0f); // Adjust volume slightly
-        gunAudioSource.PlayOneShot(audioClip);
     }
 }
