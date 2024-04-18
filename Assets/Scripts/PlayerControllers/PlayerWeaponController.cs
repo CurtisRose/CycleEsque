@@ -9,10 +9,6 @@ public class PlayerWeaponController : MonoBehaviour
     [SerializeField] PlayerGearManager gearManager;
     [SerializeField] PlayerWeaponSwitcher playerWeaponSwitcher;
 
-    [SerializeField] Transform head;
-    [SerializeField] float throwForce;
-    [SerializeField] Transform throwPosition;
-
     [SerializeField] Transform weaponPositionHands;
 
     // Recoil
@@ -46,7 +42,6 @@ public class PlayerWeaponController : MonoBehaviour
     private void Awake()
     {
         playerInventory.OnInventoryChanged += OnInventoryChangedPassThrough;
-        playerInventory.OnItemDropped += DropItem;
         recoil = GetComponent<Recoil>();
         playerWeaponSwitcher = GetComponent<PlayerWeaponSwitcher>();
     }
@@ -64,6 +59,14 @@ public class PlayerWeaponController : MonoBehaviour
         }
     }
 
+    public void OnLoadOutChangedPassThrough()
+    {
+        if (OnLoadOutChanged != null)
+        {
+            OnLoadOutChanged();
+        }
+    }
+
     private void Update()
     {
         // Set the crosshair to where the gun is pointing
@@ -78,7 +81,7 @@ public class PlayerWeaponController : MonoBehaviour
             crosshairController.CenterCrosshairOnScreen();
         }
 
-        HandleInventoryItemDropping();
+        //HandleInventoryItemDropping();
 
         HandleWeaponReloading();
 
@@ -175,44 +178,6 @@ public class PlayerWeaponController : MonoBehaviour
                 }
             }
         }
-    }
-
-    private void HandleInventoryItemDropping()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            if (InventoryItem.CurrentHoveredItem != null)
-            {
-                //InventoryItem.CurrentHoveredItem
-                //InventoryItem.CurrentHoveredItem.item
-                InventoryItem inventoryItemBeingDropped = InventoryItem.CurrentHoveredItem;
-                inventoryItemBeingDropped.GetCurrentInventorySlot().RemoveItemFromSlot();
-                DropItem(InventoryItem.CurrentHoveredItem.itemInstance);
-                Destroy(InventoryItem.CurrentHoveredItem.gameObject);
-
-                if (inventoryItemBeingDropped.itemInstance.sharedData.ItemType == ItemType.PRIMARY_WEAPON)
-                {
-                    if (OnLoadOutChanged != null)
-                    {
-                        OnLoadOutChanged();
-                    }
-                }
-            }
-        }
-    }
-
-    private void DropItem(ItemInstance itemInstance)
-    {
-        WorldItem itemBeingDropped = ItemSpawner.Instance.SpawnItem(itemInstance, throwPosition.position, Quaternion.identity);
-        //WorldItem itemBeingDropped = Instantiate<WorldItem>(InventoryItem.CurrentHoveredItem.item.itemPrefab, throwPosition.position, Quaternion.identity);
-        // Maybe yeet it a little bit
-        itemBeingDropped.InitializeFromItemInstance(itemInstance);
-        itemBeingDropped.GetComponent<Rigidbody>().isKinematic = false;
-        itemBeingDropped.GetComponent<Rigidbody>().useGravity = true;
-        itemBeingDropped.GetComponent<Rigidbody>().AddForce(head.forward * throwForce, ForceMode.Impulse);
-        // This is so the pick up menu doesn't trigger immediately.
-        itemBeingDropped.SetUninteractableTemporarily();
-        itemBeingDropped.SetNumberOfStartingItems((int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack));
     }
 
     public int GetNumberOfRoundsOfAmmoInInventory()

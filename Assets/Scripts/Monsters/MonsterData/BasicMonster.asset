@@ -19,7 +19,7 @@ MonoBehaviour:
   acceleration: 90
   exploringRadius: 50
   pauseTime: 2
-  detectionRadius: 15
+  detectionRadius: 40
   fleeDistance: 40
   minimumAggressionTime: 60
   health: 100

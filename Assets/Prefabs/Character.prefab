@@ -914,6 +914,7 @@ GameObject:
   - component: {fileID: 2721748668309944525}
   - component: {fileID: 4359797795167298469}
   - component: {fileID: 5803280727450449951}
+  - component: {fileID: 524081812311261863}
   - component: {fileID: 656676636408815486}
   - component: {fileID: 1362002582233426473}
   - component: {fileID: 3050583421449731175}
@@ -1035,9 +1036,6 @@ MonoBehaviour:
   playerInventory: {fileID: 0}
   gearManager: {fileID: 2721748668309944525}
   playerWeaponSwitcher: {fileID: 4359797795167298469}
-  head: {fileID: 9064487097268030572}
-  throwForce: 5
-  throwPosition: {fileID: 6780773922304257058}
   weaponPositionHands: {fileID: 4845008993545661789}
   recoil: {fileID: 656676636408815486}
   hipFirePosition: {fileID: 6667082619905216441}
@@ -1046,6 +1044,23 @@ MonoBehaviour:
   crosshairController: {fileID: 0}
   smoothTime: 0.1
   crosshairVisiblityTime: 0.2
+--- !u!114 &524081812311261863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064487098345231825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad3e747bc3bb31e47988565216e27eea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInventory: {fileID: 0}
+  playerWeaponController: {fileID: 5803280727450449951}
+  head: {fileID: 9064487097268030572}
+  throwForce: 5
+  throwPosition: {fileID: 6780773922304257058}
 --- !u!114 &656676636408815486
 MonoBehaviour:
   m_ObjectHideFlags: 0
