@@ -163,11 +163,11 @@ public class MonsterController : MonoBehaviour
         rootmotionObject.localRotation = Quaternion.identity;
     }
 
-    public void HandleHit(Projectile projectile)
+    public void HandleHit(Projectile projectile, float criticalMultiplier)
     {
         // TODO: Add armor penetration calculations
-        healthComponent.ReceiveDamage(projectile.Damage);
-        HitMarker.Instance.ShowHitMarker();
+        healthComponent.ReceiveDamage(projectile.Damage * criticalMultiplier);
+        HitMarker.Instance.ShowHitMarker(criticalMultiplier);
     }
 
     public void ApplyDamage()

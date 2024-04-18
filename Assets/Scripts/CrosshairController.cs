@@ -65,6 +65,8 @@ public class CrosshairController : MonoBehaviour
         targetValue = Mathf.Min(targetValue, targetMaxHeight); // Cap the target value at maxHeight
     }
 
+
+
     public void SetCrosshairPositionWhereGunIsLooking(Transform aimPosition, float smoothTime)
     {
         RaycastHit hit;
@@ -93,8 +95,7 @@ public class CrosshairController : MonoBehaviour
 
     public void CenterCrosshairOnScreen()
     {
-        Vector3 centerScreen = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
-        crossHairPosition.position = centerScreen; // Directly set to center
+        crossHairPosition.anchoredPosition = Vector2.zero;
     }
 
     public void SetCrossHairVisual(bool set)

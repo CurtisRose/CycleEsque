@@ -5,6 +5,7 @@ public class MonsterPart : MonoBehaviour
 {
     private MonsterController parentMonster; // Reference to the parent monster script
     private Rigidbody rigidBody;
+    [SerializeField] float criticalMultiplier = 1.0f;
 
     private void Start()
     {
@@ -19,7 +20,7 @@ public class MonsterPart : MonoBehaviour
     {
         if (parentMonster != null)
         {
-            parentMonster.HandleHit(projectile);
+            parentMonster.HandleHit(projectile, criticalMultiplier);
         } else
         {
             // If the parentMonster doesn't exist, it's probably dead.

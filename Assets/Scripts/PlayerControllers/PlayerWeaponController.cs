@@ -42,9 +42,12 @@ public class PlayerWeaponController : MonoBehaviour
     private void Update()
     {
         // Set the crosshair to where the gun is pointing
-        if (gearManager.GetGunInHands() != null && WeaponAimTesting)
+        if (gearManager.GetGunInHands() != null && WeaponAimTesting && !IsADSing())
         {
             crosshairController.SetCrosshairPositionWhereGunIsLooking(gearManager.GetGunInHands().transform, smoothTime);
+        } else
+        {
+            crosshairController.CenterCrosshairOnScreen();
         }
 
         if (Input.GetKeyDown(KeyCode.T))
