@@ -21,6 +21,8 @@ public class PlayerWeaponSwitcher : MonoBehaviour
     private bool switchQueued = false; // Flag to check if a switch has been queued
     private bool nextSelectedFirstSlot; // Stores the intended slot selection after cooldown
 
+    [SerializeField] float noGunReloadSpeed = 0.5f;
+
     [SerializeField] bool selectedFirstSlot;
 
     public delegate void PrimaryChanged(GunSharedItemData gunData);
@@ -39,8 +41,6 @@ public class PlayerWeaponSwitcher : MonoBehaviour
     private void Update()
     {
         HandleWeaponSwitchingInput();
-
-        ProcessQueuedWeaponSwitch();
     }
 
     private void HandleWeaponChangePrimary(Gun gun)
@@ -96,57 +96,49 @@ public class PlayerWeaponSwitcher : MonoBehaviour
 
     private void HandleWeaponSwitchingInput()
     {
-        if (Time.time - lastSwitchTime < switchCooldown)
-        {
-            QueueSwitchIfNeeded();
-            return;
-        }
+        // Check to see if state manager allows this action
+        if (!WeaponStateManager.Instance.CanPerformAction(WeaponState.SwappingWeapons)) return;
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         bool key1Pressed = Input.GetKeyDown(KeyCode.Alpha1);
         bool key2Pressed = Input.GetKeyDown(KeyCode.Alpha2);
 
+        bool check = selectedFirstSlot;
         if (scroll != 0f)
         {
             selectedFirstSlot = !selectedFirstSlot;
-            ExecuteSwitch();
         }
         else if (key1Pressed && !selectedFirstSlot)
         {
             selectedFirstSlot = true;
-            ExecuteSwitch();
         }
         else if (key2Pressed && selectedFirstSlot)
         {
             selectedFirstSlot = false;
-            ExecuteSwitch();
         }
-    }
 
-    private void QueueSwitchIfNeeded()
-    {
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-        bool key1Pressed = Input.GetKeyDown(KeyCode.Alpha1);
-        bool key2Pressed = Input.GetKeyDown(KeyCode.Alpha2);
-
-        if (key1Pressed || key2Pressed)
+        if (check != selectedFirstSlot)
         {
-            if (!switchQueued)
+            // Enter the action state
+            WeaponStateManager.Instance.EnterState(WeaponState.SwappingWeapons);
+            float weaponSwapSpeed = noGunReloadSpeed;
+            if (gunOnHip != null)
             {
-                nextSelectedFirstSlot = (scroll != 0f) ? !selectedFirstSlot : key1Pressed;
-                switchQueued = true;
+                weaponSwapSpeed = gunOnHip.GetGunData().reloadTime;
             }
+            // Start reloading animation
+            // TODO:
+            // Exit state after reloading time
+            Invoke("ExitSwappingWeaponsState", weaponSwapSpeed);
+
+            // Execute logical switch
+            ExecuteSwitch();
         }
     }
 
-    private void ProcessQueuedWeaponSwitch()
+    private void ExitSwappingWeaponsState()
     {
-        if (switchQueued && Time.time - lastSwitchTime >= switchCooldown)
-        {
-            selectedFirstSlot = nextSelectedFirstSlot;
-            ExecuteSwitch();
-            switchQueued = false;
-        }
+        WeaponStateManager.Instance.ExitState(WeaponState.SwappingWeapons);
     }
 
     private void ExecuteSwitch()
