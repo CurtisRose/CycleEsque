@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 74766642427550001}
   - component: {fileID: 5139592836022267456}
   - component: {fileID: -7919287013205211967}
+  - component: {fileID: -2482016535133154515}
   m_Layer: 0
   m_Name: SM_Env_Tree_Fruit_03
   m_TagString: Untagged
@@ -168,6 +169,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -4155672973327171371, guid: a80e2a767bb53b54fb5a6bccc28776da, type: 3}
+--- !u!208 &-2482016535133154515
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739240639354438539}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &4209428262444853976
 GameObject:
   m_ObjectHideFlags: 0
