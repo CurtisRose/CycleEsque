@@ -4,8 +4,7 @@ using UnityEngine;
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance { get; private set; }
-    [SerializeField] private List<Menu> menus = new List<Menu>();  // Track all registered menus
-    private List<Menu> menuStack = new List<Menu>();  // Stack for open menus
+    private List<Menu> activeMenus = new List<Menu>();
 
     void Awake()
     {
@@ -28,73 +27,65 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    // Register a menu to the manager
-    public void RegisterMenu(Menu menu)
+    public void OpenMenu(Menu menu)
     {
-        if (!menus.Contains(menu))
+        if (activeMenus.Contains(menu))
         {
-            menus.Add(menu);
-        }
-    }
-
-    public void OpenMenu(Menu menuToOpen)
-    {
-        // Ensure the menu is registered if it's not already in the menus list
-        if (!menus.Contains(menuToOpen))
-        {
-            RegisterMenu(menuToOpen);
+            return;  // Menu already open
         }
 
-        // Check if the menu is already in the stack; if so, do nothing further
-        if (menuStack.Contains(menuToOpen))
+        // Handle concurrent display logic based on MenuType
+        if (menu.GetMenuType() == MenuType.System)
         {
-            return;
+            CloseAll();  // Close all other menus when a System menu is opened
         }
-
-        // Close the current top menu if the new menu has a higher or equal priority
-        if (menuStack.Count > 0)
+        else if (menu.GetMenuType() == MenuType.Inventory)
         {
-            Menu topMenu = menuStack[menuStack.Count - 1];
-            if (menuToOpen.Priority >= topMenu.Priority)
+            // Allow multiple MainUI menus unless priority conflict
+            foreach (var m in activeMenus.FindAll(m => m.GetMenuType() == MenuType.Interaction && m.Priority >= menu.Priority))
             {
-                topMenu.Close();
+                m.Close();
             }
         }
 
-        // Add the new menu to the stack and open it
-        menuStack.Add(menuToOpen);
-        menuToOpen.Open();
-    }
-
-    public void CloseTopMenu()
-    {
-        if (menuStack.Count > 0)
-        {
-            Menu menuToClose = menuStack[menuStack.Count - 1];
-            menuToClose.Close();
-            menuStack.RemoveAt(menuStack.Count - 1);
-
-            if (menuStack.Count > 0)
-            {
-                Menu nextMenu = menuStack[menuStack.Count - 1];
-                nextMenu.Open();
-            }
-        }
+        menu.Open();
+        activeMenus.Add(menu);
+        SortMenus();
     }
 
     public void CloseMenu(Menu menu)
     {
-        int index = menuStack.IndexOf(menu);
-        if (index != -1)
+        if (activeMenus.Contains(menu))
         {
             menu.Close();
-            menuStack.RemoveAt(index);
-
-            if (index == menuStack.Count && menuStack.Count > 0)
+            activeMenus.Remove(menu);
+            foreach (var dependentMenu in menu.dependentMenus)
             {
-                Menu nextMenu = menuStack[menuStack.Count - 1];
-                nextMenu.Open();
+                CloseMenu(dependentMenu); // Optionally close dependent menus
             }
         }
+    }
+
+    void CloseTopMenu()
+    {
+        if (activeMenus.Count > 0)
+        {
+            var topMenu = activeMenus[activeMenus.Count - 1];
+            CloseMenu(topMenu);
+        }
+    }
+
+    void CloseAll()
+    {
+        foreach (var menu in activeMenus)
+        {
+            menu.Close();
+        }
+        activeMenus.Clear();
+    }
+
+    void SortMenus()
+    {
+        activeMenus.Sort((m1, m2) => m1.Priority.CompareTo(m2.Priority));
     }
 }

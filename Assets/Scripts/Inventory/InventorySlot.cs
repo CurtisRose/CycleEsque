@@ -27,7 +27,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     public virtual void Awake()
     {
-        inventory = GetComponentInParent<Inventory>();
+        inventory = GetComponentInParent<Inventory>(true);
         weightText.text = "";
         stackSizeText.text = "";
         SetImageColorDefault();

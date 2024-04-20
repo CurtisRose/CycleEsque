@@ -18,10 +18,6 @@ public class PickupItemMenu : Menu
 
     [SerializeField] float menuHeightAboveItemMultiplier;
 
-    
-
-    bool selfIsOpen;
-
     private void Awake()
     {
         if (Instance != null)

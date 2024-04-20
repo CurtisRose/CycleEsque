@@ -13,10 +13,14 @@ public class LootContainer : Inventory, IInteractable
     public LootPool itemPool;
     public int numberOfItems;
 
+    [SerializeField] LootBoxMenu lootMenu;
+
     protected void Start()
     {
+        MenuManager.Instance.OpenMenu(lootMenu);
         //containerNameText.text = containerName;
         SpawnItem();
+        MenuManager.Instance.CloseMenu(lootMenu);
     }
 
     private void SpawnItem()
@@ -69,21 +73,31 @@ public class LootContainer : Inventory, IInteractable
 
     public void Interact()
     {
-        throw new System.NotImplementedException();
+        MenuManager.Instance.CloseMenu(LootBoxInteractMenu.Instance);
+        MenuManager.Instance.OpenMenu(lootMenu);
+        //LootBoxInteractMenu.Instance.Close();
+        //lootMenu.Open();
     }
 
     public void ShowUI()
     {
-        throw new System.NotImplementedException();
+        if (!lootMenu.IsOpen())
+        {
+            MenuManager.Instance.OpenMenu(LootBoxInteractMenu.Instance);
+            LootBoxInteractMenu.Instance.UpdatePickupPromptPosition(transform.position);
+        }
     }
 
     public void HideUI()
     {
-        throw new System.NotImplementedException();
+        MenuManager.Instance.CloseMenu(LootBoxInteractMenu.Instance);
+        MenuManager.Instance.CloseMenu(lootMenu);
+        //LootBoxInteractMenu.Instance.Close();
+        //lootMenu.Close();
     }
 
     public bool IsInteractable()
     {
-        throw new System.NotImplementedException();
+        return true;
     }
 }

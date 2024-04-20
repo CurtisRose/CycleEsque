@@ -12,7 +12,6 @@ public class PlayerInventory : Inventory
     public GameObject backpackInventory;
     [SerializeField] List<GearSlot> gearSlots;
     [SerializeField] TMP_Text weightText; // "BACKPACK 0.0/0.0"
-    [SerializeField] Menu inventoryMenu;
 
     public delegate void InventoryChanged();
     public event InventoryChanged OnInventoryChanged;
@@ -34,7 +33,7 @@ public class PlayerInventory : Inventory
 
     new protected void Start()
     {
-        inventoryMenu.Open();
+        PlayerInventoryMenu.Instance.Open();
         foreach (InventoryStartItem startItem in startItems)
         {
             //ItemInstance itemInstance = new ItemInstance(startItem);
@@ -48,7 +47,7 @@ public class PlayerInventory : Inventory
             //itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, 1);
             AddItem(testInstance);
         }
-        inventoryMenu.Close();
+        PlayerInventoryMenu.Instance.Close();
     }
 
     private void Update()
@@ -56,12 +55,12 @@ public class PlayerInventory : Inventory
         if (Input.GetKeyDown(KeyCode.Tab))
         {
 
-            if (!inventoryMenu.IsOpen())
+            if (!PlayerInventoryMenu.Instance.IsOpen())
             {
-                MenuManager.Instance.OpenMenu(inventoryMenu);
+                MenuManager.Instance.OpenMenu(PlayerInventoryMenu.Instance);
             } else
             {
-                MenuManager.Instance.CloseMenu(inventoryMenu);
+                MenuManager.Instance.CloseMenu(PlayerInventoryMenu.Instance);
             }
         }
         if (Input.GetKey(KeyCode.E))

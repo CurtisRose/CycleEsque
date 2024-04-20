@@ -17,6 +17,8 @@ public class WorldItem : MonoBehaviour, IInteractable
     public delegate void PickedUp();
     public event PickedUp OnPickedUp;
 
+    bool isOpen = false;
+
     protected virtual void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -137,27 +139,36 @@ public class WorldItem : MonoBehaviour, IInteractable
         }
     }
 
-    public void PickupItem()
-    {
-        if (OnPickedUp != null)
-        {
-            OnPickedUp();
-        }
-    }
-
     public void Interact()
     {
-        throw new System.NotImplementedException();
+        bool pickedUp = PlayerInventory.Instance.AddItem(this);
+        if (pickedUp)
+        {
+            if (OnPickedUp != null)
+            {
+                OnPickedUp();
+            }
+            HideUI();
+            Destroy(this.gameObject);
+        }
     }
 
     public void ShowUI()
     {
-        MenuManager.Instance.OpenMenu(PickupItemMenu.Instance);
+        if (!isOpen)
+        {
+            isOpen = true;
+            PickupItemMenu.Instance.Open();
+        }
         PickupItemMenu.Instance.UpdatePickupPromptInfo(this);
     }
 
     public void HideUI()
     {
-        MenuManager.Instance.CloseMenu(PickupItemMenu.Instance);
+        if (isOpen)
+        {
+            PickupItemMenu.Instance.Close();
+            isOpen = false;
+        }
     }
 }

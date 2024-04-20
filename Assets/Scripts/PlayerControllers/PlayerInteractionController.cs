@@ -10,41 +10,42 @@ public class PlayerInteractionController : MonoBehaviour
     [SerializeField] float interactionDistance = 5f;
     [SerializeField] LayerMask interactionLayer;
 
-    WorldItem itemLookingAt;
+    IInteractable interactableObjectLookingAt;
 
     [SerializeField] Image proximityInteractionIndicator;
 
     void Update()
     {
-        DetectAndInteractWithWorldItem();
+        DetectAndInteractWithInteractableObject();
     }
 
-    void DetectAndInteractWithWorldItem()
+    void DetectAndInteractWithInteractableObject()
     {
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, interactionDistance, interactionLayer))
         {
-            WorldItem worldItem = hit.collider.GetComponentInParent<WorldItem>();
-            if (worldItem != null && worldItem.IsInteractable())
+            IInteractable interactableObject = hit.collider.GetComponentInParent<IInteractable>();
+            if (interactableObject != null && interactableObject.IsInteractable())
             {
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    OnWorldItemPickedUp(worldItem);
+                    //OnWorldItemPickedUp(interactableObject);
+                    interactableObject.Interact();
                 } else
                 {
-                    itemLookingAt = worldItem;
-                    itemLookingAt.ShowUI();
-                }
+                    interactableObjectLookingAt = interactableObject;
+                    interactableObjectLookingAt.ShowUI();
+                }   
             }
         }
         else
         {
-            if (itemLookingAt != null)
+            if (interactableObjectLookingAt != null)
             {
-                itemLookingAt.HideUI();
-                itemLookingAt = null;
+                interactableObjectLookingAt.HideUI();
+                interactableObjectLookingAt = null;
             }
         }
         if (Physics.Raycast(ray, out hit, interactionDistance))
@@ -53,18 +54,6 @@ public class PlayerInteractionController : MonoBehaviour
         } else
         {
             proximityInteractionIndicator.enabled = false;
-        }
-    }
-
-    void OnWorldItemPickedUp(WorldItem item)
-    {
-        // Hide prompt after picking up the item
-        bool pickedUp = playerInventory.AddItem(item);
-        if (pickedUp)
-        {
-            item.PickupItem();
-            item.HideUI();
-            Destroy(item.gameObject);
         }
     }
 }
