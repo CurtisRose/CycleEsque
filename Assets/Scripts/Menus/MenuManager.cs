@@ -4,9 +4,8 @@ using UnityEngine;
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance { get; private set; }
-    [SerializeField] private List<Menu> menus = new List<Menu>();
-
-    [SerializeField] private List<Menu> menuStack = new List<Menu>();
+    [SerializeField] private List<Menu> menus = new List<Menu>();  // Track all registered menus
+    private List<Menu> menuStack = new List<Menu>();  // Stack for open menus
 
     void Awake()
     {
@@ -25,20 +24,11 @@ public class MenuManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (menuStack.Count > 0)
-            {
-                Menu menuToClose = menuStack[menuStack.Count - 1];
-                menuToClose.Close();
-                menuStack.RemoveAt(menuStack.Count - 1);
-            }
-            if (menuStack.Count > 0)
-            {
-                Menu nextMenu = menuStack[menuStack.Count - 1];
-                nextMenu.Open();
-            }
+            CloseTopMenu();
         }
     }
 
+    // Register a menu to the manager
     public void RegisterMenu(Menu menu)
     {
         if (!menus.Contains(menu))
@@ -49,41 +39,61 @@ public class MenuManager : MonoBehaviour
 
     public void OpenMenu(Menu menuToOpen)
     {
-        // Don't open if already open
+        // Ensure the menu is registered if it's not already in the menus list
+        if (!menus.Contains(menuToOpen))
+        {
+            RegisterMenu(menuToOpen);
+        }
+
+        // Check if the menu is already in the stack; if so, do nothing further
         if (menuStack.Contains(menuToOpen))
         {
             return;
         }
 
+        // Close the current top menu if the new menu has a higher or equal priority
         if (menuStack.Count > 0)
         {
-            menuStack[menuStack.Count - 1].Close();
+            Menu topMenu = menuStack[menuStack.Count - 1];
+            if (menuToOpen.Priority >= topMenu.Priority)
+            {
+                topMenu.Close();
+            }
         }
+
+        // Add the new menu to the stack and open it
         menuStack.Add(menuToOpen);
         menuToOpen.Open();
     }
 
-    public void CloseMenu(Menu menu)
+    public void CloseTopMenu()
     {
         if (menuStack.Count > 0)
         {
-            int index = -1;
-            for (int i = 0; i < menuStack.Count; i++)
+            Menu menuToClose = menuStack[menuStack.Count - 1];
+            menuToClose.Close();
+            menuStack.RemoveAt(menuStack.Count - 1);
+
+            if (menuStack.Count > 0)
             {
-                if (menu == menuStack[i])
-                {
-                    index = i;
-                    break;
-                }
+                Menu nextMenu = menuStack[menuStack.Count - 1];
+                nextMenu.Open();
             }
-            if (index >= 0)
+        }
+    }
+
+    public void CloseMenu(Menu menu)
+    {
+        int index = menuStack.IndexOf(menu);
+        if (index != -1)
+        {
+            menu.Close();
+            menuStack.RemoveAt(index);
+
+            if (index == menuStack.Count && menuStack.Count > 0)
             {
-                menuStack[index].Close();
-                menuStack.RemoveAt(index);
-                if (menuStack.Count > 0)
-                {
-                    menuStack[menuStack.Count - 1].Open();
-                }
+                Menu nextMenu = menuStack[menuStack.Count - 1];
+                nextMenu.Open();
             }
         }
     }

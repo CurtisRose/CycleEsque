@@ -16,8 +16,11 @@ public class PickupItemMenu : Menu
     [SerializeField] TMP_Text pickupText;
     [SerializeField] Image pickupImage;
 
-    bool isVisible = false;
     [SerializeField] float menuHeightAboveItemMultiplier;
+
+    
+
+    bool selfIsOpen;
 
     private void Awake()
     {
@@ -52,12 +55,11 @@ public class PickupItemMenu : Menu
             pickupText.color = Color.red;
         }
 
-        //itemDescription.text = item.Description;
+        UpdatePickupPromptPosition(worldItem.transform.position);
     }
 
-    void UpdatePickupPromptPosition()
+    void UpdatePickupPromptPosition(Vector3 itemPosition)
     {
-        Vector3 itemPosition = transform.position;
         Vector3 uiPosition = itemPosition + Vector3.up * menuHeightAboveItemMultiplier;  // Adjust this offset as needed
 
         Camera camera = Camera.main;
@@ -66,8 +68,8 @@ public class PickupItemMenu : Menu
         // Check if the position is behind the camera
         if (screenPosition.z < 0)
         {
-            gameObject.SetActive(false);
-            return;
+            //menuPanel.SetActive(false);
+            //return;
         }
 
         // Clamp the screen position to stay within the visible screen
@@ -79,6 +81,6 @@ public class PickupItemMenu : Menu
         screenPosition.y = Mathf.Clamp(screenPosition.y, height, Screen.height - height);
 
         menuRect.position = screenPosition;
-        gameObject.SetActive(true);
+        menuPanel.gameObject.SetActive(true);
     }
 }

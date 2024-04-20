@@ -25,7 +25,6 @@ public class WorldItem : MonoBehaviour, IInteractable
         {
             numItemsInStack = 1;
         }
-        PickupItemMenu.Instance.Close();
     }
 
     protected virtual void Start()

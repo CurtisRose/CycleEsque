@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Menu : MonoBehaviour, IMenu
 {
-    [SerializeField] GameObject menuPanel;
+    [SerializeField] protected  GameObject menuPanel;
     bool isOpen = false;
+
+    [SerializeField] int priority = 0; // Lower number = lower priority
+
     [SerializeField] bool affectsUserMovement;
     [SerializeField] bool affectsUserClicking;
     [SerializeField] bool affectsUserLooking;
@@ -20,6 +23,8 @@ public class Menu : MonoBehaviour, IMenu
     {
         MenuManager.Instance.RegisterMenu(this);
     }
+
+    public int Priority => priority; // Property to expose the priority
 
     public bool IsOpen()
     {
