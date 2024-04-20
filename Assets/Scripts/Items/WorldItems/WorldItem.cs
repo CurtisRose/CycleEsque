@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class WorldItem : MonoBehaviour
+public class WorldItem : MonoBehaviour, IInteractable
 {
     [SerializeField] protected SharedItemData sharedItemData;
 
@@ -25,6 +25,7 @@ public class WorldItem : MonoBehaviour
         {
             numItemsInStack = 1;
         }
+        PickupItemMenu.Instance.Close();
     }
 
     protected virtual void Start()
@@ -143,5 +144,21 @@ public class WorldItem : MonoBehaviour
         {
             OnPickedUp();
         }
+    }
+
+    public void Interact()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void ShowUI()
+    {
+        MenuManager.Instance.OpenMenu(PickupItemMenu.Instance);
+        PickupItemMenu.Instance.UpdatePickupPromptInfo(this);
+    }
+
+    public void HideUI()
+    {
+        MenuManager.Instance.CloseMenu(PickupItemMenu.Instance);
     }
 }

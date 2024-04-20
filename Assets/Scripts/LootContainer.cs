@@ -1,17 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
-public class LootContainer : Inventory
+public class LootContainer : Inventory, IInteractable
 {
     [SerializeField] Transform throwPosition;
     [SerializeField] float throwForce;
+    [SerializeField] string containerName;
+    [SerializeField] TMP_Text containerNameText;
 
     public LootPool itemPool;
     public int numberOfItems;
 
     protected void Start()
     {
+        //containerNameText.text = containerName;
         SpawnItem();
     }
 
@@ -61,5 +65,25 @@ public class LootContainer : Inventory
         // This is so the pick up menu doesn't trigger immediately.
         itemBeingDropped.SetUninteractableTemporarily();
         itemBeingDropped.SetNumberOfStartingItems((int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack));
+    }
+
+    public void Interact()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void ShowUI()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void HideUI()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool IsInteractable()
+    {
+        throw new System.NotImplementedException();
     }
 }

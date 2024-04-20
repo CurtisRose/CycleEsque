@@ -1,18 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class IInteractable : MonoBehaviour
+public interface IInteractable
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    void Interact();  // Method to define what happens when interacted with
+    void ShowUI();    // Method to show any specific UI for interaction
+    void HideUI();    // Method to hide the UI
+    bool IsInteractable();  // Determine if the object is currently interactable
 }

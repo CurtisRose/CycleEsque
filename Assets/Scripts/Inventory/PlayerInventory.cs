@@ -8,7 +8,7 @@ public enum GearSlotIdentifier { BACKPACK, ARMOR, HELMET, WEAPONSLOT1, WEAPONSLO
 public class PlayerInventory : Inventory
 {
     [SerializeField] protected InventoryStartItem[] startItems;
-    public static PlayerInventory instance;
+    public static PlayerInventory Instance;
     public GameObject backpackInventory;
     [SerializeField] List<GearSlot> gearSlots;
     [SerializeField] TMP_Text weightText; // "BACKPACK 0.0/0.0"
@@ -22,13 +22,13 @@ public class PlayerInventory : Inventory
 
     private void Awake()
     {
-        if (instance != null)
+        if (Instance != null)
         {
             Destroy(this);
         }
         else
         {
-            instance = this;
+            Instance = this;
         }
     }
 
