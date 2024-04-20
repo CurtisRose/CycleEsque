@@ -7,11 +7,18 @@ public enum GearSlotIdentifier { BACKPACK, ARMOR, HELMET, WEAPONSLOT1, WEAPONSLO
 
 public class PlayerInventory : Inventory
 {
+    [SerializeField] protected InventoryStartItem[] startItems;
     public static PlayerInventory instance;
     public GameObject backpackInventory;
     [SerializeField] List<GearSlot> gearSlots;
     [SerializeField] TMP_Text weightText; // "BACKPACK 0.0/0.0"
     [SerializeField] Menu inventoryMenu;
+
+    public delegate void InventoryChanged();
+    public event InventoryChanged OnInventoryChanged;
+
+    public delegate void ItemDropped(ItemInstance itemInstance);
+    public event ItemDropped OnItemDropped;
 
     private void Awake()
     {
@@ -28,7 +35,19 @@ public class PlayerInventory : Inventory
     new protected void Start()
     {
         inventoryMenu.Open();
-        base.Start();
+        foreach (InventoryStartItem startItem in startItems)
+        {
+            //ItemInstance itemInstance = new ItemInstance(startItem);
+            WorldItem testItem = PlayerItemSpawner.Instance.GetPrefab(startItem.itemData);
+            ItemInstance testInstance = testItem.CreateNewItemInstance(startItem.itemData);
+            if (startItem.itemData.stackable)
+            {
+                testInstance.SetProperty(ItemAttributeKey.NumItemsInStack, startItem.quantity);
+            }
+
+            //itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, 1);
+            AddItem(testInstance);
+        }
         inventoryMenu.Close();
     }
 
@@ -47,10 +66,54 @@ public class PlayerInventory : Inventory
         }
         if (Input.GetKey(KeyCode.E))
         {
-            ItemInstance ammo = new ItemInstance(startItems[5]);
+            ItemInstance ammo = new ItemInstance(startItems[5].itemData);
             ammo.SetProperty(ItemAttributeKey.NumItemsInStack, 1);
             AddItem(ammo);
         }
+    }
+
+    public override bool AddItem(ItemInstance itemInstance)
+    {
+        int numItems = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+        /*float itemTotalWeight = itemInstance.sharedData.Weight * numItems;
+
+        // Check if the total weight of the items can be added to the inventory
+        if (itemTotalWeight > GetInventoryWeightLimit() - currentWeight)
+        {
+            Debug.Log("Not enough weight capacity to add these items");
+            return false; // Not enough weight capacity to add these items
+        }*/
+
+        bool updated = false; // Flag to track if the inventory was updated
+
+        // If the item is stackable, try to add it to existing slots with the same item
+        if (itemInstance.sharedData.stackable)
+        {
+            int remainingItems = FillExistingStacks(itemInstance);
+            if (remainingItems < numItems)
+            {
+                updated = true;  // Update occurred if we added some items to existing stacks
+            }
+            numItems = remainingItems;
+        }
+
+        // If there are items left after trying to stack them in existing slots, or if the item is not stackable
+        if (numItems > 0)
+        {
+            int itemsLeftToAdd = FillEmptySlots(itemInstance);
+            if (itemsLeftToAdd < numItems)
+            {
+                updated = true;  // Update occurred if we added some items to new slots
+            }
+        }
+
+        // Update listeners if any changes have occurred
+        if (updated)
+        {
+            OnInventoryChanged?.Invoke();
+        }
+
+        return updated;
     }
 
     public override float GetInventoryWeightLimit()
@@ -232,5 +295,20 @@ public class PlayerInventory : Inventory
     public GearSlot GetGearSlot(GearSlotIdentifier identifier)
     {
         return gearSlots[(int)identifier];
+    }
+
+    public override void DropItem(ItemInstance itemInstance)
+    {
+        if (OnItemDropped != null)
+            OnItemDropped(itemInstance);
+    }
+
+    void OnValidate()
+    {
+        for (int i = 0; i < startItems.Length; i++)
+        {
+            if (startItems[i].quantity < 1)
+                startItems[i].quantity = 1;
+        }
     }
 }

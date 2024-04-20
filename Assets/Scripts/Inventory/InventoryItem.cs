@@ -45,8 +45,10 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         currentInventorySlot.StartInventoryItemMovedPassThrough(this);
 
         parentAfterDrag = transform.parent;
+        // Set the parent of this UI element to the top canvas to make sure it is drawn over all other UI until it is dropped
+        TopCanvas.Instance.AddElementToCanvas(this.transform);
         // Sets the UI Panel at the top of this hierarchy as the parent
-        transform.SetParent(transform.root);
+        transform.SetParent(GetComponentInParent<Canvas>().transform);
         // Then set it at the bottom of that hierarchy so that it is drawn on top of everything else
         transform.SetAsLastSibling();
         itemImage.raycastTarget = false;
@@ -64,6 +66,10 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         {
             return;
         }
+
+        Debug.Log(itemImage.name);
+        Debug.Log(transform.name);
+        RectTransform test = GetComponent<RectTransform>();
 
         transform.position = Input.mousePosition;
     }
@@ -94,11 +100,9 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     private bool IsPartOfInventoryUI(GameObject obj)
     {
-        while (obj != null)
+        if (obj.layer == LayerMask.NameToLayer("InventoryUI"))
         {
-            if (obj.CompareTag("InventoryUI"))
-                return true;
-            obj = obj.transform.parent?.gameObject;
+            return true;
         }
         return false;
     }

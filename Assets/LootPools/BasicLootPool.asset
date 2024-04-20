@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d473265acc0339544888401f4402338b, type: 3}
-  m_Name: BasicItemPool
+  m_Name: BasicLootPool
   m_EditorClassIdentifier: 
   items:
   - item: {fileID: 0}
-    probability: 0
+    probability: 50
     minQuantity: 0
     maxQuantity: 0
   - item: {fileID: 625792777598891736, guid: 83d9d0040336f4645b16a5f568c6952b, type: 3}
