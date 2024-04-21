@@ -246,25 +246,42 @@ public class Inventory : MonoBehaviour
 
     public void AddItemToEarliestEmptySlot(InventoryItem inventoryItem)
     {
-        InventorySlot emptySlot = null;
-        foreach (InventorySlot slot in inventorySlots)
-        {
-            // If the earliest slot is it's own slot, then break.
-            if (slot == inventoryItem.GetCurrentInventorySlot())
-            {
-                break;
-            }
-            if (!slot.HasItem())
-            {
-                emptySlot = slot;
-                break;
-            }
-        }
-        // If an earlier empty slot was found, then swap them
+        InventorySlot emptySlot = FindEarliestEmptySlot(inventoryItem);
         if (emptySlot != null)
         {
             emptySlot.Swap(inventoryItem);
         }
+        else
+        {
+            Debug.Log("No earlier empty slot available.");
+        }
+    }
+    public InventorySlot FindEarliestEmptySlot(InventoryItem inventoryItem)
+    {
+        foreach (InventorySlot slot in inventorySlots)
+        {
+            if (slot == inventoryItem.GetCurrentInventorySlot())
+            {
+                break; // Stop searching when reaching the current slot of the item
+            }
+            if (!slot.HasItem())
+            {
+                return slot; // Return the first empty slot found before the current slot
+            }
+        }
+        return null; // Return null if no suitable slot is found
+    }
+
+    public InventorySlot FindEarliestEmptySlot()
+    {
+        foreach (InventorySlot slot in inventorySlots)
+        {
+            if (!slot.HasItem())
+            {
+                return slot; // Return the first empty slot found before the current slot
+            }
+        }
+        return null; // Return null if no suitable slot is found
     }
 
     public void PlaceItem(InventoryItem item, InventorySlot inventorySlot)
@@ -284,5 +301,29 @@ public class Inventory : MonoBehaviour
     public virtual void DropItem(ItemInstance itemInstance)
     {
 
+    }
+
+    public void SplitInventoryItem(InventoryItem inventoryItem)
+    {
+        InventorySlot currentSlot = inventoryItem.GetCurrentInventorySlot();
+        InventorySlot otherSlot = FindEarliestEmptySlot();
+        // If there isn't another empty slot, then out of luck.
+        if (otherSlot == null)
+        {
+            return;
+        }
+        // There should be no weight considerations since it's already in the bag
+        int numItems = (int)inventoryItem.itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+        int newStackNum = Mathf.FloorToInt(numItems / 2);
+
+        // Remove the correct number of items from the existing property, update the weight in the inventory accordingly, then update the stats.
+        inventoryItem.itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, numItems - newStackNum);
+        UpdateWeight(inventoryItem.itemInstance.sharedData.Weight * -newStackNum);
+        inventoryItem.GetCurrentInventorySlot().RefreshItemStats();
+
+        // Create new itemInstance, set it's number, fill empty slot with it.
+        ItemInstance newItem = new ItemInstance(inventoryItem.itemInstance.sharedData);
+        newItem.SetProperty(ItemAttributeKey.NumItemsInStack, newStackNum);
+        FillEmptySlots(newItem);
     }
 }

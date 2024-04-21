@@ -42,7 +42,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
 
 		//currentInventorySlot.RemoveItemFromSlot();
-        currentInventorySlot.StartInventoryItemMovedPassThrough(this);
+        currentInventorySlot.GetInventory().StartInventoryItemMoved(this);
 
         parentAfterDrag = transform.parent;
         // Set the parent of this UI element to the top canvas to make sure it is drawn over all other UI until it is dropped
@@ -67,8 +67,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             return;
         }
 
-        Debug.Log(itemImage.name);
-        Debug.Log(transform.name);
         RectTransform test = GetComponent<RectTransform>();
 
         transform.position = Input.mousePosition;
@@ -94,7 +92,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             currentInventorySlot.DropItem();
             Destroy(this.gameObject);
         }
-        currentInventorySlot.EndInventoryItemMovedPassThrough(this);
+        currentInventorySlot.GetInventory().EndInventoryItemMoved(this);
         itemImage.raycastTarget = true;
     }
 
@@ -112,8 +110,17 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         // Check if the right mouse button was clicked
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            // Attempt to quick sort it into or out of the gear slots.
-            currentInventorySlot.ItemQuickEquipPassThrough(this);
+            // If it's not stackable just quick equip it
+            if (!itemInstance.sharedData.stackable)
+            {
+                currentInventorySlot.GetInventory().QuickEquip(currentInventorySlot);
+                return;
+            }
+            // If it's stackable attempt to split it.
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                currentInventorySlot.GetInventory().SplitInventoryItem(this);
+            }
         }
     }
 

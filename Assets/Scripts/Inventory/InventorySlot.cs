@@ -191,7 +191,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         }
     }
 
-    protected void RefreshItemStats()
+    public void RefreshItemStats()
     {
         if(itemInSlot == null)
         {
@@ -228,24 +228,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         return itemInSlot;
     }
 
-    // These are pass through functions from the inventory Item to the slot to the inventory
-    // I can't figure out a better way to do it since the item is what knows it's being moved
-    // And I don't particularly want the item to know about the inventory
-    public virtual void StartInventoryItemMovedPassThrough(InventoryItem inventoryItem)
-    {
-        inventory.StartInventoryItemMoved(inventoryItem);
-    }
-
-    public virtual void EndInventoryItemMovedPassThrough(InventoryItem inventoryItem)
-    {
-        inventory.EndInventoryItemMoved(inventoryItem);
-    }
-
-    public virtual void ItemQuickEquipPassThrough(InventoryItem inventoryItem)
-    {
-        inventory.QuickEquip(this);
-    }
-
     protected void SetImageColor(Rarity rarity)
     {
         Color temp = RarityColorManager.Instance.GetColorByRarity(rarity);
@@ -274,5 +256,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         int numItems = itemInSlot.GetItemCount();
         RemoveItemFromSlot();
         inventory.DropItem(itemInstance);
+    }
+
+    public Inventory GetInventory()
+    {
+        return inventory;
     }
 }
