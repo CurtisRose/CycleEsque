@@ -42,4 +42,20 @@ public class ItemInstance
         Debug.LogWarning($"Property key '{keyString}' is not valid for item type '{sharedData.ItemType.ToString()}'");
         return null; // Optionally, throw an exception or handle this case
     }
+
+    public ItemInstance Clone()
+    {
+        // Create a new ItemInstance using the same SharedItemData
+        ItemInstance clone = new ItemInstance(this.sharedData);
+
+        // Copy each key-value pair in uniqueData
+        foreach (var kvp in this.uniqueData)
+        {
+            // This assumes that the values are simple types or are immutable;
+            // if this is not the case, a deeper copy might be necessary.
+            clone.uniqueData[kvp.Key] = kvp.Value;
+        }
+
+        return clone;
+    }
 }

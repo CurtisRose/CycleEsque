@@ -602,7 +602,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8814602191967449281}
-  - component: {fileID: 5319838634959984041}
+  - component: {fileID: 3763308469708922690}
   m_Layer: 5
   m_Name: PickupItemWindow
   m_TagString: Untagged
@@ -630,7 +630,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5319838634959984041
+--- !u!114 &3763308469708922690
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -639,13 +639,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 4518230846501292198}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 860938a9b56d3a44e972e33ea05b2bc7, type: 3}
+  m_Script: {fileID: 11500000, guid: d65378798f461244bba68909cb57ad87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   menuPanel: {fileID: 7460265676414147411}
+  priority: 8
   affectsUserMovement: 0
   affectsUserClicking: 0
   affectsUserLooking: 0
+  itemName: {fileID: 5123727076872128118}
+  itemWeight: {fileID: 7090844322353293546}
+  itemRarity: {fileID: 911834008098044448}
+  itemDescription: {fileID: 6218059726007250953}
+  pickupText: {fileID: 528680762805868553}
+  pickupImage: {fileID: 483776672299114996}
+  menuHeightAboveItemMultiplier: 0.75
 --- !u!1 &5615199168668470180
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,9 +4,7 @@ using UnityEngine;
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance { get; private set; }
-    [SerializeField] private List<Menu> menus = new List<Menu>();
-
-    [SerializeField] private List<Menu> menuStack = new List<Menu>();
+    private List<Menu> activeMenus = new List<Menu>();
 
     void Awake()
     {
@@ -25,66 +23,69 @@ public class MenuManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (menuStack.Count > 0)
-            {
-                Menu menuToClose = menuStack[menuStack.Count - 1];
-                menuToClose.Close();
-                menuStack.RemoveAt(menuStack.Count - 1);
-            }
-            if (menuStack.Count > 0)
-            {
-                Menu nextMenu = menuStack[menuStack.Count - 1];
-                nextMenu.Open();
-            }
+            CloseTopMenu();
         }
     }
 
-    public void RegisterMenu(Menu menu)
+    public void OpenMenu(Menu menu)
     {
-        if (!menus.Contains(menu))
+        if (activeMenus.Contains(menu))
         {
-            menus.Add(menu);
-        }
-    }
-
-    public void OpenMenu(Menu menuToOpen)
-    {
-        // Don't open if already open
-        if (menuStack.Contains(menuToOpen))
-        {
-            return;
+            return;  // Menu already open
         }
 
-        if (menuStack.Count > 0)
+        // Handle concurrent display logic based on MenuType
+        if (menu.GetMenuType() == MenuType.System)
         {
-            menuStack[menuStack.Count - 1].Close();
+            CloseAll();  // Close all other menus when a System menu is opened
         }
-        menuStack.Add(menuToOpen);
-        menuToOpen.Open();
+        else if (menu.GetMenuType() == MenuType.Inventory)
+        {
+            // Allow multiple MainUI menus unless priority conflict
+            foreach (var m in activeMenus.FindAll(m => m.GetMenuType() == MenuType.Interaction && m.Priority >= menu.Priority))
+            {
+                m.Close();
+            }
+        }
+
+        menu.Open();
+        activeMenus.Add(menu);
+        SortMenus();
     }
 
     public void CloseMenu(Menu menu)
     {
-        if (menuStack.Count > 0)
+        if (activeMenus.Contains(menu))
         {
-            int index = -1;
-            for (int i = 0; i < menuStack.Count; i++)
+            menu.Close();
+            activeMenus.Remove(menu);
+            foreach (var dependentMenu in menu.dependentMenus)
             {
-                if (menu == menuStack[i])
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (index >= 0)
-            {
-                menuStack[index].Close();
-                menuStack.RemoveAt(index);
-                if (menuStack.Count > 0)
-                {
-                    menuStack[menuStack.Count - 1].Open();
-                }
+                CloseMenu(dependentMenu); // Optionally close dependent menus
             }
         }
+    }
+
+    void CloseTopMenu()
+    {
+        if (activeMenus.Count > 0)
+        {
+            var topMenu = activeMenus[activeMenus.Count - 1];
+            CloseMenu(topMenu);
+        }
+    }
+
+    void CloseAll()
+    {
+        foreach (var menu in activeMenus)
+        {
+            menu.Close();
+        }
+        activeMenus.Clear();
+    }
+
+    void SortMenus()
+    {
+        activeMenus.Sort((m1, m2) => m1.Priority.CompareTo(m2.Priority));
     }
 }

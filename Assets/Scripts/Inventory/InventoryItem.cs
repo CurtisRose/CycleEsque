@@ -42,11 +42,13 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
 
 		//currentInventorySlot.RemoveItemFromSlot();
-        currentInventorySlot.StartInventoryItemMovedPassThrough(this);
+        PlayerInventory.Instance.StartInventoryItemMoved(this);
 
         parentAfterDrag = transform.parent;
+        // Set the parent of this UI element to the top canvas to make sure it is drawn over all other UI until it is dropped
+        TopCanvas.Instance.AddElementToCanvas(this.transform);
         // Sets the UI Panel at the top of this hierarchy as the parent
-        transform.SetParent(transform.root);
+        transform.SetParent(GetComponentInParent<Canvas>().transform);
         // Then set it at the bottom of that hierarchy so that it is drawn on top of everything else
         transform.SetAsLastSibling();
         itemImage.raycastTarget = false;
@@ -64,6 +66,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         {
             return;
         }
+
+        RectTransform test = GetComponent<RectTransform>();
 
         transform.position = Input.mousePosition;
     }
@@ -88,19 +92,27 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             currentInventorySlot.DropItem();
             Destroy(this.gameObject);
         }
-        currentInventorySlot.EndInventoryItemMovedPassThrough(this);
+        PlayerInventory.Instance.EndInventoryItemMoved(this);
         itemImage.raycastTarget = true;
     }
 
     private bool IsPartOfInventoryUI(GameObject obj)
     {
-        while (obj != null)
+        int inventoryLayer = LayerMask.NameToLayer("InventoryUI");
+        return CheckParentForLayer(obj, inventoryLayer);
+    }
+
+    private bool CheckParentForLayer(GameObject obj, int layer)
+    {
+        if (obj == null)
         {
-            if (obj.CompareTag("InventoryUI"))
-                return true;
-            obj = obj.transform.parent?.gameObject;
+            return false;
         }
-        return false;
+        if (obj.layer == layer)
+        {
+            return true;
+        }
+        return CheckParentForLayer(obj.transform.parent?.gameObject, layer);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -108,8 +120,17 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         // Check if the right mouse button was clicked
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            // Attempt to quick sort it into or out of the gear slots.
-            currentInventorySlot.ItemQuickEquipPassThrough(this);
+            PlayerInventory.Instance.QuickEquip(currentInventorySlot);
+            return;
+        }
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            // If it's stackable attempt to split it.
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                currentInventorySlot.GetInventory().SplitInventoryItem(this);
+            }
+            return;
         }
     }
 

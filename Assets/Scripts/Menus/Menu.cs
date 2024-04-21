@@ -2,13 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum MenuType
+{
+    System,      // System-level menus that block all other interactions
+    Inventory,      // Main game UIs, such as inventory, that can overlap with other MainUIs
+    Interaction  // Interaction menus that require immediate attention but are lower than MainUI
+}
+
 public class Menu : MonoBehaviour, IMenu
 {
-    [SerializeField] GameObject menuPanel;
+    [SerializeField] protected  GameObject menuPanel;
     bool isOpen = false;
+
+    [SerializeField] MenuType type;
+    [SerializeField] int priority = 0; // Lower number = lower priority
+
     [SerializeField] bool affectsUserMovement;
     [SerializeField] bool affectsUserClicking;
     [SerializeField] bool affectsUserLooking;
+
+    public List<Menu> dependentMenus;
 
     //TODO: Maybe add some sort of priority system.... I don't know
     // When you are running around with the inventory open, I don't want the
@@ -18,7 +31,14 @@ public class Menu : MonoBehaviour, IMenu
 
     void Start()
     {
-        MenuManager.Instance.RegisterMenu(this);
+        
+    }
+
+    public int Priority => priority; // Property to expose the priority
+
+    public MenuType GetMenuType()
+    {
+        return type;
     }
 
     public bool IsOpen()
@@ -48,6 +68,7 @@ public class Menu : MonoBehaviour, IMenu
     {
         menuPanel.SetActive(true);
         isOpen = true;
+        OpenDependentMenus();
         if (affectsUserMovement)
         {
             Character.SetUserMovementInputStatus(false);
@@ -59,6 +80,17 @@ public class Menu : MonoBehaviour, IMenu
         if (affectsUserLooking)
         {
             Character.SetUserLookingInputStatus(false);
+        }
+    }
+
+    private void OpenDependentMenus()
+    {
+        foreach (Menu menu in dependentMenus)
+        {
+            if (!menu.IsOpen())
+            {
+                MenuManager.Instance.OpenMenu(menu);
+            }
         }
     }
 }

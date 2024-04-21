@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class WorldItem : MonoBehaviour
+public class WorldItem : MonoBehaviour, IInteractable
 {
     [SerializeField] protected SharedItemData sharedItemData;
 
@@ -16,6 +16,8 @@ public class WorldItem : MonoBehaviour
 
     public delegate void PickedUp();
     public event PickedUp OnPickedUp;
+
+    bool isOpen = false;
 
     protected virtual void Awake()
     {
@@ -137,11 +139,36 @@ public class WorldItem : MonoBehaviour
         }
     }
 
-    public void PickupItem()
+    public void Interact()
     {
-        if (OnPickedUp != null)
+        bool pickedUp = PlayerInventory.Instance.AddItem(this);
+        if (pickedUp)
         {
-            OnPickedUp();
+            if (OnPickedUp != null)
+            {
+                OnPickedUp();
+            }
+            HideUI();
+            Destroy(this.gameObject);
+        }
+    }
+
+    public void ShowUI()
+    {
+        if (!isOpen)
+        {
+            isOpen = true;
+            PickupItemMenu.Instance.Open();
+        }
+        PickupItemMenu.Instance.UpdatePickupPromptInfo(this);
+    }
+
+    public void HideUI()
+    {
+        if (isOpen)
+        {
+            PickupItemMenu.Instance.Close();
+            isOpen = false;
         }
     }
 }

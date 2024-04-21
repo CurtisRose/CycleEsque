@@ -7,29 +7,58 @@ public enum GearSlotIdentifier { BACKPACK, ARMOR, HELMET, WEAPONSLOT1, WEAPONSLO
 
 public class PlayerInventory : Inventory
 {
-    public static PlayerInventory instance;
+    [SerializeField] protected InventoryStartItem[] startItems;
+    public static PlayerInventory Instance;
     public GameObject backpackInventory;
     [SerializeField] List<GearSlot> gearSlots;
     [SerializeField] TMP_Text weightText; // "BACKPACK 0.0/0.0"
-    [SerializeField] Menu inventoryMenu;
+
+    public delegate void InventoryChanged();
+    public event InventoryChanged OnInventoryChanged;
+
+    public delegate void ItemDropped(ItemInstance itemInstance);
+    public event ItemDropped OnItemDropped;
 
     private void Awake()
     {
-        if (instance != null)
+        if (Instance != null)
         {
             Destroy(this);
         }
         else
         {
-            instance = this;
+            Instance = this;
         }
     }
 
     new protected void Start()
     {
-        inventoryMenu.Open();
-        base.Start();
-        inventoryMenu.Close();
+        PlayerInventoryMenu.Instance.Open();
+        foreach (InventoryStartItem startItem in startItems)
+        {
+            //ItemInstance itemInstance = new ItemInstance(startItem);
+            WorldItem testItem = PlayerItemSpawner.Instance.GetPrefab(startItem.itemData);
+            ItemInstance testInstance = testItem.CreateNewItemInstance(startItem.itemData);
+            if (startItem.itemData.stackable)
+            {
+                testInstance.SetProperty(ItemAttributeKey.NumItemsInStack, startItem.quantity);
+            }
+
+            //itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, 1);
+            AddItem(testInstance);
+        }
+        PlayerInventoryMenu.Instance.Close();
+    }
+
+    public override bool AddItem(ItemInstance itemInstance)
+    {
+        bool updated = base.AddItem(itemInstance);
+        // Update listeners if any changes have occurred
+        if (updated)
+        {
+            OnInventoryChanged?.Invoke();
+        }
+        return updated;
     }
 
     private void Update()
@@ -37,17 +66,17 @@ public class PlayerInventory : Inventory
         if (Input.GetKeyDown(KeyCode.Tab))
         {
 
-            if (!inventoryMenu.IsOpen())
+            if (!PlayerInventoryMenu.Instance.IsOpen())
             {
-                MenuManager.Instance.OpenMenu(inventoryMenu);
+                MenuManager.Instance.OpenMenu(PlayerInventoryMenu.Instance);
             } else
             {
-                MenuManager.Instance.CloseMenu(inventoryMenu);
+                MenuManager.Instance.CloseMenu(PlayerInventoryMenu.Instance);
             }
         }
         if (Input.GetKey(KeyCode.E))
         {
-            ItemInstance ammo = new ItemInstance(startItems[5]);
+            ItemInstance ammo = new ItemInstance(startItems[5].itemData);
             ammo.SetProperty(ItemAttributeKey.NumItemsInStack, 1);
             AddItem(ammo);
         }
@@ -148,6 +177,11 @@ public class PlayerInventory : Inventory
                 }
             }
 
+            if (gearSlotMatch == null)
+            {
+                Debug.LogError("Error: No gear slot matches this type. Gear slots are probably misconfigured.");
+            }
+
             // Do Weight Check Before Swapping, this is swapping inventory item into gear
             bool weightCheck = false;
             {
@@ -232,5 +266,20 @@ public class PlayerInventory : Inventory
     public GearSlot GetGearSlot(GearSlotIdentifier identifier)
     {
         return gearSlots[(int)identifier];
+    }
+
+    public override void DropItem(ItemInstance itemInstance)
+    {
+        if (OnItemDropped != null)
+            OnItemDropped(itemInstance);
+    }
+
+    void OnValidate()
+    {
+        for (int i = 0; i < startItems.Length; i++)
+        {
+            if (startItems[i].quantity < 1)
+                startItems[i].quantity = 1;
+        }
     }
 }

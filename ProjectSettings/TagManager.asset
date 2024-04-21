@@ -9,7 +9,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - WorldItems
+  - Interaction
   - Water
   - UI
   - Projectile

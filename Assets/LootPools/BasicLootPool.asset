@@ -10,27 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d473265acc0339544888401f4402338b, type: 3}
-  m_Name: BasicItemPool
+  m_Name: BasicLootPool
   m_EditorClassIdentifier: 
   items:
   - item: {fileID: 0}
-    probability: 0
+    probability: 60
     minQuantity: 0
     maxQuantity: 0
   - item: {fileID: 625792777598891736, guid: 83d9d0040336f4645b16a5f568c6952b, type: 3}
-    probability: 5
+    probability: 1
     minQuantity: 1
     maxQuantity: 1
   - item: {fileID: 1570672019362220136, guid: e0fb84f16e09975479eda3f75c318d2b, type: 3}
-    probability: 10
+    probability: 5
     minQuantity: 1
     maxQuantity: 1
   - item: {fileID: 3494190095646576863, guid: 3d4da2cff714a904b827e9c6b77ab840, type: 3}
     probability: 20
     minQuantity: 20
-    maxQuantity: 100
+    maxQuantity: 40
   - item: {fileID: 605915337927846817, guid: e51d232452a2b5b478b255273a210fce, type: 3}
-    probability: 5
+    probability: 3
     minQuantity: 1
     maxQuantity: 1
   - item: {fileID: 7587566732184782447, guid: fe93e72082719794daa53c124b9b5e1f, type: 3}
@@ -38,6 +38,6 @@ MonoBehaviour:
     minQuantity: 1
     maxQuantity: 1
   - item: {fileID: 8283816626229789992, guid: b5c3d3f8de1572947b8804853fc0c088, type: 3}
-    probability: 5
+    probability: 2
     minQuantity: 1
     maxQuantity: 1

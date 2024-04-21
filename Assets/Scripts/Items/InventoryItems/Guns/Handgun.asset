@@ -15,7 +15,7 @@ MonoBehaviour:
   <DisplayName>k__BackingField: Handgun Epic
   <ItemDescription>k__BackingField: Handgun Epic
   <ItemType>k__BackingField: 0
-  <Rarity>k__BackingField: 3
+  <Rarity>k__BackingField: 0
   <SmallImage>k__BackingField: {fileID: 21300000, guid: 330dceb09913d584cbe13d2fd1ef7eff,
     type: 3}
   <LargeImage>k__BackingField: {fileID: 21300000, guid: 0eb64349cb944eb4aa32ac716195115b,
@@ -29,8 +29,8 @@ MonoBehaviour:
   - AmmoCount
   <MagazineCapacity>k__BackingField: 12
   <RateOfFire>k__BackingField: 0.2
-  <reloadTime>k__BackingField: 1
-  <switchToTime>k__BackingField: 0.5
+  <reloadTime>k__BackingField: 0.5
+  <switchToTime>k__BackingField: 0.25
   <hipFireMultiplier>k__BackingField: 3
   <aimRecoilX>k__BackingField: 3
   <aimRecoilY>k__BackingField: 2

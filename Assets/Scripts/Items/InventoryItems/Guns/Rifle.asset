@@ -15,7 +15,7 @@ MonoBehaviour:
   <DisplayName>k__BackingField: Rifle Exotic
   <ItemDescription>k__BackingField: Rifle Exotic
   <ItemType>k__BackingField: 0
-  <Rarity>k__BackingField: 5
+  <Rarity>k__BackingField: 1
   <SmallImage>k__BackingField: {fileID: 21300000, guid: 2253677b23e717c4290779f41d0d1a10,
     type: 3}
   <LargeImage>k__BackingField: {fileID: 21300000, guid: acbed6368afe8f94e9d69e3442e02b05,
@@ -29,8 +29,8 @@ MonoBehaviour:
   - AmmoCount
   <MagazineCapacity>k__BackingField: 30
   <RateOfFire>k__BackingField: 0.1
-  <reloadTime>k__BackingField: 2
-  <switchToTime>k__BackingField: 1
+  <reloadTime>k__BackingField: 1
+  <switchToTime>k__BackingField: 0.6
   <hipFireMultiplier>k__BackingField: 2
   <aimRecoilX>k__BackingField: 2
   <aimRecoilY>k__BackingField: 0.75

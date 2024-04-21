@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ItemSpawner : MonoBehaviour
 {
-    public ItemPool itemPool;
+    public LootPool itemPool;
     public float respawnTime; // Time in seconds to respawn an item
 
     private WorldItem currentItem = null;

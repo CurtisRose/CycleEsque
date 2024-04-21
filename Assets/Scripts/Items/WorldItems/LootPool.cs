@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewItemPool", menuName = "Item Spawner/Item Pool", order = 1)]
-public class ItemPool : ScriptableObject
+[CreateAssetMenu(fileName = "NewLootPool", menuName = "LootPool", order = 1)]
+public class LootPool : ScriptableObject
 {
     [System.Serializable]
     public struct ItemEntry
@@ -14,7 +14,7 @@ public class ItemPool : ScriptableObject
         public int maxQuantity;
     }
 
-    public ItemEntry[] items;
+    [SerializeField] protected ItemEntry[] items;
 
     public (WorldItem item, int quantity) GetRandomItemWithQuantity()
     {
@@ -37,5 +37,10 @@ public class ItemPool : ScriptableObject
         }
 
         return (null, 0); // Should not happen, but just in case
+    }
+
+    public int NumberOfItems()
+    {
+        return items.Length;
     }
 }
