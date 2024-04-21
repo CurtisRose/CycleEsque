@@ -42,7 +42,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
 
 		//currentInventorySlot.RemoveItemFromSlot();
-        currentInventorySlot.GetInventory().StartInventoryItemMoved(this);
+        PlayerInventory.Instance.StartInventoryItemMoved(this);
 
         parentAfterDrag = transform.parent;
         // Set the parent of this UI element to the top canvas to make sure it is drawn over all other UI until it is dropped
@@ -92,17 +92,27 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             currentInventorySlot.DropItem();
             Destroy(this.gameObject);
         }
-        currentInventorySlot.GetInventory().EndInventoryItemMoved(this);
+        PlayerInventory.Instance.EndInventoryItemMoved(this);
         itemImage.raycastTarget = true;
     }
 
     private bool IsPartOfInventoryUI(GameObject obj)
     {
-        if (obj.layer == LayerMask.NameToLayer("InventoryUI"))
+        int inventoryLayer = LayerMask.NameToLayer("InventoryUI");
+        return CheckParentForLayer(obj, inventoryLayer);
+    }
+
+    private bool CheckParentForLayer(GameObject obj, int layer)
+    {
+        if (obj == null)
+        {
+            return false;
+        }
+        if (obj.layer == layer)
         {
             return true;
         }
-        return false;
+        return CheckParentForLayer(obj.transform.parent?.gameObject, layer);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -116,6 +126,9 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
                 currentInventorySlot.GetInventory().QuickEquip(currentInventorySlot);
                 return;
             }
+        }
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
             // If it's stackable attempt to split it.
             if (Input.GetKey(KeyCode.LeftShift))
             {

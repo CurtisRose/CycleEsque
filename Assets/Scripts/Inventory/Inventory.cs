@@ -56,17 +56,31 @@ public class Inventory : MonoBehaviour
         return successCheck && !partialOnly;
     }
 
-    public virtual bool AddItem(ItemInstance itemInstance)
+    public int HowManyItemsCanBeAdded(ItemInstance itemInstance)
     {
         int numItems = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
-        /*float itemTotalWeight = itemInstance.sharedData.Weight * numItems;
 
-        // Check if the total weight of the items can be added to the inventory
-        if (itemTotalWeight > GetInventoryWeightLimit() - currentWeight)
+        // Calculate the available weight capacity
+        float availableWeight = GetInventoryWeightLimit() - currentWeight;
+
+        // Calculate the maximum number of items that can be added based on weight
+        int maxItemsByWeight = (int)(availableWeight / itemInstance.sharedData.Weight);
+
+        // Determine the actual number of items that can be added
+        int itemsToAdd = Mathf.Min(numItems, maxItemsByWeight);
+
+        return itemsToAdd;
+    }
+
+    public virtual bool AddItem(ItemInstance itemInstance)
+    {
+        int numItems = HowManyItemsCanBeAdded(itemInstance);
+
+        if (numItems <= 0)
         {
-            Debug.Log("Not enough weight capacity to add these items");
-            return false; // Not enough weight capacity to add these items
-        }*/
+            Debug.Log("No Room In Inventory");
+            return false;
+        }
 
         bool updated = false; // Flag to track if the inventory was updated
 
@@ -121,7 +135,7 @@ public class Inventory : MonoBehaviour
         return numItems; // Return the number of items left to add
     }
 
-    protected int FillEmptySlots(ItemInstance itemInstance)
+    public int FillEmptySlots(ItemInstance itemInstance)
     {
         int numItems = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
 

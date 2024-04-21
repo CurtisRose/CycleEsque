@@ -71,50 +71,6 @@ public class PlayerInventory : Inventory
         }
     }
 
-    public override bool AddItem(ItemInstance itemInstance)
-    {
-        int numItems = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
-        /*float itemTotalWeight = itemInstance.sharedData.Weight * numItems;
-
-        // Check if the total weight of the items can be added to the inventory
-        if (itemTotalWeight > GetInventoryWeightLimit() - currentWeight)
-        {
-            Debug.Log("Not enough weight capacity to add these items");
-            return false; // Not enough weight capacity to add these items
-        }*/
-
-        bool updated = false; // Flag to track if the inventory was updated
-
-        // If the item is stackable, try to add it to existing slots with the same item
-        if (itemInstance.sharedData.stackable)
-        {
-            int remainingItems = FillExistingStacks(itemInstance);
-            if (remainingItems < numItems)
-            {
-                updated = true;  // Update occurred if we added some items to existing stacks
-            }
-            numItems = remainingItems;
-        }
-
-        // If there are items left after trying to stack them in existing slots, or if the item is not stackable
-        if (numItems > 0)
-        {
-            int itemsLeftToAdd = FillEmptySlots(itemInstance);
-            if (itemsLeftToAdd < numItems)
-            {
-                updated = true;  // Update occurred if we added some items to new slots
-            }
-        }
-
-        // Update listeners if any changes have occurred
-        if (updated)
-        {
-            OnInventoryChanged?.Invoke();
-        }
-
-        return updated;
-    }
-
     public override float GetInventoryWeightLimit()
     {
         if (gearSlots[(int)GearSlotIdentifier.BACKPACK].GetItemInSlot() != null)
@@ -208,6 +164,11 @@ public class PlayerInventory : Inventory
                         break;
                     }
                 }
+            }
+
+            if (gearSlotMatch == null)
+            {
+                Debug.LogError("Error: No gear slot matches this type. Gear slots are probably misconfigured.");
             }
 
             // Do Weight Check Before Swapping, this is swapping inventory item into gear

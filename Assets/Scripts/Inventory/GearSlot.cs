@@ -24,6 +24,7 @@ public class GearSlot : InventorySlot
 
     public override void OnDropItem(PointerEventData eventData)
     {
+        // Check that the item is allowed to go into this slot gear slot
         GameObject dropped = eventData.pointerDrag;
         InventoryItem draggableItem = dropped.GetComponent<InventoryItem>();
 

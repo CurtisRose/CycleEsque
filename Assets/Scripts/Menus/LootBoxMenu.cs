@@ -30,7 +30,10 @@ public class LootBoxMenu : Menu
     {
         if (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Escape))
         {
-            Close();
+            if (IsOpen())
+            {
+                Close();
+            }
         }
     }
 }
