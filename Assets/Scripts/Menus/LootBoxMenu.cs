@@ -19,12 +19,11 @@ public class LootBoxMenu : Menu
         }
     }
 
-    void Start()
-    {
-        dependentMenus.Add(PlayerInventoryMenu.Instance);
+    void Start() {
         // Let all the inventory slots do what they need to do
         Open();
         Close();
+            dependentMenus.Add(PlayerInventoryMenu.Instance);
     }
 
     private void Update()

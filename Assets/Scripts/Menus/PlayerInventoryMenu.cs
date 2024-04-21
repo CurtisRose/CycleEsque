@@ -17,5 +17,4 @@ public class PlayerInventoryMenu : Menu
             Instance = this;
         }
     }
-
 }

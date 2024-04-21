@@ -11487,7 +11487,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1998896462
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14455,6 +14455,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BigLootBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 5410749340368170677, guid: a4f067ca9487a0d478deadebffee32c0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6111166610209991925, guid: a4f067ca9487a0d478deadebffee32c0,
         type: 3}
