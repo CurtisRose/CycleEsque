@@ -50,6 +50,17 @@ public class PlayerInventory : Inventory
         PlayerInventoryMenu.Instance.Close();
     }
 
+    public override bool AddItem(ItemInstance itemInstance)
+    {
+        bool updated = base.AddItem(itemInstance);
+        // Update listeners if any changes have occurred
+        if (updated)
+        {
+            OnInventoryChanged?.Invoke();
+        }
+        return updated;
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Tab))

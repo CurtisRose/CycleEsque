@@ -4,19 +4,9 @@ using UnityEngine;
 
 public class LootBoxMenu : Menu
 {
-    public static LootBoxMenu Instance;
-
     private void Awake()
     {
         dependentMenus = new List<Menu>();
-        if (Instance != null)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
     }
 
     void Start() {
