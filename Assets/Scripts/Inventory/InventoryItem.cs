@@ -120,12 +120,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         // Check if the right mouse button was clicked
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            // If it's not stackable just quick equip it
-            if (!itemInstance.sharedData.stackable)
-            {
-                currentInventorySlot.GetInventory().QuickEquip(currentInventorySlot);
-                return;
-            }
+            PlayerInventory.Instance.QuickEquip(currentInventorySlot);
+            return;
         }
         if (eventData.button == PointerEventData.InputButton.Left)
         {
@@ -134,6 +130,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             {
                 currentInventorySlot.GetInventory().SplitInventoryItem(this);
             }
+            return;
         }
     }
 

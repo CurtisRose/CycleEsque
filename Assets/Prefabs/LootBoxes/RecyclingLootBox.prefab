@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4610963930399614241}
   - component: {fileID: 2182462755328311132}
   - component: {fileID: 5084226651968424558}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 8336708674826067132}
   - component: {fileID: 7602819981144646165}
   - component: {fileID: 4004060849865522002}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ItemCountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 6960925138490314786}
   - component: {fileID: 3100269551365272367}
   - component: {fileID: 1466385026577120128}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: WeightText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -355,7 +355,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1758371967174969339}
   - component: {fileID: 2337702482130216181}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: LootBoxInventorySlot (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -421,7 +421,7 @@ GameObject:
   - component: {fileID: 1271205543419693460}
   - component: {fileID: 2071137341826050852}
   - component: {fileID: 6113439239162587903}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -541,7 +541,7 @@ GameObject:
   - component: {fileID: 4741891819375619710}
   - component: {fileID: 815954602247084228}
   - component: {fileID: 1051678150860936455}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ItemCountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -675,7 +675,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4928544441896694358}
   - component: {fileID: 6226487591788700467}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: LootBoxInventorySlot (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -738,7 +738,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1722964206960591778}
   - component: {fileID: 5107122862371945186}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: LootBoxInventorySlot (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -802,7 +802,7 @@ GameObject:
   - component: {fileID: 3200723944117746072}
   - component: {fileID: 4847197557353516299}
   - component: {fileID: 4910166817618390737}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: LootboxBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -880,7 +880,7 @@ GameObject:
   - component: {fileID: 1981961865483930392}
   - component: {fileID: 1123890267384985380}
   - component: {fileID: 5417500926920918165}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ItemHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -980,7 +980,7 @@ GameObject:
   - component: {fileID: 4627130614792557565}
   - component: {fileID: 5500970402307463897}
   - component: {fileID: 814996877355748792}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ItemHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1079,7 +1079,7 @@ GameObject:
   - component: {fileID: 2165828120017959755}
   - component: {fileID: 994846215600327015}
   - component: {fileID: 6670483619587103736}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1154,7 +1154,7 @@ GameObject:
   - component: {fileID: 7246186545168444535}
   - component: {fileID: 2330812562816861294}
   - component: {fileID: 2676130168635215794}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1230,7 +1230,7 @@ GameObject:
   - component: {fileID: 918897172679531771}
   - component: {fileID: 4595327067292518303}
   - component: {fileID: 7520254781208153429}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ItemBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1328,7 +1328,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6909973094240834151}
   - component: {fileID: 8401313205323996486}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: LootBoxInventorySlot (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1392,7 +1392,7 @@ GameObject:
   - component: {fileID: 9207117212894796697}
   - component: {fileID: 8533760902955897023}
   - component: {fileID: 2253099868415981638}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1468,7 +1468,7 @@ GameObject:
   - component: {fileID: 3764914382693818299}
   - component: {fileID: 4476923458715034491}
   - component: {fileID: 3632451548134591006}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ItemHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1568,7 +1568,7 @@ GameObject:
   - component: {fileID: 1228804866035338660}
   - component: {fileID: 1530899121928518874}
   - component: {fileID: 1210799137490621238}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ItemHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1668,7 +1668,7 @@ GameObject:
   - component: {fileID: 2344001482025852981}
   - component: {fileID: 2411526338610774139}
   - component: {fileID: 538227444428853648}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ItemHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1768,7 +1768,7 @@ GameObject:
   - component: {fileID: 6446237729411110896}
   - component: {fileID: 8941096090350959641}
   - component: {fileID: 4943013736096233785}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ItemBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1867,7 +1867,7 @@ GameObject:
   - component: {fileID: 4376315530722777953}
   - component: {fileID: 8404210183476568963}
   - component: {fileID: 707074707934908539}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ItemCountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2003,7 +2003,7 @@ GameObject:
   - component: {fileID: 3385506694783071984}
   - component: {fileID: 4618747027232664626}
   - component: {fileID: 5364842597675214755}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ItemBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2102,7 +2102,7 @@ GameObject:
   - component: {fileID: 8678751002837009034}
   - component: {fileID: 4532705146060375132}
   - component: {fileID: 6265210683726780842}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ItemCountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2302,7 +2302,7 @@ GameObject:
   - component: {fileID: 6767086554565055815}
   - component: {fileID: 6199510207685820316}
   - component: {fileID: 8059145796711903479}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: WeightText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2437,7 +2437,7 @@ GameObject:
   - component: {fileID: 3526021861347243375}
   - component: {fileID: 6655872575917882024}
   - component: {fileID: 3053847685569006628}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: WeightText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2573,7 +2573,7 @@ GameObject:
   - component: {fileID: 7568766116360619612}
   - component: {fileID: 2442573917345923088}
   - component: {fileID: 9034607087990748241}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ItemHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2671,7 +2671,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8546211444668147641}
   - component: {fileID: 1299229897686674756}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: LootBoxInventorySlot (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2736,7 +2736,7 @@ GameObject:
   - component: {fileID: 8904427537685000054}
   - component: {fileID: 7726041415518311}
   - component: {fileID: 6801737527337039003}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ItemBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2835,7 +2835,7 @@ GameObject:
   - component: {fileID: 6942646739165429325}
   - component: {fileID: 2301266361632929839}
   - component: {fileID: 1962540613518853558}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2911,7 +2911,7 @@ GameObject:
   - component: {fileID: 9136431272469020248}
   - component: {fileID: 9137134880742758399}
   - component: {fileID: 5301678415256950009}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ItemBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3041,7 +3041,7 @@ GameObject:
   - component: {fileID: 7698601819397220681}
   - component: {fileID: 78690877267006764}
   - component: {fileID: 5185773489259948693}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3175,7 +3175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6461380514412559694}
   - component: {fileID: 8373164460366692566}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: LootBoxInventorySlot (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3239,7 +3239,7 @@ GameObject:
   - component: {fileID: 8912613447743236373}
   - component: {fileID: 6470248541246688514}
   - component: {fileID: 8206059101852650030}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: WeightText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3374,7 +3374,7 @@ GameObject:
   - component: {fileID: 7508185657291047517}
   - component: {fileID: 8760712718903809831}
   - component: {fileID: 5671065966453709074}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ItemCountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3509,7 +3509,7 @@ GameObject:
   - component: {fileID: 3904659628502401549}
   - component: {fileID: 1483136697834447152}
   - component: {fileID: 5537814170746508953}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: WeightText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3644,7 +3644,7 @@ GameObject:
   - component: {fileID: 3667452970735512912}
   - component: {fileID: 8471763622000086831}
   - component: {fileID: 7444675420609323982}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ItemCountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3780,7 +3780,7 @@ GameObject:
   - component: {fileID: 8152955334056251941}
   - component: {fileID: 3175349462443574731}
   - component: {fileID: 8303764000757894309}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ItemBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3879,7 +3879,7 @@ GameObject:
   - component: {fileID: 142980073642140154}
   - component: {fileID: 6114865160927205955}
   - component: {fileID: 1757268164139845906}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3954,7 +3954,7 @@ GameObject:
   - component: {fileID: 1968852430888051549}
   - component: {fileID: 5115304023845889303}
   - component: {fileID: 6200487703904938720}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: WeightText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4089,7 +4089,7 @@ GameObject:
   - component: {fileID: 4568469287771729095}
   - component: {fileID: 6074511985822985140}
   - component: {fileID: 435370200944965302}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: LootboxUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}

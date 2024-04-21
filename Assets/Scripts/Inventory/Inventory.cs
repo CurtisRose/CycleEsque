@@ -74,7 +74,7 @@ public class Inventory : MonoBehaviour
 
     public virtual bool AddItem(ItemInstance itemInstance)
     {
-        int numItems = HowManyItemsCanBeAdded(itemInstance);
+            int numItems = HowManyItemsCanBeAdded(itemInstance);
 
         if (numItems <= 0)
         {
