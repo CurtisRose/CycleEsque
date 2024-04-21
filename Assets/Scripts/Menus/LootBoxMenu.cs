@@ -9,7 +9,6 @@ public class LootBoxMenu : Menu
     private void Awake()
     {
         dependentMenus = new List<Menu>();
-        dependentMenus.Add(PlayerInventoryMenu.Instance);
         if (Instance != null)
         {
             Destroy(this);
@@ -22,6 +21,7 @@ public class LootBoxMenu : Menu
 
     void Start()
     {
+        dependentMenus.Add(PlayerInventoryMenu.Instance);
         // Let all the inventory slots do what they need to do
         Open();
         Close();

@@ -120,6 +120,7 @@ GameObject:
   - component: {fileID: 2679075031696748360}
   - component: {fileID: 3730016198847261068}
   - component: {fileID: 2359096530429794299}
+  - component: {fileID: 7049099715005553154}
   m_Layer: 9
   m_Name: Canvas
   m_TagString: Untagged
@@ -210,6 +211,25 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &7049099715005553154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5355172797702198991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ccb1ffcd3233be418a20513c31b4626, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuPanel: {fileID: 3538990988157974571}
+  type: 1
+  priority: 8
+  affectsUserMovement: 1
+  affectsUserClicking: 1
+  affectsUserLooking: 1
+  dependentMenus: []
 --- !u!1 &5410749340368170677
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,8 +299,11 @@ MonoBehaviour:
   currentWeight: 0
   throwPosition: {fileID: 5660502016620575446}
   throwForce: 5
+  containerName: Large Loot Box
+  containerNameText: {fileID: 3586484316974820592}
   itemPool: {fileID: 11400000, guid: 93def70125be0074e9079d07118b726d, type: 2}
   numberOfItems: 6
+  lootMenu: {fileID: 0}
 --- !u!1 &6461950372375963621
 GameObject:
   m_ObjectHideFlags: 0
