@@ -11,9 +11,6 @@ public class StashManager : Inventory
     [SerializeField] GameObject menuContainer;
     [SerializeField] List<SerializableItemData> stashSerializableItems;
 
-    // Dictionary to hold the ID to ItemData mapping
-    private Dictionary<string, SharedItemData> itemDictionary = new Dictionary<string, SharedItemData>();
-
     private void Awake()
     {
         filePath = Path.Combine(Application.persistentDataPath, "stash.json");
@@ -30,7 +27,6 @@ public class StashManager : Inventory
     private void Start()
     {
         MenuManager.Instance.OpenMenu(StashMenu.Instance);
-        LoadAllItems();
         LoadItemsFromJson();
         PopulateStash();
         MenuManager.Instance.CloseMenu(StashMenu.Instance);
@@ -101,14 +97,14 @@ public class StashManager : Inventory
 
     private void WriteToJsonFile(string json)
     {
-        string filePath = Path.Combine(Application.persistentDataPath, "items.json");
+        string filePath = Path.Combine(Application.persistentDataPath, "stash.json");
         File.WriteAllText(filePath, json);
         Debug.Log($"Saved items to {filePath}");
     }
 
     public void LoadItemsFromJson()
     {
-        string filePath = Path.Combine(Application.persistentDataPath, "items.json");
+        string filePath = Path.Combine(Application.persistentDataPath, "stash.json");
         if (File.Exists(filePath))
         {
             string json = File.ReadAllText(filePath);
@@ -120,31 +116,9 @@ public class StashManager : Inventory
         }
     }
 
-    void LoadAllItems()
-    {
-        // Assuming all items are under the "Resources/Items" directory
-        // and further organized by type, e.g., "Weapons", "Armor", etc.
-        string[] categories = { "Weapons", "Armor", "Helmets", "Backpacks", "Ammo" };
-        foreach (var category in categories)
-        {
-            SharedItemData[] items = Resources.LoadAll<SharedItemData>($"Items/{category}");
-            foreach (SharedItemData item in items)
-            {
-                if (!itemDictionary.ContainsKey(item.ID))
-                {
-                    itemDictionary.Add(item.ID, item);
-                }
-                else
-                {
-                    Debug.LogWarning($"Duplicate ID found in {category}: {item.ID}");
-                }
-            }
-        }
-    }
-
     public SharedItemData GetItemByID(string id)
 {
-    if (itemDictionary.TryGetValue(id, out SharedItemData item))
+    if (GameManager.Instance.itemDictionary.TryGetValue(id, out SharedItemData item))
     {
         return item;
     }

@@ -86,12 +86,12 @@ public class PlayerInventory : Inventory
                 }
             }
         }
-        if (Input.GetKey(KeyCode.E))
+        /*if (Input.GetKey(KeyCode.E))
         {
             ItemInstance ammo = new ItemInstance(startItems[5].itemData);
             ammo.SetProperty(ItemAttributeKey.NumItemsInStack, 1);
             AddItem(ammo);
-        }
+        }*/
     }
 
     public override float GetInventoryWeightLimit()
@@ -268,6 +268,20 @@ public class PlayerInventory : Inventory
             }
         }
         UpdateWeightText();
+    }
+
+    public bool EquipItemInstance(ItemInstance itemInstance, GearSlot gearSlot)
+    {
+        ItemType itemType = itemInstance.sharedData.ItemType;
+        if (gearSlot.HasItem())
+        {
+            return false;
+        } else
+        {
+            CreateNewItem(itemInstance, gearSlot);
+            return true;
+        }
+
     }
 
     public List<GearSlot> GetGearSlots()
