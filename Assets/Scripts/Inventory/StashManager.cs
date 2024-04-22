@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using System.Linq;
 
 public class StashManager : Inventory
 {
@@ -93,7 +94,7 @@ public class StashManager : Inventory
     public void SaveStashToJson()
     {
         List<SerializableItemData> items = new List<SerializableItemData>();
-        foreach(InventorySlot inventorySlot in inventorySlots)
+        foreach (InventorySlot inventorySlot in inventorySlots)
         {
             if (inventorySlot.HasItem())
             {
@@ -101,9 +102,17 @@ public class StashManager : Inventory
                 items.Add(SerializableItemData.FromSharedItemData(itemInstance.sharedData, (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack)));
             }
         }
-        string json = JsonUtility.ToJson(new Serialization<List<SerializableItemData>>(items), true);
+
+        // Sort items by ItemType, then Rarity in reverse, and then DisplayName
+        var sortedItems = items.OrderBy(item => item.ItemType)
+                               .ThenByDescending(item => item.Rarity) // Reverse order for Rarity
+                               .ThenBy(item => item.DisplayName)
+                               .ToList();
+
+        string json = JsonUtility.ToJson(new Serialization<List<SerializableItemData>>(sortedItems), true);
         WriteToJsonFile(json);
     }
+
 
     private void WriteToJsonFile(string json)
     {

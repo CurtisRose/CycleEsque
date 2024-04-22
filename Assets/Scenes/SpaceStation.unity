@@ -8028,7 +8028,7 @@ MonoBehaviour:
   - {fileID: 1429588120}
   inventoryItemPrefab: {fileID: 3147761878662062801, guid: 26b3212637127e643b9007e40bdbf8e1,
     type: 3}
-  inventoryWeightLimit: 2.1474836e+9
+  inventoryWeightLimit: 90000000
   currentWeight: 0
   menuContainer: {fileID: 1348277819}
   stashSerializableItems: []
