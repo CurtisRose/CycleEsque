@@ -16,11 +16,6 @@ public class PlayerWeaponSwitcher : MonoBehaviour
 
     [SerializeField] bool primarySelected = true;
 
-    [SerializeField] private float switchCooldown = 0.5f; // Time in seconds between allowed switches
-    private float lastSwitchTime = 0;
-    private bool switchQueued = false; // Flag to check if a switch has been queued
-    private bool nextSelectedFirstSlot; // Stores the intended slot selection after cooldown
-
     [SerializeField] float noGunReloadSpeed = 0.5f;
 
     [SerializeField] bool selectedFirstSlot;
@@ -145,7 +140,6 @@ public class PlayerWeaponSwitcher : MonoBehaviour
     {
         primarySelected = !primarySelected;
         SwitchGuns();
-        lastSwitchTime = Time.time;
     }
     private void SwitchGuns()
     {

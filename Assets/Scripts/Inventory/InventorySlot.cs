@@ -60,7 +60,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         // If itemslot has item, swap, unless stackable and same item type
         if (HasItem())
         {
-            if(itemComingIn.itemInstance.sharedData.stackable && 
+            if(itemComingIn.itemInstance.sharedData.Stackable && 
                 itemComingIn.GetItemType() == itemInSlot.GetItemType())
             {
                 // TODO: Need to do something like fill it with what it can
@@ -122,7 +122,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                     if (inventory.currentWeight + itemComingIn.GetTotalWeight() > weightLimitAfterSwap)
                     {
                         // Try Splitting it if its stackable
-                        if (itemComingIn.itemInstance.sharedData.stackable)
+                        if (itemComingIn.itemInstance.sharedData.Stackable)
                         {
                             MoveAsManyAsYouCan(itemComingIn);
                         }
@@ -140,7 +140,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     public void MoveAsManyAsYouCan(InventoryItem inventoryItem)
     {
-        if (!inventoryItem.itemInstance.sharedData.stackable) return;
+        if (!inventoryItem.itemInstance.sharedData.Stackable) return;
 
         InventorySlot currentSlot = inventoryItem.GetCurrentInventorySlot();
         InventorySlot thisSlot = this;
@@ -220,7 +220,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 inventory.UpdateWeight(inventoryItem.GetTotalWeight());
             }
             weightText.text = inventoryItem.GetTotalWeight().ToString();
-            if (inventoryItem.itemInstance.sharedData.stackable)
+            if (inventoryItem.itemInstance.sharedData.Stackable)
             {
                 stackSizeText.text = inventoryItem.GetItemCount().ToString();
             }

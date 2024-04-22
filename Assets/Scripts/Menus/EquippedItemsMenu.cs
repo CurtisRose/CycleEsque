@@ -6,6 +6,8 @@ using TMPro;
 
 public class EquippedItemsMenu : Menu
 {
+    public static EquippedItemsMenu Instance { get; private set; }
+
     [SerializeField] PlayerWeaponController playerWeaponController;
     [SerializeField] PlayerWeaponSwitcher playerWeaponSwitcher;
     [SerializeField] PlayerInventory playerInventory;
@@ -28,6 +30,14 @@ public class EquippedItemsMenu : Menu
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         playerWeaponSwitcher.OnLoadOutChanged += LoadOutChanged;
         playerWeaponController.OnPrimaryGunFired += UpdateAmmoText;
         playerWeaponController.OnPrimaryGunReloaded += UpdateAmmoText;
@@ -46,7 +56,7 @@ public class EquippedItemsMenu : Menu
 
     }
 
-    private void LoadOutChanged()
+    public void LoadOutChanged()
     {
         gunHeld = playerWeaponSwitcher.GetGunInHands();
         if (gunHeld != null)

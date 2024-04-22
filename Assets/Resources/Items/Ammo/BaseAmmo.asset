@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BaseAmmo
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: BaseAmmo
+  <ID>k__BackingField: 6e8738c5-91e9-432f-9b64-ac801941f7a8
   <ItemDescription>k__BackingField: 
   <ItemType>k__BackingField: 4
   <Rarity>k__BackingField: 0
@@ -20,8 +21,8 @@ MonoBehaviour:
     type: 3}
   <LargeImage>k__BackingField: {fileID: 0}
   <Weight>k__BackingField: 0.5
-  <stackable>k__BackingField: 1
-  <maxStackSize>k__BackingField: 100
+  <Stackable>k__BackingField: 1
+  <MaxStackSize>k__BackingField: 100
   <ColorGameObjectBasedOnRarity>k__BackingField: 0
   allowedKeys:
   - NumItemsInStack

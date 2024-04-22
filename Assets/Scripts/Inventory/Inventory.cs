@@ -28,7 +28,7 @@ public class Inventory : MonoBehaviour
         bool partialOnly = false;
         if (item.GetWeight() > GetInventoryWeightLimit() - currentWeight)
         {
-            if (item.GetBaseItem().stackable)
+            if (item.GetBaseItem().Stackable)
             {
                 float weightToFillBackpack = GetInventoryWeightLimit() - currentWeight;
                 numItems = (int)Mathf.Floor(weightToFillBackpack / item.GetBaseItem().Weight);
@@ -85,7 +85,7 @@ public class Inventory : MonoBehaviour
         bool updated = false; // Flag to track if the inventory was updated
 
         // If the item is stackable, try to add it to existing slots with the same item
-        if (itemInstance.sharedData.stackable)
+        if (itemInstance.sharedData.Stackable)
         {
             int remainingItems = FillExistingStacks(itemInstance);
             if (remainingItems < numItems)
@@ -116,11 +116,11 @@ public class Inventory : MonoBehaviour
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
             if (itemInSlot != null && itemInSlot.itemInstance.sharedData == itemInstance.sharedData)
             {
-                int spaceLeftInSlot = itemInSlot.itemInstance.sharedData.maxStackSize - itemInSlot.GetItemCount();
+                int spaceLeftInSlot = itemInSlot.itemInstance.sharedData.MaxStackSize - itemInSlot.GetItemCount();
                 if (spaceLeftInSlot > 0)
                 {
                     int itemsToAdd = Mathf.Min(spaceLeftInSlot, numItems);
-                    if (itemInstance.sharedData.stackable)
+                    if (itemInstance.sharedData.Stackable)
                     {
                         itemInSlot.AddToItemCount(itemsToAdd);
                         //TODO: should AddToItemCount handle the weight add? I thinkg the 
@@ -158,7 +158,7 @@ public class Inventory : MonoBehaviour
         {
             if (!slot.HasItem() && itemsToAdd > 0)
             {
-                int itemsThatCanBeAdded = itemInstance.sharedData.stackable ? Mathf.Min(itemInstance.sharedData.maxStackSize, itemsToAdd) : 1;
+                int itemsThatCanBeAdded = itemInstance.sharedData.Stackable ? Mathf.Min(itemInstance.sharedData.MaxStackSize, itemsToAdd) : 1;
                 ItemInstance newItemInstance = itemInstance.Clone(); // Create a deep copy of itemInstance
                 newItemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, itemsThatCanBeAdded);
 
@@ -187,7 +187,7 @@ public class Inventory : MonoBehaviour
             InventoryItem itemInSlot = inventorySlot.GetItemInSlot();
             if (itemInSlot != null && inventorySlot.GetItemInSlot().GetItemType() == type)
             {
-                if (inventorySlot.GetItemInSlot().itemInstance.sharedData.stackable)
+                if (inventorySlot.GetItemInSlot().itemInstance.sharedData.Stackable)
                 {
                     numItems += inventorySlot.GetItemInSlot().GetItemCount();
                 } else
@@ -267,7 +267,7 @@ public class Inventory : MonoBehaviour
         }
         else
         {
-            Debug.Log("No earlier empty slot available.");
+            //Debug.Log("No earlier empty slot available.");
         }
     }
     public InventorySlot FindEarliestEmptySlot(InventoryItem inventoryItem)

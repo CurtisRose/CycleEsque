@@ -33,13 +33,17 @@ public class PlayerInventory : Inventory
 
     new protected void Start()
     {
-        PlayerInventoryMenu.Instance.Open();
+        if (PlayerInventoryMenu.Instance != null)
+        {
+            PlayerInventoryMenu.Instance.Open();
+        }
+
         foreach (InventoryStartItem startItem in startItems)
         {
             //ItemInstance itemInstance = new ItemInstance(startItem);
             WorldItem testItem = PlayerItemSpawner.Instance.GetPrefab(startItem.itemData);
             ItemInstance testInstance = testItem.CreateNewItemInstance(startItem.itemData);
-            if (startItem.itemData.stackable)
+            if (startItem.itemData.Stackable)
             {
                 testInstance.SetProperty(ItemAttributeKey.NumItemsInStack, startItem.quantity);
             }
@@ -47,7 +51,11 @@ public class PlayerInventory : Inventory
             //itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, 1);
             AddItem(testInstance);
         }
-        PlayerInventoryMenu.Instance.Close();
+
+        if (PlayerInventoryMenu.Instance != null)
+        {
+            PlayerInventoryMenu.Instance.Close();
+        }
     }
 
     public override bool AddItem(ItemInstance itemInstance)
@@ -66,20 +74,24 @@ public class PlayerInventory : Inventory
         if (Input.GetKeyDown(KeyCode.Tab))
         {
 
-            if (!PlayerInventoryMenu.Instance.IsOpen())
+            if (PlayerInventoryMenu.Instance != null)
             {
-                MenuManager.Instance.OpenMenu(PlayerInventoryMenu.Instance);
-            } else
-            {
-                MenuManager.Instance.CloseMenu(PlayerInventoryMenu.Instance);
+                if (!PlayerInventoryMenu.Instance.IsOpen())
+                {
+                    MenuManager.Instance.OpenMenu(PlayerInventoryMenu.Instance);
+                }
+                else
+                {
+                    MenuManager.Instance.CloseMenu(PlayerInventoryMenu.Instance);
+                }
             }
         }
-        if (Input.GetKey(KeyCode.E))
+        /*if (Input.GetKey(KeyCode.E))
         {
             ItemInstance ammo = new ItemInstance(startItems[5].itemData);
             ammo.SetProperty(ItemAttributeKey.NumItemsInStack, 1);
             AddItem(ammo);
-        }
+        }*/
     }
 
     public override float GetInventoryWeightLimit()
@@ -150,7 +162,7 @@ public class PlayerInventory : Inventory
             GearSlot gearSlotMatch = null;
 
             // If it's a weapon, prefer an empty slot, else, the first slot
-            if (itemToEquip.GetItemType() == ItemType.PRIMARY_WEAPON)
+            if (itemToEquip.GetItemType() == ItemType.WEAPON)
             {
                 // Pick first slot if it's empty
                 if (!gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1].HasItem())
@@ -256,6 +268,20 @@ public class PlayerInventory : Inventory
             }
         }
         UpdateWeightText();
+    }
+
+    public bool EquipItemInstance(ItemInstance itemInstance, GearSlot gearSlot)
+    {
+        ItemType itemType = itemInstance.sharedData.ItemType;
+        if (gearSlot.HasItem())
+        {
+            return false;
+        } else
+        {
+            CreateNewItem(itemInstance, gearSlot);
+            return true;
+        }
+
     }
 
     public List<GearSlot> GetGearSlots()
