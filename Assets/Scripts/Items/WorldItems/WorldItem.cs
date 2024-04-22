@@ -23,7 +23,7 @@ public class WorldItem : MonoBehaviour, IInteractable
     {
         rigidBody = GetComponent<Rigidbody>();
         InitializeItemFromBaseItemData();
-        if (!sharedItemData.stackable || numItemsInStack <= 0)
+        if (!sharedItemData.Stackable || numItemsInStack <= 0)
         {
             numItemsInStack = 1;
         }

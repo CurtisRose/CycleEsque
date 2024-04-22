@@ -37,7 +37,7 @@ public class ItemSpawner : MonoBehaviour
             
             if (spawnedItem.GetComponent<WorldItem>() != null)
             {
-                if (spawnedItem.GetBaseItem().stackable)
+                if (spawnedItem.GetBaseItem().Stackable)
                 {
                     spawnedItem.SetNumberOfStartingItems(quantity);
                 }

@@ -34,7 +34,7 @@ public class LootContainer : Inventory, IInteractable
             if (selectedItem != null)
             {
                 ItemInstance itemInstance = selectedItem.CreateItemInstance();
-                if (itemInstance.sharedData.stackable)
+                if (itemInstance.sharedData.Stackable)
                 {
                     itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, quantity);
                 } else

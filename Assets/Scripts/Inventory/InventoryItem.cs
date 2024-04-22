@@ -226,7 +226,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         // I've put several protections in place to make sure non stackable items only have one item in them
         // But this is yet another that their weight won't be fucked up.
-        if (itemInstance.sharedData.stackable)
+        if (itemInstance.sharedData.Stackable)
         {
             return GetItemCount() * itemInstance.sharedData.Weight;
         }
