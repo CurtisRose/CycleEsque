@@ -160,7 +160,7 @@ public class GameManager : MonoBehaviour
                     PlayerInventory.Instance.EquipItemInstance(newItemInstance, gearSlot);
                     gearSlot.GetItemInSlot().DoThingsAfterMove();
 
-                    Debug.Log($"Equipped {newItemInstance.sharedData.DisplayName} to gear slot {serializableItemData.ItemType}");
+                    //Debug.Log($"Equipped {newItemInstance.sharedData.DisplayName} to gear slot {serializableItemData.ItemType}");
                 }
                 else
                 {
@@ -182,7 +182,7 @@ public class GameManager : MonoBehaviour
 
                 // Here you would add this item instance to the player's inventory
                 // For example: playerInventory.AddItem(newItemInstance);
-                Debug.Log($"Added {newItemInstance.sharedData.DisplayName} to inventory with quantity {serializableItemData.Quantity}");
+                //Debug.Log($"Added {newItemInstance.sharedData.DisplayName} to inventory with quantity {serializableItemData.Quantity}");
             }
             else
             {

@@ -87,7 +87,10 @@ public class Inventory : MonoBehaviour
         // If the item is stackable, try to add it to existing slots with the same item
         if (itemInstance.sharedData.Stackable)
         {
+            int startItems = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
             int remainingItems = FillExistingStacks(itemInstance);
+            int itemsAdded = startItems - remainingItems;
+            UpdateWeight(itemInstance.sharedData.Weight * itemsAdded);
             if (remainingItems < numItems)
             {
                 updated = true;  // Update occurred if we added some items to existing stacks
@@ -123,8 +126,6 @@ public class Inventory : MonoBehaviour
                     if (itemInstance.sharedData.Stackable)
                     {
                         itemInSlot.AddToItemCount(itemsToAdd);
-                        //TODO: should AddToItemCount handle the weight add? I thinkg the 
-                        UpdateWeight(itemInstance.sharedData.Weight * itemsToAdd);
                         numItems -= itemsToAdd;
                         itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, numItems);
                     }
@@ -319,25 +320,31 @@ public class Inventory : MonoBehaviour
 
     public void SplitInventoryItem(InventoryItem inventoryItem)
     {
-        InventorySlot currentSlot = inventoryItem.GetCurrentInventorySlot();
-        InventorySlot otherSlot = FindEarliestEmptySlot();
-        // If there isn't another empty slot, then out of luck.
-        if (otherSlot == null)
+        if (inventoryItem.itemInstance.sharedData.Stackable)
         {
-            return;
+            if ((int)inventoryItem.itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack) <= 1)
+            {
+                return;
+            }
+            InventorySlot otherSlot = FindEarliestEmptySlot();
+            // If there isn't another empty slot, then out of luck.
+            if (otherSlot == null)
+            {
+                return;
+            }
+            // There should be no weight considerations since it's already in the bag
+            int numItems = (int)inventoryItem.itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+            int newStackNum = Mathf.FloorToInt(numItems / 2);
+
+            // Remove the correct number of items from the existing property, update the weight in the inventory accordingly, then update the stats.
+            inventoryItem.itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, numItems - newStackNum);
+            UpdateWeight(inventoryItem.itemInstance.sharedData.Weight * -newStackNum);
+            inventoryItem.GetCurrentInventorySlot().RefreshItemStats();
+
+            // Create new itemInstance, set it's number, fill empty slot with it.
+            ItemInstance newItem = new ItemInstance(inventoryItem.itemInstance.sharedData);
+            newItem.SetProperty(ItemAttributeKey.NumItemsInStack, newStackNum);
+            FillEmptySlots(newItem);
         }
-        // There should be no weight considerations since it's already in the bag
-        int numItems = (int)inventoryItem.itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
-        int newStackNum = Mathf.FloorToInt(numItems / 2);
-
-        // Remove the correct number of items from the existing property, update the weight in the inventory accordingly, then update the stats.
-        inventoryItem.itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, numItems - newStackNum);
-        UpdateWeight(inventoryItem.itemInstance.sharedData.Weight * -newStackNum);
-        inventoryItem.GetCurrentInventorySlot().RefreshItemStats();
-
-        // Create new itemInstance, set it's number, fill empty slot with it.
-        ItemInstance newItem = new ItemInstance(inventoryItem.itemInstance.sharedData);
-        newItem.SetProperty(ItemAttributeKey.NumItemsInStack, newStackNum);
-        FillEmptySlots(newItem);
     }
 }

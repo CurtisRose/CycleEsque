@@ -38,6 +38,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         OnDropItem(eventData);
     }
 
+    // Happens before OnEndDrag in the InventoryItem
     public virtual void OnDropItem(PointerEventData eventData)
     {
         // You can't drag an item with anything but left click.
@@ -199,9 +200,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     // This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)
     public virtual void SetItemInSlotAfterDrag(InventoryItem inventoryItem)
     {
-        InventorySlot test = this;
-        InventorySlot other = inventoryItem.GetCurrentInventorySlot();
-
         if (HasItem())
         {
             if (itemInSlot == inventoryItem)
@@ -247,7 +245,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         } else
         {
             weightText.text = (itemInSlot.GetTotalWeight()).ToString();
-            stackSizeText.text = itemInSlot.GetItemCount().ToString();
+            if (itemInSlot.itemInstance.sharedData.Stackable)
+            {
+                stackSizeText.text = itemInSlot.GetItemCount().ToString();
+            }
         }
     }
 
