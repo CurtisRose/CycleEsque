@@ -33,7 +33,6 @@ public class StashManager : Inventory
         LoadAllItems();
         LoadItemsFromJson();
         PopulateStash();
-        UpdateAllSlotStats();
         MenuManager.Instance.CloseMenu(StashMenu.Instance);
     }
 
@@ -57,20 +56,6 @@ public class StashManager : Inventory
         if(Input.GetKeyDown(KeyCode.O))
         {
             SaveStashToJson();
-        }
-    }
-
-    // TODO: Figure out why this is necessary, it shouldn't be.
-    // Works for the playerInventory in the map scene, doesn't work here.
-    void UpdateAllSlotStats()
-    {
-        foreach (InventorySlot inventorySlot in inventorySlots)
-        {
-            inventorySlot.RefreshItemStats();
-        }
-        foreach (InventorySlot inventorySlot in PlayerInventory.Instance.inventorySlots)
-        {
-            inventorySlot.RefreshItemStats();
         }
     }
 
