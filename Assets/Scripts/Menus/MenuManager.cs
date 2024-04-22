@@ -5,13 +5,17 @@ public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance { get; private set; }
     private List<Menu> activeMenus = new List<Menu>();
+    [SerializeField] bool DontDestroyOnLoadToggle;
 
     void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            if (DontDestroyOnLoadToggle)
+            {
+                DontDestroyOnLoad(gameObject);
+            }   
         }
         else
         {

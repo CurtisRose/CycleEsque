@@ -267,7 +267,7 @@ public class Inventory : MonoBehaviour
         }
         else
         {
-            Debug.Log("No earlier empty slot available.");
+            //Debug.Log("No earlier empty slot available.");
         }
     }
     public InventorySlot FindEarliestEmptySlot(InventoryItem inventoryItem)
