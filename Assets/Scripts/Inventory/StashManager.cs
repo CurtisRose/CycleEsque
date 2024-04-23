@@ -76,7 +76,7 @@ public class StashManager : Inventory
             if (inventorySlot.HasItem())
             {
                 ItemInstance itemInstance = inventorySlot.GetItemInSlot().itemInstance;
-                items.Add(SerializableItemData.FromSharedItemData(itemInstance.sharedData, (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack)));
+                items.Add(SerializableItemData.FromSharedItemData(itemInstance.sharedData, inventorySlot.GetItemInSlot().GetItemCount()));
             }
         }
 

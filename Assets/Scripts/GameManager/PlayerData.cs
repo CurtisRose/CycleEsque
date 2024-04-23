@@ -20,7 +20,7 @@ public class PlayerData
             {
                 ItemInstance itemInstance = inventorySlot.GetItemInSlot().itemInstance;
                 SharedItemData itemData = itemInstance.sharedData;
-                int quantity = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+                int quantity = inventorySlot.GetItemInSlot().GetItemCount();
                 inventoryItems.Add(SerializableItemData.FromSharedItemData(itemData, quantity));
             }
         }
