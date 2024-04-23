@@ -22,7 +22,7 @@ public class GearSlot : InventorySlot
         indicationImage.enabled = false;
     }
 
-    public override void OnDropItem(PointerEventData eventData)
+    public override void OnDrop(PointerEventData eventData)
     {
         // Check that the item is allowed to go into this slot gear slot
         GameObject dropped = eventData.pointerDrag;
@@ -33,7 +33,7 @@ public class GearSlot : InventorySlot
             return;
         }
 
-        base.OnDropItem(eventData);
+        base.OnDrop(eventData);
     }
 
     public void DisplayItemIndication(ItemType itemType)

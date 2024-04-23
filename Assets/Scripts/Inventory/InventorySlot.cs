@@ -33,13 +33,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         SetImageColorDefault();
     }
 
-    public void OnDrop(PointerEventData eventData)
-    {
-        OnDropItem(eventData);
-    }
-
     // Happens before OnEndDrag in the InventoryItem
-    public virtual void OnDropItem(PointerEventData eventData)
+    public virtual void OnDrop(PointerEventData eventData)
     {
         // You can't drag an item with anything but left click.
         // But, apparently, if you drag with middle or right click, it won't visually do anything,
@@ -126,7 +121,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                         // Try Splitting it if its stackable
                         if (itemComingIn.itemInstance.sharedData.Stackable)
                         {
-                            MoveAsManyAsYouCan(itemComingIn);
+                            inventory.MoveAsManyAsYouCan(this, itemComingIn);
                         }
                         return;
                     }
@@ -138,41 +133,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         itemComingIn.GetCurrentInventorySlot().RemoveItemFromSlot();
         itemInSlot = itemComingIn;
         itemComingIn.SetParentAfterDrag(itemSlot);
-    }
-
-    public void MoveAsManyAsYouCan(InventoryItem inventoryItem)
-    {
-        if (!inventoryItem.itemInstance.sharedData.Stackable) return;
-
-        InventorySlot currentSlot = inventoryItem.GetCurrentInventorySlot();
-        InventorySlot thisSlot = this;
-
-        int numItemsInStack = (int)inventoryItem.itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
-
-        // Calculate the available weight capacity
-        float availableWeight = inventory.GetInventoryWeightLimit() - inventory.currentWeight;
-
-        // Calculate the maximum number of items that can be added based on weight
-        int maxItemsByWeight = (int)(availableWeight / inventoryItem.itemInstance.sharedData.Weight);
-
-        if (maxItemsByWeight <= 0) return;
-
-        // Remove the correct number of items from the existing property, update the weight in the inventory accordingly, then update the stats.
-        inventoryItem.itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, numItemsInStack - maxItemsByWeight);
-        if (currentSlot.partOfPlayerInventory && currentSlot.slotContributesToWeight)
-        {
-            inventory.UpdateWeight(inventoryItem.itemInstance.sharedData.Weight * -maxItemsByWeight);
-        }
-        inventoryItem.GetCurrentInventorySlot().RefreshItemStats();
-
-        // Create new itemInstance, set it's number, fill empty slot with it.
-        ItemInstance newItem = new ItemInstance(inventoryItem.itemInstance.sharedData);
-        if ((!this.partOfPlayerInventory && this.slotContributesToWeight))
-        {
-            // Probably need to do something about weight in this instance, we'll see
-        }
-        newItem.SetProperty(ItemAttributeKey.NumItemsInStack, maxItemsByWeight);
-        inventory.FillEmptySlots(newItem);
     }
 
     // This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)
@@ -207,6 +167,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             inventoryItem.SetParentAfterDrag(itemSlot);
             SetImageColor(inventoryItem.itemInstance.sharedData.Rarity);
         }
+
         if (itemInSlot != null)
         {
             itemInSlot.OnItemCountChanged += RefreshItemStats;
