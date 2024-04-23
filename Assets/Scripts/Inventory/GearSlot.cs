@@ -22,19 +22,18 @@ public class GearSlot : InventorySlot
         indicationImage.enabled = false;
     }
 
-    public override void OnDrop(PointerEventData eventData)
-    {
-        // Check that the item is allowed to go into this slot gear slot
-        GameObject dropped = eventData.pointerDrag;
-        InventoryItem draggableItem = dropped.GetComponent<InventoryItem>();
+    protected override void OnDropHelper(PointerEventData eventData) {
+		// Check that the item is allowed to go into this slot gear slot
+		GameObject dropped = eventData.pointerDrag;
+		InventoryItem draggableItem = dropped.GetComponent<InventoryItem>();
 
-        if (itemType != draggableItem.GetItemType())
-        {
-            return;
-        }
+		if (itemType != draggableItem.GetItemType()) {
+			return;
+		}
 
-        base.OnDrop(eventData);
-    }
+        base.OnDropHelper(eventData);
+
+	}
 
     public void DisplayItemIndication(ItemType itemType)
     {

@@ -34,38 +34,38 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     }
 
     // Happens before OnEndDrag in the InventoryItem
-    public virtual void OnDrop(PointerEventData eventData)
-    {
-        // You can't drag an item with anything but left click.
-        // But, apparently, if you drag with middle or right click, it won't visually do anything,
-        // But it still calls this method.
-        if (eventData.button != PointerEventData.InputButton.Left)
-        {
-            return;
-        }
+	void IDropHandler.OnDrop(PointerEventData eventData) {
+		OnDropHelper(eventData);
+	}
 
-        GameObject dropped = eventData.pointerDrag;
-        InventoryItem itemComingIn = dropped.GetComponent<InventoryItem>();
-        InventorySlot otherSlot = itemComingIn.GetCurrentInventorySlot();
+	protected virtual void OnDropHelper(PointerEventData eventData) {
+		// You can't drag an item with anything but left click.
+		// But, apparently, if you drag with middle or right click, it won't visually do anything,
+		// But it still calls this method.
+		if (eventData.button != PointerEventData.InputButton.Left) {
+			return;
+		}
 
-        if (otherSlot == this)
-        {
-            return;
-        }
+		GameObject dropped = eventData.pointerDrag;
+		InventoryItem itemComingIn = dropped.GetComponent<InventoryItem>();
+		InventorySlot otherSlot = itemComingIn.GetCurrentInventorySlot();
 
-        bool success = inventory.AddItem(this, itemComingIn);
+		if (otherSlot == this) {
+			return;
+		}
 
-        if (success)
-        {
-            // Set the parent to this itemSlot
-            itemComingIn.GetCurrentInventorySlot().RemoveItemFromSlot();
-            itemInSlot = itemComingIn;
-            itemComingIn.SetParentAfterDrag(itemSlot);
-        }
-    }
+		bool success = inventory.AddItem(this, itemComingIn);
 
-    // This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)
-    public virtual void SetItemInSlotAfterDrag(InventoryItem inventoryItem)
+		if (success) {
+			// Set the parent to this itemSlot
+			itemComingIn.GetCurrentInventorySlot().RemoveItemFromSlot();
+			itemInSlot = itemComingIn;
+			itemComingIn.SetParentAfterDrag(itemSlot);
+		}
+	}
+
+	// This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)
+	public virtual void SetItemInSlotAfterDrag(InventoryItem inventoryItem)
     {
         if (HasItem())
         {

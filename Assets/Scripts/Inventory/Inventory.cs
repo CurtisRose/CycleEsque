@@ -112,11 +112,11 @@ public class Inventory : MonoBehaviour
 			if (otherSlot == null) {
 				return;
 			}
-			// There should be no weight considerations since it's already in the bag
+			
 			int numItems = inventoryItem.GetItemCount();
 			int newStackNum = Mathf.FloorToInt(numItems / 2);
 
-			// Remove the correct number of items from the existing property, update the weight in the inventory accordingly, then update the stats.
+			// Remove the correct number of items from the existing property, 
 			inventoryItem.itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, numItems - newStackNum);
 			inventoryItem.GetCurrentInventorySlot().RefreshItemStats();
 
@@ -137,7 +137,45 @@ public class Inventory : MonoBehaviour
 	}
 
 	public virtual void Swap(InventorySlot inventorySlot, InventoryItem incomingItem) {
-		//TODO: Implement swapping
+		if (inventorySlot.HasItem()) {
+			InventoryItem inventoryItemAlreadyHere = inventorySlot.GetItemInSlot();
+			InventorySlot otherSlot = incomingItem.GetCurrentInventorySlot();
+			otherSlot.RemoveItemFromSlot();
+			inventorySlot.RemoveItemFromSlot();
+
+			otherSlot.SetItemInSlotAfterDrag(inventoryItemAlreadyHere);
+			inventorySlot.SetItemInSlotAfterDrag(incomingItem);
+
+			if (otherSlot.ContributesToWeight()) {
+				if (otherSlot.GetInventory() as PlayerInventory) {
+					((PlayerInventory)otherSlot.GetInventory()).UpdateWeight(inventoryItemAlreadyHere.GetTotalWeight());
+					((PlayerInventory)otherSlot.GetInventory()).UpdateWeight(-incomingItem.GetTotalWeight());
+				}
+			}
+			if (inventorySlot.ContributesToWeight()) {
+				((PlayerInventory)this).UpdateWeight(incomingItem.GetTotalWeight());
+				((PlayerInventory)this).UpdateWeight(-inventoryItemAlreadyHere.GetTotalWeight());
+			}
+
+			inventoryItemAlreadyHere.DoThingsAfterMove();
+			incomingItem.DoThingsAfterMove();
+		} else {
+			InventorySlot otherSlot = incomingItem.GetCurrentInventorySlot();
+			otherSlot.RemoveItemFromSlot();
+			if (otherSlot.ContributesToWeight()) {
+				if (otherSlot.GetInventory() as PlayerInventory) {
+					((PlayerInventory)otherSlot.GetInventory()).UpdateWeight(-incomingItem.GetTotalWeight());
+
+				}
+			}
+			inventorySlot.SetItemInSlotAfterDrag(incomingItem);
+			if (inventorySlot.ContributesToWeight()) {
+				if (inventorySlot.GetInventory() as PlayerInventory) {
+					((PlayerInventory)inventorySlot.GetInventory()).UpdateWeight(incomingItem.GetTotalWeight());
+				}
+			}
+			incomingItem.DoThingsAfterMove();
+		}
 	}
 
 	public InventorySlot FindEarliestEmptySlot(InventoryItem inventoryItem) {
@@ -195,8 +233,8 @@ public class Inventory : MonoBehaviour
 		int itemsToAdd = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
 
 		if (itemsToAdd <= 0) {
-			Debug.Log("Not enough weight capacity to add these items");
-			return itemsToAdd; // Not enough weight capacity to add any of the items, return the original number
+			Debug.Log("No items in the item instance");
+			return itemsToAdd; 
 		}
 
 		foreach (InventorySlot slot in inventorySlots) {
@@ -205,9 +243,7 @@ public class Inventory : MonoBehaviour
 				ItemInstance newItemInstance = itemInstance.Clone(); // Create a deep copy of itemInstance
 				newItemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, itemsThatCanBeAdded);
 
-				// Create item adds the weight at some point.
 				CreateNewItem(newItemInstance, slot);  // Create a new item in the slot
-													   //UpdateWeight(newItemInstance.sharedData.Weight * itemsThatCanBeAdded);  // Update the total weight
 
 				itemsToAdd -= itemsThatCanBeAdded; // Reduce the number of items left to add
 				if (itemsToAdd == 0) return 0; // Successfully added all items
