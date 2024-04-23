@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ArmorCommon
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Common Armor
+  <ID>k__BackingField: a92e52f1-7613-47a4-8f10-4e22b5eed72f
   <ItemDescription>k__BackingField: 
   <ItemType>k__BackingField: 2
   <Rarity>k__BackingField: 0
@@ -20,8 +21,11 @@ MonoBehaviour:
     type: 3}
   <LargeImage>k__BackingField: {fileID: 0}
   <Weight>k__BackingField: 40
-  <stackable>k__BackingField: 0
-  <maxStackSize>k__BackingField: 0
+  <Stackable>k__BackingField: 0
+  <MaxStackSize>k__BackingField: 0
   <ColorGameObjectBasedOnRarity>k__BackingField: 1
+  allowedKeys:
+  - NumItemsInStack
+  - ArmorRemaining
   <AmountOfArmor>k__BackingField: 100
   <DefenseValue>k__BackingField: 1

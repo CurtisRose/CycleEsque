@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ArmorUncommon
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Uncommon Armor
+  <ID>k__BackingField: b33f73f1-a104-492d-9fe6-6df9cf98102a
   <ItemDescription>k__BackingField: 
   <ItemType>k__BackingField: 2
   <Rarity>k__BackingField: 1
@@ -20,8 +21,11 @@ MonoBehaviour:
     type: 3}
   <LargeImage>k__BackingField: {fileID: 0}
   <Weight>k__BackingField: 40
-  <stackable>k__BackingField: 0
-  <maxStackSize>k__BackingField: 0
+  <Stackable>k__BackingField: 0
+  <MaxStackSize>k__BackingField: 0
   <ColorGameObjectBasedOnRarity>k__BackingField: 1
+  allowedKeys:
+  - NumItemsInStack
+  - ArmorRemaining
   <AmountOfArmor>k__BackingField: 150
   <DefenseValue>k__BackingField: 1

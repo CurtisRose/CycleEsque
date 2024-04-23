@@ -14,12 +14,17 @@ public class Inventory : MonoBehaviour
     public List<InventorySlot> inventorySlots;
     public GameObject inventoryItemPrefab;
     [SerializeField] private float inventoryWeightLimit;
-    public float currentWeight;
+    [SerializeField] protected float currentWeight;
     [SerializeField] public static List<Color> rarityColors;
 
     public virtual float GetInventoryWeightLimit()
     {
         return inventoryWeightLimit;
+    }
+
+    public float GetCurrentInventoryWeight()
+    {
+        return currentWeight;
     }
 
     public virtual bool AddItem(ItemInstance itemInstance)
@@ -148,15 +153,18 @@ public class Inventory : MonoBehaviour
         }
         else
         {
+            InventorySlot otherSlot = itemToAdd.GetCurrentInventorySlot();
+            Inventory otherInventory = otherSlot.GetInventory();
+
             // Check to see if it's too heavy for inventory
             if (slotToAddTo.slotContributesToWeight)
             {
-                if (!itemToAdd.GetCurrentInventorySlot().slotContributesToWeight)
+                if (!otherSlot.slotContributesToWeight)
                 {
                     float weightLimitAfterSwap = GetInventoryWeightLimit();
                     // If the this slot is the backpack slot then recalculate the inventory size
                     if (itemToAdd.itemInstance.sharedData.ItemType == ItemType.BACKPACK &&
-                        itemToAdd.GetCurrentInventorySlot() as GearSlot)
+                        otherSlot as GearSlot)
                     {
                         weightLimitAfterSwap -=
                             ((BackpackItem)itemToAdd.itemInstance.sharedData).CarryCapacity;
@@ -173,7 +181,17 @@ public class Inventory : MonoBehaviour
                     }
                 }
             }
+
+            if (slotToAddTo.slotContributesToWeight)
+            {
+                UpdateWeight(itemToAdd.GetTotalWeight());
+            }
+            if (otherSlot.slotContributesToWeight)
+            {
+                otherInventory.UpdateWeight(-itemToAdd.GetTotalWeight());
+            }
         }
+
         return true;
     }
 
@@ -329,6 +347,10 @@ public class Inventory : MonoBehaviour
         inventoryItem.name = itemInstance.sharedData.DisplayName;
         inventoryItem.InitializeItem(itemInstance);
         inventorySlot.SetItemInSlotAfterDrag(inventoryItem);
+        if (inventorySlot.slotContributesToWeight)
+        {
+            UpdateWeight(inventoryItem.GetTotalWeight());
+        }
     }
 
     public virtual void StartInventoryItemMoved(InventoryItem inventoryItem)
@@ -402,6 +424,17 @@ public class Inventory : MonoBehaviour
             otherSlot.SetItemInSlotAfterDrag(inventoryItemAlreadyHere);
             inventorySlot.SetItemInSlotAfterDrag(incomingItem);
 
+            if (otherSlot.slotContributesToWeight)
+            {
+                otherSlot.GetInventory().UpdateWeight(inventoryItemAlreadyHere.GetTotalWeight());
+                otherSlot.GetInventory().UpdateWeight(-incomingItem.GetTotalWeight());
+            }
+            if (inventorySlot.slotContributesToWeight)
+            {
+                UpdateWeight(incomingItem.GetTotalWeight());
+                UpdateWeight(-inventoryItemAlreadyHere.GetTotalWeight());
+            }
+
             inventoryItemAlreadyHere.DoThingsAfterMove();
             incomingItem.DoThingsAfterMove();
         }
@@ -409,7 +442,15 @@ public class Inventory : MonoBehaviour
         {
             InventorySlot otherSlot = incomingItem.GetCurrentInventorySlot();
             otherSlot.RemoveItemFromSlot();
+            if (otherSlot.slotContributesToWeight)
+            {
+                otherSlot.GetInventory().UpdateWeight(-incomingItem.GetTotalWeight());
+            }
             inventorySlot.SetItemInSlotAfterDrag(incomingItem);
+            if (inventorySlot.slotContributesToWeight)
+            {
+                inventorySlot.GetInventory().UpdateWeight(incomingItem.GetTotalWeight());
+            }
             incomingItem.DoThingsAfterMove();
         }
     }

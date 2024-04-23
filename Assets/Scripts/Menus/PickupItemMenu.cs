@@ -37,7 +37,7 @@ public class PickupItemMenu : Menu
         itemWeight.text = worldItem.GetWeight().ToString();
         itemRarity.text = sharedItemData.Rarity.ToString();
         itemRarity.color = RarityColorManager.Instance.GetColorByRarity(sharedItemData.Rarity);
-        float roomInBackpack = PlayerInventory.Instance.GetInventoryWeightLimit() - PlayerInventory.Instance.currentWeight;
+        float roomInBackpack = PlayerInventory.Instance.GetInventoryWeightLimit() - PlayerInventory.Instance.GetCurrentInventoryWeight();
         if (roomInBackpack >= worldItem.GetWeight())
         {
             itemWeight.color = Color.white;

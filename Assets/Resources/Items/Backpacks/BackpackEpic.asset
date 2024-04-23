@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BackpackEpic
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Backpack Epic
+  <ID>k__BackingField: 9c35c7cf-8d8a-4c3f-88ee-6783765c9a99
   <ItemDescription>k__BackingField: 
   <ItemType>k__BackingField: 3
   <Rarity>k__BackingField: 3
@@ -20,8 +21,9 @@ MonoBehaviour:
     type: 3}
   <LargeImage>k__BackingField: {fileID: 0}
   <Weight>k__BackingField: 20
-  <stackable>k__BackingField: 0
-  <maxStackSize>k__BackingField: 0
-  <itemPrefab>k__BackingField: {fileID: 7614836780665308768, guid: d3d002577e0803341b6051e13bd3ef98,
-    type: 3}
+  <Stackable>k__BackingField: 0
+  <MaxStackSize>k__BackingField: 0
+  <ColorGameObjectBasedOnRarity>k__BackingField: 0
+  allowedKeys:
+  - NumItemsInStack
   <CarryCapacity>k__BackingField: 125

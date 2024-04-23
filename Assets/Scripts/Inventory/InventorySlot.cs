@@ -80,10 +80,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             itemInSlot = inventoryItem;
             hasItem = true;
 
-            if (slotContributesToWeight)
-            {
-                inventory.UpdateWeight(inventoryItem.GetTotalWeight());
-            }
             weightText.text = inventoryItem.GetTotalWeight().ToString();
             if (inventoryItem.itemInstance.sharedData.Stackable)
             {
@@ -127,10 +123,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         {
             InventoryItem itemToReturn = itemInSlot;
             itemInSlot.OnItemCountChanged -= RefreshItemStats;
-            if (slotContributesToWeight)
-            {
-                inventory.UpdateWeight(-(itemInSlot.GetTotalWeight()));
-            }
             itemInSlot = null;
             hasItem = false;
             RefreshItemStats();

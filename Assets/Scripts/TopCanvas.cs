@@ -16,7 +16,6 @@ public class TopCanvas : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Optional: Makes the instance persistent between scenes
         }
     }
 
