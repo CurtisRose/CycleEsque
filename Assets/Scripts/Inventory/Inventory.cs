@@ -119,34 +119,41 @@ public class Inventory : MonoBehaviour
             float weightLimitAfterSwap = GetInventoryWeightLimit();
 
             // Check to see if it's too heavy for inventory
-            if (slotToAddTo.ContributesToWeight())
+            if (slotToAddTo.ContributesToWeight() ||
+				itemToAdd.itemInstance.sharedData.ItemType == ItemType.BACKPACK && slotToAddTo as GearSlot)
             {
                 // If the other slot is the backpack slot then recalculate the inventory size
-                if ((slotToAddTo as GearSlot || otherSlot as GearSlot) && itemInSlot.GetItemType() == ItemType.BACKPACK)
+                if (slotToAddTo as GearSlot && itemInSlot.GetItemType() == ItemType.BACKPACK)
                 {
-                    weightLimitAfterSwap +=
-                        ((BackpackItem)itemAlreadyHere.itemInstance.sharedData).CarryCapacity -
-                        ((BackpackItem)itemToAdd.itemInstance.sharedData).CarryCapacity;
-                }
-
-                weightAfterSwap = weightAfterSwap + itemToAdd.GetTotalWeight() - itemAlreadyHere.GetTotalWeight();
-            }
-            if (otherSlot.ContributesToWeight())
-            {
-                // If the this slot is the backpack slot then recalculate the inventory size
-                if ((slotToAddTo as GearSlot || otherSlot as GearSlot) && itemInSlot.GetItemType() == ItemType.BACKPACK)
-                {
-                    weightLimitAfterSwap +=
+                    weightLimitAfterSwap += 
                         ((BackpackItem)itemToAdd.itemInstance.sharedData).CarryCapacity -
-                        ((BackpackItem)itemAlreadyHere.itemInstance.sharedData).CarryCapacity;
+						((BackpackItem)itemAlreadyHere.itemInstance.sharedData).CarryCapacity;
                 }
-
-                weightAfterSwap = weightAfterSwap + itemAlreadyHere.GetTotalWeight() - itemToAdd.GetTotalWeight();
+                if (slotToAddTo.ContributesToWeight()) {
+					weightAfterSwap = weightAfterSwap + itemToAdd.GetTotalWeight() - itemAlreadyHere.GetTotalWeight();
+				}
+                if (weightAfterSwap > weightLimitAfterSwap) {
+					return false;
+				}
             }
 
-            if (weightAfterSwap > weightLimitAfterSwap)
-            {
-                return false;
+            // Do the same thing for the other slot and other inventory
+            weightAfterSwap = otherSlot.GetInventory().currentWeight;
+            weightLimitAfterSwap = otherSlot.GetInventory().GetInventoryWeightLimit();
+            if (otherSlot.ContributesToWeight() || 
+                itemToAdd.itemInstance.sharedData.ItemType == ItemType.BACKPACK && otherSlot as GearSlot) {
+                // If the this slot is the backpack slot then recalculate the inventory size
+                if (otherSlot as GearSlot && itemToAdd.itemInstance.sharedData.ItemType == ItemType.BACKPACK) {
+					weightLimitAfterSwap +=
+						((BackpackItem)itemAlreadyHere.itemInstance.sharedData).CarryCapacity -
+						((BackpackItem)itemToAdd.itemInstance.sharedData).CarryCapacity;
+				}
+                if (otherSlot.ContributesToWeight()) {
+                    weightAfterSwap = weightAfterSwap - itemAlreadyHere.GetTotalWeight() + itemToAdd.GetTotalWeight();
+                }
+                if (weightAfterSwap > weightLimitAfterSwap) {
+                    return false;
+                }
             }
 
             Swap(slotToAddTo, itemToAdd);
@@ -156,8 +163,33 @@ public class Inventory : MonoBehaviour
             InventorySlot otherSlot = itemToAdd.GetCurrentInventorySlot();
             Inventory otherInventory = otherSlot.GetInventory();
 
-            // Check to see if it's too heavy for inventory
-            if (slotToAddTo.ContributesToWeight())
+			// Check to see if it's too heavy for inventory
+			if (otherSlot.ContributesToWeight() || 
+                itemToAdd.itemInstance.sharedData.ItemType == ItemType.BACKPACK && otherSlot as GearSlot) {
+                float weightLimitAfterSwap = otherInventory.GetInventoryWeightLimit();
+                // If the this slot is the backpack slot then recalculate the inventory size
+                if (itemToAdd.itemInstance.sharedData.ItemType == ItemType.BACKPACK &&
+										otherSlot as GearSlot) {
+					weightLimitAfterSwap -=
+						((BackpackItem)itemToAdd.itemInstance.sharedData).CarryCapacity;
+				}
+                if (otherInventory.currentWeight - itemToAdd.GetTotalWeight() > weightLimitAfterSwap) {
+					// Try Splitting it if its stackable
+					/*if (itemToAdd.itemInstance.sharedData.Stackable) {
+						MoveAsManyAsYouCan(slotToAddTo, itemToAdd);
+					}*/
+					return false;
+				}
+            }
+
+            if (slotToAddTo.ContributesToWeight()) {
+				if (currentWeight + itemToAdd.GetTotalWeight() > GetInventoryWeightLimit()) {
+                    return false;
+                }
+            }
+
+
+			/*if (slotToAddTo.ContributesToWeight())
             {
                 if (!otherSlot.ContributesToWeight())
                 {
@@ -180,9 +212,9 @@ public class Inventory : MonoBehaviour
                         return false;
                     }
                 }
-            }
+            }*/
 
-            if (slotToAddTo.ContributesToWeight())
+			if (slotToAddTo.ContributesToWeight())
             {
                 UpdateWeight(itemToAdd.GetTotalWeight());
             }
