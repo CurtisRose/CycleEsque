@@ -22,6 +22,45 @@ public class Inventory : MonoBehaviour
         return inventoryWeightLimit;
     }
 
+    public virtual bool AddItem(ItemInstance itemInstance)
+    {
+        int numItems = HowManyItemsCanBeAdded(itemInstance);
+
+        if (numItems <= 0)
+        {
+            Debug.Log("No Room In Inventory");
+            return false;
+        }
+
+        bool updated = false; // Flag to track if the inventory was updated
+
+        // If the item is stackable, try to add it to existing slots with the same item
+        if (itemInstance.sharedData.Stackable)
+        {
+            int startItems = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+            int remainingItems = FillExistingStacks(itemInstance);
+            int itemsAdded = startItems - remainingItems;
+            UpdateWeight(itemInstance.sharedData.Weight * itemsAdded);
+            if (remainingItems < numItems)
+            {
+                updated = true;  // Update occurred if we added some items to existing stacks
+            }
+            numItems = remainingItems;
+        }
+
+        // If there are items left after trying to stack them in existing slots, or if the item is not stackable
+        if (numItems > 0)
+        {
+            int itemsLeftToAdd = FillEmptySlots(itemInstance);
+            if (itemsLeftToAdd < numItems)
+            {
+                updated = true;  // Update occurred if we added some items to new slots
+            }
+        }
+
+        return updated;
+    }
+
     public bool AddItem(WorldItem item)
     {
         int numItems = item.GetNumberOfItems();
@@ -56,6 +95,88 @@ public class Inventory : MonoBehaviour
         return successCheck && !partialOnly;
     }
 
+    public bool AddItem(InventorySlot slotToAddTo, InventoryItem itemToAdd)
+    {
+        // If itemslot has item, swap, unless stackable and same item type
+        if (slotToAddTo.HasItem())
+        {
+            InventoryItem itemInSlot = slotToAddTo.GetItemInSlot();
+            InventorySlot otherSlot = itemToAdd.GetCurrentInventorySlot();
+            if (itemToAdd.itemInstance.sharedData.Stackable &&
+                itemToAdd.GetItemType() == itemInSlot.GetItemType())
+            {
+                // TODO: Need to do something like fill it with what it can
+                //return false;
+            }
+
+            InventoryItem itemAlreadyHere = itemInSlot;
+            float weightAfterSwap = currentWeight;
+            float weightLimitAfterSwap = GetInventoryWeightLimit();
+
+            // Check to see if it's too heavy for inventory
+            if (slotToAddTo.slotContributesToWeight)
+            {
+                // If the other slot is the backpack slot then recalculate the inventory size
+                if ((slotToAddTo as GearSlot || otherSlot as GearSlot) && itemInSlot.GetItemType() == ItemType.BACKPACK)
+                {
+                    weightLimitAfterSwap +=
+                        ((BackpackItem)itemAlreadyHere.itemInstance.sharedData).CarryCapacity -
+                        ((BackpackItem)itemToAdd.itemInstance.sharedData).CarryCapacity;
+                }
+
+                weightAfterSwap = weightAfterSwap + itemToAdd.GetTotalWeight() - itemAlreadyHere.GetTotalWeight();
+            }
+            if (otherSlot.slotContributesToWeight)
+            {
+                // If the this slot is the backpack slot then recalculate the inventory size
+                if ((slotToAddTo as GearSlot || otherSlot as GearSlot) && itemInSlot.GetItemType() == ItemType.BACKPACK)
+                {
+                    weightLimitAfterSwap +=
+                        ((BackpackItem)itemToAdd.itemInstance.sharedData).CarryCapacity -
+                        ((BackpackItem)itemAlreadyHere.itemInstance.sharedData).CarryCapacity;
+                }
+
+                weightAfterSwap = weightAfterSwap + itemAlreadyHere.GetTotalWeight() - itemToAdd.GetTotalWeight();
+            }
+
+            if (weightAfterSwap > weightLimitAfterSwap)
+            {
+                return false;
+            }
+
+            Swap(slotToAddTo, itemToAdd);
+        }
+        else
+        {
+            // Check to see if it's too heavy for inventory
+            if (slotToAddTo.slotContributesToWeight)
+            {
+                if (!itemToAdd.GetCurrentInventorySlot().slotContributesToWeight)
+                {
+                    float weightLimitAfterSwap = GetInventoryWeightLimit();
+                    // If the this slot is the backpack slot then recalculate the inventory size
+                    if (itemToAdd.itemInstance.sharedData.ItemType == ItemType.BACKPACK &&
+                        itemToAdd.GetCurrentInventorySlot() as GearSlot)
+                    {
+                        weightLimitAfterSwap -=
+                            ((BackpackItem)itemToAdd.itemInstance.sharedData).CarryCapacity;
+                    }
+
+                    if (currentWeight + itemToAdd.GetTotalWeight() > weightLimitAfterSwap)
+                    {
+                        // Try Splitting it if its stackable
+                        if (itemToAdd.itemInstance.sharedData.Stackable)
+                        {
+                            MoveAsManyAsYouCan(slotToAddTo, itemToAdd);
+                        }
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     public int HowManyItemsCanBeAdded(ItemInstance itemInstance)
     {
         int numItems = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
@@ -70,45 +191,6 @@ public class Inventory : MonoBehaviour
         int itemsToAdd = Mathf.Min(numItems, maxItemsByWeight);
 
         return itemsToAdd;
-    }
-
-    public virtual bool AddItem(ItemInstance itemInstance)
-    {
-            int numItems = HowManyItemsCanBeAdded(itemInstance);
-
-        if (numItems <= 0)
-        {
-            Debug.Log("No Room In Inventory");
-            return false;
-        }
-
-        bool updated = false; // Flag to track if the inventory was updated
-
-        // If the item is stackable, try to add it to existing slots with the same item
-        if (itemInstance.sharedData.Stackable)
-        {
-            int startItems = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
-            int remainingItems = FillExistingStacks(itemInstance);
-            int itemsAdded = startItems - remainingItems;
-            UpdateWeight(itemInstance.sharedData.Weight * itemsAdded);
-            if (remainingItems < numItems)
-            {
-                updated = true;  // Update occurred if we added some items to existing stacks
-            }
-            numItems = remainingItems;
-        }
-
-        // If there are items left after trying to stack them in existing slots, or if the item is not stackable
-        if (numItems > 0)
-        {
-            int itemsLeftToAdd =  FillEmptySlots(itemInstance);
-            if (itemsLeftToAdd < numItems)
-            {
-                updated = true;  // Update occurred if we added some items to new slots
-            }
-        }
-
-        return updated;
     }
 
     protected int FillExistingStacks(ItemInstance itemInstance)
@@ -334,8 +416,7 @@ public class Inventory : MonoBehaviour
 
     public virtual void QuickEquip(InventorySlot inventorySlot)
     {
-        // Possibly, this can be used to right click items into earlier slots.
-        // For now only used in the player inventory class
+        AddItemToEarliestEmptySlot(inventorySlot.GetItemInSlot());
     }
 
     public virtual void DropItem(ItemInstance itemInstance)

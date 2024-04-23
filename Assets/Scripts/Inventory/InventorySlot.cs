@@ -53,86 +53,15 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             return;
         }
 
-        // If itemslot has item, swap, unless stackable and same item type
-        if (HasItem())
+        bool success = inventory.AddItem(this, itemComingIn);
+
+        if (success)
         {
-            if(itemComingIn.itemInstance.sharedData.Stackable && 
-                itemComingIn.GetItemType() == itemInSlot.GetItemType())
-            {
-                // TODO: Need to do something like fill it with what it can
-                return;
-            }
-
-            InventoryItem itemAlreadyHere = itemInSlot;
-            float weightAfterSwap = inventory.currentWeight;
-            float weightLimitAfterSwap = inventory.GetInventoryWeightLimit();
-
-            // Check to see if it's too heavy for inventory
-            if (this.slotContributesToWeight)
-            {                
-                // If the other slot is the backpack slot then recalculate the inventory size
-                if ((this as GearSlot || otherSlot as GearSlot) && itemInSlot.GetItemType() == ItemType.BACKPACK)
-                {
-                    weightLimitAfterSwap += 
-                        ((BackpackItem)itemAlreadyHere.itemInstance.sharedData).CarryCapacity -
-                        ((BackpackItem)itemComingIn.itemInstance.sharedData).CarryCapacity;
-                }
-
-                weightAfterSwap = weightAfterSwap + itemComingIn.GetTotalWeight() - itemAlreadyHere.GetTotalWeight();
-            }
-            if (otherSlot.slotContributesToWeight)
-            {
-                // If the this slot is the backpack slot then recalculate the inventory size
-                if ((this as GearSlot || otherSlot as GearSlot) && itemInSlot.GetItemType() == ItemType.BACKPACK)
-                {
-                    weightLimitAfterSwap +=
-                        ((BackpackItem)itemComingIn.itemInstance.sharedData).CarryCapacity -
-                        ((BackpackItem)itemAlreadyHere.itemInstance.sharedData).CarryCapacity;
-                }
-
-                weightAfterSwap = weightAfterSwap + itemAlreadyHere.GetTotalWeight() - itemComingIn.GetTotalWeight();
-            }
-
-            if (weightAfterSwap > weightLimitAfterSwap)
-            {
-                return;
-            }
-
-            inventory.Swap(this, itemComingIn);
-        } 
-        else
-        {
-            // Check to see if it's too heavy for inventory
-            if (this.slotContributesToWeight)
-            {
-                if (!itemComingIn.GetCurrentInventorySlot().slotContributesToWeight)
-                {
-                    float weightLimitAfterSwap = inventory.GetInventoryWeightLimit();
-                    // If the this slot is the backpack slot then recalculate the inventory size
-                    if (itemComingIn.itemInstance.sharedData.ItemType == ItemType.BACKPACK &&
-                        itemComingIn.GetCurrentInventorySlot() as GearSlot)
-                    {
-                        weightLimitAfterSwap -=
-                            ((BackpackItem)itemComingIn.itemInstance.sharedData).CarryCapacity;
-                    }
-
-                    if (inventory.currentWeight + itemComingIn.GetTotalWeight() > weightLimitAfterSwap)
-                    {
-                        // Try Splitting it if its stackable
-                        if (itemComingIn.itemInstance.sharedData.Stackable)
-                        {
-                            inventory.MoveAsManyAsYouCan(this, itemComingIn);
-                        }
-                        return;
-                    }
-                }
-            }
+            // Set the parent to this itemSlot
+            itemComingIn.GetCurrentInventorySlot().RemoveItemFromSlot();
+            itemInSlot = itemComingIn;
+            itemComingIn.SetParentAfterDrag(itemSlot);
         }
-
-        // Set the parent to this itemSlot
-        itemComingIn.GetCurrentInventorySlot().RemoveItemFromSlot();
-        itemInSlot = itemComingIn;
-        itemComingIn.SetParentAfterDrag(itemSlot);
     }
 
     // This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)

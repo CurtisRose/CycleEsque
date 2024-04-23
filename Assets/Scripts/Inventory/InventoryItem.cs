@@ -121,7 +121,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         // Check if the right mouse button was clicked
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            PlayerInventory.Instance.QuickEquip(currentInventorySlot);
+            GetCurrentInventorySlot().GetInventory().QuickEquip(currentInventorySlot);
             return;
         }
         if (eventData.button == PointerEventData.InputButton.Left)
