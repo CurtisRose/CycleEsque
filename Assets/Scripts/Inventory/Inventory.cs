@@ -181,45 +181,23 @@ public class Inventory : MonoBehaviour
 						((BackpackItem)itemToAdd.itemInstance.sharedData).CarryCapacity;
 				}
                 if (otherInventory.currentWeight - itemToAdd.GetTotalWeight() > weightLimitAfterSwap) {
-					// Try Splitting it if its stackable
-					/*if (itemToAdd.itemInstance.sharedData.Stackable) {
-						MoveAsManyAsYouCan(slotToAddTo, itemToAdd);
-					}*/
+					// If stackable, just try moving as many as you can
+					if (itemToAdd.itemInstance.sharedData.Stackable) {
+						MoveAsManyAsYouCan(slotToAddTo.GetInventory(), slotToAddTo, itemToAdd);
+					}
 					return false;
 				}
             }
 
             if (slotToAddTo.ContributesToWeight()) {
 				if (currentWeight + itemToAdd.GetTotalWeight() > GetInventoryWeightLimit()) {
-                    return false;
+					// If stackable, just try moving as many as you can
+					if (itemToAdd.itemInstance.sharedData.Stackable) {
+						MoveAsManyAsYouCan(slotToAddTo.GetInventory(), slotToAddTo, itemToAdd);
+					}
+					return false;
                 }
             }
-
-
-			/*if (slotToAddTo.ContributesToWeight())
-            {
-                if (!otherSlot.ContributesToWeight())
-                {
-                    float weightLimitAfterSwap = GetInventoryWeightLimit();
-                    // If the this slot is the backpack slot then recalculate the inventory size
-                    if (itemToAdd.itemInstance.sharedData.ItemType == ItemType.BACKPACK &&
-                        otherSlot as GearSlot)
-                    {
-                        weightLimitAfterSwap -=
-                            ((BackpackItem)itemToAdd.itemInstance.sharedData).CarryCapacity;
-                    }
-
-                    if (currentWeight + itemToAdd.GetTotalWeight() > weightLimitAfterSwap)
-                    {
-                        // Try Splitting it if its stackable
-                        if (itemToAdd.itemInstance.sharedData.Stackable)
-                        {
-                            MoveAsManyAsYouCan(slotToAddTo, itemToAdd);
-                        }
-                        return false;
-                    }
-                }
-            }*/
 
 			if (slotToAddTo.ContributesToWeight())
             {
@@ -532,5 +510,39 @@ public class Inventory : MonoBehaviour
             newItem.SetProperty(ItemAttributeKey.NumItemsInStack, newStackNum);
             FillEmptySlots(newItem);
         }
+    }
+
+    public static void MoveAsManyAsYouCan(Inventory inventory, InventorySlot inventorySlot, InventoryItem inventoryItem)
+    {
+        if (!inventoryItem.itemInstance.sharedData.Stackable) return;
+
+        InventorySlot currentSlot = inventoryItem.GetCurrentInventorySlot();
+
+        int numItemsInStack = (int)inventoryItem.itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+
+        // Calculate the available weight capacity
+        float availableWeight = inventory.GetInventoryWeightLimit() - inventory.currentWeight;
+
+        // Calculate the maximum number of items that can be added based on weight
+        int maxItemsByWeight = (int)(availableWeight / inventoryItem.itemInstance.sharedData.Weight);
+
+        if (maxItemsByWeight <= 0) return;
+
+        // Remove the correct number of items from the existing property, update the weight in the inventory accordingly, then update the stats.
+        inventoryItem.itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, numItemsInStack - maxItemsByWeight);
+        if (currentSlot.partOfPlayerInventory && currentSlot.ContributesToWeight())
+        {
+            inventory.UpdateWeight(inventoryItem.itemInstance.sharedData.Weight * -maxItemsByWeight);
+        }
+        inventoryItem.GetCurrentInventorySlot().RefreshItemStats();
+
+        // Create new itemInstance, set it's number, fill empty slot with it.
+        ItemInstance newItem = new ItemInstance(inventoryItem.itemInstance.sharedData);
+        if ((!inventorySlot.partOfPlayerInventory && inventorySlot.ContributesToWeight()))
+        {
+            // Probably need to do something about weight in this instance, we'll see
+        }
+        newItem.SetProperty(ItemAttributeKey.NumItemsInStack, maxItemsByWeight);
+        inventory.FillEmptySlots(newItem);
     }
 }
