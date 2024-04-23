@@ -21,7 +21,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     [SerializeField] Image itemBorderImage;
 
     [SerializeField] public bool UseLargeImage = false;
-    [SerializeField] public bool slotContributesToWeight = true;
+    [SerializeField] private bool slotContributesToWeight = true;
 
     [SerializeField] public bool partOfPlayerInventory;
 
@@ -169,4 +169,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     {
         return inventory;
     }
+
+    public bool ContributesToWeight() {
+		return slotContributesToWeight;
+	}
 }

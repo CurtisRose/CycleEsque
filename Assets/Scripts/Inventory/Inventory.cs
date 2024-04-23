@@ -119,7 +119,7 @@ public class Inventory : MonoBehaviour
             float weightLimitAfterSwap = GetInventoryWeightLimit();
 
             // Check to see if it's too heavy for inventory
-            if (slotToAddTo.slotContributesToWeight)
+            if (slotToAddTo.ContributesToWeight())
             {
                 // If the other slot is the backpack slot then recalculate the inventory size
                 if ((slotToAddTo as GearSlot || otherSlot as GearSlot) && itemInSlot.GetItemType() == ItemType.BACKPACK)
@@ -131,7 +131,7 @@ public class Inventory : MonoBehaviour
 
                 weightAfterSwap = weightAfterSwap + itemToAdd.GetTotalWeight() - itemAlreadyHere.GetTotalWeight();
             }
-            if (otherSlot.slotContributesToWeight)
+            if (otherSlot.ContributesToWeight())
             {
                 // If the this slot is the backpack slot then recalculate the inventory size
                 if ((slotToAddTo as GearSlot || otherSlot as GearSlot) && itemInSlot.GetItemType() == ItemType.BACKPACK)
@@ -157,9 +157,9 @@ public class Inventory : MonoBehaviour
             Inventory otherInventory = otherSlot.GetInventory();
 
             // Check to see if it's too heavy for inventory
-            if (slotToAddTo.slotContributesToWeight)
+            if (slotToAddTo.ContributesToWeight())
             {
-                if (!otherSlot.slotContributesToWeight)
+                if (!otherSlot.ContributesToWeight())
                 {
                     float weightLimitAfterSwap = GetInventoryWeightLimit();
                     // If the this slot is the backpack slot then recalculate the inventory size
@@ -182,11 +182,11 @@ public class Inventory : MonoBehaviour
                 }
             }
 
-            if (slotToAddTo.slotContributesToWeight)
+            if (slotToAddTo.ContributesToWeight())
             {
                 UpdateWeight(itemToAdd.GetTotalWeight());
             }
-            if (otherSlot.slotContributesToWeight)
+            if (otherSlot.ContributesToWeight())
             {
                 otherInventory.UpdateWeight(-itemToAdd.GetTotalWeight());
             }
@@ -347,7 +347,7 @@ public class Inventory : MonoBehaviour
         inventoryItem.name = itemInstance.sharedData.DisplayName;
         inventoryItem.InitializeItem(itemInstance);
         inventorySlot.SetItemInSlotAfterDrag(inventoryItem);
-        if (inventorySlot.slotContributesToWeight)
+        if (inventorySlot.ContributesToWeight())
         {
             UpdateWeight(inventoryItem.GetTotalWeight());
         }
@@ -424,12 +424,12 @@ public class Inventory : MonoBehaviour
             otherSlot.SetItemInSlotAfterDrag(inventoryItemAlreadyHere);
             inventorySlot.SetItemInSlotAfterDrag(incomingItem);
 
-            if (otherSlot.slotContributesToWeight)
+            if (otherSlot.ContributesToWeight())
             {
                 otherSlot.GetInventory().UpdateWeight(inventoryItemAlreadyHere.GetTotalWeight());
                 otherSlot.GetInventory().UpdateWeight(-incomingItem.GetTotalWeight());
             }
-            if (inventorySlot.slotContributesToWeight)
+            if (inventorySlot.ContributesToWeight())
             {
                 UpdateWeight(incomingItem.GetTotalWeight());
                 UpdateWeight(-inventoryItemAlreadyHere.GetTotalWeight());
@@ -442,12 +442,12 @@ public class Inventory : MonoBehaviour
         {
             InventorySlot otherSlot = incomingItem.GetCurrentInventorySlot();
             otherSlot.RemoveItemFromSlot();
-            if (otherSlot.slotContributesToWeight)
+            if (otherSlot.ContributesToWeight())
             {
                 otherSlot.GetInventory().UpdateWeight(-incomingItem.GetTotalWeight());
             }
             inventorySlot.SetItemInSlotAfterDrag(incomingItem);
-            if (inventorySlot.slotContributesToWeight)
+            if (inventorySlot.ContributesToWeight())
             {
                 inventorySlot.GetInventory().UpdateWeight(incomingItem.GetTotalWeight());
             }
@@ -513,7 +513,7 @@ public class Inventory : MonoBehaviour
 
         // Remove the correct number of items from the existing property, update the weight in the inventory accordingly, then update the stats.
         inventoryItem.itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, numItemsInStack - maxItemsByWeight);
-        if (currentSlot.partOfPlayerInventory && currentSlot.slotContributesToWeight)
+        if (currentSlot.partOfPlayerInventory && currentSlot.ContributesToWeight())
         {
             UpdateWeight(inventoryItem.itemInstance.sharedData.Weight * -maxItemsByWeight);
         }
@@ -521,7 +521,7 @@ public class Inventory : MonoBehaviour
 
         // Create new itemInstance, set it's number, fill empty slot with it.
         ItemInstance newItem = new ItemInstance(inventoryItem.itemInstance.sharedData);
-        if ((!inventorySlot.partOfPlayerInventory && inventorySlot.slotContributesToWeight))
+        if ((!inventorySlot.partOfPlayerInventory && inventorySlot.ContributesToWeight()))
         {
             // Probably need to do something about weight in this instance, we'll see
         }
