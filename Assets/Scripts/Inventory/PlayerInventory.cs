@@ -221,7 +221,7 @@ public class PlayerInventory : Inventory
                 // First move the item to an earlier slot.
                 AddItemToEarliestEmptySlot(itemToEquip);
                 // Then swap them, that way the gear ends up in the earlier slot
-                gearSlotMatch.Swap(itemToEquip);
+                Swap(gearSlotMatch, itemToEquip);
             }
         } else // If the slot was a gear slot then swap into inventory
         {
@@ -264,7 +264,7 @@ public class PlayerInventory : Inventory
 
             if (weightCheck)
             {
-                inventorySlotMatch.Swap(itemToEquip);
+                Swap(inventorySlotMatch, itemToEquip);
             }
         }
         UpdateWeightText();

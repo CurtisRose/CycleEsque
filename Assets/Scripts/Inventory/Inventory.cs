@@ -264,7 +264,7 @@ public class Inventory : MonoBehaviour
         InventorySlot emptySlot = FindEarliestEmptySlot(inventoryItem);
         if (emptySlot != null)
         {
-            emptySlot.Swap(inventoryItem);
+            Swap(emptySlot,inventoryItem);
         }
         else
         {
@@ -303,7 +303,32 @@ public class Inventory : MonoBehaviour
     {
         if (item != null)
         {
-            inventorySlot.Swap(item);
+
+            Swap(inventorySlot, item);
+        }
+    }
+
+    public virtual void Swap(InventorySlot inventorySlot, InventoryItem incomingItem)
+    {
+        if (inventorySlot.HasItem())
+        {
+            InventoryItem inventoryItemAlreadyHere = inventorySlot.GetItemInSlot();
+            InventorySlot otherSlot = incomingItem.GetCurrentInventorySlot();
+            otherSlot.RemoveItemFromSlot();
+            inventorySlot.RemoveItemFromSlot();
+
+            otherSlot.SetItemInSlotAfterDrag(inventoryItemAlreadyHere);
+            inventorySlot.SetItemInSlotAfterDrag(incomingItem);
+
+            inventoryItemAlreadyHere.DoThingsAfterMove();
+            incomingItem.DoThingsAfterMove();
+        }
+        else
+        {
+            InventorySlot otherSlot = incomingItem.GetCurrentInventorySlot();
+            otherSlot.RemoveItemFromSlot();
+            inventorySlot.SetItemInSlotAfterDrag(incomingItem);
+            incomingItem.DoThingsAfterMove();
         }
     }
 

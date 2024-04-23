@@ -103,8 +103,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 return;
             }
 
-                Swap(itemComingIn);
-        } else
+            inventory.Swap(this, itemComingIn);
+        } 
+        else
         {
             // Check to see if it's too heavy for inventory
             if (this.slotContributesToWeight)
@@ -174,29 +175,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         inventory.FillEmptySlots(newItem);
     }
 
-    public virtual void Swap(InventoryItem incomingItem)
-    {
-        if (HasItem())
-        {
-            InventoryItem inventoryItemAlreadyHere = itemInSlot;
-            InventorySlot otherSlot = incomingItem.GetCurrentInventorySlot();
-            otherSlot.RemoveItemFromSlot();
-            RemoveItemFromSlot();
-
-            otherSlot.SetItemInSlotAfterDrag(inventoryItemAlreadyHere);
-            SetItemInSlotAfterDrag(incomingItem);
-
-            inventoryItemAlreadyHere.DoThingsAfterMove();
-            incomingItem.DoThingsAfterMove();
-        } else
-        {
-            InventorySlot otherSlot = incomingItem.GetCurrentInventorySlot();
-            otherSlot.RemoveItemFromSlot();
-            SetItemInSlotAfterDrag(incomingItem);
-            incomingItem.DoThingsAfterMove();
-        }
-    }
-
     // This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)
     public virtual void SetItemInSlotAfterDrag(InventoryItem inventoryItem)
     {
@@ -206,7 +184,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             {
                 return;
             }
-            Swap(inventoryItem);
+            inventory.Swap(this, inventoryItem);
         }
         
         {
