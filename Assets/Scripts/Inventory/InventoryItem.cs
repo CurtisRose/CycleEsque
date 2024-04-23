@@ -90,7 +90,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         else
         {
             //currentInventorySlot.RemoveItemFromSlot();
-            currentInventorySlot.DropItem();
+            currentInventorySlot.GetInventory().DropItem(currentInventorySlot);
             Destroy(this.gameObject);
         }
 		PlayerInventory.Instance.EndInventoryItemMoved(this);

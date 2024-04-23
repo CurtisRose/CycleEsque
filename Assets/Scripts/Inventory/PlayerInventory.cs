@@ -628,7 +628,6 @@ public class PlayerInventory : Inventory {
             // Remove the correct number of items from the existing property, update the weight in the inventory accordingly, then update the stats.
             inventoryItem.itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, numItems - newStackNum);
             UpdateWeight(inventoryItem.itemInstance.sharedData.Weight * -newStackNum);
-            inventoryItem.GetCurrentInventorySlot().RefreshItemStats();
 
             // Create new itemInstance, set it's number, fill empty slot with it.
             ItemInstance newItem = new ItemInstance(inventoryItem.itemInstance.sharedData);
@@ -659,7 +658,6 @@ public class PlayerInventory : Inventory {
         {
             inventory.UpdateWeight(inventoryItem.itemInstance.sharedData.Weight * -maxItemsByWeight);
         }
-        inventoryItem.GetCurrentInventorySlot().RefreshItemStats();
 
         // Create new itemInstance, set it's number, fill empty slot with it.
         ItemInstance newItem = new ItemInstance(inventoryItem.itemInstance.sharedData);
@@ -729,7 +727,10 @@ public class PlayerInventory : Inventory {
 		return gearSlots[(int)identifier];
 	}
 
-	public override void DropItem(ItemInstance itemInstance) {
+	public override void DropItem(InventorySlot inventorySlot) {
+        InventoryItem inventoryItem = inventorySlot.GetItemInSlot();
+        ItemInstance itemInstance = inventoryItem.itemInstance;
+        inventorySlot.RemoveItemFromSlot();
 		if (OnItemDropped != null)
 			OnItemDropped(itemInstance);
 	}

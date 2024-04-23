@@ -33,7 +33,64 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         SetImageColorDefault();
     }
 
-    // Happens before OnEndDrag in the InventoryItem
+
+	// This gets called from InventoryItem when the player clicks the inventoryItem and begins to drag it.
+	public virtual void RemoveItemFromSlot() {
+		if (itemInSlot != null) {
+			InventoryItem itemToReturn = itemInSlot;
+			itemInSlot.OnItemCountChanged -= RefreshItemStats;
+			itemInSlot = null;
+			hasItem = false;
+			RefreshItemStats();
+			SetImageColorDefault();
+		}
+	}
+
+	public InventoryItem GetItemInSlot() {
+		return itemInSlot;
+	}
+
+	// This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)
+	public virtual void SetItemInSlotAfterDrag(InventoryItem inventoryItem) {
+		if (HasItem()) {
+			if (itemInSlot == inventoryItem) {
+				return;
+			}
+			inventory.Swap(this, inventoryItem);
+		}
+
+		{
+			itemInSlot = inventoryItem;
+			hasItem = true;
+
+			weightText.text = inventoryItem.GetTotalWeight().ToString();
+			if (inventoryItem.itemInstance.sharedData.Stackable) {
+				stackSizeText.text = inventoryItem.GetItemCount().ToString();
+			} else {
+				stackSizeText.text = "";
+			}
+			inventoryItem.SetParentAfterDrag(itemSlot);
+			SetImageColor(inventoryItem.itemInstance.sharedData.Rarity);
+		}
+
+		if (itemInSlot != null) {
+			itemInSlot.OnItemCountChanged += RefreshItemStats;
+		}
+	}
+
+	public bool HasItem() {
+		return hasItem;
+	}
+
+	public Inventory GetInventory() {
+		return inventory;
+	}
+
+	public bool ContributesToWeight() {
+		return slotContributesToWeight;
+	}
+
+	// Happens before OnEndDrag in the InventoryItem
 	void IDropHandler.OnDrop(PointerEventData eventData) {
 		OnDropHelper(eventData);
 	}
@@ -64,42 +121,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 		}
 	}
 
-	// This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)
-	public virtual void SetItemInSlotAfterDrag(InventoryItem inventoryItem)
-    {
-        if (HasItem())
-        {
-            if (itemInSlot == inventoryItem)
-            {
-                return;
-            }
-            inventory.Swap(this, inventoryItem);
-        }
-        
-        {
-            itemInSlot = inventoryItem;
-            hasItem = true;
-
-            weightText.text = inventoryItem.GetTotalWeight().ToString();
-            if (inventoryItem.itemInstance.sharedData.Stackable)
-            {
-                stackSizeText.text = inventoryItem.GetItemCount().ToString();
-            }
-            else
-            {
-                stackSizeText.text = "";
-            }
-            inventoryItem.SetParentAfterDrag(itemSlot);
-            SetImageColor(inventoryItem.itemInstance.sharedData.Rarity);
-        }
-
-        if (itemInSlot != null)
-        {
-            itemInSlot.OnItemCountChanged += RefreshItemStats;
-        }
-    }
-
-    public void RefreshItemStats()
+    protected void RefreshItemStats()
     {
         if(itemInSlot == null)
         {
@@ -114,25 +136,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
                 stackSizeText.text = itemInSlot.GetItemCount().ToString();
             }
         }
-    }
-
-    // This gets called from InventoryItem when the player clicks the inventoryItem and begins to drag it.
-    public virtual void RemoveItemFromSlot()
-    {
-        if (itemInSlot != null)
-        {
-            InventoryItem itemToReturn = itemInSlot;
-            itemInSlot.OnItemCountChanged -= RefreshItemStats;
-            itemInSlot = null;
-            hasItem = false;
-            RefreshItemStats();
-            SetImageColorDefault();
-        }
-    }
-
-    public InventoryItem GetItemInSlot()
-    {
-        return itemInSlot;
     }
 
     protected void SetImageColor(Rarity rarity)
@@ -151,26 +154,4 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         temp.a = 0.5f;
         itemBorderImage.color = temp;
     }
-
-    public bool HasItem()
-    {
-        return hasItem;
-    }
-
-    public void DropItem()
-    {
-        ItemInstance itemInstance = itemInSlot.itemInstance;
-        int numItems = itemInSlot.GetItemCount();
-        RemoveItemFromSlot();
-        inventory.DropItem(itemInstance);
-    }
-
-    public Inventory GetInventory()
-    {
-        return inventory;
-    }
-
-    public bool ContributesToWeight() {
-		return slotContributesToWeight;
-	}
 }

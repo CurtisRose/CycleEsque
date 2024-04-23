@@ -118,7 +118,6 @@ public class Inventory : MonoBehaviour
 
 			// Remove the correct number of items from the existing property, 
 			inventoryItem.itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, numItems - newStackNum);
-			inventoryItem.GetCurrentInventorySlot().RefreshItemStats();
 
 			// Create new itemInstance, set it's number, fill empty slot with it.
 			ItemInstance newItem = new ItemInstance(inventoryItem.itemInstance.sharedData);
@@ -199,7 +198,7 @@ public class Inventory : MonoBehaviour
 		return null; // Return null if no suitable slot is found
 	}
 
-	public virtual void DropItem(ItemInstance itemInstance) {
+	public virtual void DropItem(InventorySlot inventorySlot) {
 
 	}
 
