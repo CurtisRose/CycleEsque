@@ -97,7 +97,49 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         itemImage.raycastTarget = true;
     }
 
-    private bool IsPartOfInventoryUI(GameObject obj)
+	public void SetParentAfterDrag(Transform parentAfterDrag) {
+		this.parentAfterDrag = parentAfterDrag;
+		currentInventorySlot = parentAfterDrag.GetComponentInParent<InventorySlot>(true);
+	}
+
+	public InventorySlot GetCurrentInventorySlot() {
+		return currentInventorySlot;
+	}
+
+	public int GetItemCount() {
+		return (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+	}
+
+	public void IncrementItemCount() {
+		AddToItemCount(1);
+	}
+
+	public void AddToItemCount(int change) {
+		int currentCount = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+		itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, currentCount + change);
+		if (OnItemCountChanged != null) {
+			OnItemCountChanged();
+		}
+	}
+
+	public void ChangeItemCount(int change) {
+		itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, change);
+		if (OnItemCountChanged != null) {
+			OnItemCountChanged();
+		}
+	}
+
+	public float GetTotalWeight() {
+		// I've put several protections in place to make sure non stackable items only have one item in them
+		// But this is yet another that their weight won't be fucked up.
+		if (itemInstance.sharedData.Stackable) {
+			return GetItemCount() * itemInstance.sharedData.Weight;
+		} else {
+			return itemInstance.sharedData.Weight;
+		}
+	}
+
+	private bool IsPartOfInventoryUI(GameObject obj)
     {
         int inventoryLayer = LayerMask.NameToLayer("InventoryUI");
         return CheckParentForLayer(obj, inventoryLayer);
@@ -181,60 +223,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         itemRectTransform.sizeDelta = new Vector2(parentRectTransform.rect.width, parentRectTransform.rect.height);
 
         itemRectTransform.localPosition = Vector3.zero;
-    }
-
-    public void SetParentAfterDrag(Transform parentAfterDrag)
-    {
-        this.parentAfterDrag = parentAfterDrag;
-        currentInventorySlot = parentAfterDrag.GetComponentInParent<InventorySlot>(true);
-    }
-
-    public InventorySlot GetCurrentInventorySlot()
-    {
-        return currentInventorySlot;
-    }
-
-    public int GetItemCount()
-    {
-        return (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
-    }
-
-    public void IncrementItemCount()
-    {
-        AddToItemCount(1);
-    }
-
-    public void AddToItemCount(int change)
-    {
-        int currentCount = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
-        itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, currentCount + change);
-        if (OnItemCountChanged != null)
-        {
-            OnItemCountChanged();
-        }
-    }
-
-    public void ChangeItemCount(int change)
-    {
-        itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack,  change);
-        if (OnItemCountChanged != null)
-        {
-            OnItemCountChanged();
-        }
-    }
-
-    public float GetTotalWeight()
-    {
-        // I've put several protections in place to make sure non stackable items only have one item in them
-        // But this is yet another that their weight won't be fucked up.
-        if (itemInstance.sharedData.Stackable)
-        {
-            return GetItemCount() * itemInstance.sharedData.Weight;
-        }
-        else
-        {
-            return itemInstance.sharedData.Weight;
-        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
