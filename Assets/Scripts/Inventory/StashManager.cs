@@ -27,7 +27,7 @@ public class StashManager : Inventory
     private void Start()
     {
         MenuManager.Instance.OpenMenu(StashMenu.Instance);
-        LoadItemsFromJson();
+        LoadStashFromJson();
         PopulateStash();
         MenuManager.Instance.CloseMenu(StashMenu.Instance);
     }
@@ -47,11 +47,7 @@ public class StashManager : Inventory
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
-            SaveStashToJson();
-        }
-        if(Input.GetKeyDown(KeyCode.O))
-        {
-            SaveStashToJson();
+            SaveStash();
         }
     }
 
@@ -72,7 +68,7 @@ public class StashManager : Inventory
         }
     }
 
-    public void SaveStashToJson()
+    public void SaveStash()
     {
         List<SerializableItemData> items = new List<SerializableItemData>();
         foreach (InventorySlot inventorySlot in inventorySlots)
@@ -91,18 +87,18 @@ public class StashManager : Inventory
                                .ToList();
 
         string json = JsonUtility.ToJson(new Serialization<List<SerializableItemData>>(sortedItems), true);
-        WriteToJsonFile(json);
+        SaveStashToJson(json);
     }
 
 
-    private void WriteToJsonFile(string json)
+    private void SaveStashToJson(string json)
     {
         string filePath = Path.Combine(Application.persistentDataPath, "stash.json");
         File.WriteAllText(filePath, json);
         Debug.Log($"Saved items to {filePath}");
     }
 
-    public void LoadItemsFromJson()
+    public void LoadStashFromJson()
     {
         string filePath = Path.Combine(Application.persistentDataPath, "stash.json");
         if (File.Exists(filePath))

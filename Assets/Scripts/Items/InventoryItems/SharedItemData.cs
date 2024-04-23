@@ -27,10 +27,6 @@ public class SharedItemData : ScriptableObject
 
     protected virtual void OnValidate()
     {
-        if (string.IsNullOrEmpty(ID))
-        {
-            ID = System.Guid.NewGuid().ToString();  // Ensure a unique ID is assigned even during manual creation or duplicates
-        }
         allowedKeys.Clear();
         PopulateAllowedKeys();
     }

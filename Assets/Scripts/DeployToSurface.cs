@@ -11,7 +11,7 @@ public class DeployToSurface : MonoBehaviour
     {
         //PlayerData playerData = new PlayerData(PlayerInventory.Instance);
         //GameManager.Instance.SavePlayerData();
-        stashManager.SaveStashToJson();
+        stashManager.SaveStash();
         SceneManagerHelper.LoadSceneWithPlayerData("MapDevelopment");
     }
 }

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Handgun
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Handgun Epic
+  <ID>k__BackingField: 25633625-f6d9-435b-b6ae-16fbc036b217
   <ItemDescription>k__BackingField: Handgun Epic
   <ItemType>k__BackingField: 0
   <Rarity>k__BackingField: 0
@@ -21,8 +22,8 @@ MonoBehaviour:
   <LargeImage>k__BackingField: {fileID: 21300000, guid: 0eb64349cb944eb4aa32ac716195115b,
     type: 3}
   <Weight>k__BackingField: 5
-  <stackable>k__BackingField: 0
-  <maxStackSize>k__BackingField: 0
+  <Stackable>k__BackingField: 0
+  <MaxStackSize>k__BackingField: 0
   <ColorGameObjectBasedOnRarity>k__BackingField: 0
   allowedKeys:
   - NumItemsInStack

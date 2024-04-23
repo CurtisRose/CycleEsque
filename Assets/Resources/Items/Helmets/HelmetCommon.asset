@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: HelmetCommon
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Common Helmet
+  <ID>k__BackingField: bc0ed4f7-41b2-4185-be58-ff667a9da7f0
   <ItemDescription>k__BackingField: 
   <ItemType>k__BackingField: 1
   <Rarity>k__BackingField: 0
@@ -20,8 +21,11 @@ MonoBehaviour:
     type: 3}
   <LargeImage>k__BackingField: {fileID: 0}
   <Weight>k__BackingField: 10
-  <stackable>k__BackingField: 0
-  <maxStackSize>k__BackingField: 0
+  <Stackable>k__BackingField: 0
+  <MaxStackSize>k__BackingField: 0
   <ColorGameObjectBasedOnRarity>k__BackingField: 1
+  allowedKeys:
+  - NumItemsInStack
+  - ArmorRemaining
   <AmountOfArmor>k__BackingField: 50
   <DefenseValue>k__BackingField: 1
