@@ -10,7 +10,7 @@ public class Recoil : MonoBehaviour
 
     [SerializeField] Transform recoilTarget;
     bool isAiming;
-    [SerializeField] float aimMultiplier = 1f;
+    //[SerializeField] float aimMultiplier = 1f;
 
     [SerializeField] float crouchMultiplier;
     [SerializeField] float sprintMultiplier;

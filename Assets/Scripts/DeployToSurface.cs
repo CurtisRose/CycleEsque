@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class DeployToSurface : MonoBehaviour
 {
-    [SerializeField] StashManager stashManager;
+    [SerializeField] StashInventoryManager stashManager;
 
     public void DeployToSurfaceAction()
     {

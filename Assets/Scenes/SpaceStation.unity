@@ -4797,7 +4797,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e6200c4ab828824bbf28c822e2541fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stashManager: {fileID: 983448499}
+  stashManager: {fileID: 0}
 --- !u!1 &667444820
 GameObject:
   m_ObjectHideFlags: 0
@@ -8128,8 +8128,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 983448498}
-  - component: {fileID: 983448499}
   - component: {fileID: 983448500}
+  - component: {fileID: 983448501}
   m_Layer: 5
   m_Name: StashMenu
   m_TagString: Untagged
@@ -8157,7 +8157,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &983448499
+--- !u!114 &983448500
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8166,7 +8166,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 983448497}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06d09eff5990b2846826b2c09c76170c, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b202187ef7978b40a124964b5393393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuPanel: {fileID: 1348277819}
+  type: 1
+  priority: 10
+  affectsUserMovement: 1
+  affectsUserClicking: 1
+  affectsUserLooking: 1
+  dependentMenus: []
+--- !u!114 &983448501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983448497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f3e12778ca71f4fb6221c6af8dee01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inventorySlots:
@@ -8235,29 +8254,8 @@ MonoBehaviour:
   - {fileID: 1429588120}
   inventoryItemPrefab: {fileID: 3147761878662062801, guid: 26b3212637127e643b9007e40bdbf8e1,
     type: 3}
-  inventoryWeightLimit: 90000000
-  currentWeight: 0
   menuContainer: {fileID: 1348277819}
   stashSerializableItems: []
---- !u!114 &983448500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 983448497}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b202187ef7978b40a124964b5393393, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  menuPanel: {fileID: 1348277819}
-  type: 1
-  priority: 10
-  affectsUserMovement: 1
-  affectsUserClicking: 1
-  affectsUserLooking: 1
-  dependentMenus: []
 --- !u!114 &1014831931 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1014386658, guid: d9fa8fcd8ce0e3843ad711ed0b19a865,

@@ -93,7 +93,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             currentInventorySlot.DropItem();
             Destroy(this.gameObject);
         }
-        PlayerInventory.Instance.EndInventoryItemMoved(this);
+		PlayerInventory.Instance.EndInventoryItemMoved(this);
         itemImage.raycastTarget = true;
     }
 

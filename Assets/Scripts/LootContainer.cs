@@ -28,8 +28,6 @@ public class LootContainer : Inventory, IInteractable
         for(int i = 0; i < numberOfItems; i++)
         {
             // Just quadruple check that there is no weight in here....
-            currentWeight = 0;
-
             var (selectedItem, quantity) = itemPool.GetRandomItemWithQuantity();
             if (selectedItem != null)
             {
@@ -45,12 +43,6 @@ public class LootContainer : Inventory, IInteractable
             }
         }
     }
-
-    public override float GetInventoryWeightLimit()
-    {
-        return 10000;
-    }
-
 
     public override void QuickEquip(InventorySlot inventorySlot)
     {

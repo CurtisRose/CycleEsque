@@ -15,6 +15,8 @@ public class StashMenu : Menu
         else
         {
             Instance = this;
+            Open();
+            Close();
         }
     }
 }

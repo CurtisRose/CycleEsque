@@ -156,8 +156,8 @@ public class GameManager : MonoBehaviour
                         continue;
                     }
 
-                    // Equip the item to the player
-                    PlayerInventory.Instance.EquipItemInstance(newItemInstance, gearSlot);
+					// Equip the item to the player
+					PlayerInventory.Instance.EquipItemInstance(newItemInstance, gearSlot);
                     gearSlot.GetItemInSlot().DoThingsAfterMove();
 
                     //Debug.Log($"Equipped {newItemInstance.sharedData.DisplayName} to gear slot {serializableItemData.ItemType}");
@@ -178,7 +178,7 @@ public class GameManager : MonoBehaviour
                 ItemInstance newItemInstance = new ItemInstance(itemData);
                 newItemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, serializableItemData.Quantity);
 
-                PlayerInventory.Instance.AddItem(newItemInstance);
+				PlayerInventory.Instance.AddItem(newItemInstance);
 
                 // Here you would add this item instance to the player's inventory
                 // For example: playerInventory.AddItem(newItemInstance);

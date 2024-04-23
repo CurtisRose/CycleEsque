@@ -4,9 +4,9 @@ using System.IO;
 using UnityEngine;
 using System.Linq;
 
-public class StashManager : Inventory
+public class StashInventoryManager : Inventory
 {
-    public static StashManager Instance;
+    public static StashInventoryManager Instance;
     private static string filePath;
     [SerializeField] GameObject menuContainer;
     [SerializeField] List<SerializableItemData> stashSerializableItems;
