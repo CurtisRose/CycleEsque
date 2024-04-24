@@ -125,7 +125,6 @@ public class PlayerInventory : Inventory {
 			// If clearing a slot that had a backpack, calculate the reduction in carrying capacity if its coming from the gear slot
 			if (inventorySlot.HasItem() && inventorySlot.GetItemInSlot().GetItemType() == ItemType.BACKPACK && inventorySlot is GearSlot) {
 				capacityChange = -((BackpackItem)inventorySlot.GetItemInSlot().itemInstance.sharedData).CarryCapacity;
-				float test = GetInventoryWeightLimit() + capacityChange;
 				bool result = currentWeight <= GetInventoryWeightLimit() + capacityChange;
 				return result; // Check if current weight is valid after capacity reduction
 			}
@@ -140,11 +139,10 @@ public class PlayerInventory : Inventory {
 		// Adjust based on where the item is coming from and going to
 		if (inventorySlot is GearSlot) {
 			if (itemToSet.GetCurrentInventorySlot() is GearSlot) {
-				// Gear to Gear - typically blocked or special rules apply
-				return false;
+				// This can happen with guns, probably not worth checking for that though
+				return true;
 			} else {
 				// Inventory to Gear - consider gear slot specifics, typically not changing total weight
-				float test = GetInventoryWeightLimit() + capacityChange;
 				bool result = currentWeight + weightChange <= GetInventoryWeightLimit() + capacityChange;
 				return result;
 			}
@@ -156,7 +154,6 @@ public class PlayerInventory : Inventory {
 				return result;
 			} else {
 				// Inventory to Inventory - normal weight check
-				float test = GetInventoryWeightLimit();
 				bool result = currentWeight + weightChange <= GetInventoryWeightLimit();
 				return result;
 			}
@@ -171,11 +168,18 @@ public class PlayerInventory : Inventory {
 
 		if (targetSlot is GearSlot) {
 			if (otherSlot.GetInventory() == this) {
-				// If the item is coming from this inventory, weight must be removed
-				weightChange -= newItem.GetTotalWeight();
-				if (targetSlot.HasItem()) {
-					// If there's an existing item in the slot, add its weight to the change, it's going to the inventory
-					weightChange += itemAlreadyHere.GetTotalWeight();
+				// This should only occur when dragging one gun onto another
+				if (otherSlot is GearSlot) {
+					// No Weight Change
+				}
+                else
+                {
+					// If the item is coming from this inventory, weight must be removed
+					weightChange -= newItem.GetTotalWeight();
+					if (targetSlot.HasItem()) {
+						// If there's an existing item in the slot, add its weight to the change, it's going to the inventory
+						weightChange += itemAlreadyHere.GetTotalWeight();
+					}
 				}
 			}
 			return weightChange;

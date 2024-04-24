@@ -54,6 +54,7 @@ public class PlayerWeaponController : MonoBehaviour
         // Set the crosshair to where the gun is pointing
         if (gearManager.GetGunInHands() != null && WeaponAimTesting && !IsADSing())
         {
+            // TODO: This is occuring every frame, even when not aiming or shooting.
             crosshairController.SetCrosshairPositionWhereGunIsLooking(gearManager.GetGunInHands().transform, smoothTime);
         } else
         {
