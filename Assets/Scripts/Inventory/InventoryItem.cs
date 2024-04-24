@@ -160,21 +160,36 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        // Check if the right mouse button was clicked
-        if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            // What to do if Right Clicked InventoryItem
-        }
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            // If it's stackable attempt to split it.
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                // What to do if Left Clicked InventoryItem with Left Shift
-            }
-            return;
-        }
-    }
+		// Check if the right mouse button was clicked
+		/*if (eventData.button == PointerEventData.InputButton.Right) {
+			GetCurrentInventorySlot().GetInventory().QuickEquip(currentInventorySlot);
+			return;
+		}*/
+		if (eventData.button == PointerEventData.InputButton.Left) {
+			// If it's stackable attempt to split it.
+			if (Input.GetKey(KeyCode.LeftShift)) {
+                // Split the stack, decrease this item count by half, and create a new item with the other half
+                // Add that other half to the inventory, check if you can first
+                Inventory inventory = currentInventorySlot.GetInventory();
+                int numItemsInStack = GetItemCount();
+                int numItemsToSplit = Mathf.FloorToInt(numItemsInStack / 2);
+
+                if (numItemsToSplit == 0) {
+					return;
+				}
+
+                ItemInstance newItemInstance = itemInstance.Clone();
+                newItemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, numItemsToSplit);
+                InventoryItem newInventoryItem = inventory.CreateInventoryItem(newItemInstance);
+
+				if (inventory.CanAddItem(currentInventorySlot, newInventoryItem)) {
+                    inventory.AddItem(newInventoryItem);
+					ChangeItemCount(numItemsInStack - numItemsToSplit);
+				}
+			}
+			return;
+		}
+	}
 
     public void DoThingsAfterMove()
     {

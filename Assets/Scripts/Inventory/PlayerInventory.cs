@@ -170,7 +170,8 @@ public class PlayerInventory : Inventory {
 			}
 			return weightChange;
 		} else {
-			if (otherSlot.GetInventory() == this) {
+			// Note for future me, [otherSlot != null] is specifically for when splitting items in the player inventory.
+			if (otherSlot != null && otherSlot.GetInventory() == this) {
 				// The items are just moving in the inventory, no change in weight
 				weightChange = 0;
 			} else {

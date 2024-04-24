@@ -20,6 +20,16 @@ public class Inventory : MonoBehaviour
 		return true;
 	}
 
+	public virtual bool AddItem(InventoryItem inventoryItem) {
+		InventorySlot slotToAddTo = FindEarliestEmptySlot();
+		if (slotToAddTo == null) {
+			Debug.LogWarning("Inventory is full");
+			return false;
+		}
+		AddItem(slotToAddTo, inventoryItem);
+		return true;
+	}
+
 	public virtual void AddItem(InventorySlot inventorySlot, InventoryItem itemToSet) {
 		if (itemToSet == null) {
 			return;
@@ -63,6 +73,36 @@ public class Inventory : MonoBehaviour
 		return false;
 	}
 
+	// Returns the number of items left in incoming item
+	public int Combine(InventorySlot inventorySlot, InventoryItem itemToCombine) {
+		// Assume inventorySlot has an item and these are the same type but confirm
+		if (!inventorySlot.HasItem() || itemToCombine == null) {
+			return itemToCombine.GetItemCount();
+		}
+		// If not the same type, return all items
+		if (inventorySlot.GetItemInSlot().GetItemType() != itemToCombine.GetItemType()) {
+			return itemToCombine.GetItemCount();
+		}
+		// If not stackable, return all items
+		if (!itemToCombine.itemInstance.sharedData.Stackable) {
+			return itemToCombine.GetItemCount();
+		}
+
+		int numItemsComingIn = itemToCombine.GetItemCount();
+		int numItemsAlreadyInStack = inventorySlot.GetItemInSlot().GetItemCount();
+		int maxStackSize = itemToCombine.itemInstance.sharedData.MaxStackSize;
+		int numItemsToFill = maxStackSize - numItemsAlreadyInStack;
+		int numItemsToTake = Mathf.Min(numItemsComingIn, numItemsToFill);
+		itemToCombine.ChangeItemCount(numItemsComingIn - numItemsToTake);
+		inventorySlot.GetItemInSlot().AddToItemCount(numItemsToTake);
+		if (itemToCombine.GetItemCount() == 0) {
+			itemToCombine.GetCurrentInventorySlot().RemoveItemFromSlot();
+			itemToCombine.DoThingsAfterMove();
+			Destroy(itemToCombine.gameObject);
+		}
+		return itemToCombine.GetItemCount();
+	}
+
 	public virtual InventoryItem RemoveItemFromSlot(InventorySlot inventorySlot) {
 		InventoryItem item = inventorySlot.GetItemInSlot();
 		inventorySlot.RemoveItemFromSlot();
@@ -94,11 +134,18 @@ public class Inventory : MonoBehaviour
 
 	}
 
+	// This function does add the item to the inventory
 	protected virtual void CreateNewItem(ItemInstance itemInstance, InventorySlot inventorySlot) {
-		GameObject newItem = Instantiate(inventoryItemPrefab, inventorySlot.itemSlot);
+		InventoryItem inventoryItem = CreateInventoryItem(itemInstance);
+		inventorySlot.SetItemInSlotAfterDrag(inventoryItem);
+	}
+
+	// This function does NOT add the item to the inventory
+	public InventoryItem CreateInventoryItem(ItemInstance itemInstance) {
+		GameObject newItem = Instantiate(inventoryItemPrefab);
 		InventoryItem inventoryItem = newItem.GetComponent<InventoryItem>();
 		inventoryItem.name = itemInstance.sharedData.DisplayName;
 		inventoryItem.InitializeItem(itemInstance);
-		inventorySlot.SetItemInSlotAfterDrag(inventoryItem);
+		return inventoryItem;
 	}
 }
