@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerGearUI : MonoBehaviour
 {
-    [SerializeField] PlayerGearManager gearManager;
+
 
     [SerializeField] Image backpackBackgroundImage;
     [SerializeField] Image helmetBackgroundImage;
@@ -13,9 +13,9 @@ public class PlayerGearUI : MonoBehaviour
 
     private void Awake()
     {
-        gearManager.OnBackpackChanged += HandleBackpackChange;
-        gearManager.OnHelmetChanged += HandleHelmetChange;
-        gearManager.OnArmorChanged += HandleArmorChange;
+        PlayerGearManager.Instance.OnBackpackChanged += HandleBackpackChange;
+		PlayerGearManager.Instance.OnHelmetChanged += HandleHelmetChange;
+		PlayerGearManager.Instance.OnArmorChanged += HandleArmorChange;
     }
 
     private void HandleBackpackChange(SharedItemData itemData)

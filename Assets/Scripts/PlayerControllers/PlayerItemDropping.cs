@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerItemDropping : MonoBehaviour
 {
-    [SerializeField] PlayerInventory playerInventory;
     [SerializeField] PlayerWeaponController playerWeaponController;
     [SerializeField] Transform head;
     [SerializeField] float throwForce;
@@ -13,11 +12,14 @@ public class PlayerItemDropping : MonoBehaviour
     void Awake()
     {
         playerWeaponController = GetComponent<PlayerWeaponController>();
-        playerInventory.OnItemDropped += DropItem;
     }
 
-    // Update is called once per frame
-    void Update()
+	private void Start() {
+		PlayerInventory.Instance.OnItemDropped += DropItem;
+	}
+
+	// Update is called once per frame
+	void Update()
     {
         HandleInventoryItemDropping();
     }

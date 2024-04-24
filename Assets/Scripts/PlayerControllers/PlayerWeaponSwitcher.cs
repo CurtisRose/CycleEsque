@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerWeaponSwitcher : MonoBehaviour
 {
-    [SerializeField] PlayerGearManager gearManager;
+	public static PlayerWeaponSwitcher Instance;
+	[SerializeField] PlayerGearManager gearManager;
     [SerializeField] Transform weaponPositionHands;
     [SerializeField] Transform weaponPositionHip;
 
@@ -28,12 +29,20 @@ public class PlayerWeaponSwitcher : MonoBehaviour
 
     private void Awake()
     {
-        gearManager = GetComponent<PlayerGearManager>();
-        gearManager.OnPrimaryChanged += HandleWeaponChangePrimary;
-        gearManager.OnSecondaryChanged += HandleWeaponChangeSecondary;
+		if (Instance != null) {
+			Destroy(this);
+		} else {
+			Instance = this;
+		}
+		gearManager = GetComponent<PlayerGearManager>();
     }
 
-    private void Update()
+	private void Start() {
+		gearManager.OnPrimaryChanged += HandleWeaponChangePrimary;
+		gearManager.OnSecondaryChanged += HandleWeaponChangeSecondary;
+	}
+
+	private void Update()
     {
         HandleWeaponSwitchingInput();
     }
