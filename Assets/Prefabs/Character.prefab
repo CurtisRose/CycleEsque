@@ -991,6 +991,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d71a60a527514d74e95796c875fd105d, type: 3}
   - {fileID: 8300000, guid: b51c60f9c1bcb04469f9209b7f1e144e, type: 3}
   - {fileID: 8300000, guid: 8ddd50080adc76942be46b14837fd3b8, type: 3}
+  VisualizeLoadout: 1
 --- !u!114 &4359797795167298469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -998,7 +999,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9064487098345231825}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2992680994f723442bf8c502e2e3fc04, type: 3}
   m_Name: 
@@ -1066,7 +1067,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recoilTarget: {fileID: 7457804795946452245}
-  aimMultiplier: 1
   crouchMultiplier: 0.5
   sprintMultiplier: 1.75
   jumpMultiplier: 2

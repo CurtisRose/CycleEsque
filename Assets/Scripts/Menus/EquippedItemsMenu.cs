@@ -42,10 +42,16 @@ public class EquippedItemsMenu : Menu
         playerWeaponController.OnPrimaryGunFired += UpdateAmmoText;
         playerWeaponController.OnPrimaryGunReloaded += UpdateAmmoText;
         playerInventory.OnInventoryChanged += UpdateAmmoText;
-        LoadOutChanged();
     }
 
-    private void UpdateAmmoText()
+	private void Start() {
+        // If this exists, call loadoutchanged to make sure that it picks up the guns equipped and ammo in inventory
+		// Although it's not working now, It must be happening after gear initialization
+        LoadOutChanged();
+	}
+
+
+	private void UpdateAmmoText()
     {
         if (gunHeld == null)
         {

@@ -4797,7 +4797,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e6200c4ab828824bbf28c822e2541fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stashManager: {fileID: 0}
+  stashManager: {fileID: 983448501}
 --- !u!1 &667444820
 GameObject:
   m_ObjectHideFlags: 0

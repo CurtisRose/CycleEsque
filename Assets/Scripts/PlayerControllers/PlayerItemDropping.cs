@@ -28,12 +28,11 @@ public class PlayerItemDropping : MonoBehaviour
         {
             if (InventoryItem.CurrentHoveredItem != null)
             {
-                //InventoryItem.CurrentHoveredItem
-                //InventoryItem.CurrentHoveredItem.item
-                InventoryItem inventoryItemBeingDropped = InventoryItem.CurrentHoveredItem;
-                inventoryItemBeingDropped.GetCurrentInventorySlot().RemoveItemFromSlot();
-                DropItem(InventoryItem.CurrentHoveredItem.itemInstance);
-                Destroy(InventoryItem.CurrentHoveredItem.gameObject);
+                InventorySlot inventorySlot = InventoryItem.CurrentHoveredItem.GetCurrentInventorySlot();
+                Inventory inventory = inventorySlot.GetInventory();
+				InventoryItem inventoryItemBeingDropped = InventoryItem.CurrentHoveredItem;
+				inventory.DropItem(inventorySlot);
+                Destroy(inventoryItemBeingDropped.gameObject);
             }
         }
     }

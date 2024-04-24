@@ -4470,6 +4470,8 @@ MonoBehaviour:
     inventoryItems: []
     equippedItems: []
   loadPlayer: 1
+  equippedItemsMenu: {fileID: 1515708813}
+  CharacterPrefab: {fileID: 0}
 --- !u!1001 &602063320
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10195,6 +10197,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1619788507}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1515708813 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 791366877803085108, guid: bde5e32ec934b534b9b002989d51374f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1619788507}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fc20945430f07544838f39156ad71a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1523873066
 PrefabInstance:
   m_ObjectHideFlags: 0

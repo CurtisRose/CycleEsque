@@ -75,12 +75,35 @@ public class PlayerInventory : Inventory {
 
 	public bool AddItem(WorldItem item) {
 		ItemInstance itemInstance = item.CreateItemInstance();
-		AddItem(itemInstance);
-		return true;
+		// Need to do a weight check here
+		float weight = itemInstance.sharedData.Weight * (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+		if (currentWeight + weight > GetInventoryWeightLimit()) {
+			return false;
+		}
+		// If the item is stackable, I want to add it to an existing stack if possible
+		// First add it to the earliest empty slot then use the QuickEquip method to move it to the correct slot
+		InventorySlot emptySlot =  FindEarliestEmptySlot();
+		InventoryItem inventoryItem = CreateInventoryItem(itemInstance);
+		if (CanAddItem(emptySlot, inventoryItem)) {// Adds to the first empty slot
+			if (itemInstance.sharedData.Stackable) {
+				// Add the item to the empty slot
+				AddItem(emptySlot, inventoryItem);
+				QuickEquip(emptySlot);
+			}
+			return true;
+		} else {
+			Destroy(inventoryItem.gameObject);
+			return false;
+		}
 	}
 
 	public override bool AddItem(ItemInstance itemInstance)
     {
+		// Need to do a weight check here
+		float weight = itemInstance.sharedData.Weight * (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+		if (currentWeight + weight > GetInventoryWeightLimit()) {
+			return false;
+		}
         return base.AddItem(itemInstance);
     }
 
@@ -300,6 +323,33 @@ public class PlayerInventory : Inventory {
 		}
 	}
 
+	public override int Combine(InventorySlot inventorySlot, InventoryItem itemToCombine) {
+		int numberOfItemsBeforeCombine = itemToCombine.GetItemCount();
+		int numberOfItemsAfterCombine = base.Combine(inventorySlot, itemToCombine);
+		if (numberOfItemsBeforeCombine != numberOfItemsAfterCombine) {
+			float weightChange = itemToCombine.itemInstance.sharedData.Weight * (numberOfItemsBeforeCombine - numberOfItemsAfterCombine);
+			// Only update weight if it's combining from a different inventory.
+			if (itemToCombine.GetCurrentInventorySlot().GetInventory() != this) {
+				UpdateWeight(weightChange);
+			}
+		}
+		return numberOfItemsAfterCombine;
+	}
+
+	public override int RemoveNumItemsFromSlot(InventorySlot inventorySlot, int numItems) {
+		int itemsRemoved = base.RemoveNumItemsFromSlot(inventorySlot, numItems);
+		// Update weight based on differnce between numItems and itemsRemoved
+		if (inventorySlot is GearSlot) {
+			// If removing from a gear slot, don't update the weight
+			//UpdateWeight(0);
+		} else {
+			// If removing from an inventory slot, update the weight
+			UpdateWeight(-itemsRemoved * inventorySlot.GetItemInSlot().itemInstance.sharedData.Weight);
+		}
+
+		return itemsRemoved;
+	}
+
 	public bool RemoveItemOfType(ItemType type, int numItems = 1)
     {
         foreach (InventorySlot inventorySlot in inventorySlots)
@@ -421,6 +471,8 @@ public class PlayerInventory : Inventory {
         InventoryItem inventoryItem = inventorySlot.GetItemInSlot();
         ItemInstance itemInstance = inventoryItem.itemInstance;
         inventorySlot.RemoveItemFromSlot();
+		// Update the weight
+		UpdateWeight(-inventoryItem.GetTotalWeight());
 		if (OnItemDropped != null)
 			OnItemDropped(itemInstance);
 	}

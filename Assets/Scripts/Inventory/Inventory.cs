@@ -74,7 +74,7 @@ public class Inventory : MonoBehaviour
 	}
 
 	// Returns the number of items left in incoming item
-	public int Combine(InventorySlot inventorySlot, InventoryItem itemToCombine) {
+	public virtual int Combine(InventorySlot inventorySlot, InventoryItem itemToCombine) {
 		// Assume inventorySlot has an item and these are the same type but confirm
 		if (!inventorySlot.HasItem() || itemToCombine == null) {
 			return itemToCombine.GetItemCount();
@@ -134,6 +134,31 @@ public class Inventory : MonoBehaviour
 
 	}
 
+	public virtual int RemoveNumItemsFromSlot(InventorySlot inventorySlot, int numItems) {
+		// If the slot is empty, return false
+		if (!inventorySlot.HasItem()) {
+			return 0;
+		}
+		if (numItems == 0) {
+			return 0;
+		}
+		// If the item is stackable, remove the number of items from the stack
+		if (inventorySlot.GetItemInSlot().itemInstance.sharedData.Stackable) {
+			InventoryItem itemInSlot = inventorySlot.GetItemInSlot();
+			if (itemInSlot.GetItemCount() > numItems) {
+				itemInSlot.AddToItemCount(-numItems);
+			} else if (itemInSlot.GetItemCount() == numItems) {
+				inventorySlot.RemoveItemFromSlot();
+				Destroy(itemInSlot.gameObject);
+			} else {
+				inventorySlot.RemoveItemFromSlot();
+				Destroy(itemInSlot.gameObject);
+				numItems -= itemInSlot.GetItemCount();
+			}
+		}
+		return numItems;
+	}
+
 	// This function does add the item to the inventory
 	protected virtual void CreateNewItem(ItemInstance itemInstance, InventorySlot inventorySlot) {
 		InventoryItem inventoryItem = CreateInventoryItem(itemInstance);
@@ -159,7 +184,7 @@ public class Inventory : MonoBehaviour
 		if (!itemToQuickEquip.itemInstance.sharedData.Stackable) {
 			InventorySlot earliestEmptySlot = FindEarliestEmptySlot(itemToQuickEquip);
 			if (earliestEmptySlot != null) {
-				Swap(inventorySlot, itemToQuickEquip);
+				Swap(earliestEmptySlot, itemToQuickEquip);
 			}
 		} else {
 			foreach (InventorySlot slot in inventorySlots) {

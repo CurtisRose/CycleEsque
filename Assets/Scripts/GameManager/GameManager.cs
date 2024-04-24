@@ -11,30 +11,27 @@ public class GameManager : MonoBehaviour
     public PlayerData initialPlayerData;
     public Dictionary<string, SharedItemData> itemDictionary = new Dictionary<string, SharedItemData>();
     public bool loadPlayer;
+    [SerializeField] EquippedItemsMenu equippedItemsMenu;
+    [SerializeField] Transform CharacterPrefab;
 
 
-    void Awake()
-    {
-        if (Instance == null)
-        {
+    void Awake() {
+        if (Instance == null) {
             Instance = this;
-        }
-        else
-        {
+        } else {
             Destroy(gameObject);
         }
         LoadAllSharedItemData();
     }
 
-    void Start()
-    {
-        if (loadPlayer)
-        {
-            LoadAndInitializePlayer();
-        }
-    }
+	private void Start() {
+		if (loadPlayer) {
+			LoadAndInitializePlayer();
+            equippedItemsMenu.LoadOutChanged();
+		}
+	}
 
-    private void Update()
+	private void Update()
     {
         if(Input.GetKeyDown(KeyCode.L))
         {

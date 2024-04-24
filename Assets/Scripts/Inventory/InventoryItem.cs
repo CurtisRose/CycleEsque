@@ -180,11 +180,11 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
                 ItemInstance newItemInstance = itemInstance.Clone();
                 newItemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, numItemsToSplit);
-                InventoryItem newInventoryItem = inventory.CreateInventoryItem(newItemInstance);
+				InventoryItem newInventoryItem = inventory.CreateInventoryItem(newItemInstance);
 
 				if (inventory.CanAddItem(currentInventorySlot, newInventoryItem)) {
                     inventory.AddItem(newInventoryItem);
-					ChangeItemCount(numItemsInStack - numItemsToSplit);
+                    inventory.RemoveNumItemsFromSlot(currentInventorySlot, numItemsToSplit);
 				}
 			}
 			return;
