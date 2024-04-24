@@ -47,11 +47,6 @@ public class MonsterController : MonoBehaviour
         FetchPlayers();
     }
 
-    void OnDeadPassThrough()
-    {
-        OnDeath?.Invoke();
-    }
-
     void InitializeAgent()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -103,7 +98,8 @@ public class MonsterController : MonoBehaviour
 
     private void HandleDeath()
     {
-        healthComponent.OnHealthChanged -= HandleHealthChanged;
+		OnDeath?.Invoke();
+		healthComponent.OnHealthChanged -= HandleHealthChanged;
         healthComponent.OnDeath -= HandleDeath;
         Destroy(this);
         Destroy(healthComponent);
@@ -113,22 +109,6 @@ public class MonsterController : MonoBehaviour
         agent.isStopped = true;
         animator.Play("Death");
     }
-
-    /*private void DetectPlayer(Character player)
-    {
-        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        float soundLevel = player.CalculateSoundLevel();
-
-        if (distanceToPlayer <= monsterData.detectionRadius)
-        {
-            float hearProbability = soundLevel / distanceToPlayer; // Simple model: higher sound, easier to hear
-
-            if (hearProbability > 1f) // Adjust threshold according to your game's need
-            {
-                Debug.Log(player.name + " detected by sound");
-            }
-        }
-    }*/
 
     void OnDrawGizmos()
     {
@@ -191,15 +171,5 @@ public class MonsterController : MonoBehaviour
     public List<Character> GetPlayers()
     {
         return players;
-    }
-
-    private void OnEnable()
-    {
-        healthComponent.OnDeath += OnDeadPassThrough;
-    }
-
-    private void OnDisable()
-    {
-        healthComponent.OnDeath -= OnDeadPassThrough;
     }
 }
