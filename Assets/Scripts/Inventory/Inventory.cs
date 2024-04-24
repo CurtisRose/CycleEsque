@@ -109,7 +109,7 @@ public class Inventory : MonoBehaviour
 		return item;
 	}
 
-	protected InventorySlot FindEarliestEmptySlot(InventoryItem inventoryItem) {
+	public InventorySlot FindEarliestEmptySlot(InventoryItem inventoryItem) {
 		foreach (InventorySlot slot in inventorySlots) {
 			if (slot == inventoryItem.GetCurrentInventorySlot()) {
 				break; //  Stop searching when reaching the current slot of the item
@@ -121,7 +121,7 @@ public class Inventory : MonoBehaviour
 		return null; // Return null if no suitable slot is found
 	}
 
-	protected InventorySlot FindEarliestEmptySlot() {
+	public InventorySlot FindEarliestEmptySlot() {
 		foreach (InventorySlot slot in inventorySlots) {
 			if (!slot.HasItem()) {
 				return slot; // Return the first empty slot found before the current slot
@@ -174,17 +174,17 @@ public class Inventory : MonoBehaviour
 		return inventoryItem;
 	}
 
-	public virtual void QuickEquip(InventorySlot inventorySlot) {
+	public virtual bool QuickEquip(InventorySlot inventorySlot) {
 		// Quick Equip in a normal inventory moves the item to the earliest empty slot if it isnt stackable
 		// if it is stackable, it tries to fill earlier items of the same type, otherwise it moves it to the earliest empty slot
 		InventoryItem itemToQuickEquip = inventorySlot.GetItemInSlot();
 		if (itemToQuickEquip == null) {
-			return;
+			return false;
 		}
 		if (!itemToQuickEquip.itemInstance.sharedData.Stackable) {
 			InventorySlot earliestEmptySlot = FindEarliestEmptySlot(itemToQuickEquip);
 			if (earliestEmptySlot != null) {
-				Swap(earliestEmptySlot, itemToQuickEquip);
+				return Swap(earliestEmptySlot, itemToQuickEquip);
 			}
 		} else {
 			foreach (InventorySlot slot in inventorySlots) {
@@ -197,15 +197,16 @@ public class Inventory : MonoBehaviour
 						// If there are no items left, remove the item and destroy it
 						inventorySlot.RemoveItemFromSlot();
 						Destroy(itemToQuickEquip.gameObject);
-						return;
+						return true;
 					}
 				} else if (!slot.HasItem()) {
 
 					itemToQuickEquip.GetCurrentInventorySlot().RemoveItemFromSlot();
 					AddItem(slot, itemToQuickEquip);
-					return;
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 }

@@ -92,4 +92,22 @@ public class LootContainer : Inventory, IInteractable
     {
         return true;
     }
+
+	public override bool QuickEquip(InventorySlot inventorySlot) {
+		PlayerInventory playerInventory = PlayerInventory.Instance;
+        InventorySlot emptySlot = playerInventory.FindEarliestEmptySlot();
+        bool success = false;
+
+        // Try to 
+		if (emptySlot != null) {
+			if (playerInventory.CanAddItem(emptySlot, inventorySlot.GetItemInSlot())) {
+				success = playerInventory.Swap(emptySlot, inventorySlot.GetItemInSlot());
+                if (success) {
+                    return true;
+                }
+			}
+		}
+
+        return base.QuickEquip(inventorySlot);
+	}
 }

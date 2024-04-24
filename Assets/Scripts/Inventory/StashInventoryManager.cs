@@ -113,14 +113,32 @@ public class StashInventoryManager : Inventory
     }
 
     public SharedItemData GetItemByID(string id)
-{
-    if (GameManager.Instance.itemDictionary.TryGetValue(id, out SharedItemData item))
     {
-        return item;
+        if (GameManager.Instance.itemDictionary.TryGetValue(id, out SharedItemData item))
+        {
+            return item;
+        }
+        Debug.LogWarning($"Item with ID {id} not found.");
+        return null;
     }
-    Debug.LogWarning($"Item with ID {id} not found.");
-    return null;
-}
+
+	public override bool QuickEquip(InventorySlot inventorySlot) {
+		PlayerInventory playerInventory = PlayerInventory.Instance;
+		InventorySlot emptySlot = playerInventory.FindEarliestEmptySlot();
+		bool success = false;
+
+		// Try to 
+		if (emptySlot != null) {
+			if (playerInventory.CanAddItem(emptySlot, inventorySlot.GetItemInSlot())) {
+				success = playerInventory.Swap(emptySlot, inventorySlot.GetItemInSlot());
+				if (success) {
+					return true;
+				}
+			}
+		}
+
+		return base.QuickEquip(inventorySlot);
+	}
 }
 
 [System.Serializable]

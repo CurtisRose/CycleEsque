@@ -478,34 +478,35 @@ public class PlayerInventory : Inventory {
 		}
 	}
 
-	public override void QuickEquip(InventorySlot inventorySlot) {
+	public override bool QuickEquip(InventorySlot inventorySlot) {
 		InventoryItem inventoryItem = inventorySlot.GetItemInSlot();
 		if (inventoryItem == null) {
-			return;
+			return false;
 		}
 
+		bool success = false;
 		switch (inventoryItem.GetItemType()) {
 			case ItemType.WEAPON:
 				// Weapon needs to take into account weapon slot 1 and 2
 				break;
 			case ItemType.BACKPACK:
-				EquipItem(gearSlots[(int)GearSlotIdentifier.BACKPACK], inventorySlot, false);
+				success = EquipItem(gearSlots[(int)GearSlotIdentifier.BACKPACK], inventorySlot, false);
 				break;
 			case ItemType.ARMOR:
-				EquipItem(gearSlots[(int)GearSlotIdentifier.ARMOR], inventorySlot, false);
+				success = EquipItem(gearSlots[(int)GearSlotIdentifier.ARMOR], inventorySlot, false);
 				break;
 			case ItemType.HELMET:
-				EquipItem(gearSlots[(int)GearSlotIdentifier.HELMET], inventorySlot, false);
+				success = EquipItem(gearSlots[(int)GearSlotIdentifier.HELMET], inventorySlot, false);
 				break;
 			default:
-				base.QuickEquip(inventorySlot);
+				success = base.QuickEquip(inventorySlot);
 				break;
 		}
 
-		base.QuickEquip(inventorySlot);
+		return success;
 	}
 
-	private void EquipItem(GearSlot relevantGearSlot, InventorySlot inventorySlotOut, bool  force) {
+	private bool EquipItem(GearSlot relevantGearSlot, InventorySlot inventorySlotOut, bool  force) {
 		// TODOL: Add some logic around forced, not forced
 		InventorySlot emptySlot = FindEarliestEmptySlot(inventorySlotOut.GetItemInSlot());
 		InventoryItem inventoryItem = inventorySlotOut.GetItemInSlot();
@@ -513,19 +514,23 @@ public class PlayerInventory : Inventory {
 		if (inventorySlotOut == relevantGearSlot) {
 			if (emptySlot != null) {
 				if (CanAddItem(emptySlot, inventoryItem)) {
-					Swap(emptySlot, inventoryItem);
+					return Swap(emptySlot, inventoryItem);
 				}
 			}
 		}
 		// They want to equip the armor
 		else {
 			if (CanAddItem(relevantGearSlot, inventoryItem)) {
-				Swap(relevantGearSlot, inventoryItem);
+				return Swap(relevantGearSlot, inventoryItem);
 			}
 			else {
 				if (emptySlot != null) {
+					if (CanAddItem(emptySlot, inventoryItem)) {
+						return Swap(emptySlot, inventoryItem);
+					}
 				}
 			}
 		}
+		return false;
 	}
 }
