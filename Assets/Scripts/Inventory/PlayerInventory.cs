@@ -85,9 +85,9 @@ public class PlayerInventory : Inventory {
 		InventorySlot emptySlot =  FindEarliestEmptySlot();
 		InventoryItem inventoryItem = CreateInventoryItem(itemInstance);
 		if (CanAddItem(emptySlot, inventoryItem)) {// Adds to the first empty slot
-			if (itemInstance.sharedData.Stackable) {
-				// Add the item to the empty slot
-				AddItem(emptySlot, inventoryItem);
+			// Add the item to the empty slot
+			AddItem(emptySlot, inventoryItem);
+			if (inventoryItem.itemInstance.sharedData.Stackable) {
 				QuickEquip(emptySlot);
 			}
 			return true;
