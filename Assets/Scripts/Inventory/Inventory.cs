@@ -148,4 +148,39 @@ public class Inventory : MonoBehaviour
 		inventoryItem.InitializeItem(itemInstance);
 		return inventoryItem;
 	}
+
+	public virtual void QuickEquip(InventorySlot inventorySlot) {
+		// Quick Equip in a normal inventory moves the item to the earliest empty slot if it isnt stackable
+		// if it is stackable, it tries to fill earlier items of the same type, otherwise it moves it to the earliest empty slot
+		InventoryItem itemToQuickEquip = inventorySlot.GetItemInSlot();
+		if (itemToQuickEquip == null) {
+			return;
+		}
+		if (!itemToQuickEquip.itemInstance.sharedData.Stackable) {
+			InventorySlot earliestEmptySlot = FindEarliestEmptySlot(itemToQuickEquip);
+			if (earliestEmptySlot != null) {
+				Swap(inventorySlot, itemToQuickEquip);
+			}
+		} else {
+			foreach (InventorySlot slot in inventorySlots) {
+				if (slot == inventorySlot) {
+					break;
+				}
+				if (slot.HasItem() && slot.GetItemInSlot().GetItemType() == itemToQuickEquip.GetItemType()) {
+					int remainingItems = Combine(slot, itemToQuickEquip);
+					if (remainingItems == 0) {
+						// If there are no items left, remove the item and destroy it
+						inventorySlot.RemoveItemFromSlot();
+						Destroy(itemToQuickEquip.gameObject);
+						return;
+					}
+				} else if (!slot.HasItem()) {
+
+					itemToQuickEquip.GetCurrentInventorySlot().RemoveItemFromSlot();
+					AddItem(slot, itemToQuickEquip);
+					return;
+				}
+			}
+		}
+	}
 }

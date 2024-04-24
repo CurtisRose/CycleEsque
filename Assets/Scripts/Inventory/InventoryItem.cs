@@ -161,10 +161,10 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void OnPointerClick(PointerEventData eventData)
     {
 		// Check if the right mouse button was clicked
-		/*if (eventData.button == PointerEventData.InputButton.Right) {
+		if (eventData.button == PointerEventData.InputButton.Right) {
 			GetCurrentInventorySlot().GetInventory().QuickEquip(currentInventorySlot);
 			return;
-		}*/
+		}
 		if (eventData.button == PointerEventData.InputButton.Left) {
 			// If it's stackable attempt to split it.
 			if (Input.GetKey(KeyCode.LeftShift)) {
