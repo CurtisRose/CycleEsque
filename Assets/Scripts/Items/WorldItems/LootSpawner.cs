@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ItemSpawner : MonoBehaviour
+public class LootSpawner : MonoBehaviour
 {
     public LootPool itemPool;
     public float respawnTime; // Time in seconds to respawn an item
@@ -28,18 +28,18 @@ public class ItemSpawner : MonoBehaviour
 
     private void SpawnItem()
     {
-        var (selectedItem, quantity) = itemPool.GetRandomItemWithQuantity();
+        WorldItem selectedItem = itemPool.GetRandomItemWithQuantity();
 
-        if (selectedItem != null && quantity > 0)
+        if (selectedItem != null && selectedItem.GetNumberOfItems() > 0)
         {
             Quaternion randomRotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
             WorldItem spawnedItem = Instantiate(selectedItem, transform.position, randomRotation, transform);
             
             if (spawnedItem.GetComponent<WorldItem>() != null)
             {
-                if (spawnedItem.GetBaseItem().Stackable)
+                if (spawnedItem.GetSharedItemData().Stackable)
                 {
-                    spawnedItem.SetNumberOfStartingItems(quantity);
+                    spawnedItem.SetNumberOfStartingItems(selectedItem.GetNumberOfItems());
                 }
                 spawnedItem.GetComponent<WorldItem>().OnPickedUp += ItemTaken;
             }

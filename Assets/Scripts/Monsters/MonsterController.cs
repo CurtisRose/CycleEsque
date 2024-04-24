@@ -27,6 +27,8 @@ public class MonsterController : MonoBehaviour
     public event Death OnDeath;
 
     private Transform targetTransform;
+    [SerializeField] private LootPool lootPool;
+    private ItemDropper itemDropper;
 
     private void Awake()
     {
@@ -37,6 +39,7 @@ public class MonsterController : MonoBehaviour
         visualizer = GetComponent<NavMeshPathVisualizer>();
         animator = GetComponentInChildren<Animator>();
         layerMask = 1 << LayerMask.NameToLayer("Player");
+        itemDropper = GetComponent<ItemDropper>();
     }
 
     void Start()
@@ -108,6 +111,14 @@ public class MonsterController : MonoBehaviour
         Destroy(healthUIController, healthComponent.GetVisibilityTime());
         agent.isStopped = true;
         animator.Play("Death");
+        WorldItem item = lootPool.GetRandomItemWithQuantity();
+        if (item != null) {
+            Debug.Log("Monster dropped item: " + item.GetSharedItemData().DisplayName);
+			itemDropper.DropItem(item.CreateItemInstance());
+		}
+        else {
+            Debug.Log("Monster dropped no item.");
+        }
     }
 
     void OnDrawGizmos()

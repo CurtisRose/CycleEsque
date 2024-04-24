@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &430035349948537291
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3729146792461736568}
+  m_Layer: 10
+  m_Name: LootDropPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3729146792461736568
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430035349948537291}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4219409554901464358}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &438763813752476066
 GameObject:
   m_ObjectHideFlags: 0
@@ -91,6 +122,7 @@ GameObject:
   - component: {fileID: 4990755849247352210}
   - component: {fileID: 4382277402371537170}
   - component: {fileID: 7674110392695680326}
+  - component: {fileID: 8816887606247181947}
   m_Layer: 10
   m_Name: BasicMonster
   m_TagString: Untagged
@@ -113,6 +145,7 @@ Transform:
   m_Children:
   - {fileID: 3757816352592988453}
   - {fileID: 6553601339694805480}
+  - {fileID: 3729146792461736568}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7582103114594428966
@@ -131,6 +164,7 @@ MonoBehaviour:
   explorationTarget: {fileID: 0}
   rootmotionObject: {fileID: 3757816352592988453}
   DrawGizmos: 0
+  lootPool: {fileID: 11400000, guid: d35c69b24039086449ba89e4bb2f778f, type: 2}
 --- !u!114 &2547828714191357631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,6 +278,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8816887606247181947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1043934577696265409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad3e747bc3bb31e47988565216e27eea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropDirection: {fileID: 3729146792461736568}
+  dropForce: 0
 --- !u!1 &1921058157445017186
 GameObject:
   m_ObjectHideFlags: 0

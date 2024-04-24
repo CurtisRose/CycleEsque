@@ -12,11 +12,11 @@ public class LootPool : ScriptableObject
         public int minQuantity;
         [Range(1, 100)] // Ensure this is the same or higher than minQuantity
         public int maxQuantity;
-    }
+	}
 
     [SerializeField] protected ItemEntry[] items;
 
-    public (WorldItem item, int quantity) GetRandomItemWithQuantity()
+    public WorldItem GetRandomItemWithQuantity()
     {
         float totalProbability = 0;
         foreach (ItemEntry entry in items)
@@ -30,17 +30,34 @@ public class LootPool : ScriptableObject
         {
             if (randomPoint < entry.probability)
             {
-                int quantity = Random.Range(entry.minQuantity, entry.maxQuantity + 1);
-                return (entry.item, quantity);
+                if (entry.item != null) {
+                    int quantity = Random.Range(entry.minQuantity, entry.maxQuantity + 1);
+
+                    if (entry.item.GetSharedItemData().Stackable) {
+                        entry.item.SetNumberOfStartingItems(quantity);
+                    } else {
+                        entry.item.SetNumberOfStartingItems(1);
+                    }
+
+                    return (entry.item);
+                } else
+                    return null;
             }
             randomPoint -= entry.probability;
         }
 
-        return (null, 0); // Should not happen, but just in case
+        return (null); // Should not happen, but just in case
     }
 
     public int NumberOfItems()
     {
         return items.Length;
     }
+
+	private void OnValidate() {
+		for (int i = 0; i < items.Length; i++) {
+			items[i].minQuantity = Mathf.Max(1, items[i].minQuantity);
+			items[i].maxQuantity = Mathf.Max(items[i].minQuantity, items[i].maxQuantity);
+		}
+	}
 }

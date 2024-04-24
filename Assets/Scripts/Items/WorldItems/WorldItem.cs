@@ -88,7 +88,7 @@ public class WorldItem : MonoBehaviour, IInteractable
         return true;
     }
 
-    public SharedItemData GetBaseItem()
+    public SharedItemData GetSharedItemData()
     {
         return sharedItemData;
     }

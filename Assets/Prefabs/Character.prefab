@@ -1089,6 +1089,7 @@ GameObject:
   - component: {fileID: 1362002582233426473}
   - component: {fileID: 3050583421449731175}
   - component: {fileID: 9064487098345231790}
+  - component: {fileID: 5664054591919217908}
   m_Layer: 8
   m_Name: Character
   m_TagString: Player
@@ -1224,10 +1225,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad3e747bc3bb31e47988565216e27eea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerWeaponController: {fileID: 5803280727450449951}
-  head: {fileID: 9064487097268030572}
-  throwForce: 5
-  throwPosition: {fileID: 6780773922304257058}
+  dropDirection: {fileID: 6780773922304257058}
+  dropForce: 5
 --- !u!114 &656676636408815486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1387,6 +1386,19 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.5, z: 0}
+--- !u!114 &5664054591919217908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064487098345231825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af8d980d22999ba4b82070a7ec182610, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemDropper: {fileID: 524081812311261863}
 --- !u!1 &9166655474706790046
 GameObject:
   m_ObjectHideFlags: 0

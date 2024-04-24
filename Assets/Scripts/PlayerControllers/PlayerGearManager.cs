@@ -103,9 +103,9 @@ public class PlayerGearManager : MonoBehaviour
             SharedItemData sharedItemData = null;
             if (gearSlot.HasItem())
             {
-                gearItems[(int)identifier] = PlayerItemSpawner.Instance.SpawnItem(gearSlot.GetItemInSlot().itemInstance, gearStorageLocations[(int)identifier]);
+                gearItems[(int)identifier] = ItemSpawner.Instance.SpawnItem(gearSlot.GetItemInSlot().itemInstance, gearStorageLocations[(int)identifier]);
                 gearItems[(int)identifier].Equip();
-                sharedItemData = gearItems[(int)identifier].GetBaseItem();
+                sharedItemData = gearItems[(int)identifier].GetSharedItemData();
             }
 
             if (identifier == GearSlotIdentifier.WEAPONSLOT1)

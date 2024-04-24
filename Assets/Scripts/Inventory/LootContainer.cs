@@ -32,17 +32,10 @@ public class LootContainer : Inventory, IInteractable
         for(int i = 0; i < numberOfItems; i++)
         {
             // Just quadruple check that there is no weight in here....
-            var (selectedItem, quantity) = itemPool.GetRandomItemWithQuantity();
+            WorldItem selectedItem = itemPool.GetRandomItemWithQuantity();
             if (selectedItem != null)
             {
                 ItemInstance itemInstance = selectedItem.CreateItemInstance();
-                if (itemInstance.sharedData.Stackable)
-                {
-                    itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, quantity);
-                } else
-                {
-                    itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, 1);
-                }
                 bool addedItem = AddItem(itemInstance);
             }
         }
@@ -51,7 +44,7 @@ public class LootContainer : Inventory, IInteractable
     public override void DropItem(InventorySlot inventorySlot)
     {
         ItemInstance itemInstance = inventorySlot.GetItemInSlot().itemInstance;
-        WorldItem itemBeingDropped = PlayerItemSpawner.Instance.SpawnItem(itemInstance, throwPosition.position, Quaternion.identity);
+        WorldItem itemBeingDropped = ItemSpawner.Instance.SpawnItem(itemInstance, throwPosition.position, Quaternion.identity);
         //WorldItem itemBeingDropped = Instantiate<WorldItem>(InventoryItem.CurrentHoveredItem.item.itemPrefab, throwPosition.position, Quaternion.identity);
         // Maybe yeet it a little bit
         itemBeingDropped.InitializeFromItemInstance(itemInstance);

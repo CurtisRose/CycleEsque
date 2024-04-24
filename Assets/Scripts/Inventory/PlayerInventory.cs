@@ -45,7 +45,7 @@ public class PlayerInventory : Inventory {
 
 		foreach (InventoryStartItem startItem in startItems) {
 			//ItemInstance itemInstance = new ItemInstance(startItem);
-			WorldItem testItem = PlayerItemSpawner.Instance.GetPrefab(startItem.itemData);
+			WorldItem testItem = ItemSpawner.Instance.GetPrefab(startItem.itemData);
 			ItemInstance testInstance = testItem.CreateNewItemInstance(startItem.itemData);
 			if (startItem.itemData.Stackable) {
 				testInstance.SetProperty(ItemAttributeKey.NumItemsInStack, startItem.quantity);
