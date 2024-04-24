@@ -494,21 +494,9 @@ MonoBehaviour:
   - {fileID: 8193502127861903209}
   inventoryItemPrefab: {fileID: 3147761878662062801, guid: 26b3212637127e643b9007e40bdbf8e1,
     type: 3}
-  inventoryWeightLimit: 100
+  inventoryWeightLimit: 150
   currentWeight: 0
-  startItems:
-  - itemData: {fileID: 11400000, guid: 2b43522bd2983514e9bacd1aa89bda18, type: 2}
-    quantity: 1
-  - itemData: {fileID: 11400000, guid: 4dc2b7312d221354fab411f860817cfb, type: 2}
-    quantity: 1
-  - itemData: {fileID: 11400000, guid: ca3f5cb675ff5814fbad85dcfac35591, type: 2}
-    quantity: 1
-  - itemData: {fileID: 11400000, guid: 94a51b5ebdd69db48ba42c2ca07057f4, type: 2}
-    quantity: 1
-  - itemData: {fileID: 11400000, guid: 6749e79904a1ad54e9db6412b3537fbc, type: 2}
-    quantity: 1
-  - itemData: {fileID: 11400000, guid: bc5b2db7cbfbf8e48ba4f44123602b65, type: 2}
-    quantity: 10
+  startItems: []
   backpackInventory: {fileID: 7056760596738209765}
   gearSlots:
   - {fileID: 736026325898383237}

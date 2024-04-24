@@ -44,11 +44,6 @@ public class LootContainer : Inventory, IInteractable
         }
     }
 
-    public override void QuickEquip(InventorySlot inventorySlot)
-    {
-        AddItemToEarliestEmptySlot(inventorySlot.GetItemInSlot());
-    }
-
     public override void DropItem(InventorySlot inventorySlot)
     {
         ItemInstance itemInstance = inventorySlot.GetItemInSlot().itemInstance;

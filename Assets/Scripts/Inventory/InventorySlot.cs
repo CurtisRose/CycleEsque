@@ -21,9 +21,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     [SerializeField] Image itemBorderImage;
 
     [SerializeField] public bool UseLargeImage = false;
-    [SerializeField] private bool slotContributesToWeight = true;
-
-    [SerializeField] public bool partOfPlayerInventory;
 
     public virtual void Awake()
     {
@@ -50,44 +47,12 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 		return itemInSlot;
 	}
 
-	// This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)
-	public virtual void SetItemInSlotAfterDrag(InventoryItem inventoryItem) {
-		if (HasItem()) {
-			if (itemInSlot == inventoryItem) {
-				return;
-			}
-			inventory.Swap(this, inventoryItem);
-		}
-
-		{
-			itemInSlot = inventoryItem;
-			hasItem = true;
-
-			weightText.text = inventoryItem.GetTotalWeight().ToString();
-			if (inventoryItem.itemInstance.sharedData.Stackable) {
-				stackSizeText.text = inventoryItem.GetItemCount().ToString();
-			} else {
-				stackSizeText.text = "";
-			}
-			inventoryItem.SetParentAfterDrag(itemSlot);
-			SetImageColor(inventoryItem.itemInstance.sharedData.Rarity);
-		}
-
-		if (itemInSlot != null) {
-			itemInSlot.OnItemCountChanged += RefreshItemStats;
-		}
-	}
-
 	public bool HasItem() {
 		return hasItem;
 	}
 
 	public Inventory GetInventory() {
 		return inventory;
-	}
-
-	public bool ContributesToWeight() {
-		return slotContributesToWeight;
 	}
 
 	// Happens before OnEndDrag in the InventoryItem
@@ -111,17 +76,31 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 			return;
 		}
 
-		bool success = inventory.AddItem(this, itemComingIn);
-
-		if (success) {
-			// Set the parent to this itemSlot
-			itemComingIn.GetCurrentInventorySlot().RemoveItemFromSlot();
-			itemInSlot = itemComingIn;
-			itemComingIn.SetParentAfterDrag(itemSlot);
-		}
+		bool success = inventory.Swap(this, itemComingIn);
 	}
 
-    protected void RefreshItemStats()
+	// This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)
+	public virtual void SetItemInSlotAfterDrag(InventoryItem inventoryItem) {
+		itemInSlot = inventoryItem;
+		hasItem = true;
+
+		weightText.text = inventoryItem.GetTotalWeight().ToString();
+		if (inventoryItem.itemInstance.sharedData.Stackable) {
+			stackSizeText.text = inventoryItem.GetItemCount().ToString();
+		} else {
+			stackSizeText.text = "";
+		}
+		inventoryItem.SetParentAfterDrag(itemSlot);
+		SetImageColor(inventoryItem.itemInstance.sharedData.Rarity);
+
+		if (itemInSlot != null) {
+			itemInSlot.OnItemCountChanged += RefreshItemStats;
+		}
+
+		inventoryItem.DoThingsAfterMove();
+	}
+
+	protected void RefreshItemStats()
     {
         if(itemInSlot == null)
         {

@@ -5366,11 +5366,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerInventory
       objectReference: {fileID: 0}
-    - target: {fileID: 7488946573659412822, guid: 18afc7dec9b93d34a84ce2fba64e2d83,
-        type: 3}
-      propertyPath: startItems.Array.size
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
