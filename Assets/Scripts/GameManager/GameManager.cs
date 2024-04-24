@@ -27,7 +27,9 @@ public class GameManager : MonoBehaviour
 	private void Start() {
 		if (loadPlayer) {
 			LoadAndInitializePlayer();
-            equippedItemsMenu.LoadOutChanged();
+            if (equippedItemsMenu != null) {
+                equippedItemsMenu.LoadOutChanged();
+            }
 		}
 	}
 
