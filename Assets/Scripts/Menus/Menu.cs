@@ -12,7 +12,7 @@ public enum MenuType
 public class Menu : MonoBehaviour, IMenu
 {
     [SerializeField] protected  GameObject menuPanel;
-    bool isOpen = false;
+    [SerializeField] bool isOpen = false;
 
     [SerializeField] MenuType type;
     [SerializeField] int priority = 0; // Lower number = lower priority

@@ -3786,6 +3786,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1227919928}
     m_Modifications:
+    - target: {fileID: 935759037591029568, guid: 06ca188699e39fc4aa4320fba0b2ee38,
+        type: 3}
+      propertyPath: m_Name
+      value: LootBoxCanvas
+      objectReference: {fileID: 0}
     - target: {fileID: 1722964206960591778, guid: 06ca188699e39fc4aa4320fba0b2ee38,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -7196,6 +7201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2644b7634aeeb245bf740c87c9ed51e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeMenus: []
   DontDestroyOnLoadToggle: 0
 --- !u!224 &1111993371
 RectTransform:
@@ -13892,6 +13898,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuPanel: {fileID: 1893949224}
+  isOpen: 0
   type: 2
   priority: 8
   affectsUserMovement: 0

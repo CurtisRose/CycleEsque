@@ -60,19 +60,6 @@ public class PlayerInventory : Inventory {
 		}
 	}
 
-	private void Update() {
-		if (Input.GetKeyDown(KeyCode.Tab)) {
-
-			if (PlayerInventoryMenu.Instance != null) {
-				if (!PlayerInventoryMenu.Instance.IsOpen()) {
-					MenuManager.Instance.OpenMenu(PlayerInventoryMenu.Instance);
-				} else {
-					MenuManager.Instance.CloseMenu(PlayerInventoryMenu.Instance);
-				}
-			}
-		}
-	}
-
 	public bool AddItem(WorldItem item) {
 		ItemInstance itemInstance = item.CreateItemInstance();
 		// Need to do a weight check here
@@ -195,8 +182,15 @@ public class PlayerInventory : Inventory {
 		} else {
 			// Note for future me, [otherSlot != null] is specifically for when splitting items in the player inventory.
 			if (otherSlot != null && otherSlot.GetInventory() == this) {
-				// The items are just moving in the inventory, no change in weight
-				weightChange = 0;
+				// If either slot is a gear slot, there is a weight change in the inventory
+				if (otherSlot is GearSlot) {
+					// Item is adding weight when moving from gear slot to inventory
+					weightChange += newItem.GetTotalWeight();
+				}
+				if (targetSlot is GearSlot) {
+					// Item is reducing weight when moving from inventory to gear slot
+					weightChange -= newItem.GetTotalWeight();
+				}
 			} else {
 				// If the item is coming from another inventory, weight must be added
 				weightChange += newItem.GetTotalWeight();
@@ -481,6 +475,57 @@ public class PlayerInventory : Inventory {
 		for (int i = 0; i < startItems.Length; i++) {
 			if (startItems[i].quantity < 1)
 				startItems[i].quantity = 1;
+		}
+	}
+
+	public override void QuickEquip(InventorySlot inventorySlot) {
+		InventoryItem inventoryItem = inventorySlot.GetItemInSlot();
+		if (inventoryItem == null) {
+			return;
+		}
+
+		switch (inventoryItem.GetItemType()) {
+			case ItemType.WEAPON:
+				// Weapon needs to take into account weapon slot 1 and 2
+				break;
+			case ItemType.BACKPACK:
+				EquipItem(gearSlots[(int)GearSlotIdentifier.BACKPACK], inventorySlot, false);
+				break;
+			case ItemType.ARMOR:
+				EquipItem(gearSlots[(int)GearSlotIdentifier.ARMOR], inventorySlot, false);
+				break;
+			case ItemType.HELMET:
+				EquipItem(gearSlots[(int)GearSlotIdentifier.HELMET], inventorySlot, false);
+				break;
+			default:
+				base.QuickEquip(inventorySlot);
+				break;
+		}
+
+		base.QuickEquip(inventorySlot);
+	}
+
+	private void EquipItem(GearSlot relevantGearSlot, InventorySlot inventorySlotOut, bool  force) {
+		// TODOL: Add some logic around forced, not forced
+		InventorySlot emptySlot = FindEarliestEmptySlot(inventorySlotOut.GetItemInSlot());
+		InventoryItem inventoryItem = inventorySlotOut.GetItemInSlot();
+		// If the slot in and out are the same, it means they clicked the gear slot just unequip item to earlierst empty slot
+		if (inventorySlotOut == relevantGearSlot) {
+			if (emptySlot != null) {
+				if (CanAddItem(emptySlot, inventoryItem)) {
+					Swap(emptySlot, inventoryItem);
+				}
+			}
+		}
+		// They want to equip the armor
+		else {
+			if (CanAddItem(relevantGearSlot, inventoryItem)) {
+				Swap(relevantGearSlot, inventoryItem);
+			}
+			else {
+				if (emptySlot != null) {
+				}
+			}
 		}
 	}
 }

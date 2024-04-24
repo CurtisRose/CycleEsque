@@ -4,7 +4,7 @@ using UnityEngine;
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance { get; private set; }
-    private List<Menu> activeMenus = new List<Menu>();
+    [SerializeField] private List<Menu> activeMenus = new List<Menu>();
     [SerializeField] bool DontDestroyOnLoadToggle;
 
     void Awake()

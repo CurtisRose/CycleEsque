@@ -17,4 +17,17 @@ public class PlayerInventoryMenu : Menu
             Instance = this;
         }
     }
+
+	private void Update() {
+		if (Input.GetKeyDown(KeyCode.Tab)) {
+
+			if (PlayerInventoryMenu.Instance != null) {
+				if (!IsOpen()) {
+					MenuManager.Instance.OpenMenu(PlayerInventoryMenu.Instance);
+				} else {
+					MenuManager.Instance.CloseMenu(PlayerInventoryMenu.Instance);
+				}
+			}
+		}
+	}
 }

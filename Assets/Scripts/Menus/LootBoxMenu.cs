@@ -13,7 +13,7 @@ public class LootBoxMenu : Menu
         // Let all the inventory slots do what they need to do
         Open();
         Close();
-            dependentMenus.Add(PlayerInventoryMenu.Instance);
+        dependentMenus.Add(PlayerInventoryMenu.Instance);
     }
 
     private void Update()
@@ -22,7 +22,7 @@ public class LootBoxMenu : Menu
         {
             if (IsOpen())
             {
-                Close();
+                MenuManager.Instance.CloseMenu(this);
             }
         }
     }

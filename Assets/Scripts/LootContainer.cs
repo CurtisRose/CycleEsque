@@ -15,6 +15,10 @@ public class LootContainer : Inventory, IInteractable
 
     [SerializeField] LootBoxMenu lootMenu;
 
+    void Awake() {
+        containerNameText.text = containerName;
+    }
+
     protected void Start()
     {
         MenuManager.Instance.OpenMenu(lootMenu);
