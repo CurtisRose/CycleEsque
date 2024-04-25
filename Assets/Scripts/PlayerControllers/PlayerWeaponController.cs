@@ -92,7 +92,7 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void HandleWeaponFiring()
     {
-        if (!Character.disableUserClickingInputStatus)
+        if (!Player.disableUserClickingInputStatus)
         {
             if (Input.GetMouseButton(0))
             {
@@ -202,7 +202,7 @@ public class PlayerWeaponController : MonoBehaviour
 
     public void MoveToADS()
     {
-        if (Character.disableUserClickingInputStatus) return;
+        if (Player.disableUserClickingInputStatus) return;
         if (gearManager.GetGunInHands() == null) return;
 
         // Check to see if state manager allows this action

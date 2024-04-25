@@ -7,25 +7,60 @@ public class MonsterSpawner : MonoBehaviour
     [SerializeField] private List<MonsterController> monsterPrefabs;
     [SerializeField] private Transform spawnPointsParent;
     [SerializeField] private List<Transform> spawnPoints; 
-    [SerializeField] private float respawnTime = 5.0f; 
+    [SerializeField] private float respawnTime = 5.0f;
+	[SerializeField] private float deactivationDelay = 30.0f;  // Time to wait before deactivating
+	public bool isDeactivating = false;  // Tracks if the spawner is waiting to deactivate [used only for draw gizmos]
 
-    private Dictionary<MonsterController, MonsterController> activeMonsters = new Dictionary<MonsterController, MonsterController>();
+	private Dictionary<MonsterController, MonsterController> activeMonsters = new Dictionary<MonsterController, MonsterController>();
+	private bool isActive = false;  // Flag to track whether monsters are spawned
 
-    void Start()
+	void Start()
     {
         if (spawnPoints == null || spawnPoints.Count <= 0)
         {
             spawnPoints = new List<Transform>(spawnPointsParent.GetComponentsInChildren<Transform>());
-            // Remove the spawnPointParent from the list.
+            // Remove the spawnPointParent from the list, since it's included for some reason in the GetComponentsInChildren call
             spawnPoints.RemoveAt(0);
         }
-        foreach (MonsterController monsterPrefab in monsterPrefabs)
-        {
-            SpawnMonster(monsterPrefab);
-        }
+
+        MonsterSpawnerManager.Instance.RegisterMonsterSpawner(this);
     }
 
-    private void SpawnMonster(MonsterController prefab)
+	public void Activate() {
+		if (!isActive || isDeactivating) {
+			isActive = true;
+			isDeactivating = false;  // Cancel any ongoing deactivation
+			StopAllCoroutines();
+			Debug.Log("A player has approached the POI, activating monsters.");
+			foreach (var monster in monsterPrefabs) {
+				SpawnMonster(monster);
+			}
+		}
+	}
+
+	public void Deactivate() {
+		if (isActive && !isDeactivating) {
+			StartCoroutine(DeactivateAfterDelay());
+		}
+	}
+
+	private IEnumerator DeactivateAfterDelay() {
+		isDeactivating = true;  // Mark as deactivating
+		yield return new WaitForSeconds(deactivationDelay);
+		if (isActive) {
+			Debug.Log("Deactivating monsters after delay.");
+			foreach (var monster in activeMonsters.Keys) {
+				Destroy(monster.gameObject);
+			}
+			activeMonsters.Clear();
+			isDeactivating = false;  // Reset deactivating state
+			isActive = false;
+		} else {
+			isDeactivating = false;  // Deactivation was cancelled
+		}
+	}
+
+	private void SpawnMonster(MonsterController prefab)
     {
         if (spawnPoints.Count == 0)
         {
@@ -63,12 +98,22 @@ public class MonsterSpawner : MonoBehaviour
         SpawnMonster(prefab);
     }
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        foreach (Transform spawnPoint in spawnPoints)
-        {
-            Gizmos.DrawSphere(spawnPoint.position, 0.5f);  // Draw a small sphere at each spawn point
-        }
-    }
+	public bool IsActive() {
+		return isActive;
+	}
+
+    void OnDrawGizmos() {
+		if (IsActive() && !isDeactivating) {
+			Gizmos.color = Color.green;  // Active and not deactivating
+		} else if (IsActive() && isDeactivating) {
+			Gizmos.color = Color.yellow;  // Active but pending deactivation
+		} else {
+			Gizmos.color = Color.red;  // Fully deactivated
+		}
+
+		foreach (Transform spawnPoint in spawnPoints) {
+			Gizmos.DrawSphere(spawnPoint.position, 1f);
+		}
+		Gizmos.DrawWireCube(transform.position, new Vector3(1, 1, 1));
+	}
 }

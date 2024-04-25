@@ -16,7 +16,7 @@ public class MonsterController : MonoBehaviour
     private NavMeshAgent agent;
     private NavMeshPathVisualizer visualizer;
 
-    List<Character> players = new List<Character>();
+    List<Player> players = new List<Player>();
     LayerMask layerMask;
 
     Animator animator;
@@ -47,7 +47,6 @@ public class MonsterController : MonoBehaviour
         ChangeState(new ExploringState(gameObject, monsterData, explorationTarget));
         healthComponent.OnHealthChanged += HandleHealthChanged;
         healthComponent.OnDeath += HandleDeath;
-        FetchPlayers();
     }
 
     void InitializeAgent()
@@ -63,20 +62,6 @@ public class MonsterController : MonoBehaviour
     {
         if (currentState != null)
             currentState.Execute();
-    }
-
-    void FetchPlayers()
-    {
-        // Find all game objects tagged as "Player" and add their Character component to the list
-        GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
-        foreach (GameObject playerObject in playerObjects)
-        {
-            Character character = playerObject.GetComponent<Character>();
-            if (character != null)
-            {
-                players.Add(character);
-            }
-        }
     }
 
     public void ChangeState(MonsterState newState)
@@ -175,7 +160,7 @@ public class MonsterController : MonoBehaviour
         this.targetTransform = targetTransform;
     }
 
-    public List<Character> GetPlayers()
+    public List<Player> GetPlayers()
     {
         return players;
     }
