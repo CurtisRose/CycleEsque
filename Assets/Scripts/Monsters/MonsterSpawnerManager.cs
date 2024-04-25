@@ -26,19 +26,19 @@ public class MonsterSpawnerManager : MonoBehaviour
 		} else {
 			Destroy(this);
 		}
+		monsterSpawnerTree = new Quadtree(0, new Rect(transform.position.x, transform.position.z, MAPSIZEX, MAPSIZEY), MAX_OBJECTS, MAX_LEVELS); // Set bounds appropriately for your game area
 	}
 
 	void Start() {
-		monsterSpawnerTree = new Quadtree(0, new Rect(transform.position.x, transform.position.z, MAPSIZEX, MAPSIZEY), MAX_OBJECTS, MAX_LEVELS); // Set bounds appropriately for your game area
-		InitializeMonsters();
-		UpdateMonsterActivities();
+		InitializeMonsterSpawners();
+		UpdateMonsterSpawners();
 	}
 
 	void Update() {
 		checkTimer += Time.deltaTime;
 		if (checkTimer >= checkInterval) {
 			checkTimer = 0;
-			UpdateMonsterActivities();
+			UpdateMonsterSpawners();
 		}
 	}
 
@@ -49,14 +49,14 @@ public class MonsterSpawnerManager : MonoBehaviour
 		monsterSpawnerTree.Insert(monsterSpawner.gameObject);
 	}
 
-	private void InitializeMonsters() {
+	private void InitializeMonsterSpawners() {
 		foreach (MonsterSpawner monsterSpawner in monsterSpawners) {
 			monsterSpawnerTree.Insert(monsterSpawner.gameObject); // Assuming monsters have a GameObject component
 			monsterSpawner.Deactivate(); // Initially deactivate all monsters
 		}
 	}
 
-	private void UpdateMonsterActivities() {
+	private void UpdateMonsterSpawners() {
 		HashSet<MonsterSpawner> newlyActiveSpawners = new HashSet<MonsterSpawner>();
 
 		float extendedDistance = 2 * activationDistance;

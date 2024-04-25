@@ -3,13 +3,18 @@ using System.Collections.Generic;
 
 public class ItemSpawnerManager : MonoBehaviour
 {
-    private List<LootSpawner> spawners = new List<LootSpawner>();
+	[SerializeField] private List<LootSpawner> spawners = new List<LootSpawner>();
+	[SerializeField] private List<LootContainer> lootBoxes = new List<LootContainer>();
 
-    private void Start()
+
+	private void Start()
     {
-        // Find all ItemSpawner components in the children of this GameObject
-        spawners.AddRange(GetComponentsInChildren<LootSpawner>());
-    }
+		// Find all ItemSpawner components in the children of this GameObject
+		spawners.AddRange(GetComponentsInChildren<LootSpawner>());
+
+		// Find all loot containers in the children of this GameObject
+		lootBoxes.AddRange(GetComponentsInChildren<LootContainer>());
+	}
 
     public void Update()
     {

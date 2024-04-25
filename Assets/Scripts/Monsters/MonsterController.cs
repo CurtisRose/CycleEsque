@@ -47,6 +47,7 @@ public class MonsterController : MonoBehaviour
         ChangeState(new ExploringState(gameObject, monsterData, explorationTarget));
         healthComponent.OnHealthChanged += HandleHealthChanged;
         healthComponent.OnDeath += HandleDeath;
+        FetchPlayers();
     }
 
     void InitializeAgent()
@@ -62,6 +63,20 @@ public class MonsterController : MonoBehaviour
     {
         if (currentState != null)
             currentState.Execute();
+    }
+
+    void FetchPlayers()
+    {
+        // Find all game objects tagged as "Player" and add their Character component to the list
+        GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject playerObject in playerObjects)
+        {
+			Player player = playerObject.GetComponent<Player>();
+            if (player != null)
+            {
+                players.Add(player);
+            }
+        }
     }
 
     public void ChangeState(MonsterState newState)
