@@ -31,6 +31,7 @@ public class MonsterSpawnerManager : MonoBehaviour
 	void Start() {
 		monsterSpawnerTree = new Quadtree(0, new Rect(transform.position.x, transform.position.z, MAPSIZEX, MAPSIZEY), MAX_OBJECTS, MAX_LEVELS); // Set bounds appropriately for your game area
 		InitializeMonsters();
+		UpdateMonsterActivities();
 	}
 
 	void Update() {

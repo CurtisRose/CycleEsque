@@ -58,7 +58,7 @@ public class Quadtree {
 		}
 
 		if (nodes[0] != null) {
-			int index = GetIndex(gameObject);
+			int index = GetIndex(pos);
 			if (index != -1) {
 				nodes[index].Insert(gameObject);
 				return;
@@ -74,7 +74,7 @@ public class Quadtree {
 
 			int i = 0;
 			while (i < objects.Count) {
-				int index = GetIndex(objects[i]);
+				int index = GetIndex(new Vector2(objects[i].transform.position.x, objects[i].transform.position.z));
 				if (index != -1) {
 					GameObject obj = objects[i];
 					objects.RemoveAt(i);
@@ -109,8 +109,7 @@ public class Quadtree {
 		return false;
 	}
 
-	private int GetIndex(GameObject gameObject) {
-		Vector2 pos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.z);
+	private int GetIndex(Vector2 pos) {
 		bool left = pos.x < bounds.x + bounds.width / 2;
 		bool top = pos.y < bounds.y + bounds.height / 2;
 
