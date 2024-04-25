@@ -113,12 +113,8 @@ public class MonsterController : MonoBehaviour
         animator.Play("Death");
         WorldItem item = lootPool.GetRandomItemWithQuantity();
         if (item != null) {
-            Debug.Log("Monster dropped item: " + item.GetSharedItemData().DisplayName);
 			itemDropper.DropItem(item.CreateItemInstance());
 		}
-        else {
-            Debug.Log("Monster dropped no item.");
-        }
     }
 
     void OnDrawGizmos()

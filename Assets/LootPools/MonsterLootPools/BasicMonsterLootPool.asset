@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   items:
   - item: {fileID: 0}
-    probability: 50
-    minQuantity: 0
-    maxQuantity: 0
+    probability: 0
+    minQuantity: 1
+    maxQuantity: 1
   - item: {fileID: 3494190095646576863, guid: 3d4da2cff714a904b827e9c6b77ab840, type: 3}
     probability: 50
-    minQuantity: 0
-    maxQuantity: 0
+    minQuantity: 1
+    maxQuantity: 1

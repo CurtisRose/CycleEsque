@@ -1090,6 +1090,7 @@ GameObject:
   - component: {fileID: 3050583421449731175}
   - component: {fileID: 9064487098345231790}
   - component: {fileID: 5664054591919217908}
+  - component: {fileID: 1444190981501058084}
   m_Layer: 8
   m_Name: Character
   m_TagString: Player
@@ -1399,6 +1400,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemDropper: {fileID: 524081812311261863}
+--- !u!114 &1444190981501058084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064487098345231825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d602373809f1e0f419d691b6cf583ca3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathBody: {fileID: 8599525809787948345, guid: 9f5be881660d72340924dbc126c32211,
+    type: 3}
+  health: {fileID: 1362002582233426473}
 --- !u!1 &9166655474706790046
 GameObject:
   m_ObjectHideFlags: 0
