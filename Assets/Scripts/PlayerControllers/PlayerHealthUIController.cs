@@ -6,28 +6,19 @@ public class PlayerHealthUIController : MonoBehaviour
     [SerializeField] Slider healthSlider; // Reference to the UI Slider
     Health targetHealth; // Reference to the Health component of your GameObject
 
-    private void Awake()
-    {
-		// This is a gnarly way to get the health automatically.
-		targetHealth = PlayerWeaponController.Instance.gameObject.GetComponent<Health>();
-	}
-
     private void Start()
     {
+		targetHealth = PlayerWeaponController.Instance.gameObject.GetComponent<Health>();
 		healthSlider.maxValue = targetHealth.maxHealth;
         healthSlider.value = targetHealth.GetCurrentHealth();
-    }
+		targetHealth.OnHealthChanged += UpdateHealthUI;
+	}
 
     void Update()
     {
 
     }
 
-    private void OnEnable()
-    {
-        // Subscribe to the health change event
-        targetHealth.OnHealthChanged += UpdateHealthUI;
-    }
 
     private void OnDisable()
     {

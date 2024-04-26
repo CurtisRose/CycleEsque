@@ -11,7 +11,7 @@ public class PlayerGearUI : MonoBehaviour
     [SerializeField] Image helmetBackgroundImage;
     [SerializeField] Image armorBackgroundImage;
 
-    private void Awake()
+    private void Start()
     {
         PlayerGearManager.Instance.OnBackpackChanged += HandleBackpackChange;
 		PlayerGearManager.Instance.OnHelmetChanged += HandleHelmetChange;

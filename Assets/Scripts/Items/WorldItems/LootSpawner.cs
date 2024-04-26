@@ -28,20 +28,20 @@ public class LootSpawner : MonoBehaviour
 
     private void SpawnItem()
     {
-        WorldItem selectedItem = itemPool.GetRandomItemWithQuantity();
+        WorldItem selectedItemPrefab = itemPool.GetRandomItemWithQuantity();
 
-        if (selectedItem != null && selectedItem.GetNumberOfItems() > 0)
+        if (selectedItemPrefab != null && selectedItemPrefab.GetNumberOfItems() > 0)
         {
             Quaternion randomRotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
-            WorldItem spawnedItem = Instantiate(selectedItem, transform.position, randomRotation, transform);
+			currentItem = Instantiate(selectedItemPrefab, transform.position, randomRotation, transform);
             
-            if (spawnedItem.GetComponent<WorldItem>() != null)
+            if (currentItem.GetComponent<WorldItem>() != null)
             {
-                if (spawnedItem.GetSharedItemData().Stackable)
+                if (currentItem.GetSharedItemData().Stackable)
                 {
-                    spawnedItem.SetNumberOfStartingItems(selectedItem.GetNumberOfItems());
+					currentItem.SetNumberOfStartingItems(selectedItemPrefab.GetNumberOfItems());
                 }
-                spawnedItem.GetComponent<WorldItem>().OnPickedUp += ItemTaken;
+				currentItem.GetComponent<WorldItem>().OnPickedUp += ItemTaken;
             }
         }
         else
