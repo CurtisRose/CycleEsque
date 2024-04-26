@@ -4000,7 +4000,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPool: {fileID: 11400000, guid: 149c444713e2e014abebe7d78f88c2b2, type: 2}
-  respawnTime: 10
+  respawnTime: 120
 --- !u!1001 &570701308
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5082,7 +5082,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPool: {fileID: 11400000, guid: 149c444713e2e014abebe7d78f88c2b2, type: 2}
-  respawnTime: 10
+  respawnTime: 120
 --- !u!1001 &762438407
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6681,7 +6681,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPool: {fileID: 11400000, guid: 149c444713e2e014abebe7d78f88c2b2, type: 2}
-  respawnTime: 10
+  respawnTime: 120
 --- !u!1 &1029316051
 GameObject:
   m_ObjectHideFlags: 0
@@ -8371,7 +8371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPool: {fileID: 11400000, guid: 149c444713e2e014abebe7d78f88c2b2, type: 2}
-  respawnTime: 10
+  respawnTime: 120
 --- !u!1 &1269172116
 GameObject:
   m_ObjectHideFlags: 0
@@ -9423,7 +9423,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPool: {fileID: 11400000, guid: 149c444713e2e014abebe7d78f88c2b2, type: 2}
-  respawnTime: 10
+  respawnTime: 120
 --- !u!1 &1377081238
 GameObject:
   m_ObjectHideFlags: 0
@@ -12569,7 +12569,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPool: {fileID: 11400000, guid: 149c444713e2e014abebe7d78f88c2b2, type: 2}
-  respawnTime: 10
+  respawnTime: 120
 --- !u!1 &1818326416
 GameObject:
   m_ObjectHideFlags: 0
@@ -13004,7 +13004,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPool: {fileID: 11400000, guid: 149c444713e2e014abebe7d78f88c2b2, type: 2}
-  respawnTime: 10
+  respawnTime: 120
 --- !u!1 &1874067381
 GameObject:
   m_ObjectHideFlags: 0
@@ -14065,7 +14065,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPool: {fileID: 11400000, guid: 149c444713e2e014abebe7d78f88c2b2, type: 2}
-  respawnTime: 10
+  respawnTime: 120
 --- !u!1001 &2065040826
 PrefabInstance:
   m_ObjectHideFlags: 0
