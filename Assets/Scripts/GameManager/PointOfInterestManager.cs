@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterSpawnerManager : MonoBehaviour
+public class PointOfInterestManager : MonoBehaviour
 {
-	public static MonsterSpawnerManager Instance;
+	public static PointOfInterestManager Instance;
+
+	[SerializeField] private Quadtree poiQuadtree;
+
 	[SerializeField] private List<MonsterSpawner> monsterSpawners;
 	private List<MonsterSpawner> activeSpawners = new List<MonsterSpawner>(); // Track active spawners
+	
 	[SerializeField] private List<Player> players;
-	[SerializeField] private Quadtree monsterSpawnerTree;
 	[SerializeField] private float activationDistance = 50.0f; // Distance to activate monsters
 	// extendedDistance is the diagonal distance of a square with side length 1, since later we are checking with a circle
 	// This is used to measure distance from the player to POI
@@ -26,7 +29,7 @@ public class MonsterSpawnerManager : MonoBehaviour
 		} else {
 			Destroy(this);
 		}
-		monsterSpawnerTree = new Quadtree(0, new Rect(transform.position.x, transform.position.z, MAPSIZEX, MAPSIZEY), MAX_OBJECTS, MAX_LEVELS); // Set bounds appropriately for your game area
+		poiQuadtree = new Quadtree(0, new Rect(transform.position.x, transform.position.z, MAPSIZEX, MAPSIZEY), MAX_OBJECTS, MAX_LEVELS); // Set bounds appropriately for your game area
 	}
 
 	void Start() {
@@ -46,12 +49,12 @@ public class MonsterSpawnerManager : MonoBehaviour
 		// Add the new monster spawner to the list
 		monsterSpawners.Add(monsterSpawner);
 		monsterSpawner.Deactivate();
-		monsterSpawnerTree.Insert(monsterSpawner.gameObject);
+		poiQuadtree.Insert(monsterSpawner.gameObject);
 	}
 
 	private void InitializeMonsterSpawners() {
 		foreach (MonsterSpawner monsterSpawner in monsterSpawners) {
-			monsterSpawnerTree.Insert(monsterSpawner.gameObject); // Assuming monsters have a GameObject component
+			poiQuadtree.Insert(monsterSpawner.gameObject); // Assuming monsters have a GameObject component
 			monsterSpawner.Deactivate(); // Initially deactivate all monsters
 		}
 	}
@@ -75,7 +78,7 @@ public class MonsterSpawnerManager : MonoBehaviour
 			);
 
 			// Retrieve all monsters within the nearby area
-			List<GameObject> nearbyMonsterSpawner = monsterSpawnerTree.Query(nearbyArea);
+			List<GameObject> nearbyMonsterSpawner = poiQuadtree.Query(nearbyArea);
 			foreach (GameObject monsterObj in nearbyMonsterSpawner) {
 				MonsterSpawner monsterSpawner = monsterObj.GetComponent<MonsterSpawner>();
 				if (monsterSpawner != null) {
@@ -123,8 +126,8 @@ public class MonsterSpawnerManager : MonoBehaviour
 		}
 
 		// Draw the quadTree
-		if (monsterSpawnerTree != null) {
-			monsterSpawnerTree.DrawQuadtree(monsterSpawnerTree);
+		if (poiQuadtree != null) {
+			poiQuadtree.DrawQuadtree(poiQuadtree);
 		}
 	}
 }

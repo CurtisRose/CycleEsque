@@ -23,7 +23,7 @@ public class MonsterSpawner : MonoBehaviour
             spawnPoints.RemoveAt(0);
         }
 
-        MonsterSpawnerManager.Instance.RegisterMonsterSpawner(this);
+        PointOfInterestManager.Instance.RegisterMonsterSpawner(this);
     }
 
 	public void Activate() {
