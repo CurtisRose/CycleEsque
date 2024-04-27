@@ -77,8 +77,15 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Player data file not found.");
-            }
+				Debug.LogWarning("Player data file not found. Loading default data...");
+				TextAsset defaultData = Resources.Load<TextAsset>("NewPlayer"); // No .json extension needed
+				if (defaultData != null) {
+					PlayerData initialPlayerData = PlayerData.FromJson(defaultData.text);
+					InitializePlayer(initialPlayerData);
+				} else {
+					Debug.LogError("Default player data file not found in Resources.");
+				}
+			}
         }
         catch (Exception ex)
         {

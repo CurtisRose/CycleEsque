@@ -108,8 +108,10 @@ public class StashInventoryManager : Inventory
         }
         else
         {
-            Debug.LogWarning("File not found, cannot load items.");
-        }
+			Debug.LogWarning("No Stash data found. Loading default stash data...");
+			TextAsset defaultData = Resources.Load<TextAsset>("NewStash"); // No .json extension needed
+			stashSerializableItems = JsonUtility.FromJson<Serialization<List<SerializableItemData>>>(defaultData.text).Data;
+		}
     }
 
     public SharedItemData GetItemByID(string id)
