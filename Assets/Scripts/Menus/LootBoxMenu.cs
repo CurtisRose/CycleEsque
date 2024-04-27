@@ -22,7 +22,7 @@ public class LootBoxMenu : Menu
         {
             if (IsOpen())
             {
-                MenuManager.Instance.CloseMenu(this);
+                MenuManager.Instance.CloseMenu(this, false);
             }
         }
     }

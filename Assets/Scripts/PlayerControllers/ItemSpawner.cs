@@ -9,9 +9,9 @@ public class ItemPrefabPair
     public WorldItem prefab;
 }
 
-public class PlayerItemSpawner : MonoBehaviour
+public class ItemSpawner : MonoBehaviour
 {
-    public static PlayerItemSpawner Instance { get; private set; }
+    public static ItemSpawner Instance { get; private set; }
     public List<ItemPrefabPair> itemPrefabs = new List<ItemPrefabPair>();
     private Dictionary<SharedItemData, WorldItem> itemPrefabMap;
 

@@ -33,15 +33,6 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.L))
-        {
-            SavePlayerData();
-            SceneManagerHelper.LoadSceneWithPlayerData("SpaceStation");
-        }
-    }
-
     public void SavePlayerData()
     {
         try

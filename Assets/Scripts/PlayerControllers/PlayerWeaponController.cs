@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class PlayerWeaponController : MonoBehaviour
 {
-    [SerializeField] PlayerInventory playerInventory;
-    [SerializeField] PlayerGearManager gearManager;
+	public static PlayerWeaponController Instance;
+
+	[SerializeField] PlayerGearManager gearManager;
     [SerializeField] PlayerWeaponSwitcher playerWeaponSwitcher;
 
     [SerializeField] Transform weaponPositionHands;
@@ -21,7 +22,7 @@ public class PlayerWeaponController : MonoBehaviour
     private Coroutine currentTransitionCoroutine;
 
     // Crosshair Aimer Test
-    [SerializeField] CrosshairController crosshairController;
+    CrosshairController crosshairController;
     bool ADSing = false;
     [SerializeField] float smoothTime = 0.1f; // This should be based on the gun maybe
     [SerializeField] float crosshairVisiblityTime = 0.2f;
@@ -35,15 +36,25 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void Awake()
     {
-        recoil = GetComponent<Recoil>();
+		if (Instance != null) {
+			Destroy(this);
+		} else {
+			Instance = this;
+		}
+		recoil = GetComponent<Recoil>();
         playerWeaponSwitcher = GetComponent<PlayerWeaponSwitcher>();
     }
 
-    private void Update()
+	private void Start() {
+		crosshairController = CrosshairController.Instance;
+	}
+
+	private void Update()
     {
         // Set the crosshair to where the gun is pointing
         if (gearManager.GetGunInHands() != null && WeaponAimTesting && !IsADSing())
         {
+            // TODO: This is occuring every frame, even when not aiming or shooting.
             crosshairController.SetCrosshairPositionWhereGunIsLooking(gearManager.GetGunInHands().transform, smoothTime);
         } else
         {
@@ -81,7 +92,7 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void HandleWeaponFiring()
     {
-        if (!Character.disableUserClickingInputStatus)
+        if (!Player.disableUserClickingInputStatus)
         {
             if (Input.GetMouseButton(0))
             {
@@ -113,10 +124,10 @@ public class PlayerWeaponController : MonoBehaviour
                         // Write decrement of AmmoCount to the inventory slot Item Instance
                         if (playerWeaponSwitcher.PrimarySelected())
                         {
-                            playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gearManager.GetGunInHands().GetNumberOfRounds());
+							PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gearManager.GetGunInHands().GetNumberOfRounds());
                         } else
                         {
-                            playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT2).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gearManager.GetGunInHands().GetNumberOfRounds());
+							PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.WEAPONSLOT2).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gearManager.GetGunInHands().GetNumberOfRounds());
                         }
 
                         if (OnPrimaryGunFired != null)
@@ -158,16 +169,16 @@ public class PlayerWeaponController : MonoBehaviour
                 int numberOfRoundsUsed = gearManager.GetGunInHands().Reload(numberOfRoundsAvailable);
                 if (numberOfRoundsUsed > 0)
                 {
-                    playerInventory.RemoveItemOfType(ItemType.AMMO, numberOfRoundsUsed);
+					PlayerInventory.Instance.RemoveItemOfType(ItemType.AMMO, numberOfRoundsUsed);
 
                     // Write decrement of AmmoCount to the inventory slot Item Instance
                     if (playerWeaponSwitcher.PrimarySelected())
                     {
-                        playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gearManager.GetGunInHands().GetNumberOfRounds());
+						PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gearManager.GetGunInHands().GetNumberOfRounds());
                     }
                     else
                     {
-                        playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT2).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gearManager.GetGunInHands().GetNumberOfRounds());
+						PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.WEAPONSLOT2).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gearManager.GetGunInHands().GetNumberOfRounds());
                     }
 
                     if (OnPrimaryGunReloaded != null)
@@ -186,12 +197,12 @@ public class PlayerWeaponController : MonoBehaviour
 
     public int GetNumberOfRoundsOfAmmoInInventory()
     {
-        return playerInventory.GetNumberOfItemsOfType(ItemType.AMMO);
+        return PlayerInventory.Instance.GetNumberOfItemsOfType(ItemType.AMMO);
     }
 
     public void MoveToADS()
     {
-        if (Character.disableUserClickingInputStatus) return;
+        if (Player.disableUserClickingInputStatus) return;
         if (gearManager.GetGunInHands() == null) return;
 
         // Check to see if state manager allows this action

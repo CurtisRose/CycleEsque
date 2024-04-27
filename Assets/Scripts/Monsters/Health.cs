@@ -5,10 +5,11 @@ using UnityEngine;
 public class Health : MonoBehaviour , IDamageable
 {
     public float maxHealth = 100f;
-    [SerializeField] private float currentHealth;
+    [SerializeField] protected float currentHealth;
 
-    private float healthBarVisibleTime = 5.0f;
-    private float lastDamageTime;
+	private float healthBarVisibleTime = 5.0f;
+	private float healthBarVisibleTimeAfterDeath = 0.5f;
+	private float lastDamageTime;
 
     public delegate void HealthChanged(float currentHealth);
     public event HealthChanged OnHealthChanged;
@@ -22,7 +23,7 @@ public class Health : MonoBehaviour , IDamageable
     public delegate void Death();
     public event Death OnDeath;
 
-    void Start()
+    protected virtual void Start()
     {
         currentHealth = maxHealth;
         OnHealthChanged?.Invoke(currentHealth);
@@ -31,7 +32,7 @@ public class Health : MonoBehaviour , IDamageable
 
     public void ReceiveDamage(float amount)
     {
-        currentHealth -= amount;
+        currentHealth -= CalculateDamage(amount); ;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         lastDamageTime = Time.time;
 
@@ -44,6 +45,10 @@ public class Health : MonoBehaviour , IDamageable
             //Debug.Log(gameObject.name + " has died.");
         }
     }
+
+    protected virtual float CalculateDamage(float amount) {
+        return amount;
+	}
 
     public void ReceiveHealing(float amount)
     {
@@ -66,12 +71,15 @@ public class Health : MonoBehaviour , IDamageable
         return Time.time - lastDamageTime <= healthBarVisibleTime;
     }
 
-    public float GetVisibilityTime()
-    {
-        return healthBarVisibleTime;
-    }
+	public float GetVisibilityTime() {
+		return healthBarVisibleTime;
+	}
 
-    public void SetMaxHealth(float health)
+	public float GetVisibilityTimeAfterDeath() {
+		return healthBarVisibleTimeAfterDeath;
+	}
+
+	public void SetMaxHealth(float health)
     {
         maxHealth = health;
         currentHealth = health;

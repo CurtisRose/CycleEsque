@@ -52,15 +52,15 @@ public class Menu : MonoBehaviour, IMenu
         isOpen = false;
         if (affectsUserMovement)
         {
-            Character.SetUserMovementInputStatus(true);
+            Player.SetUserMovementInputStatus(true);
         }
         if (affectsUserClicking)
         {
-            Character.SetUserClickingInputStatus(true);
+            Player.SetUserClickingInputStatus(true);
         }
         if (affectsUserLooking)
         {
-            Character.SetUserLookingInputStatus(true);
+            Player.SetUserLookingInputStatus(true);
         }
     }
 
@@ -71,15 +71,15 @@ public class Menu : MonoBehaviour, IMenu
         OpenDependentMenus();
         if (affectsUserMovement)
         {
-            Character.SetUserMovementInputStatus(false);
+            Player.SetUserMovementInputStatus(false);
         }
         if (affectsUserClicking)
         {
-            Character.SetUserClickingInputStatus(false);
+            Player.SetUserClickingInputStatus(false);
         }
         if (affectsUserLooking)
         {
-            Character.SetUserLookingInputStatus(false);
+            Player.SetUserLookingInputStatus(false);
         }
     }
 

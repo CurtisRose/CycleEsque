@@ -12,11 +12,12 @@ public class MonsterController : MonoBehaviour
     private MonsterState currentState;
     private Health healthComponent;
     private MonsterHealthUIController healthUIController;
+    [SerializeField] private Transform healthbarCanvas;
     private Collider[] hitColliders;
     private NavMeshAgent agent;
     private NavMeshPathVisualizer visualizer;
 
-    List<Character> players = new List<Character>();
+    List<Player> players = new List<Player>();
     LayerMask layerMask;
 
     Animator animator;
@@ -27,6 +28,11 @@ public class MonsterController : MonoBehaviour
     public event Death OnDeath;
 
     private Transform targetTransform;
+    [SerializeField] private LootPool lootPool;
+    private ItemDropper itemDropper;
+
+    bool isDead = false;
+    public WorldItem itemDropped;
 
     private void Awake()
     {
@@ -37,6 +43,7 @@ public class MonsterController : MonoBehaviour
         visualizer = GetComponent<NavMeshPathVisualizer>();
         animator = GetComponentInChildren<Animator>();
         layerMask = 1 << LayerMask.NameToLayer("Player");
+        itemDropper = GetComponent<ItemDropper>();
     }
 
     void Start()
@@ -45,11 +52,6 @@ public class MonsterController : MonoBehaviour
         healthComponent.OnHealthChanged += HandleHealthChanged;
         healthComponent.OnDeath += HandleDeath;
         FetchPlayers();
-    }
-
-    void OnDeadPassThrough()
-    {
-        OnDeath?.Invoke();
     }
 
     void InitializeAgent()
@@ -63,20 +65,29 @@ public class MonsterController : MonoBehaviour
 
     void Update()
     {
+        if (isDead)
+			return;
         if (currentState != null)
             currentState.Execute();
     }
 
-    void FetchPlayers()
+	public void Destroy() {
+		Destroy(gameObject);
+		if (itemDropped != null) {
+			Destroy(itemDropped.gameObject);
+		}
+	}
+
+	void FetchPlayers()
     {
         // Find all game objects tagged as "Player" and add their Character component to the list
         GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject playerObject in playerObjects)
         {
-            Character character = playerObject.GetComponent<Character>();
-            if (character != null)
+			Player player = playerObject.GetComponent<Player>();
+            if (player != null)
             {
-                players.Add(character);
+                players.Add(player);
             }
         }
     }
@@ -103,32 +114,23 @@ public class MonsterController : MonoBehaviour
 
     private void HandleDeath()
     {
-        healthComponent.OnHealthChanged -= HandleHealthChanged;
+        isDead = true;
+		OnDeath?.Invoke();
+		healthComponent.OnHealthChanged -= HandleHealthChanged;
         healthComponent.OnDeath -= HandleDeath;
-        Destroy(this);
-        Destroy(healthComponent);
         Destroy(visualizer);
         Destroy(agent,.01f); // Because of dumb thing about visualizer needing it...
-        Destroy(healthUIController, healthComponent.GetVisibilityTime());
-        agent.isStopped = true;
+		Destroy(healthComponent);
+		Destroy(healthUIController, healthComponent.GetVisibilityTimeAfterDeath());
+		Destroy(healthbarCanvas.gameObject, healthComponent.GetVisibilityTimeAfterDeath());
+
+		agent.isStopped = true;
         animator.Play("Death");
+        WorldItem item = lootPool.GetRandomItemWithQuantity();
+        if (item != null) {
+			itemDropped = itemDropper.DropItem(item.CreateItemInstance());
+		}
     }
-
-    /*private void DetectPlayer(Character player)
-    {
-        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        float soundLevel = player.CalculateSoundLevel();
-
-        if (distanceToPlayer <= monsterData.detectionRadius)
-        {
-            float hearProbability = soundLevel / distanceToPlayer; // Simple model: higher sound, easier to hear
-
-            if (hearProbability > 1f) // Adjust threshold according to your game's need
-            {
-                Debug.Log(player.name + " detected by sound");
-            }
-        }
-    }*/
 
     void OnDrawGizmos()
     {
@@ -188,18 +190,8 @@ public class MonsterController : MonoBehaviour
         this.targetTransform = targetTransform;
     }
 
-    public List<Character> GetPlayers()
+    public List<Player> GetPlayers()
     {
         return players;
-    }
-
-    private void OnEnable()
-    {
-        healthComponent.OnDeath += OnDeadPassThrough;
-    }
-
-    private void OnDisable()
-    {
-        healthComponent.OnDeath -= OnDeadPassThrough;
     }
 }

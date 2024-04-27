@@ -32,7 +32,7 @@ public class PickupItemMenu : Menu
 
     public void UpdatePickupPromptInfo(WorldItem worldItem)
     {
-        SharedItemData sharedItemData = worldItem.GetBaseItem();
+        SharedItemData sharedItemData = worldItem.GetSharedItemData();
         itemName.text = sharedItemData.DisplayName;
         itemWeight.text = worldItem.GetWeight().ToString();
         itemRarity.text = sharedItemData.Rarity.ToString();

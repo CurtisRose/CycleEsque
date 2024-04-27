@@ -27,7 +27,7 @@ public class PlayerInventory : Inventory {
 	public delegate void InventoryChanged();
 	public event InventoryChanged OnInventoryChanged;
 
-	public delegate void ItemDropped(ItemInstance itemInstance);
+	public delegate WorldItem ItemDropped(ItemInstance itemInstance);
 	public event ItemDropped OnItemDropped;
 
 	private void Awake() {
@@ -45,7 +45,7 @@ public class PlayerInventory : Inventory {
 
 		foreach (InventoryStartItem startItem in startItems) {
 			//ItemInstance itemInstance = new ItemInstance(startItem);
-			WorldItem testItem = PlayerItemSpawner.Instance.GetPrefab(startItem.itemData);
+			WorldItem testItem = ItemSpawner.Instance.GetPrefab(startItem.itemData);
 			ItemInstance testInstance = testItem.CreateNewItemInstance(startItem.itemData);
 			if (startItem.itemData.Stackable) {
 				testInstance.SetProperty(ItemAttributeKey.NumItemsInStack, startItem.quantity);
@@ -57,6 +57,22 @@ public class PlayerInventory : Inventory {
 
 		if (PlayerInventoryMenu.Instance != null) {
 			PlayerInventoryMenu.Instance.Close();
+		}
+	}
+
+	// TODO: This should drop a backpack with weapons and armor and everything else in it
+	public void DropInventory() {
+		foreach(InventorySlot inventorySlot in inventorySlots) {
+			if (inventorySlot.HasItem()) {
+				//DropItem(inventorySlot);
+				inventorySlot.RemoveItemFromSlot();
+			}
+		}
+		foreach(GearSlot gearSlot in gearSlots) {
+			if (gearSlot.HasItem()) {
+				//DropItem(gearSlot);
+				gearSlot.RemoveItemFromSlot();
+			}
 		}
 	}
 
@@ -125,7 +141,6 @@ public class PlayerInventory : Inventory {
 			// If clearing a slot that had a backpack, calculate the reduction in carrying capacity if its coming from the gear slot
 			if (inventorySlot.HasItem() && inventorySlot.GetItemInSlot().GetItemType() == ItemType.BACKPACK && inventorySlot is GearSlot) {
 				capacityChange = -((BackpackItem)inventorySlot.GetItemInSlot().itemInstance.sharedData).CarryCapacity;
-				float test = GetInventoryWeightLimit() + capacityChange;
 				bool result = currentWeight <= GetInventoryWeightLimit() + capacityChange;
 				return result; // Check if current weight is valid after capacity reduction
 			}
@@ -140,11 +155,10 @@ public class PlayerInventory : Inventory {
 		// Adjust based on where the item is coming from and going to
 		if (inventorySlot is GearSlot) {
 			if (itemToSet.GetCurrentInventorySlot() is GearSlot) {
-				// Gear to Gear - typically blocked or special rules apply
-				return false;
+				// This can happen with guns, probably not worth checking for that though
+				return true;
 			} else {
 				// Inventory to Gear - consider gear slot specifics, typically not changing total weight
-				float test = GetInventoryWeightLimit() + capacityChange;
 				bool result = currentWeight + weightChange <= GetInventoryWeightLimit() + capacityChange;
 				return result;
 			}
@@ -156,7 +170,6 @@ public class PlayerInventory : Inventory {
 				return result;
 			} else {
 				// Inventory to Inventory - normal weight check
-				float test = GetInventoryWeightLimit();
 				bool result = currentWeight + weightChange <= GetInventoryWeightLimit();
 				return result;
 			}
@@ -171,11 +184,18 @@ public class PlayerInventory : Inventory {
 
 		if (targetSlot is GearSlot) {
 			if (otherSlot.GetInventory() == this) {
-				// If the item is coming from this inventory, weight must be removed
-				weightChange -= newItem.GetTotalWeight();
-				if (targetSlot.HasItem()) {
-					// If there's an existing item in the slot, add its weight to the change, it's going to the inventory
-					weightChange += itemAlreadyHere.GetTotalWeight();
+				// This should only occur when dragging one gun onto another
+				if (otherSlot is GearSlot) {
+					// No Weight Change
+				}
+                else
+                {
+					// If the item is coming from this inventory, weight must be removed
+					weightChange -= newItem.GetTotalWeight();
+					if (targetSlot.HasItem()) {
+						// If there's an existing item in the slot, add its weight to the change, it's going to the inventory
+						weightChange += itemAlreadyHere.GetTotalWeight();
+					}
 				}
 			}
 			return weightChange;
@@ -229,73 +249,6 @@ public class PlayerInventory : Inventory {
 
 		return capacityChange;
 	}
-
-	/*public override bool CanAddItem(InventorySlot inventorySlot, InventoryItem itemToSet) {
-		// If base inventory returns false, this should probably return false.
-		if (base.CanAddItem(inventorySlot, itemToSet) == false) {
-			return false;
-		}
-
-		// Items going into or out of gear slots don't add weight to the inventory
-		// Backpack items going into or out of backpack gear slots change the inventory weight limit
-		// Items going into or out of inventory slots add/remove weight to/from the inventory
-		// This class only cares about if it can be added to THIS inventory. The other inventory will handle its own weight changes.
-		// Although, if this one is the player inventory, the other one is certainly (As of current design) NOT a player inventory, and therefore not concerned with weight
-		// Items can be null, indicating that a swap occurred into an empty slot
-
-		// The item coming from INSIDE the player inventory
-		if (itemToSet.GetCurrentInventorySlot().GetInventory() == this) {
-			// The item is coming FROM a GEAR slot
-			if (itemToSet.GetCurrentInventorySlot() is GearSlot) {
-				// The item is going INTO a GEAR slot
-				if (inventorySlot is GearSlot) {
-
-				}
-				// Is going INTO an INVENTORY slot
-				else {
-					
-				}
-			// The item is coming FROM an INVENTORY slot
-			} else {
-				// The item is going INTO a GEAR slot
-				if (inventorySlot is GearSlot) {
-					
-
-				}
-				// The item is going INTO an INVENTORY slot
-				else {
-					
-				}
-			}
-		}
-		// The item coming from OUTSIDE the player inventory
-		else {
-			// The item is coming FROM a GEAR slot
-			if (itemToSet.GetCurrentInventorySlot() is GearSlot) {
-				// The item is going INTO a GEAR slot
-				if (inventorySlot is GearSlot) {
-
-				}
-				// Is going INTO an INVENTORY slot
-				else {
-					
-				}
-			}
-			// The item is coming FROM an INVENTORY slot
-			else {
-				// The item is going INTO a GEAR slot
-				if (inventorySlot is GearSlot) {
-
-				}
-				// Is going INTO an INVENTORY slot
-				else {
-
-				}
-			}
-		}
-
-		return true;
-	}*/
 
 	public override bool Swap(InventorySlot slotToAddTo, InventoryItem itemToAdd) {
 		return base.Swap(slotToAddTo, itemToAdd);
@@ -485,9 +438,21 @@ public class PlayerInventory : Inventory {
 		}
 
 		bool success = false;
+		// TODO Should probably be doing weight checks for all of these switches.
+		// Determine the slot that is being switched, in the switch statement
+		// Then check after the switch statement if the weight is valid
+		// Then switch the items if the weight is valid
 		switch (inventoryItem.GetItemType()) {
 			case ItemType.WEAPON:
 				// Weapon needs to take into account weapon slot 1 and 2
+				if (gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1].HasItem() && gearSlots[(int)GearSlotIdentifier.WEAPONSLOT2].HasItem()) {
+					// If both weapon slots are full, unequip the first weapon to the inventory
+					success = EquipItem(gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1], inventorySlot, false);
+				} else if (!gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1].HasItem()) {
+					success = EquipItem(gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1], inventorySlot, false);
+				} else {
+					success = EquipItem(gearSlots[(int)GearSlotIdentifier.WEAPONSLOT2], inventorySlot, false);
+				}
 				break;
 			case ItemType.BACKPACK:
 				success = EquipItem(gearSlots[(int)GearSlotIdentifier.BACKPACK], inventorySlot, false);

@@ -6,7 +6,7 @@ using UnityEngine.AI;  // Required for NavMeshAgent
 public class AggressiveState : MonsterState
 {
     private NavMeshAgent agent;  // Reference to the NavMeshAgent component
-    private Character player;
+    private Player player;
     private float aggressiveTimer;  // Timer to track aggression duration
     Animator animator;
 
@@ -44,6 +44,7 @@ public class AggressiveState : MonsterState
     public override void Execute()
     {
         if (agent == null) return;
+        if (player == null) return;
 
         // Update the timer each frame
         aggressiveTimer += Time.deltaTime;

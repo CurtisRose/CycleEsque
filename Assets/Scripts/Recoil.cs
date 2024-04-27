@@ -6,7 +6,7 @@ public class Recoil : MonoBehaviour
 {
     PlayerWeaponController playerGearController;
     PlayerWeaponSwitcher playerWeaponSwitching;
-    Character character;
+    Player character;
 
     [SerializeField] Transform recoilTarget;
     bool isAiming;
@@ -55,7 +55,7 @@ public class Recoil : MonoBehaviour
     {
         playerGearController = GetComponent<PlayerWeaponController>();
         playerWeaponSwitching = GetComponent<PlayerWeaponSwitcher>();
-        character = GetComponent<Character>();
+        character = GetComponent<Player>();
         playerWeaponSwitching.OnPrimaryChanged += InitializeItemFromBaseItemData;
     }
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 public class MenuManager : MonoBehaviour
@@ -57,15 +58,23 @@ public class MenuManager : MonoBehaviour
         SortMenus();
     }
 
-    public void CloseMenu(Menu menu)
+    // Close dependents is used in the case of the player inventory and the loot box menus.
+    // Opening the loot box opens up the loot boxes dependent menu, the play inventory menu.
+    // When you close the lootbox with tab, it would typically try to also close it's dependents
+    // The problem is, the player inventory menu is also listening to tab, and will get executed after and reopen itself.
+    // In this case, I want the loot box menu to open the player inventory menu, but not to close it.
+    // Let the player inventory manage itself.
+    // TODO: Consider centralizing menu inputs to this class. So this class handles the logic of pressing tab based on conditions of what menus are open or not.
+    public void CloseMenu(Menu menu, bool closeDependents = true)
     {
         if (activeMenus.Contains(menu))
         {
             menu.Close();
             activeMenus.Remove(menu);
-            foreach (var dependentMenu in menu.dependentMenus)
-            {
-                CloseMenu(dependentMenu); // Optionally close dependent menus
+            if (closeDependents) {
+                foreach (var dependentMenu in menu.dependentMenus) {
+                    CloseMenu(dependentMenu); // Optionally close dependent menus
+                }
             }
         }
     }

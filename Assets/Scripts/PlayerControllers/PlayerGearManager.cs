@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class PlayerGearManager : MonoBehaviour
 {
-    [SerializeField] PlayerInventory playerInventory;
-    [SerializeField] PlayerWeaponSwitcher playerWeaponSwitcher;
+	public static PlayerGearManager Instance;
+
+	[SerializeField] PlayerWeaponSwitcher playerWeaponSwitcher;
 
     // GearSlotIdentifier { BACKPACK, ARMOR, HELMET, WEAPONSLOT1, WEAPONSLOT2 }
     [SerializeField] WorldItem[] gearItems;
@@ -37,25 +38,31 @@ public class PlayerGearManager : MonoBehaviour
 
     [SerializeField] bool VisualizeLoadout;
 
-    private void Awake()
+	private void Awake()
     {
-        gearItems = new WorldItem[5];
-        foreach (GearSlot gearSlot in playerInventory.GetGearSlots())
-        {
-            gearSlot.OnGearSlotsChanged += GearSlotChange;
-        }
-        playerWeaponSwitcher = GetComponent<PlayerWeaponSwitcher>();
+		if (Instance != null) {
+			Destroy(this);
+		} else {
+			Instance = this;
+		}
+		gearItems = new WorldItem[5];
+		playerWeaponSwitcher = GetComponent<PlayerWeaponSwitcher>();
         audioSource = GetComponent<AudioSource>();
         gearRemovalRandomClips = new SoundRandomizer(gearRemovalSounds);
     }
 
-    private void GearSlotChange(GearSlot gearSlot)
+	private void Start() {
+		foreach (GearSlot gearSlot in PlayerInventory.Instance.GetGearSlots()) {
+			gearSlot.OnGearSlotsChanged += GearSlotChange;
+		}
+	}
+	private void GearSlotChange(GearSlot gearSlot)
     {
         if (VisualizeLoadout)
         {
             if (gearSlot.GetItemType() == ItemType.WEAPON)
             {
-                if (gearSlot == playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1))
+                if (gearSlot == PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1))
                 {
                     HandleGearSlotChange(GearSlotIdentifier.WEAPONSLOT1, gearSlot);
                 }
@@ -96,9 +103,9 @@ public class PlayerGearManager : MonoBehaviour
             SharedItemData sharedItemData = null;
             if (gearSlot.HasItem())
             {
-                gearItems[(int)identifier] = PlayerItemSpawner.Instance.SpawnItem(gearSlot.GetItemInSlot().itemInstance, gearStorageLocations[(int)identifier]);
+                gearItems[(int)identifier] = ItemSpawner.Instance.SpawnItem(gearSlot.GetItemInSlot().itemInstance, gearStorageLocations[(int)identifier]);
                 gearItems[(int)identifier].Equip();
-                sharedItemData = gearItems[(int)identifier].GetBaseItem();
+                sharedItemData = gearItems[(int)identifier].GetSharedItemData();
             }
 
             if (identifier == GearSlotIdentifier.WEAPONSLOT1)
@@ -143,4 +150,11 @@ public class PlayerGearManager : MonoBehaviour
         audioSource.volume = Random.Range(0.8f, 1.0f); // Adjust volume slightly
         audioSource.PlayOneShot(audioClip);
     }
+
+    public float GetArmorValue() {
+		if (gearItems[(int)GearSlotIdentifier.ARMOR] != null) {
+			return ((ArmorItem)gearItems[(int)GearSlotIdentifier.ARMOR].GetSharedItemData()).ArmorValue;
+		}
+        return 0;
+	}
 }

@@ -8,8 +8,6 @@ public class EquippedItemsMenu : Menu
 {
     public static EquippedItemsMenu Instance { get; private set; }
 
-    [SerializeField] PlayerWeaponController playerWeaponController;
-    [SerializeField] PlayerWeaponSwitcher playerWeaponSwitcher;
     [SerializeField] PlayerInventory playerInventory;
 
     [SerializeField] Image weapon1Image;
@@ -38,9 +36,9 @@ public class EquippedItemsMenu : Menu
         {
             Destroy(gameObject);
         }
-        playerWeaponSwitcher.OnLoadOutChanged += LoadOutChanged;
-        playerWeaponController.OnPrimaryGunFired += UpdateAmmoText;
-        playerWeaponController.OnPrimaryGunReloaded += UpdateAmmoText;
+        PlayerWeaponSwitcher.Instance.OnLoadOutChanged += LoadOutChanged;
+        PlayerWeaponController.Instance.OnPrimaryGunFired += UpdateAmmoText;
+        PlayerWeaponController.Instance.OnPrimaryGunReloaded += UpdateAmmoText;
         playerInventory.OnInventoryChanged += UpdateAmmoText;
     }
 
@@ -58,22 +56,22 @@ public class EquippedItemsMenu : Menu
             return;
         }
         ammoInMagText.text = gunHeld.GetNumberOfRounds().ToString();
-        ammoInBackpackText.text = playerWeaponController.GetNumberOfRoundsOfAmmoInInventory().ToString();
+        ammoInBackpackText.text = PlayerWeaponController.Instance.GetNumberOfRoundsOfAmmoInInventory().ToString();
 
     }
 
     public void LoadOutChanged()
     {
-        gunHeld = playerWeaponSwitcher.GetGunInHands();
+        gunHeld = PlayerWeaponSwitcher.Instance.GetGunInHands();
         if (gunHeld != null)
         {
-            weapon1Image.sprite = gunHeld.GetBaseItem().LargeImage;
+            weapon1Image.sprite = gunHeld.GetSharedItemData().LargeImage;
             weapon1Image.enabled = true;
             ammoInMagText.text = gunHeld.GetNumberOfRounds().ToString();
-            ammoInBackpackText.text = playerWeaponController.GetNumberOfRoundsOfAmmoInInventory().ToString();
-            weapon1NameText.text = gunHeld.GetBaseItem().name;
-            weapon1RarityBorder1.color = RarityColorManager.Instance.GetColorByRarity(gunHeld.GetBaseItem().Rarity);
-            weapon1RarityBorder2.color = RarityColorManager.Instance.GetColorByRarity(gunHeld.GetBaseItem().Rarity); ;
+            ammoInBackpackText.text = PlayerWeaponController.Instance.GetNumberOfRoundsOfAmmoInInventory().ToString();
+            weapon1NameText.text = gunHeld.GetSharedItemData().name;
+            weapon1RarityBorder1.color = RarityColorManager.Instance.GetColorByRarity(gunHeld.GetSharedItemData().Rarity);
+            weapon1RarityBorder2.color = RarityColorManager.Instance.GetColorByRarity(gunHeld.GetSharedItemData().Rarity); ;
             backpackIndicatorImage.enabled = true;
         } else
         {
@@ -87,15 +85,15 @@ public class EquippedItemsMenu : Menu
             backpackIndicatorImage.enabled = false;
         }
 
-            Gun gun2 = playerWeaponSwitcher.GetGunOnHip();
+            Gun gun2 = PlayerWeaponSwitcher.Instance.GetGunOnHip();
         if (gun2 != null)
         {
-            weapon2Image.sprite = gun2.GetBaseItem().LargeImage;
+            weapon2Image.sprite = gun2.GetSharedItemData().LargeImage;
             weapon2Image.enabled = true;
 
-            weapon2NameText.text = gun2.GetBaseItem().name;
-            weapon2RarityBorder1.color = RarityColorManager.Instance.GetColorByRarity(gun2.GetBaseItem().Rarity);
-            weapon2RarityBorder2.color = RarityColorManager.Instance.GetColorByRarity(gun2.GetBaseItem().Rarity); ;
+            weapon2NameText.text = gun2.GetSharedItemData().name;
+            weapon2RarityBorder1.color = RarityColorManager.Instance.GetColorByRarity(gun2.GetSharedItemData().Rarity);
+            weapon2RarityBorder2.color = RarityColorManager.Instance.GetColorByRarity(gun2.GetSharedItemData().Rarity); ;
         }
         else
         {

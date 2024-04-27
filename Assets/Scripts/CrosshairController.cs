@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public class CrosshairController : MonoBehaviour
 {
-    [SerializeField] RectTransform crossHairPosition;
+	public static CrosshairController Instance;
+	[SerializeField] RectTransform crossHairPosition;
     [SerializeField] RectTransform crosshairVisual;
     public List<RectTransform> indicators; // UI element's RectTransform
     public List<Vector2> movementDirections; // Directions for each indicator
@@ -22,7 +23,15 @@ public class CrosshairController : MonoBehaviour
 
     Vector3 velocity;
 
-    void Start()
+    private void Awake() {
+        if (Instance != null) {
+            Destroy(this);
+        } else {
+            Instance = this;
+        }
+    }
+
+	void Start()
     {
         if (crossHairPosition == null || indicators == null || indicators.Count == 0)
         {

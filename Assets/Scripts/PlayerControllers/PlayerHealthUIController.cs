@@ -4,29 +4,21 @@ using UnityEngine.UI; // Required for interacting with UI elements
 public class PlayerHealthUIController : MonoBehaviour
 {
     [SerializeField] Slider healthSlider; // Reference to the UI Slider
-    [SerializeField] Health targetHealth; // Reference to the Health component of your GameObject
-
-    private void Awake()
-    {
-
-    }
+    Health targetHealth; // Reference to the Health component of your GameObject
 
     private void Start()
     {
-        healthSlider.maxValue = targetHealth.maxHealth;
+		targetHealth = PlayerWeaponController.Instance.gameObject.GetComponent<Health>();
+		healthSlider.maxValue = targetHealth.maxHealth;
         healthSlider.value = targetHealth.GetCurrentHealth();
-    }
+		targetHealth.OnHealthChanged += UpdateHealthUI;
+	}
 
     void Update()
     {
 
     }
 
-    private void OnEnable()
-    {
-        // Subscribe to the health change event
-        targetHealth.OnHealthChanged += UpdateHealthUI;
-    }
 
     private void OnDisable()
     {
