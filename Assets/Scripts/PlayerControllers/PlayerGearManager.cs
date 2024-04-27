@@ -150,4 +150,11 @@ public class PlayerGearManager : MonoBehaviour
         audioSource.volume = Random.Range(0.8f, 1.0f); // Adjust volume slightly
         audioSource.PlayOneShot(audioClip);
     }
+
+    public float GetArmorValue() {
+		if (gearItems[(int)GearSlotIdentifier.ARMOR] != null) {
+			return ((ArmorItem)gearItems[(int)GearSlotIdentifier.ARMOR].GetSharedItemData()).ArmorValue;
+		}
+        return 0;
+	}
 }

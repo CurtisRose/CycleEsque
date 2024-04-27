@@ -15,41 +15,37 @@ MonoBehaviour:
   items:
   - item: {fileID: 0}
     probability: 100
-    minQuantity: 0
-    maxQuantity: 0
+    minQuantity: 1
+    maxQuantity: 1
   - item: {fileID: 8283816626229789992, guid: b5c3d3f8de1572947b8804853fc0c088, type: 3}
     probability: 5
-    minQuantity: 0
-    maxQuantity: 0
+    minQuantity: 1
+    maxQuantity: 1
   - item: {fileID: 7202221500925345354, guid: 0d3dc1c5aaaf45b4384bd760210edd95, type: 3}
     probability: 1
-    minQuantity: 0
-    maxQuantity: 0
+    minQuantity: 1
+    maxQuantity: 1
   - item: {fileID: 605915337927846817, guid: e51d232452a2b5b478b255273a210fce, type: 3}
     probability: 7
-    minQuantity: 0
-    maxQuantity: 0
+    minQuantity: 1
+    maxQuantity: 1
   - item: {fileID: 7241278087371654759, guid: 254ad7d260168ef48a099c239a077d43, type: 3}
     probability: 3
-    minQuantity: 0
-    maxQuantity: 0
+    minQuantity: 1
+    maxQuantity: 1
   - item: {fileID: 1838075406078000547, guid: f40e1c04afd29eb4eaaad81cc94a7c39, type: 3}
     probability: 4
-    minQuantity: 0
-    maxQuantity: 0
+    minQuantity: 1
+    maxQuantity: 1
   - item: {fileID: 3494190095646576863, guid: 3d4da2cff714a904b827e9c6b77ab840, type: 3}
     probability: 20
     minQuantity: 10
     maxQuantity: 31
   - item: {fileID: 1570672019362220136, guid: e0fb84f16e09975479eda3f75c318d2b, type: 3}
     probability: 5
-    minQuantity: 0
-    maxQuantity: 0
+    minQuantity: 1
+    maxQuantity: 1
   - item: {fileID: 625792777598891736, guid: 83d9d0040336f4645b16a5f568c6952b, type: 3}
     probability: 3
-    minQuantity: 0
-    maxQuantity: 0
-  - item: {fileID: 7614836780665308768, guid: d3d002577e0803341b6051e13bd3ef98, type: 3}
-    probability: 5
-    minQuantity: 0
-    maxQuantity: 0
+    minQuantity: 1
+    maxQuantity: 1

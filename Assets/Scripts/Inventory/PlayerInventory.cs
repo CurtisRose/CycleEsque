@@ -438,9 +438,21 @@ public class PlayerInventory : Inventory {
 		}
 
 		bool success = false;
+		// TODO Should probably be doing weight checks for all of these switches.
+		// Determine the slot that is being switched, in the switch statement
+		// Then check after the switch statement if the weight is valid
+		// Then switch the items if the weight is valid
 		switch (inventoryItem.GetItemType()) {
 			case ItemType.WEAPON:
 				// Weapon needs to take into account weapon slot 1 and 2
+				if (gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1].HasItem() && gearSlots[(int)GearSlotIdentifier.WEAPONSLOT2].HasItem()) {
+					// If both weapon slots are full, unequip the first weapon to the inventory
+					success = EquipItem(gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1], inventorySlot, false);
+				} else if (!gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1].HasItem()) {
+					success = EquipItem(gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1], inventorySlot, false);
+				} else {
+					success = EquipItem(gearSlots[(int)GearSlotIdentifier.WEAPONSLOT2], inventorySlot, false);
+				}
 				break;
 			case ItemType.BACKPACK:
 				success = EquipItem(gearSlots[(int)GearSlotIdentifier.BACKPACK], inventorySlot, false);

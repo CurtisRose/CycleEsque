@@ -458,6 +458,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuPanel: {fileID: 7056760596738209765}
+  isOpen: 0
   type: 1
   priority: 10
   affectsUserMovement: 0
@@ -494,7 +495,7 @@ MonoBehaviour:
   - {fileID: 8193502127861903209}
   inventoryItemPrefab: {fileID: 3147761878662062801, guid: 26b3212637127e643b9007e40bdbf8e1,
     type: 3}
-  inventoryWeightLimit: 150
+  inventoryWeightLimit: 75
   currentWeight: 0
   startItems: []
   backpackInventory: {fileID: 7056760596738209765}
