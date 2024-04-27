@@ -38,9 +38,14 @@ public class AttackState : MonsterState
         // Check if the player has moved out of attack range
         if (Vector3.Distance(monster.transform.position, playerTransform.position) > monsterData.attackRange)
         {
+            MonsterController monsterController = monster.GetComponent<MonsterController>();
             // If the player is out of attack range, switch back to aggressive state
-            monster.GetComponent<MonsterController>().ChangeState(new AggressiveState(monster, monsterData));
-        }
+            if (monsterController.GetPlayers()[0] == null) {
+				monsterController.ChangeState(new ExploringState(monsterController.gameObject, monsterData, monsterController.explorationTarget));
+			} else {
+				monster.GetComponent<MonsterController>().ChangeState(new AggressiveState(monster, monsterData));
+			}
+		}
     }
 
     public override void Exit()

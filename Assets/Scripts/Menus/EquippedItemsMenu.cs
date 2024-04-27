@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class EquippedItemsMenu : Menu
+public class EquippedItemsMenu : Menu, IPlayerInitializable
 {
     public static EquippedItemsMenu Instance { get; private set; }
 
@@ -36,17 +36,17 @@ public class EquippedItemsMenu : Menu
         {
             Destroy(gameObject);
         }
-        PlayerWeaponSwitcher.Instance.OnLoadOutChanged += LoadOutChanged;
-        PlayerWeaponController.Instance.OnPrimaryGunFired += UpdateAmmoText;
-        PlayerWeaponController.Instance.OnPrimaryGunReloaded += UpdateAmmoText;
-        playerInventory.OnInventoryChanged += UpdateAmmoText;
     }
 
-	private void Start() {
-        // If this exists, call loadoutchanged to make sure that it picks up the guns equipped and ammo in inventory
-		// Although it's not working now, It must be happening after gear initialization
-        LoadOutChanged();
+    public void Initialize() {
+		PlayerWeaponSwitcher.Instance.OnLoadOutChanged += LoadOutChanged;
+		PlayerWeaponController.Instance.OnPrimaryGunFired += UpdateAmmoText;
+		PlayerWeaponController.Instance.OnPrimaryGunReloaded += UpdateAmmoText;
+		playerInventory.OnInventoryChanged += UpdateAmmoText;
+		LoadOutChanged();
 	}
+
+
 
 
 	private void UpdateAmmoText()
@@ -85,7 +85,7 @@ public class EquippedItemsMenu : Menu
             backpackIndicatorImage.enabled = false;
         }
 
-            Gun gun2 = PlayerWeaponSwitcher.Instance.GetGunOnHip();
+        Gun gun2 = PlayerWeaponSwitcher.Instance.GetGunOnHip();
         if (gun2 != null)
         {
             weapon2Image.sprite = gun2.GetSharedItemData().LargeImage;

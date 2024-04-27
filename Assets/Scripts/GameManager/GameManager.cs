@@ -11,11 +11,19 @@ public class GameManager : MonoBehaviour
     public PlayerData initialPlayerData;
     public Dictionary<string, SharedItemData> itemDictionary = new Dictionary<string, SharedItemData>();
     public bool loadPlayer;
-    [SerializeField] EquippedItemsMenu equippedItemsMenu;
     [SerializeField] Transform CharacterPrefab;
 
 
-    void Awake() {
+    // Player Menus that need to be initialized
+	[SerializeField] PlayerInventory playerInventory;
+    [SerializeField] EquippedItemsMenu equippedItemsMenu;
+
+	// Player components that need to be initialized
+	[SerializeField] PlayerGearManager playerGearManager;
+	[SerializeField] PlayerWeaponSwitcher playerWeaponSwitcher;
+	[SerializeField] PlayerWeaponController playerWeaponController;
+
+	void Awake() {
         if (Instance == null) {
             Instance = this;
         } else {
@@ -28,7 +36,7 @@ public class GameManager : MonoBehaviour
 		if (loadPlayer) {
 			LoadAndInitializePlayer();
             if (equippedItemsMenu != null) {
-                equippedItemsMenu.LoadOutChanged();
+				equippedItemsMenu.LoadOutChanged();
             }
 		}
 	}
@@ -37,7 +45,7 @@ public class GameManager : MonoBehaviour
     {
         try
         {
-            PlayerData playerData = new PlayerData(PlayerInventory.Instance);
+            PlayerData playerData = new PlayerData(playerInventory);
 
             // If there's any data that needs to be transformed or sorted before saving
             // For example, if PlayerData contains a List<PlayerAchievements> that needs sorting:
@@ -69,8 +77,15 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Player data file not found.");
-            }
+				Debug.LogWarning("Player data file not found. Loading default data...");
+				TextAsset defaultData = Resources.Load<TextAsset>("NewPlayer"); // No .json extension needed
+				if (defaultData != null) {
+					PlayerData initialPlayerData = PlayerData.FromJson(defaultData.text);
+					InitializePlayer(initialPlayerData);
+				} else {
+					Debug.LogError("Default player data file not found in Resources.");
+				}
+			}
         }
         catch (Exception ex)
         {
@@ -104,6 +119,19 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Player initialized with loaded data.");
 
+        // Initialize player components
+        if (playerGearManager != null) {
+			playerGearManager.Initialize();
+		}
+        if (equippedItemsMenu != null) {
+			equippedItemsMenu.Initialize();
+
+		}
+        if (playerWeaponSwitcher != null) {
+            playerWeaponSwitcher.Initialize();
+        }
+        //playerWeaponController.Initialize();
+
         // MUST set up gear first, especially in regards to backpacks.... ask me how I know lol
         int weaponCount = 0;
         foreach (SerializableItemData serializableItemData in data.equippedItems)
@@ -119,26 +147,26 @@ public class GameManager : MonoBehaviour
                     GearSlot gearSlot = null;
                     if (serializableItemData.ItemType == ItemType.HELMET)
                     {
-                        gearSlot = PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.HELMET);
+                        gearSlot = playerInventory.GetGearSlot(GearSlotIdentifier.HELMET);
                     }
                     else if (serializableItemData.ItemType == ItemType.ARMOR)
                     {
-                        gearSlot = PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.ARMOR);
+                        gearSlot = playerInventory.GetGearSlot(GearSlotIdentifier.ARMOR);
                     }
                     else if (serializableItemData.ItemType == ItemType.BACKPACK)
                     {
-                        gearSlot = PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.BACKPACK);
+                        gearSlot = playerInventory.GetGearSlot(GearSlotIdentifier.BACKPACK);
                     }
                     else if (serializableItemData.ItemType == ItemType.WEAPON)
                     {
                         if (weaponCount == 0)
                         {
-                            gearSlot = PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1);
+                            gearSlot = playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1);
                             weaponCount++;
                         }
                         else
                         {
-                            gearSlot = PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.WEAPONSLOT2);
+                            gearSlot = playerInventory.GetGearSlot(GearSlotIdentifier.WEAPONSLOT2);
                         }
                     } else
                     {
@@ -147,7 +175,7 @@ public class GameManager : MonoBehaviour
                     }
 
 					// Equip the item to the player
-					PlayerInventory.Instance.EquipItemInstance(newItemInstance, gearSlot);
+					playerInventory.EquipItemInstance(newItemInstance, gearSlot);
                     gearSlot.GetItemInSlot().DoThingsAfterMove();
 
                     //Debug.Log($"Equipped {newItemInstance.sharedData.DisplayName} to gear slot {serializableItemData.ItemType}");
@@ -168,7 +196,7 @@ public class GameManager : MonoBehaviour
                 ItemInstance newItemInstance = new ItemInstance(itemData);
                 newItemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, serializableItemData.Quantity);
 
-				PlayerInventory.Instance.AddItem(newItemInstance);
+				playerInventory.AddItem(newItemInstance);
 
                 // Here you would add this item instance to the player's inventory
                 // For example: playerInventory.AddItem(newItemInstance);

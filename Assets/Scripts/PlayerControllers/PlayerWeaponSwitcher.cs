@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWeaponSwitcher : MonoBehaviour
+public class PlayerWeaponSwitcher : MonoBehaviour, IPlayerInitializable
 {
 	public static PlayerWeaponSwitcher Instance;
 	[SerializeField] PlayerGearManager gearManager;
@@ -37,7 +37,7 @@ public class PlayerWeaponSwitcher : MonoBehaviour
 		gearManager = GetComponent<PlayerGearManager>();
     }
 
-	private void Start() {
+    public void Initialize() {
 		gearManager.OnPrimaryChanged += HandleWeaponChangePrimary;
 		gearManager.OnSecondaryChanged += HandleWeaponChangeSecondary;
 	}

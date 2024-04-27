@@ -1,0 +1,125 @@
+{
+    "Data": [
+        {
+            "DisplayName": "Rifle Exotic",
+            "ID": "7d2817fd-50f8-4da7-8f53-692fc2e8f800",
+            "ItemDescription": "Rifle Exotic",
+            "ItemType": 0,
+            "Rarity": 1,
+            "Weight": 20.0,
+            "Stackable": false,
+            "MaxStackSize": 0,
+            "Quantity": 1
+        },
+        {
+            "DisplayName": "Handgun Epic",
+            "ID": "25633625-f6d9-435b-b6ae-16fbc036b217",
+            "ItemDescription": "Handgun Epic",
+            "ItemType": 0,
+            "Rarity": 0,
+            "Weight": 5.0,
+            "Stackable": false,
+            "MaxStackSize": 0,
+            "Quantity": 1
+        },
+        {
+            "DisplayName": "Handgun Epic",
+            "ID": "25633625-f6d9-435b-b6ae-16fbc036b217",
+            "ItemDescription": "Handgun Epic",
+            "ItemType": 0,
+            "Rarity": 0,
+            "Weight": 5.0,
+            "Stackable": false,
+            "MaxStackSize": 0,
+            "Quantity": 1
+        },
+        {
+            "DisplayName": "Handgun Epic",
+            "ID": "25633625-f6d9-435b-b6ae-16fbc036b217",
+            "ItemDescription": "Handgun Epic",
+            "ItemType": 0,
+            "Rarity": 0,
+            "Weight": 5.0,
+            "Stackable": false,
+            "MaxStackSize": 0,
+            "Quantity": 1
+        },
+        {
+            "DisplayName": "Common Helmet",
+            "ID": "bc0ed4f7-41b2-4185-be58-ff667a9da7f0",
+            "ItemDescription": "",
+            "ItemType": 1,
+            "Rarity": 0,
+            "Weight": 10.0,
+            "Stackable": false,
+            "MaxStackSize": 0,
+            "Quantity": 1
+        },
+        {
+            "DisplayName": "Common Helmet",
+            "ID": "bc0ed4f7-41b2-4185-be58-ff667a9da7f0",
+            "ItemDescription": "",
+            "ItemType": 1,
+            "Rarity": 0,
+            "Weight": 10.0,
+            "Stackable": false,
+            "MaxStackSize": 0,
+            "Quantity": 1
+        },
+        {
+            "DisplayName": "Common Armor",
+            "ID": "a92e52f1-7613-47a4-8f10-4e22b5eed72f",
+            "ItemDescription": "",
+            "ItemType": 2,
+            "Rarity": 0,
+            "Weight": 40.0,
+            "Stackable": false,
+            "MaxStackSize": 0,
+            "Quantity": 1
+        },
+        {
+            "DisplayName": "Common Armor",
+            "ID": "a92e52f1-7613-47a4-8f10-4e22b5eed72f",
+            "ItemDescription": "",
+            "ItemType": 2,
+            "Rarity": 0,
+            "Weight": 40.0,
+            "Stackable": false,
+            "MaxStackSize": 0,
+            "Quantity": 1
+        },
+        {
+            "DisplayName": "BaseAmmo",
+            "ID": "6e8738c5-91e9-432f-9b64-ac801941f7a8",
+            "ItemDescription": "",
+            "ItemType": 4,
+            "Rarity": 0,
+            "Weight": 0.5,
+            "Stackable": true,
+            "MaxStackSize": 100,
+            "Quantity": 100
+        },
+        {
+            "DisplayName": "BaseAmmo",
+            "ID": "6e8738c5-91e9-432f-9b64-ac801941f7a8",
+            "ItemDescription": "",
+            "ItemType": 4,
+            "Rarity": 0,
+            "Weight": 0.5,
+            "Stackable": true,
+            "MaxStackSize": 100,
+            "Quantity": 100
+        },
+        {
+            "DisplayName": "BaseAmmo",
+            "ID": "6e8738c5-91e9-432f-9b64-ac801941f7a8",
+            "ItemDescription": "",
+            "ItemType": 4,
+            "Rarity": 0,
+            "Weight": 0.5,
+            "Stackable": true,
+            "MaxStackSize": 100,
+            "Quantity": 100
+        }
+    ]
+}

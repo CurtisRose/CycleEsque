@@ -1,0 +1,72 @@
+{
+    "inventoryItems": [
+        {
+            "DisplayName": "BaseAmmo",
+            "ID": "6e8738c5-91e9-432f-9b64-ac801941f7a8",
+            "ItemDescription": "",
+            "ItemType": 4,
+            "Rarity": 0,
+            "Weight": 0.5,
+            "Stackable": true,
+            "MaxStackSize": 100,
+            "Quantity": 50
+        }
+    ],
+    "equippedItems": [
+        {
+            "DisplayName": "Empty Slot",
+            "ID": "empty",
+            "ItemDescription": "No item equipped in this slot.",
+            "ItemType": 5,
+            "Rarity": 0,
+            "Weight": 0.0,
+            "Stackable": false,
+            "MaxStackSize": 0,
+            "Quantity": 0
+        },
+        {
+            "DisplayName": "Empty Slot",
+            "ID": "empty",
+            "ItemDescription": "No item equipped in this slot.",
+            "ItemType": 5,
+            "Rarity": 0,
+            "Weight": 0.0,
+            "Stackable": false,
+            "MaxStackSize": 0,
+            "Quantity": 0
+        },
+        {
+            "DisplayName": "Empty Slot",
+            "ID": "empty",
+            "ItemDescription": "No item equipped in this slot.",
+            "ItemType": 5,
+            "Rarity": 0,
+            "Weight": 0.0,
+            "Stackable": false,
+            "MaxStackSize": 0,
+            "Quantity": 0
+        },
+        {
+            "DisplayName": "Handgun Epic",
+            "ID": "25633625-f6d9-435b-b6ae-16fbc036b217",
+            "ItemDescription": "Handgun Epic",
+            "ItemType": 0,
+            "Rarity": 0,
+            "Weight": 5.0,
+            "Stackable": false,
+            "MaxStackSize": 0,
+            "Quantity": 1
+        },
+        {
+            "DisplayName": "Empty Slot",
+            "ID": "empty",
+            "ItemDescription": "No item equipped in this slot.",
+            "ItemType": 5,
+            "Rarity": 0,
+            "Weight": 0.0,
+            "Stackable": false,
+            "MaxStackSize": 0,
+            "Quantity": 0
+        }
+    ]
+}

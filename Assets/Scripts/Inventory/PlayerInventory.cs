@@ -107,7 +107,9 @@ public class PlayerInventory : Inventory {
 		if (currentWeight + weight > GetInventoryWeightLimit()) {
 			return false;
 		}
-        return base.AddItem(itemInstance);
+		bool success = base.AddItem(itemInstance);
+		if (success) { OnInventoryChanged?.Invoke(); }
+        return success;
     }
 
 	public override void AddItem(InventorySlot inventorySlot, InventoryItem itemToSet) {
@@ -251,7 +253,9 @@ public class PlayerInventory : Inventory {
 	}
 
 	public override bool Swap(InventorySlot slotToAddTo, InventoryItem itemToAdd) {
-		return base.Swap(slotToAddTo, itemToAdd);
+		bool success = base.Swap(slotToAddTo, itemToAdd);
+		if (success) { OnInventoryChanged?.Invoke(); }
+		return success;
 	}
 
 	public override InventoryItem RemoveItemFromSlot(InventorySlot inventorySlot) {
@@ -266,7 +270,10 @@ public class PlayerInventory : Inventory {
 				// If removing from an inventory slot, update the weight
 				UpdateWeight(-inventorySlot.GetItemInSlot().GetTotalWeight());
 			}
-			return base.RemoveItemFromSlot(inventorySlot);
+
+			InventoryItem itemRemoved = base.RemoveItemFromSlot(inventorySlot);
+			if (itemRemoved != null) { OnInventoryChanged?.Invoke(); }
+			return itemRemoved;
 		}
 	}
 
@@ -278,6 +285,7 @@ public class PlayerInventory : Inventory {
 			// Only update weight if it's combining from a different inventory.
 			if (itemToCombine.GetCurrentInventorySlot().GetInventory() != this) {
 				UpdateWeight(weightChange);
+				OnInventoryChanged?.Invoke();
 			}
 		}
 		return numberOfItemsAfterCombine;
@@ -292,6 +300,7 @@ public class PlayerInventory : Inventory {
 		} else {
 			// If removing from an inventory slot, update the weight
 			UpdateWeight(-itemsRemoved * inventorySlot.GetItemInSlot().itemInstance.sharedData.Weight);
+			OnInventoryChanged?.Invoke();
 		}
 
 		return itemsRemoved;
@@ -320,7 +329,8 @@ public class PlayerInventory : Inventory {
                     Destroy(itemInSlot.gameObject);
                     numItems -= itemInSlot.GetItemCount();
                 }
-            }
+				OnInventoryChanged?.Invoke();
+			}
         }
         return false;
     }
@@ -422,6 +432,7 @@ public class PlayerInventory : Inventory {
 		UpdateWeight(-inventoryItem.GetTotalWeight());
 		if (OnItemDropped != null)
 			OnItemDropped(itemInstance);
+		OnInventoryChanged?.Invoke();
 	}
 
 	void OnValidate() {
