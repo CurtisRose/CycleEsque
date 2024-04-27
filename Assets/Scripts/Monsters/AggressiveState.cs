@@ -38,7 +38,9 @@ public class AggressiveState : MonsterState
             agent.speed = monsterData.runSpeed;  // Set the chasing speed
             agent.angularSpeed = monsterData.turnSpeed;  // Set how quickly the monster can turn
         }
-        monster.GetComponent<MonsterController>().SetTarget(player.transform);
+        if (player != null) {
+            monster.GetComponent<MonsterController>().SetTarget(player.transform);
+        }
     }
 
     public override void Execute()
