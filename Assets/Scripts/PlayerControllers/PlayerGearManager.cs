@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerGearManager : MonoBehaviour
+public class PlayerGearManager : MonoBehaviour, IPlayerInitializable
 {
 	public static PlayerGearManager Instance;
 
@@ -51,11 +52,13 @@ public class PlayerGearManager : MonoBehaviour
         gearRemovalRandomClips = new SoundRandomizer(gearRemovalSounds);
     }
 
-	private void Start() {
+
+	public void Initialize() {
 		foreach (GearSlot gearSlot in PlayerInventory.Instance.GetGearSlots()) {
 			gearSlot.OnGearSlotsChanged += GearSlotChange;
 		}
 	}
+
 	private void GearSlotChange(GearSlot gearSlot)
     {
         if (VisualizeLoadout)
