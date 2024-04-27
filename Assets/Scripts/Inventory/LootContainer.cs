@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class LootContainer : Inventory, IInteractable
+public class LootContainer : Inventory, IInteractable, IActivatable
 {
     [SerializeField] Transform throwPosition;
     [SerializeField] float throwForce;
@@ -15,19 +15,45 @@ public class LootContainer : Inventory, IInteractable
 
     [SerializeField] LootBoxMenu lootMenu;
 
-    void Awake() {
+	bool isActive;
+
+	void Awake() {
         containerNameText.text = containerName;
     }
 
     protected void Start()
     {
+		// This lets the inventory slots intitialize
         MenuManager.Instance.OpenMenu(lootMenu);
-        //containerNameText.text = containerName;
-        SpawnItem();
         MenuManager.Instance.CloseMenu(lootMenu);
     }
 
-    private void SpawnItem()
+	public void Activate() {
+		if (isActive) {
+			return;
+		}
+		isActive = true;
+		SpawnItems();
+	}
+
+	public void Deactivate() {
+		if (!isActive) {
+			return;
+		}
+		isActive = false;
+		foreach(InventorySlot slot in inventorySlots) {
+			if (slot.HasItem()) {
+				InventoryItem itemInSlot = RemoveItemFromSlot(slot);
+				Destroy(itemInSlot.gameObject);
+			}
+		}
+	}
+
+	public bool IsActive() {
+		return isActive;
+	}
+
+	private void SpawnItems()
     {
         for(int i = 0; i < numberOfItems; i++)
         {

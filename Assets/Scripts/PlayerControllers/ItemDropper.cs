@@ -7,7 +7,7 @@ public class ItemDropper : MonoBehaviour
     [SerializeField] Transform dropDirection;
     [SerializeField] float dropForce;
 
-    public void DropItem(ItemInstance itemInstance)
+    public WorldItem DropItem(ItemInstance itemInstance)
     {
         WorldItem itemBeingDropped = ItemSpawner.Instance.SpawnItem(itemInstance, dropDirection.position, Quaternion.identity);
         //WorldItem itemBeingDropped = Instantiate<WorldItem>(InventoryItem.CurrentHoveredItem.item.itemPrefab, throwPosition.position, Quaternion.identity);
@@ -19,5 +19,6 @@ public class ItemDropper : MonoBehaviour
         // This is so the pick up menu doesn't trigger immediately.
         itemBeingDropped.SetUninteractableTemporarily();
         itemBeingDropped.SetNumberOfStartingItems((int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack));
+        return itemBeingDropped;
     }
 }

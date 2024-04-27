@@ -1,16 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class PointOfInterestManager : MonoBehaviour
+public class MapManager : MonoBehaviour
 {
-	public static PointOfInterestManager Instance;
+	public static MapManager Instance;
 
 	[SerializeField] private Quadtree poiQuadtree;
 
-	[SerializeField] private List<MonsterSpawner> monsterSpawners;
-	private List<MonsterSpawner> activeSpawners = new List<MonsterSpawner>(); // Track active spawners
-	
+	[SerializeField] private List<PointOfInterest> pointsOfInterest;
+	private List<PointOfInterest> activePointsOfInterest = new List<PointOfInterest>();
+
+
 	[SerializeField] private List<Player> players;
 	[SerializeField] private float activationDistance = 50.0f; // Distance to activate monsters
 	// extendedDistance is the diagonal distance of a square with side length 1, since later we are checking with a circle
@@ -33,34 +35,27 @@ public class PointOfInterestManager : MonoBehaviour
 	}
 
 	void Start() {
-		InitializeMonsterSpawners();
-		UpdateMonsterSpawners();
+		InitializePointsOfInterest();
+		UpdatePointsOfInterest();
 	}
 
 	void Update() {
 		checkTimer += Time.deltaTime;
 		if (checkTimer >= checkInterval) {
 			checkTimer = 0;
-			UpdateMonsterSpawners();
+			UpdatePointsOfInterest();
 		}
 	}
 
-	public void RegisterMonsterSpawner(MonsterSpawner monsterSpawner) {
-		// Add the new monster spawner to the list
-		monsterSpawners.Add(monsterSpawner);
-		monsterSpawner.Deactivate();
-		poiQuadtree.Insert(monsterSpawner.gameObject);
-	}
-
-	private void InitializeMonsterSpawners() {
-		foreach (MonsterSpawner monsterSpawner in monsterSpawners) {
-			poiQuadtree.Insert(monsterSpawner.gameObject); // Assuming monsters have a GameObject component
-			monsterSpawner.Deactivate(); // Initially deactivate all monsters
+	private void InitializePointsOfInterest() {
+		foreach (PointOfInterest poi in pointsOfInterest) {
+			poiQuadtree.Insert(poi.gameObject);
+			poi.Deactivate();
 		}
 	}
 
-	private void UpdateMonsterSpawners() {
-		HashSet<MonsterSpawner> newlyActiveSpawners = new HashSet<MonsterSpawner>();
+	private void UpdatePointsOfInterest() {
+		HashSet<PointOfInterest> newlyActivePOIs = new HashSet<PointOfInterest>();
 
 		float extendedDistance = 2 * activationDistance;
 		foreach (Player player in players) {
@@ -78,51 +73,53 @@ public class PointOfInterestManager : MonoBehaviour
 			);
 
 			// Retrieve all monsters within the nearby area
-			List<GameObject> nearbyMonsterSpawner = poiQuadtree.Query(nearbyArea);
-			foreach (GameObject monsterObj in nearbyMonsterSpawner) {
-				MonsterSpawner monsterSpawner = monsterObj.GetComponent<MonsterSpawner>();
-				if (monsterSpawner != null) {
-					float distance = Vector3.Distance(monsterSpawner.transform.position, player.transform.position);
+			List<GameObject> nearbyPOI = poiQuadtree.Query(nearbyArea);
+			foreach (GameObject poiObj in nearbyPOI) {
+				PointOfInterest poi = poiObj.GetComponent<PointOfInterest>();
+				if (poi != null) {
+					float distance = Vector3.Distance(poi.transform.position, player.transform.position);
 					if (distance <= activationDistance) {
-						monsterSpawner.Activate();
-						newlyActiveSpawners.Add(monsterSpawner);
+						poi.Activate();
+						newlyActivePOIs.Add(poi);
 					}
 				}
 			}
 		}
 
 		// Deactivate any previously active spawners that are no longer in range
-		foreach (var spawner in activeSpawners) {
-			if (!newlyActiveSpawners.Contains(spawner)) {
-				spawner.Deactivate();
+		foreach (PointOfInterest poi in activePointsOfInterest) {
+			if (!newlyActivePOIs.Contains(poi)) {
+				poi.Deactivate();
 			}
 		}
 
 		// Update the active spawners list
-		activeSpawners = new List<MonsterSpawner>(newlyActiveSpawners);
+		activePointsOfInterest = new List<PointOfInterest>(newlyActivePOIs);
 	}
 
 	private void OnDrawGizmos() {
 		float extendedDistance = 2 * activationDistance;
 
 		// Draw the search area for each player
-		foreach (Player player in players) {
-			Gizmos.color = Color.magenta;
-			Gizmos.DrawWireCube(player.transform.position, new Vector3(extendedDistance, 0, extendedDistance));
+		if (players != null) {
+			foreach (Player player in players) {
+				Gizmos.color = Color.magenta;
+				Gizmos.DrawWireCube(player.transform.position, new Vector3(extendedDistance, 0, extendedDistance));
+			}
 		}
 
 		// Draw the monsterSpawners activation distance as a sphere
 		// If it's active draw it in green, otherwise in red
-		foreach (MonsterSpawner spawner in monsterSpawners) {
-			if (spawner.IsActive() && !spawner.isDeactivating) {
+		foreach (PointOfInterest poi in pointsOfInterest) {
+			if (poi.IsActive() && !poi.isDeactivating) {
 				Gizmos.color = Color.green;  // Active and not deactivating
-			} else if (spawner.IsActive() && spawner.isDeactivating) {
+			} else if (poi.IsActive() && poi.isDeactivating) {
 				Gizmos.color = Color.yellow;  // Active but pending deactivation
 			} else {
 				Gizmos.color = Color.red;  // Fully deactivated
 			}
 
-			Gizmos.DrawWireSphere(spawner.transform.position, activationDistance);
+			Gizmos.DrawWireSphere(poi.transform.position, activationDistance);
 		}
 
 		// Draw the quadTree

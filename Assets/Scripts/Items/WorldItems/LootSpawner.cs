@@ -1,30 +1,34 @@
 using UnityEngine;
 
-public class LootSpawner : MonoBehaviour
+public class LootSpawner : MonoBehaviour, IActivatable
 {
     public LootPool itemPool;
     public float respawnTime; // Time in seconds to respawn an item
 
     private WorldItem currentItem = null;
-    private float timer = 0;
+    bool isActive;
 
-    private void Start()
-    {
-        SpawnItem(); // Attempt to spawn an item right away
-    }
+	public void Activate() {
+        if (isActive) {
+			return;
+		}
+        isActive = true;
+		SpawnItem();
+	}
 
-    public void CheckRespawn()
-    {
-        if (currentItem == null)
-        {
-            timer += Time.deltaTime;
-            if (timer >= respawnTime)
-            {
-                SpawnItem();
-                timer = 0;
-            }
+    public void Deactivate() {
+        if (!isActive) {
+			return;
+		}
+        isActive = false;
+        if (currentItem != null) {
+            Destroy(currentItem.gameObject);
         }
-    }
+	}
+
+	public bool IsActive() {
+		return isActive;
+	}
 
     private void SpawnItem()
     {
@@ -41,7 +45,7 @@ public class LootSpawner : MonoBehaviour
                 {
 					currentItem.SetNumberOfStartingItems(selectedItemPrefab.GetNumberOfItems());
                 }
-				currentItem.GetComponent<WorldItem>().OnPickedUp += ItemTaken;
+				//currentItem.GetComponent<WorldItem>().OnPickedUp += ItemTaken;
             }
         }
         else
@@ -49,11 +53,6 @@ public class LootSpawner : MonoBehaviour
             //Debug.Log("No item spawned this time.");
             currentItem = null;
         }
-    }
-
-    private void ItemTaken()
-    {
-        currentItem = null;
     }
 
     private void OnDrawGizmos()

@@ -12,6 +12,7 @@ public class MonsterController : MonoBehaviour
     private MonsterState currentState;
     private Health healthComponent;
     private MonsterHealthUIController healthUIController;
+    [SerializeField] private Transform healthbarCanvas;
     private Collider[] hitColliders;
     private NavMeshAgent agent;
     private NavMeshPathVisualizer visualizer;
@@ -29,6 +30,9 @@ public class MonsterController : MonoBehaviour
     private Transform targetTransform;
     [SerializeField] private LootPool lootPool;
     private ItemDropper itemDropper;
+
+    bool isDead = false;
+    public WorldItem itemDropped;
 
     private void Awake()
     {
@@ -61,11 +65,20 @@ public class MonsterController : MonoBehaviour
 
     void Update()
     {
+        if (isDead)
+			return;
         if (currentState != null)
             currentState.Execute();
     }
 
-    void FetchPlayers()
+	public void Destroy() {
+		Destroy(gameObject);
+		if (itemDropped != null) {
+			Destroy(itemDropped.gameObject);
+		}
+	}
+
+	void FetchPlayers()
     {
         // Find all game objects tagged as "Player" and add their Character component to the list
         GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
@@ -101,19 +114,21 @@ public class MonsterController : MonoBehaviour
 
     private void HandleDeath()
     {
+        isDead = true;
 		OnDeath?.Invoke();
 		healthComponent.OnHealthChanged -= HandleHealthChanged;
         healthComponent.OnDeath -= HandleDeath;
-        Destroy(this);
-        Destroy(healthComponent);
         Destroy(visualizer);
         Destroy(agent,.01f); // Because of dumb thing about visualizer needing it...
-        Destroy(healthUIController, healthComponent.GetVisibilityTime());
-        agent.isStopped = true;
+		Destroy(healthComponent);
+		Destroy(healthUIController, healthComponent.GetVisibilityTimeAfterDeath());
+		Destroy(healthbarCanvas.gameObject, healthComponent.GetVisibilityTimeAfterDeath());
+
+		agent.isStopped = true;
         animator.Play("Death");
         WorldItem item = lootPool.GetRandomItemWithQuantity();
         if (item != null) {
-			itemDropper.DropItem(item.CreateItemInstance());
+			itemDropped = itemDropper.DropItem(item.CreateItemInstance());
 		}
     }
 

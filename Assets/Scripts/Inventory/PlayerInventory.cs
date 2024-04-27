@@ -27,7 +27,7 @@ public class PlayerInventory : Inventory {
 	public delegate void InventoryChanged();
 	public event InventoryChanged OnInventoryChanged;
 
-	public delegate void ItemDropped(ItemInstance itemInstance);
+	public delegate WorldItem ItemDropped(ItemInstance itemInstance);
 	public event ItemDropped OnItemDropped;
 
 	private void Awake() {

@@ -163,8 +163,10 @@ MonoBehaviour:
   monsterData: {fileID: 11400000, guid: a80871d4955036a43afeecf2e77b8e4b, type: 2}
   explorationTarget: {fileID: 0}
   rootmotionObject: {fileID: 3757816352592988453}
+  healthbarCanvas: {fileID: 6553601339694805480}
   DrawGizmos: 0
   lootPool: {fileID: 11400000, guid: d35c69b24039086449ba89e4bb2f778f, type: 2}
+  itemDropped: {fileID: 0}
 --- !u!114 &2547828714191357631
 MonoBehaviour:
   m_ObjectHideFlags: 0

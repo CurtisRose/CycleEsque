@@ -7,8 +7,9 @@ public class Health : MonoBehaviour , IDamageable
     public float maxHealth = 100f;
     [SerializeField] private float currentHealth;
 
-    private float healthBarVisibleTime = 5.0f;
-    private float lastDamageTime;
+	private float healthBarVisibleTime = 5.0f;
+	private float healthBarVisibleTimeAfterDeath = 0.5f;
+	private float lastDamageTime;
 
     public delegate void HealthChanged(float currentHealth);
     public event HealthChanged OnHealthChanged;
@@ -66,12 +67,15 @@ public class Health : MonoBehaviour , IDamageable
         return Time.time - lastDamageTime <= healthBarVisibleTime;
     }
 
-    public float GetVisibilityTime()
-    {
-        return healthBarVisibleTime;
-    }
+	public float GetVisibilityTime() {
+		return healthBarVisibleTime;
+	}
 
-    public void SetMaxHealth(float health)
+	public float GetVisibilityTimeAfterDeath() {
+		return healthBarVisibleTimeAfterDeath;
+	}
+
+	public void SetMaxHealth(float health)
     {
         maxHealth = health;
         currentHealth = health;
