@@ -44,6 +44,7 @@ public class AggressiveState : MonsterState
     public override void Execute()
     {
         if (agent == null) return;
+        if (player == null) return;
 
         // Update the timer each frame
         aggressiveTimer += Time.deltaTime;

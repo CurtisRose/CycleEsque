@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public static Player Instance;
+
     private CharacterController characterController;
 
     [Header("Transforms")]
@@ -48,6 +50,12 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null) {
+			Instance = this;
+		}
+		else {
+			Destroy(this);
+		}
         characterController = GetComponent<CharacterController>();
         this.jumpTimer = 0;
         SetUserMovementInputStatus(true);

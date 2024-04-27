@@ -59,6 +59,8 @@ public class MapManager : MonoBehaviour
 
 		float extendedDistance = 2 * activationDistance;
 		foreach (Player player in players) {
+			// TODO: should probably subscribe to player death event and remove from list
+			if (player == null) continue; // Skip if player is null (e.g. player has been destroyed
 
 			// Convert player position to be relative to the Quadtree's origin
 			float relativeX = player.transform.position.x - transform.position.x;
@@ -103,6 +105,7 @@ public class MapManager : MonoBehaviour
 		// Draw the search area for each player
 		if (players != null) {
 			foreach (Player player in players) {
+				if (player == null) continue; // Skip if player is null (e.g. player has been destroyed)
 				Gizmos.color = Color.magenta;
 				Gizmos.DrawWireCube(player.transform.position, new Vector3(extendedDistance, 0, extendedDistance));
 			}

@@ -60,6 +60,22 @@ public class PlayerInventory : Inventory {
 		}
 	}
 
+	// TODO: This should drop a backpack with weapons and armor and everything else in it
+	public void DropInventory() {
+		foreach(InventorySlot inventorySlot in inventorySlots) {
+			if (inventorySlot.HasItem()) {
+				//DropItem(inventorySlot);
+				inventorySlot.RemoveItemFromSlot();
+			}
+		}
+		foreach(GearSlot gearSlot in gearSlots) {
+			if (gearSlot.HasItem()) {
+				//DropItem(gearSlot);
+				gearSlot.RemoveItemFromSlot();
+			}
+		}
+	}
+
 	public bool AddItem(WorldItem item) {
 		ItemInstance itemInstance = item.CreateItemInstance();
 		// Need to do a weight check here

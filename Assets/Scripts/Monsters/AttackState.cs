@@ -27,6 +27,11 @@ public class AttackState : MonsterState
 
     public override void Execute()
     {
+        if (playerTransform == null) {
+			monster.GetComponent<MonsterController>().ChangeState(new ExploringState(monster, monsterData, monster.GetComponent<MonsterController>().explorationTarget));
+			return;
+		}
+
         // Ensure the monster faces the player while attacking
         monster.transform.LookAt(playerTransform);
 
