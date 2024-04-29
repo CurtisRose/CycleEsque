@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ConsumableController : MonoBehaviour
 {
-    [SerializeField] private SharedItemData consumableData;
+    [SerializeField] private HealthItem consumableData;
     [SerializeField] private PlayerHealth playerHealth;
 
     void Awake()
@@ -19,8 +19,9 @@ public class ConsumableController : MonoBehaviour
             int numConsumables = PlayerInventory.Instance.GetNumberOfItems(consumableData.ID);
             if (numConsumables > 0) {
                 if (playerHealth.GetMissingHealth() > 0) {
-					PlayerInventory.Instance.RemoveItemByID(consumableData.ID, 1);
-					playerHealth.ReceiveHealing(((HealthItem)consumableData).HealingAmount);
+					if (!ActionStateManager.Instance.CanPerformAction(ActionState.UsingConsumable)) return;
+					ActionStateManager.Instance.EnterState(ActionState.UsingConsumable);
+					Invoke("ExitUsingConsumableState", consumableData.TimeToUse);
 				}
 			}
         }
@@ -29,4 +30,10 @@ public class ConsumableController : MonoBehaviour
             SceneManagerHelper.LoadSceneWithPlayerData("SpaceStation");
         }
     }
+
+	private void ExitUsingConsumableState() {
+		PlayerInventory.Instance.RemoveItemByID(consumableData.ID, 1);
+		playerHealth.ReceiveHealing(((HealthItem)consumableData).HealingAmount);
+		ActionStateManager.Instance.ExitState(ActionState.UsingConsumable);
+	}
 }

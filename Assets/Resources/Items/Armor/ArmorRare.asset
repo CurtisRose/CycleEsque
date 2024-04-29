@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ArmorRare
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Rare Armor
+  <ID>k__BackingField: bfd9d51c-ff4b-45c5-bddc-7e1734dd38ff
   <ItemDescription>k__BackingField: 
   <ItemType>k__BackingField: 2
   <Rarity>k__BackingField: 2
@@ -20,8 +21,11 @@ MonoBehaviour:
     type: 3}
   <LargeImage>k__BackingField: {fileID: 0}
   <Weight>k__BackingField: 40
-  <stackable>k__BackingField: 0
-  <maxStackSize>k__BackingField: 0
+  <Stackable>k__BackingField: 0
+  <MaxStackSize>k__BackingField: 0
   <ColorGameObjectBasedOnRarity>k__BackingField: 1
-  <AmountOfArmor>k__BackingField: 200
-  <DefenseValue>k__BackingField: 2
+  allowedKeys:
+  - NumItemsInStack
+  - ArmorRemaining
+  <AmountOfArmorMax>k__BackingField: 150
+  <ArmorValue>k__BackingField: 2

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ArmorLegendary
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Legendary Armor
+  <ID>k__BackingField: 02874e21-2ecf-4b5e-9554-60c2b632df37
   <ItemDescription>k__BackingField: 
   <ItemType>k__BackingField: 2
   <Rarity>k__BackingField: 4
@@ -20,8 +21,11 @@ MonoBehaviour:
     type: 3}
   <LargeImage>k__BackingField: {fileID: 0}
   <Weight>k__BackingField: 40
-  <stackable>k__BackingField: 0
-  <maxStackSize>k__BackingField: 0
+  <Stackable>k__BackingField: 0
+  <MaxStackSize>k__BackingField: 0
   <ColorGameObjectBasedOnRarity>k__BackingField: 1
-  <AmountOfArmor>k__BackingField: 300
-  <DefenseValue>k__BackingField: 3
+  allowedKeys:
+  - NumItemsInStack
+  - ArmorRemaining
+  <AmountOfArmorMax>k__BackingField: 250
+  <ArmorValue>k__BackingField: 3

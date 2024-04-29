@@ -30,14 +30,14 @@ MonoBehaviour:
   - AmmoCount
   <MagazineCapacity>k__BackingField: 30
   <RateOfFire>k__BackingField: 0.1
-  <reloadTime>k__BackingField: 1
-  <switchToTime>k__BackingField: 0.6
+  <reloadTime>k__BackingField: 1.5
+  <switchToTime>k__BackingField: 1
   <hipFireMultiplier>k__BackingField: 2
   <aimRecoilX>k__BackingField: 2
   <aimRecoilY>k__BackingField: 0.75
   <aimRecoilZ>k__BackingField: 0.2
   <snappiness>k__BackingField: 6
   <returnSpeed>k__BackingField: 3
-  <damage>k__BackingField: 25
+  <damage>k__BackingField: 40
   <speed>k__BackingField: 400
   <penetration>k__BackingField: 10

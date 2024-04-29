@@ -99,7 +99,7 @@ public class PlayerWeaponController : MonoBehaviour
             if (Input.GetMouseButton(0))
             {
                 // Check to see if state manager allows this action
-                if (!WeaponStateManager.Instance.CanPerformAction(WeaponState.Shooting)) return;
+                if (!ActionStateManager.Instance.CanPerformAction(ActionState.Shooting)) return;
 
                 // Fully Auto
                 if (gearManager.GetGunInHands())
@@ -108,7 +108,7 @@ public class PlayerWeaponController : MonoBehaviour
                     if (fired)
                     {
                         // Enter the action state
-                        WeaponStateManager.Instance.EnterState(WeaponState.Shooting);
+                        ActionStateManager.Instance.EnterState(ActionState.Shooting);
                         // Start shooting animation
                         // TODO: bullet casings, whatever
                         // Exit state after rate of fire time
@@ -144,7 +144,7 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void ExitShootingWeaponState()
     {
-        WeaponStateManager.Instance.ExitState(WeaponState.Shooting);
+        ActionStateManager.Instance.ExitState(ActionState.Shooting);
     }
     private void HandleWeaponReloading()
     {
@@ -153,7 +153,7 @@ public class PlayerWeaponController : MonoBehaviour
             if (gearManager.GetGunInHands() != null)
             {
                 // Check to see if state manager allows this action
-                if (!WeaponStateManager.Instance.CanPerformAction(WeaponState.Reloading)) return;
+                if (!ActionStateManager.Instance.CanPerformAction(ActionState.Reloading)) return;
 
                 // Reload Gun
                 int numberOfRoundsAvailable = GetNumberOfRoundsOfAmmoInInventory();
@@ -161,40 +161,39 @@ public class PlayerWeaponController : MonoBehaviour
                 {
                     return;
                 }
+                // If gun is already full, don't reload
+                if (gearManager.GetGunInHands().GetNumberOfRounds() == gearManager.GetGunInHands().GetGunData().MagazineCapacity) {
+					return;
+				}
 
                 // Enter the action state
-                WeaponStateManager.Instance.EnterState(WeaponState.Reloading);
+                ActionStateManager.Instance.EnterState(ActionState.Reloading);
                 
                 // Exit state after reloading time
                 Invoke("ExitReloadingWeaponsState", gearManager.GetGunInHands().GetGunData().reloadTime);
-
-                int numberOfRoundsUsed = gearManager.GetGunInHands().Reload(numberOfRoundsAvailable);
-                if (numberOfRoundsUsed > 0)
-                {
-					PlayerInventory.Instance.RemoveItemByID(ammoItemData.ID, numberOfRoundsUsed);
-
-                    // Write decrement of AmmoCount to the inventory slot Item Instance
-                    if (playerWeaponSwitcher.PrimarySelected())
-                    {
-						PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gearManager.GetGunInHands().GetNumberOfRounds());
-                    }
-                    else
-                    {
-						PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.WEAPONSLOT2).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gearManager.GetGunInHands().GetNumberOfRounds());
-                    }
-
-                    if (OnPrimaryGunReloaded != null)
-                    {
-                        OnPrimaryGunReloaded();
-                    }
-                }
             }
         }
     }
 
     private void ExitReloadingWeaponsState()
     {
-        WeaponStateManager.Instance.ExitState(WeaponState.Reloading);
+		int numberOfRoundsAvailable = GetNumberOfRoundsOfAmmoInInventory();
+		int numberOfRoundsUsed = gearManager.GetGunInHands().Reload(numberOfRoundsAvailable);
+		if (numberOfRoundsUsed > 0) {
+			PlayerInventory.Instance.RemoveItemByID(ammoItemData.ID, numberOfRoundsUsed);
+
+			// Write decrement of AmmoCount to the inventory slot Item Instance
+			if (playerWeaponSwitcher.PrimarySelected()) {
+				PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gearManager.GetGunInHands().GetNumberOfRounds());
+			} else {
+				PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.WEAPONSLOT2).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gearManager.GetGunInHands().GetNumberOfRounds());
+			}
+
+			if (OnPrimaryGunReloaded != null) {
+				OnPrimaryGunReloaded();
+			}
+		}
+		ActionStateManager.Instance.ExitState(ActionState.Reloading);
     }
 
     public int GetNumberOfRoundsOfAmmoInInventory()
@@ -209,7 +208,7 @@ public class PlayerWeaponController : MonoBehaviour
         if (gearManager.GetGunInHands() == null) return;
 
         // Check to see if state manager allows this action
-        if (!WeaponStateManager.Instance.CanPerformAction(WeaponState.Aiming)) return;
+        if (!ActionStateManager.Instance.CanPerformAction(ActionState.Aiming)) return;
 
         StopCoroutine("MoveWeapon");
         currentTransitionCoroutine = StartCoroutine(MoveWeapon(true));
@@ -261,7 +260,7 @@ public class PlayerWeaponController : MonoBehaviour
         weaponPositionHands.localPosition = targetTransform.localPosition;
         weaponPositionHands.localRotation = targetTransform.localRotation;
 
-        WeaponStateManager.Instance.ExitState(WeaponState.Aiming);
+        ActionStateManager.Instance.ExitState(ActionState.Aiming);
     }
 
     private void ShowCrosshair()
