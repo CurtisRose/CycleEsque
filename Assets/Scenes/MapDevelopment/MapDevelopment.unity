@@ -20621,7 +20621,7 @@ GameObject:
   - component: {fileID: 1818326417}
   - component: {fileID: 1818326418}
   m_Layer: 0
-  m_Name: WeaponStateManager
+  m_Name: PlayerActionStateManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
