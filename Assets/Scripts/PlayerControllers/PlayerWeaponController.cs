@@ -171,34 +171,29 @@ public class PlayerWeaponController : MonoBehaviour
                 
                 // Exit state after reloading time
                 Invoke("ExitReloadingWeaponsState", gearManager.GetGunInHands().GetGunData().reloadTime);
-
-                int numberOfRoundsUsed = gearManager.GetGunInHands().Reload(numberOfRoundsAvailable);
-                if (numberOfRoundsUsed > 0)
-                {
-					PlayerInventory.Instance.RemoveItemByID(ammoItemData.ID, numberOfRoundsUsed);
-
-                    // Write decrement of AmmoCount to the inventory slot Item Instance
-                    if (playerWeaponSwitcher.PrimarySelected())
-                    {
-						PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gearManager.GetGunInHands().GetNumberOfRounds());
-                    }
-                    else
-                    {
-						PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.WEAPONSLOT2).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gearManager.GetGunInHands().GetNumberOfRounds());
-                    }
-
-                    if (OnPrimaryGunReloaded != null)
-                    {
-                        OnPrimaryGunReloaded();
-                    }
-                }
             }
         }
     }
 
     private void ExitReloadingWeaponsState()
     {
-        ActionStateManager.Instance.ExitState(ActionState.Reloading);
+		int numberOfRoundsAvailable = GetNumberOfRoundsOfAmmoInInventory();
+		int numberOfRoundsUsed = gearManager.GetGunInHands().Reload(numberOfRoundsAvailable);
+		if (numberOfRoundsUsed > 0) {
+			PlayerInventory.Instance.RemoveItemByID(ammoItemData.ID, numberOfRoundsUsed);
+
+			// Write decrement of AmmoCount to the inventory slot Item Instance
+			if (playerWeaponSwitcher.PrimarySelected()) {
+				PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gearManager.GetGunInHands().GetNumberOfRounds());
+			} else {
+				PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.WEAPONSLOT2).GetItemInSlot().itemInstance.SetProperty(ItemAttributeKey.AmmoCount, gearManager.GetGunInHands().GetNumberOfRounds());
+			}
+
+			if (OnPrimaryGunReloaded != null) {
+				OnPrimaryGunReloaded();
+			}
+		}
+		ActionStateManager.Instance.ExitState(ActionState.Reloading);
     }
 
     public int GetNumberOfRoundsOfAmmoInInventory()
