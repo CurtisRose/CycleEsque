@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using static GearSlot;
 
 public enum GearSlotIdentifier { BACKPACK, ARMOR, HELMET, WEAPONSLOT1, WEAPONSLOT2 };
 
@@ -13,7 +14,8 @@ public struct InventoryStartItem
     public int quantity;
 }
 
-public class PlayerInventory : Inventory {
+public class PlayerInventory : Inventory, IPlayerInitializable 
+{
 	public static PlayerInventory Instance;
 
 	[SerializeField] protected float inventoryWeightLimit;
@@ -38,7 +40,7 @@ public class PlayerInventory : Inventory {
 		}
 	}
 
-	protected void Start() {
+	public void Initialize() {
 		if (PlayerInventoryMenu.Instance != null) {
 			PlayerInventoryMenu.Instance.Open();
 		}
@@ -58,6 +60,10 @@ public class PlayerInventory : Inventory {
 		if (PlayerInventoryMenu.Instance != null) {
 			PlayerInventoryMenu.Instance.Close();
 		}
+	}
+
+	protected void Start() {
+
 	}
 
 	// TODO: This should drop a backpack with weapons and armor and everything else in it
@@ -124,6 +130,7 @@ public class PlayerInventory : Inventory {
 			// If adding to an inventory slot, update the weight
 			UpdateWeight(itemToSet.GetTotalWeight());
 		}
+		OnInventoryChanged?.Invoke();
 	}
 
 	public override bool CanAddItem(InventorySlot inventorySlot, InventoryItem itemToSet) {
@@ -306,48 +313,55 @@ public class PlayerInventory : Inventory {
 		return itemsRemoved;
 	}
 
-	public bool RemoveItemOfType(ItemType type, int numItems = 1)
+	public bool RemoveItemByID(string itemID, int numItems = 1)
     {
+		bool success = false;
         foreach (InventorySlot inventorySlot in inventorySlots)
         {
             InventoryItem itemInSlot = inventorySlot.GetItemInSlot();
-            if (itemInSlot != null && inventorySlot.GetItemInSlot().GetItemType() == type)
+            if (itemInSlot != null && inventorySlot.GetItemInSlot().itemInstance.sharedData.ID == itemID)
             {
                 if (itemInSlot.GetItemCount() > numItems)
                 {
                     itemInSlot.AddToItemCount(-numItems);
                     UpdateWeight(-(numItems * itemInSlot.itemInstance.sharedData.Weight));
-                    return true;
+					success = true;
+					break;
                 } else if (itemInSlot.GetItemCount() == numItems)
                 {
                     inventorySlot.RemoveItemFromSlot();
                     Destroy(itemInSlot.gameObject);
-                    return true;
-                } else
+					success = true;
+					break;
+				} else
                 {
                     inventorySlot.RemoveItemFromSlot();
                     Destroy(itemInSlot.gameObject);
                     numItems -= itemInSlot.GetItemCount();
-                }
-				OnInventoryChanged?.Invoke();
+                }	
 			}
         }
-        return false;
+
+		if (success) { OnInventoryChanged?.Invoke(); }
+
+        return success;
     }
 
 	public float GetCurrentInventoryWeight() {
 		return currentWeight;
 	}
 
-	public int GetNumberOfItemsOfType(ItemType type) {
+	public int GetNumberOfItems(string itemID) {
 		int numItems = 0;
 		foreach (InventorySlot inventorySlot in inventorySlots) {
-			InventoryItem itemInSlot = inventorySlot.GetItemInSlot();
-			if (itemInSlot != null && inventorySlot.GetItemInSlot().GetItemType() == type) {
-				if (inventorySlot.GetItemInSlot().itemInstance.sharedData.Stackable) {
-					numItems += inventorySlot.GetItemInSlot().GetItemCount();
-				} else {
-					numItems++;
+			if (inventorySlot.HasItem()) {
+				InventoryItem itemInSlot = inventorySlot.GetItemInSlot();
+				if (inventorySlot.GetItemInSlot().itemInstance.sharedData.ID == itemID) {
+					if (inventorySlot.GetItemInSlot().itemInstance.sharedData.Stackable) {
+						numItems += inventorySlot.GetItemInSlot().GetItemCount();
+					} else {
+						numItems++;
+					}
 				}
 			}
 		}

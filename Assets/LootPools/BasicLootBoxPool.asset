@@ -49,3 +49,7 @@ MonoBehaviour:
     probability: 3
     minQuantity: 1
     maxQuantity: 1
+  - item: {fileID: 9060989827945925251, guid: 80054a6112d8cff45bd086f41bf8ea2c, type: 3}
+    probability: 10
+    minQuantity: 1
+    maxQuantity: 1

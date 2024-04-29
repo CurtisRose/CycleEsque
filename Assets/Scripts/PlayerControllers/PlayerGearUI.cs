@@ -7,11 +7,14 @@ public class PlayerGearUI : MonoBehaviour
 {
 
 
-    [SerializeField] Image backpackBackgroundImage;
-    [SerializeField] Image helmetBackgroundImage;
-    [SerializeField] Image armorBackgroundImage;
+	[SerializeField] Image backpackBackgroundImage;
+	[SerializeField] Image helmetBackgroundImage;
+	[SerializeField] Image armorBackgroundImage;
+	[SerializeField] Image backpackBorderImage;
+	[SerializeField] Image helmetBorderImage;
+	[SerializeField] Image armorBorderImage;
 
-    private void Start()
+	private void Start()
     {
         PlayerGearManager.Instance.OnBackpackChanged += HandleBackpackChange;
 		PlayerGearManager.Instance.OnHelmetChanged += HandleHelmetChange;
@@ -26,7 +29,8 @@ public class PlayerGearUI : MonoBehaviour
         } else
         {
             backpackBackgroundImage.enabled = true;
-            backpackBackgroundImage.color = RarityColorManager.Instance.GetColorByRarity(itemData.Rarity);
+            backpackBackgroundImage.color = RarityColorManager.Instance.GetDullerColorByRarity(itemData.Rarity);
+            backpackBorderImage.color = RarityColorManager.Instance.GetBrighterColorByRarity(itemData.Rarity);
         }
     }
 
@@ -39,7 +43,8 @@ public class PlayerGearUI : MonoBehaviour
         else
         {
             helmetBackgroundImage.enabled = true;
-            helmetBackgroundImage.color = RarityColorManager.Instance.GetColorByRarity(itemData.Rarity);
+            helmetBackgroundImage.color = RarityColorManager.Instance.GetDullerColorByRarity(itemData.Rarity);
+            helmetBorderImage.color = RarityColorManager.Instance.GetBrighterColorByRarity(itemData.Rarity);
         }
     }
 
@@ -52,7 +57,8 @@ public class PlayerGearUI : MonoBehaviour
         else
         {
             armorBackgroundImage.enabled = true;
-            armorBackgroundImage.color = RarityColorManager.Instance.GetColorByRarity(itemData.Rarity);
+            armorBackgroundImage.color = RarityColorManager.Instance.GetDullerColorByRarity(itemData.Rarity);
+            armorBorderImage.color = RarityColorManager.Instance.GetBrighterColorByRarity(itemData.Rarity);
         }
     }
 }

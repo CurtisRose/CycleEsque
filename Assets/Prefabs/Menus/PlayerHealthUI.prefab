@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7211041339062508865}
   - component: {fileID: 1238425779186844698}
   m_Layer: 5
-  m_Name: Your icon
+  m_Name: HelmetIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -204,7 +204,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthSlider: {fileID: 3403268973261805255}
-  targetHealth: {fileID: 0}
 --- !u!114 &5418236830143268759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,10 +216,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0acccf313d747664094e24b34d4de36b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gearManager: {fileID: 0}
   backpackBackgroundImage: {fileID: 1617060694995898862}
   helmetBackgroundImage: {fileID: 8705037042657631535}
   armorBackgroundImage: {fileID: 7708941021669200938}
+  backpackBorderImage: {fileID: 4989127715814523190}
+  helmetBorderImage: {fileID: 9015667236231432104}
+  armorBorderImage: {fileID: 4855801852746373789}
 --- !u!1 &1087133780862722625
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,7 +234,7 @@ GameObject:
   - component: {fileID: 3554637432764519400}
   - component: {fileID: 9015667236231432104}
   m_Layer: 5
-  m_Name: IconButton04White_2
+  m_Name: HelmetBorder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -309,7 +310,7 @@ GameObject:
   - component: {fileID: 1617060694995898862}
   - component: {fileID: 3184177632563626741}
   m_Layer: 5
-  m_Name: BackpackIcon
+  m_Name: BackpackBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -431,7 +432,7 @@ GameObject:
   - component: {fileID: 4409496881074635566}
   - component: {fileID: 4989127715814523190}
   m_Layer: 5
-  m_Name: IconButton04White_2
+  m_Name: BackpackBorder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -507,7 +508,7 @@ GameObject:
   - component: {fileID: 7708941021669200938}
   - component: {fileID: 3022902594946577969}
   m_Layer: 5
-  m_Name: ArmorIcon
+  m_Name: ArmorBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -704,7 +705,7 @@ GameObject:
   - component: {fileID: 4368925923166203211}
   - component: {fileID: 4855801852746373789}
   m_Layer: 5
-  m_Name: IconButton04White_2
+  m_Name: ArmorBorder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -780,7 +781,7 @@ GameObject:
   - component: {fileID: 8705037042657631535}
   - component: {fileID: 991121314160613642}
   m_Layer: 5
-  m_Name: HelmetIcon
+  m_Name: HelmetBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -902,7 +903,7 @@ GameObject:
   - component: {fileID: 8460421153887497510}
   - component: {fileID: 9216997980705928123}
   m_Layer: 5
-  m_Name: Your icon
+  m_Name: ArmorIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1066,7 +1067,7 @@ GameObject:
   - component: {fileID: 6409156103890777419}
   - component: {fileID: 5106551199859263019}
   m_Layer: 5
-  m_Name: Your icon
+  m_Name: BackpackIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

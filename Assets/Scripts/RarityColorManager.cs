@@ -23,4 +23,12 @@ public class RarityColorManager : MonoBehaviour
     {
         return rarityColors[(int)rarity];
     }
+
+	public Color GetBrighterColorByRarity(Rarity rarity) {
+        // Make the color brighter white
+        return rarityColors[(int)rarity] + new Color(0.4f, 0.4f, 0.4f, 0);
+	}
+	public Color GetDullerColorByRarity(Rarity rarity) {
+		return rarityColors[(int)rarity] - new Color(0.4f, 0.4f, 0.4f, 0);
+	}
 }

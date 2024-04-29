@@ -84,4 +84,8 @@ public class Health : MonoBehaviour , IDamageable
         maxHealth = health;
         currentHealth = health;
     }
+
+    public float GetMissingHealth() {
+        return maxHealth - currentHealth;
+    }
 }

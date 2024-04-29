@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
     {
         // Assuming all items are under the "Resources/Items" directory
         // and further organized by type, e.g., "Weapons", "Armor", etc.
-        string[] categories = { "Weapons", "Armor", "Helmets", "Backpacks", "Ammo" };
+        string[] categories = { "Weapons", "Armor", "Helmets", "Backpacks", "Consumables", "Ammo" };
         foreach (var category in categories)
         {
             SharedItemData[] items = Resources.LoadAll<SharedItemData>($"Items/{category}");
@@ -120,6 +120,10 @@ public class GameManager : MonoBehaviour
         Debug.Log("Player initialized with loaded data.");
 
         // Initialize player components
+        if (playerInventory != null) {
+            playerInventory.Initialize();
+        }
+
         if (playerGearManager != null) {
 			playerGearManager.Initialize();
 		}
