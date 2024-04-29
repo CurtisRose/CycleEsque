@@ -24,5 +24,9 @@ public class ConsumableController : MonoBehaviour
 				}
 			}
         }
+
+        if (Input.GetKeyDown(KeyCode.L)) {
+            SceneManagerHelper.LoadSceneWithPlayerData("SpaceStation");
+        }
     }
 }

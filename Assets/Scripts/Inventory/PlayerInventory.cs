@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using static GearSlot;
 
 public enum GearSlotIdentifier { BACKPACK, ARMOR, HELMET, WEAPONSLOT1, WEAPONSLOT2 };
 
@@ -13,7 +14,8 @@ public struct InventoryStartItem
     public int quantity;
 }
 
-public class PlayerInventory : Inventory {
+public class PlayerInventory : Inventory, IPlayerInitializable 
+{
 	public static PlayerInventory Instance;
 
 	[SerializeField] protected float inventoryWeightLimit;
@@ -38,7 +40,7 @@ public class PlayerInventory : Inventory {
 		}
 	}
 
-	protected void Start() {
+	public void Initialize() {
 		if (PlayerInventoryMenu.Instance != null) {
 			PlayerInventoryMenu.Instance.Open();
 		}
@@ -58,6 +60,10 @@ public class PlayerInventory : Inventory {
 		if (PlayerInventoryMenu.Instance != null) {
 			PlayerInventoryMenu.Instance.Close();
 		}
+	}
+
+	protected void Start() {
+
 	}
 
 	// TODO: This should drop a backpack with weapons and armor and everything else in it

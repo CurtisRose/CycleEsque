@@ -120,6 +120,10 @@ public class GameManager : MonoBehaviour
         Debug.Log("Player initialized with loaded data.");
 
         // Initialize player components
+        if (playerInventory != null) {
+            playerInventory.Initialize();
+        }
+
         if (playerGearManager != null) {
 			playerGearManager.Initialize();
 		}
