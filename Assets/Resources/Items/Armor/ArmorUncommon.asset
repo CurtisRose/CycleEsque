@@ -27,5 +27,5 @@ MonoBehaviour:
   allowedKeys:
   - NumItemsInStack
   - ArmorRemaining
-  <AmountOfArmor>k__BackingField: 150
-  <DefenseValue>k__BackingField: 1
+  <AmountOfArmorMax>k__BackingField: 100
+  <ArmorValue>k__BackingField: 1

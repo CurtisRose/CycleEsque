@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ArmorExotic
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Exotic Armor
+  <ID>k__BackingField: 1ea6aa04-ce76-43e1-9b5e-de9f69274c2e
   <ItemDescription>k__BackingField: 
   <ItemType>k__BackingField: 2
   <Rarity>k__BackingField: 5
@@ -20,8 +21,11 @@ MonoBehaviour:
     type: 3}
   <LargeImage>k__BackingField: {fileID: 0}
   <Weight>k__BackingField: 40
-  <stackable>k__BackingField: 0
-  <maxStackSize>k__BackingField: 0
+  <Stackable>k__BackingField: 0
+  <MaxStackSize>k__BackingField: 0
   <ColorGameObjectBasedOnRarity>k__BackingField: 1
-  <AmountOfArmor>k__BackingField: 350
-  <DefenseValue>k__BackingField: 3
+  allowedKeys:
+  - NumItemsInStack
+  - ArmorRemaining
+  <AmountOfArmorMax>k__BackingField: 300
+  <ArmorValue>k__BackingField: 3
