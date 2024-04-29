@@ -29,9 +29,9 @@ MonoBehaviour:
   - NumItemsInStack
   - AmmoCount
   <MagazineCapacity>k__BackingField: 12
-  <RateOfFire>k__BackingField: 0.2
-  <reloadTime>k__BackingField: 0.5
-  <switchToTime>k__BackingField: 0.25
+  <RateOfFire>k__BackingField: 0.3
+  <reloadTime>k__BackingField: 0.75
+  <switchToTime>k__BackingField: 0.5
   <hipFireMultiplier>k__BackingField: 3
   <aimRecoilX>k__BackingField: 3
   <aimRecoilY>k__BackingField: 2
