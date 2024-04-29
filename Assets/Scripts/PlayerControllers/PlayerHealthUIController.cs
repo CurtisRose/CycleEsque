@@ -14,12 +14,6 @@ public class PlayerHealthUIController : MonoBehaviour
 		targetHealth.OnHealthChanged += UpdateHealthUI;
 	}
 
-    void Update()
-    {
-
-    }
-
-
     private void OnDisable()
     {
         // Unsubscribe to prevent memory leaks

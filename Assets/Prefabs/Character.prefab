@@ -1087,6 +1087,7 @@ GameObject:
   - component: {fileID: 5803280727450449951}
   - component: {fileID: 524081812311261863}
   - component: {fileID: 5664054591919217908}
+  - component: {fileID: 524014770927099799}
   - component: {fileID: 656676636408815486}
   - component: {fileID: 3593505826410206610}
   - component: {fileID: 3050583421449731175}
@@ -1222,6 +1223,7 @@ MonoBehaviour:
   gearManager: {fileID: 2721748668309944525}
   playerWeaponSwitcher: {fileID: 4359797795167298469}
   weaponPositionHands: {fileID: 4845008993545661789}
+  ammoItemData: {fileID: 11400000, guid: bc5b2db7cbfbf8e48ba4f44123602b65, type: 2}
   recoil: {fileID: 656676636408815486}
   hipFirePosition: {fileID: 6667082619905216441}
   ADSFirePosition: {fileID: 1594420528566663912}
@@ -1255,6 +1257,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemDropper: {fileID: 524081812311261863}
+--- !u!114 &524014770927099799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064487098345231825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a29f1ccb153bca45b7bfac92b785dc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  consumableData: {fileID: 11400000, guid: 2130673195b53304aaacc0e98200be42, type: 2}
+  playerHealth: {fileID: 4353811491843177763}
 --- !u!114 &656676636408815486
 MonoBehaviour:
   m_ObjectHideFlags: 0

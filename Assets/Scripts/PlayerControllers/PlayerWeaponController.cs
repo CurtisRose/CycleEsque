@@ -12,6 +12,8 @@ public class PlayerWeaponController : MonoBehaviour
 
     [SerializeField] Transform weaponPositionHands;
 
+    [SerializeField] SharedItemData ammoItemData;
+
     // Recoil
     [SerializeField] Recoil recoil;
 
@@ -169,7 +171,7 @@ public class PlayerWeaponController : MonoBehaviour
                 int numberOfRoundsUsed = gearManager.GetGunInHands().Reload(numberOfRoundsAvailable);
                 if (numberOfRoundsUsed > 0)
                 {
-					PlayerInventory.Instance.RemoveItemOfType(ItemType.AMMO, numberOfRoundsUsed);
+					PlayerInventory.Instance.RemoveItemByID(ammoItemData.ID, numberOfRoundsUsed);
 
                     // Write decrement of AmmoCount to the inventory slot Item Instance
                     if (playerWeaponSwitcher.PrimarySelected())
@@ -197,7 +199,8 @@ public class PlayerWeaponController : MonoBehaviour
 
     public int GetNumberOfRoundsOfAmmoInInventory()
     {
-        return PlayerInventory.Instance.GetNumberOfItemsOfType(ItemType.AMMO);
+        // TODO: This should be based on the gun type
+        return PlayerInventory.Instance.GetNumberOfItems(ammoItemData.ID);
     }
 
     public void MoveToADS()
