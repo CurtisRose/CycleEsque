@@ -177,6 +177,10 @@ public class MonsterController : MonoBehaviour
         if (targetTransform == null)
             return;
 
+        // If the target is too far away, don't apply damage
+        if (Vector3.Distance(transform.position, targetTransform.position) > monsterData.attackRange)
+			return;
+
         // Assuming the player has a script component that can receive damage
         IDamageable playerDamageable = targetTransform.GetComponent<IDamageable>();
         if (playerDamageable != null)
