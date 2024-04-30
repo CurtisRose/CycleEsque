@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -153,19 +154,11 @@ public class MonsterController : MonoBehaviour
         }
     }
 
-    // This should be done at the end of a root motion movement.
-    void AlignParentToRootMotionObject()
-    {
-        // Set the parent's position and rotation to match the child's
-        transform.position = rootmotionObject.position;
-        transform.rotation = rootmotionObject.rotation;
+	public void StartCoroutineFromAction(Func<IEnumerator> coroutineFunc) {
+		StartCoroutine(coroutineFunc());
+	}
 
-        // Reset the child's local position and rotation
-        rootmotionObject.localPosition = Vector3.zero;
-        rootmotionObject.localRotation = Quaternion.identity;
-    }
-
-    public void HandleHit(Projectile projectile, float criticalMultiplier)
+	public void HandleHit(Projectile projectile, float criticalMultiplier)
     {
         // TODO: Add armor penetration calculations
         healthComponent.ReceiveDamage(projectile.Damage * criticalMultiplier);

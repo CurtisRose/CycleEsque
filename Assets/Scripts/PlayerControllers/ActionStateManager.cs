@@ -59,7 +59,7 @@ public class ActionStateManager : MonoBehaviour
                 return !IsInState(ActionState.Reloading) && !IsInState(ActionState.Shooting) && !IsInState(ActionState.SwappingWeapons) && !IsInState(ActionState.UsingConsumable);
             case ActionState.SwappingWeapons:
                 // Reloading and swapping weapons cannot happen while shooting or aiming
-                return !IsInState(ActionState.Shooting) && !IsInState(ActionState.SwappingWeapons) && !IsInState(ActionState.UsingConsumable);
+                return !IsInState(ActionState.Shooting) && !IsInState(ActionState.SwappingWeapons) && !IsInState(ActionState.UsingConsumable) && !IsInState(ActionState.Reloading);
             case ActionState.Aiming:
                 // Aiming cannot occur while reloading or swapping
                 return !IsInState(ActionState.Reloading) && !IsInState(ActionState.SwappingWeapons) && !IsInState(ActionState.UsingConsumable);
