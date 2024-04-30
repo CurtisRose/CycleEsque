@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 4755468843363389814}
   - component: {fileID: 7357235814818653628}
   - component: {fileID: 429693083}
+  - component: {fileID: 5591030039788053727}
+  - component: {fileID: -2345037104582039800}
   m_Layer: 0
   m_Name: SM_Env_Pine_Stump_01
   m_TagString: Untagged
@@ -101,8 +103,47 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6143563790688666516, guid: e88a5507d63698f479ef1f4fa7df0c88, type: 2}
+--- !u!136 &5591030039788053727
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9014757909462221929}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.29446352
+  m_Height: 1.4315428
+  m_Direction: 1
+  m_Center: {x: -0.028711542, y: 0.3685314, z: -0.009440377}
+--- !u!208 &-2345037104582039800
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9014757909462221929}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.294, y: 0.716, z: 0.294}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.029000001, y: 0.36900002, z: -0.009000001}
+  m_TimeToStationary: 0.5

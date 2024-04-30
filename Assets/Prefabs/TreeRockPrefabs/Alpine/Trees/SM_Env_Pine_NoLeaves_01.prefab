@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 6961434927710438570}
   - component: {fileID: 2792763415639307227}
   - component: {fileID: 1188841504}
+  - component: {fileID: -3824536455512277936}
   m_Layer: 0
   m_Name: SM_Env_Pine_NoLeaves_01
   m_TagString: Untagged
@@ -247,3 +248,19 @@ CapsuleCollider:
   m_Height: 16.541813
   m_Direction: 1
   m_Center: {x: 0.05542755, y: 7.7709064, z: 0}
+--- !u!208 &-3824536455512277936
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7768758295742766608}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.5, y: 1, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
