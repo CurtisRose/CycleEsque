@@ -327,11 +327,13 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 						success = true;
 						break;
 					} else if (itemInSlot.GetItemCount() == numItems) {
+						UpdateWeight(-itemInSlot.GetTotalWeight());
 						inventorySlots[slotIndex].RemoveItemFromSlot();
 						Destroy(itemInSlot.gameObject);
 						success = true;
 						break;
 					} else {
+						UpdateWeight(-itemInSlot.GetTotalWeight());
 						inventorySlots[slotIndex].RemoveItemFromSlot();
 						Destroy(itemInSlot.gameObject);
 						numItems -= itemInSlot.GetItemCount();
