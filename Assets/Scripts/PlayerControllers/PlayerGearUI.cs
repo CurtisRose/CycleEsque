@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerGearUI : MonoBehaviour
-{
+public class PlayerGearUI : MonoBehaviour, IPlayerInitializable {
 
 
 	[SerializeField] Image backpackBackgroundImage;
@@ -14,14 +13,13 @@ public class PlayerGearUI : MonoBehaviour
 	[SerializeField] Image helmetBorderImage;
 	[SerializeField] Image armorBorderImage;
 
-	private void Start()
-    {
-        PlayerGearManager.Instance.OnBackpackChanged += HandleBackpackChange;
+	public void Initialize() {
+		PlayerGearManager.Instance.OnBackpackChanged += HandleBackpackChange;
 		PlayerGearManager.Instance.OnHelmetChanged += HandleHelmetChange;
 		PlayerGearManager.Instance.OnArmorChanged += HandleArmorChange;
-    }
+	}
 
-    private void HandleBackpackChange(SharedItemData itemData)
+	private void HandleBackpackChange(SharedItemData itemData)
     {
         if (itemData == null)
         {
