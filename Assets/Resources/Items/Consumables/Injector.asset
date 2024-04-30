@@ -20,11 +20,11 @@ MonoBehaviour:
   <SmallImage>k__BackingField: {fileID: 21300000, guid: 4b4d1adb4271a38498ae9f5152602a3e,
     type: 3}
   <LargeImage>k__BackingField: {fileID: 0}
-  <Weight>k__BackingField: 1
+  <Weight>k__BackingField: 5
   <Stackable>k__BackingField: 1
   <MaxStackSize>k__BackingField: 5
   <ColorGameObjectBasedOnRarity>k__BackingField: 0
   allowedKeys:
   - NumItemsInStack
-  <TimeToUse>k__BackingField: 10
+  <TimeToUse>k__BackingField: 5
   <HealingAmount>k__BackingField: 20

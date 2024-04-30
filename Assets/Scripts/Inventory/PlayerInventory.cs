@@ -21,7 +21,6 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 	[SerializeField] protected float inventoryWeightLimit;
     [SerializeField] protected float currentWeight;
 
-	[SerializeField] protected InventoryStartItem[] startItems;
 	public GameObject backpackInventory;
 	[SerializeField] protected List<GearSlot> gearSlots;
 	[SerializeField] protected TMP_Text weightText; // "BACKPACK 0.0/0.0"
@@ -31,6 +30,8 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 
 	public delegate WorldItem ItemDropped(ItemInstance itemInstance);
 	public event ItemDropped OnItemDropped;
+
+	Dictionary<string, List<int>> inventoryDictionary = new Dictionary<string, List<int>>();
 
 	private void Awake() {
 		if (Instance != null) {
@@ -45,26 +46,26 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 			PlayerInventoryMenu.Instance.Open();
 		}
 
-		foreach (InventoryStartItem startItem in startItems) {
-			//ItemInstance itemInstance = new ItemInstance(startItem);
-			WorldItem testItem = ItemSpawner.Instance.GetPrefab(startItem.itemData);
-			ItemInstance testInstance = testItem.CreateNewItemInstance(startItem.itemData);
-			if (startItem.itemData.Stackable) {
-				testInstance.SetProperty(ItemAttributeKey.NumItemsInStack, startItem.quantity);
-			}
-
-			//itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, 1);
-			AddItem(testInstance);
-		}
-
 		if (PlayerInventoryMenu.Instance != null) {
 			PlayerInventoryMenu.Instance.Close();
 		}
 	}
 
-	protected void Start() {
-
+	protected void UpdateInventoryDictionary() {
+		inventoryDictionary.Clear();
+		for(int i = 0; i < inventorySlots.Count; i++) {
+			if (inventorySlots[i].HasItem()) {
+				string itemID = inventorySlots[i].GetItemInSlot().itemInstance.sharedData.ID;
+				if (!inventoryDictionary.ContainsKey(itemID)) {
+					inventoryDictionary.Add(itemID, new List<int>());
+				}
+				inventoryDictionary[itemID].Add(i);
+			}
+		}
+		OnInventoryChanged?.Invoke();
 	}
+
+
 
 	// TODO: This should drop a backpack with weapons and armor and everything else in it
 	public void DropInventory() {
@@ -114,7 +115,7 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 			return false;
 		}
 		bool success = base.AddItem(itemInstance);
-		if (success) { OnInventoryChanged?.Invoke(); }
+		if (success) { UpdateInventoryDictionary(); }
         return success;
     }
 
@@ -130,7 +131,7 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 			// If adding to an inventory slot, update the weight
 			UpdateWeight(itemToSet.GetTotalWeight());
 		}
-		OnInventoryChanged?.Invoke();
+		UpdateInventoryDictionary();
 	}
 
 	public override bool CanAddItem(InventorySlot inventorySlot, InventoryItem itemToSet) {
@@ -261,7 +262,7 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 
 	public override bool Swap(InventorySlot slotToAddTo, InventoryItem itemToAdd) {
 		bool success = base.Swap(slotToAddTo, itemToAdd);
-		if (success) { OnInventoryChanged?.Invoke(); }
+		if (success) { UpdateInventoryDictionary(); }
 		return success;
 	}
 
@@ -279,7 +280,7 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 			}
 
 			InventoryItem itemRemoved = base.RemoveItemFromSlot(inventorySlot);
-			if (itemRemoved != null) { OnInventoryChanged?.Invoke(); }
+			if (itemRemoved != null) { UpdateInventoryDictionary(); }
 			return itemRemoved;
 		}
 	}
@@ -292,7 +293,7 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 			// Only update weight if it's combining from a different inventory.
 			if (itemToCombine.GetCurrentInventorySlot().GetInventory() != this) {
 				UpdateWeight(weightChange);
-				OnInventoryChanged?.Invoke();
+				UpdateInventoryDictionary();
 			}
 		}
 		return numberOfItemsAfterCombine;
@@ -307,7 +308,7 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 		} else {
 			// If removing from an inventory slot, update the weight
 			UpdateWeight(-itemsRemoved * inventorySlot.GetItemInSlot().itemInstance.sharedData.Weight);
-			OnInventoryChanged?.Invoke();
+			UpdateInventoryDictionary();
 		}
 
 		return itemsRemoved;
@@ -316,33 +317,32 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 	public bool RemoveItemByID(string itemID, int numItems = 1)
     {
 		bool success = false;
-        foreach (InventorySlot inventorySlot in inventorySlots)
-        {
-            InventoryItem itemInSlot = inventorySlot.GetItemInSlot();
-            if (itemInSlot != null && inventorySlot.GetItemInSlot().itemInstance.sharedData.ID == itemID)
-            {
-                if (itemInSlot.GetItemCount() > numItems)
-                {
-                    itemInSlot.AddToItemCount(-numItems);
-                    UpdateWeight(-(numItems * itemInSlot.itemInstance.sharedData.Weight));
-					success = true;
-					break;
-                } else if (itemInSlot.GetItemCount() == numItems)
-                {
-                    inventorySlot.RemoveItemFromSlot();
-                    Destroy(itemInSlot.gameObject);
-					success = true;
-					break;
-				} else
-                {
-                    inventorySlot.RemoveItemFromSlot();
-                    Destroy(itemInSlot.gameObject);
-                    numItems -= itemInSlot.GetItemCount();
-                }	
+		if (inventoryDictionary.ContainsKey(itemID)) {
+			foreach (int slotIndex in inventoryDictionary[itemID]) {
+				InventoryItem itemInSlot = inventorySlots[slotIndex].GetItemInSlot();
+				if (itemInSlot != null && inventorySlots[slotIndex].GetItemInSlot().itemInstance.sharedData.ID == itemID) {
+					if (itemInSlot.GetItemCount() > numItems) {
+						itemInSlot.AddToItemCount(-numItems);
+						UpdateWeight(-(numItems * itemInSlot.itemInstance.sharedData.Weight));
+						success = true;
+						break;
+					} else if (itemInSlot.GetItemCount() == numItems) {
+						inventorySlots[slotIndex].RemoveItemFromSlot();
+						Destroy(itemInSlot.gameObject);
+						success = true;
+						break;
+					} else {
+						inventorySlots[slotIndex].RemoveItemFromSlot();
+						Destroy(itemInSlot.gameObject);
+						numItems -= itemInSlot.GetItemCount();
+					}
+				}
 			}
-        }
+		} else {
+			return false;
+		}
 
-		if (success) { OnInventoryChanged?.Invoke(); }
+		if (success) { UpdateInventoryDictionary(); }
 
         return success;
     }
@@ -353,17 +353,13 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 
 	public int GetNumberOfItems(string itemID) {
 		int numItems = 0;
-		foreach (InventorySlot inventorySlot in inventorySlots) {
-			if (inventorySlot.HasItem()) {
-				InventoryItem itemInSlot = inventorySlot.GetItemInSlot();
-				if (inventorySlot.GetItemInSlot().itemInstance.sharedData.ID == itemID) {
-					if (inventorySlot.GetItemInSlot().itemInstance.sharedData.Stackable) {
-						numItems += inventorySlot.GetItemInSlot().GetItemCount();
-					} else {
-						numItems++;
-					}
-				}
+		if (inventoryDictionary.ContainsKey(itemID)) {
+			foreach (int slotIndex in inventoryDictionary[itemID]) {
+				numItems += inventorySlots[slotIndex].GetItemInSlot().GetItemCount();
 			}
+		} else 
+		{ 
+			return 0; 
 		}
 		return numItems;
 	}
@@ -446,14 +442,7 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 		UpdateWeight(-inventoryItem.GetTotalWeight());
 		if (OnItemDropped != null)
 			OnItemDropped(itemInstance);
-		OnInventoryChanged?.Invoke();
-	}
-
-	void OnValidate() {
-		for (int i = 0; i < startItems.Length; i++) {
-			if (startItems[i].quantity < 1)
-				startItems[i].quantity = 1;
-		}
+		UpdateInventoryDictionary();
 	}
 
 	public override bool QuickEquip(InventorySlot inventorySlot) {
