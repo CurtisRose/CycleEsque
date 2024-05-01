@@ -97,6 +97,7 @@ public class Projectile : MonoBehaviour
     private void PlayImpactEffect()
     {
         // Impact effect logic goes here
+        PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Medium, transform.position, true);
     }
 
     public void SetInitialVisualPosition(float offset)

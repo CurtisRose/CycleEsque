@@ -21,7 +21,7 @@ public class AggressiveState : MonsterState
 		animator.SetBool("IsRunning", true);
 		animator.SetBool("IsWalking", false);
 		animator.SetBool("IsIdle", false);
-		animator.Play("Run");
+		//animator.Play("Run");
 	}
 
 	public override void Enter()

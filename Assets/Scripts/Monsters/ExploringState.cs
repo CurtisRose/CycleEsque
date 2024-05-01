@@ -60,7 +60,7 @@ public class ExploringState : MonsterState
         navMeshAgent.SetDestination(nextPosition);
         animator.SetBool("IsWalking", true);
         animator.SetBool("IsIdle", false);
-        animator.Play("Walk");
+        //animator.Play("Walk");
     }
 
     private void OnDamageTaken(float damageAmount, float currentHealth)

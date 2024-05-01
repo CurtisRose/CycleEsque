@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -39,6 +40,8 @@ public class MonsterController : MonoBehaviour
     AudioSource audioSource;
 	[SerializeField] List<AudioClip> painFleeingSounds;
 	SoundRandomizer painFleeingRandomClips;
+
+    [SerializeField] string state;
 
 	private void Awake()
     {
@@ -107,7 +110,19 @@ public class MonsterController : MonoBehaviour
 
         currentState = newState;
 
-        if (newState as FleeingState != null) {
+        if (newState is ExploringState) {
+            state = "ExplorationState";
+        } else if (newState is AggressiveState) {
+			state = "AggressiveState";
+		} else if (newState is AttackState) {
+			state = "AttackState";
+		} else if (newState is FleeingState) {
+			state = "FleeingState";
+		} else {
+			state = "UnknownState";
+		}
+
+		if (newState as FleeingState != null) {
             MakeSound(painFleeingRandomClips.GetRandomClip());
         }
 

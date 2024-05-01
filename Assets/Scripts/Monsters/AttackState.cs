@@ -35,7 +35,8 @@ public class AttackState : MonsterState
 		monster.transform.LookAt(playerTransform);
 
 		AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-		bool isAnimationFinished = stateInfo.IsName("Attack") && stateInfo.normalizedTime >= 1.0f;
+		bool isAnimationFinished = stateInfo.IsName("Attack") && stateInfo.normalizedTime >= 0.7f;
+
 
         if (isAnimationFinished && !animator.IsInTransition(0)) {
 			if (Vector3.Distance(monster.transform.position, playerTransform.position) > monsterData.attackRange) {
@@ -56,6 +57,5 @@ public class AttackState : MonsterState
     {
         base.Exit();
         agent.isStopped = false;  // Allow the monster to move again
-        animator.SetBool("IsAttacking", false);
     }
 }
