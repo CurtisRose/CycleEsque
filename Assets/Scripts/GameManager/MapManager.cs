@@ -25,6 +25,8 @@ public class MapManager : MonoBehaviour
 	[SerializeField] private int MAX_OBJECTS = 0;
 	[SerializeField] private int MAX_LEVELS = 5;
 
+	[SerializeField] bool DrawGizmos;
+
 	private void Awake() {
 		if (Instance == null) {
 			Instance = this;
@@ -100,6 +102,8 @@ public class MapManager : MonoBehaviour
 	}
 
 	private void OnDrawGizmos() {
+		if (!DrawGizmos) return;
+
 		float extendedDistance = 2 * activationDistance;
 
 		// Draw the search area for each player

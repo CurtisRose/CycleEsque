@@ -8085,6 +8085,7 @@ Transform:
   - {fileID: 873281630}
   - {fileID: 1818326417}
   - {fileID: 594607070}
+  - {fileID: 1580578540}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &667564042
@@ -17823,6 +17824,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cc5b9156ce85ba41af19966329c0c11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1580578539
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1580578540}
+  - component: {fileID: 1580578541}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1580578540
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1580578539}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 667444821}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1580578541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1580578539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6f886d7f87a36f499e5537fe7563eec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DrawGizmos: 0
 --- !u!4 &1583360700 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4672930466631858, guid: 83de50c015441d5418caf12dd3c6e121,
@@ -23769,6 +23815,7 @@ MonoBehaviour:
   MAPSIZEY: 1000
   MAX_OBJECTS: 0
   MAX_LEVELS: 5
+  DrawGizmos: 0
 --- !u!1 &2082111652
 GameObject:
   m_ObjectHideFlags: 0
@@ -24846,6 +24893,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b5adebe6dee234cbf72e2f9edda1df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DrawGizmos: 1
 --- !u!4 &2145779201 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7193111452421879946, guid: 6e32f29348390c8499f7af5aefc655b4,

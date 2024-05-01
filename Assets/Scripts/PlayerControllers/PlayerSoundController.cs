@@ -11,19 +11,8 @@ public enum PlayerNoiseLevel {
 	Deafening // Explosions
 }
 
-public class PlayerSoundController : MonoBehaviour
-{
-	public static PlayerSoundController Instance;
-
-	public Dictionary<PlayerNoiseLevel, float> noiseDistances = new Dictionary<PlayerNoiseLevel, float>()
-	{
-		{ PlayerNoiseLevel.None, 0f },
-		{ PlayerNoiseLevel.Low, 20f },    // walking
-        { PlayerNoiseLevel.Medium, 40f }, // running
-        { PlayerNoiseLevel.High, 50f },   // jumping, attacking
-        { PlayerNoiseLevel.VeryHigh, 75f }, // shooting
-        { PlayerNoiseLevel.Deafening, 150 } // explosions
-    };
+public class PlayerSoundController : SoundManager {
+	new public static PlayerSoundController Instance;
 
 	private PlayerNoiseLevel maxNoiseLevelThisInterval = PlayerNoiseLevel.None;
 	private int framesUntilNextEmission = 0;
@@ -51,7 +40,7 @@ public class PlayerSoundController : MonoBehaviour
 		}
 	}
 
-	public void RegisterSound(PlayerNoiseLevel noiseLevel, Vector3 position, bool ForceSound = false) {
+	public override void RegisterSound(PlayerNoiseLevel noiseLevel, Vector3 position, bool ForceSound = false) {
 		if (ForceSound) {
 			EmitNoise(noiseLevel, position);
 			return;
@@ -63,40 +52,12 @@ public class PlayerSoundController : MonoBehaviour
 		latestPosition = position;
 	}
 
-	private void EmitNoise(PlayerNoiseLevel noiseLevel, Vector3 position) {
-		float noiseDistance;
-		//Debug.Log("Noise at " + noiseLevel.ToString() + " Emitted");
-		if (noiseDistances.TryGetValue(noiseLevel, out noiseDistance)) {
-			Collider[] hitColliders = Physics.OverlapSphere(position, noiseDistance, LayerMask.GetMask("Monster"));
-			if (hitColliders.Length > 0) {
-				foreach (Collider hitCollider in hitColliders) {
-					MonsterController monster = hitCollider.GetComponent<MonsterController>();
-					if (monster != null) {
-						monster.HearNoise(position, noiseLevel);
-					}
-				}
-			}
-		}
-	}
-
-	Dictionary<PlayerNoiseLevel, Color> noiseColors = new Dictionary<PlayerNoiseLevel, Color>() {
-		{ PlayerNoiseLevel.None, Color.clear }, // No gizmo for None
-        { PlayerNoiseLevel.Low, Color.red },
-		{ PlayerNoiseLevel.Medium, Color.yellow },
-		{ PlayerNoiseLevel.High, Color.green },
-		{ PlayerNoiseLevel.VeryHigh, Color.blue },
-		{ PlayerNoiseLevel.Deafening, Color.magenta } // Magenta for Deafening, as an example
-    };
-
-	void OnDrawGizmos() {
-		// Define colors for each noise level
-
-		// Draw a sphere for each noise level
-		foreach (var noiseLevel in noiseDistances) {
-			if (noiseLevel.Key != PlayerNoiseLevel.None) { // Skip drawing for 'None'
-				Gizmos.color = noiseColors[noiseLevel.Key];
-				Gizmos.DrawWireSphere(transform.position, noiseLevel.Value);
-			}
+	public override void OnDrawGizmos() {
+		if (!DrawGizmos)
+			return;
+		if (maxNoiseLevelThisInterval != PlayerNoiseLevel.None && noiseDistances.ContainsKey(maxNoiseLevelThisInterval)) {
+			Gizmos.color = noiseColors[maxNoiseLevelThisInterval];
+			Gizmos.DrawWireSphere(latestPosition, noiseDistances[maxNoiseLevelThisInterval]);
 		}
 	}
 }

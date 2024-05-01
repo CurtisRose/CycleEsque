@@ -29,7 +29,6 @@ public class ActionStateManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(this.gameObject); // Optional: Makes it persist across scenes
         }
     }
 

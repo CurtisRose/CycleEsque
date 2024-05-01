@@ -61,7 +61,7 @@ public class AggressiveState : MonsterState
         }
 
         // Check if the conditions to stop being aggressive are met
-        if (Vector3.Distance(monster.transform.position, player.transform.position) > monsterData.detectionRadius && aggressiveTimer > monsterData.minimumAggressionTime)
+        if (Vector3.Distance(monster.transform.position, player.transform.position) > monsterData.detectionRadiusInvestigating && aggressiveTimer > monsterData.minimumAggressionTime)
         {
             // If the player is outside the detection radius and the minimum time has elapsed
             monster.GetComponent<MonsterController>().ChangeState(new ExploringState(monster, monsterData, monster.GetComponent<MonsterController>().explorationTarget));

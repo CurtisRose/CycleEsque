@@ -5,14 +5,17 @@ using UnityEngine.AI;
 public class NavMeshPathVisualizer : MonoBehaviour
 {
     private NavMeshAgent agent;
+	[SerializeField] bool DrawGizmos;
 
-    void Start()
+	void Start()
     {
         agent = GetComponent<NavMeshAgent>();
     }
 
     void OnDrawGizmos()
     {
+        if (!DrawGizmos)
+			return;
         if (agent == null || agent.path == null)
             return;
 
