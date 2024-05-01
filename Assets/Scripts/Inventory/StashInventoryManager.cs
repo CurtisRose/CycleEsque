@@ -45,10 +45,6 @@ public class StashInventoryManager : Inventory
                 MenuManager.Instance.OpenMenu(StashMenu.Instance);
             }
         }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-			OrganizeStash();
-        }
     }
 
     private void PopulateStash()

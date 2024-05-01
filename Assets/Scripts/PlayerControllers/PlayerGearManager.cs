@@ -63,7 +63,8 @@ public class PlayerGearManager : MonoBehaviour, IPlayerInitializable
     {
         if (VisualizeLoadout)
         {
-            if (gearSlot.GetItemType() == ItemType.WEAPON)
+			PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Medium, transform.position);
+			if (gearSlot.GetItemType() == ItemType.WEAPON)
             {
                 if (gearSlot == PlayerInventory.Instance.GetGearSlot(GearSlotIdentifier.WEAPONSLOT1))
                 {

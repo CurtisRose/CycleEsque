@@ -110,15 +110,26 @@ public class Player : MonoBehaviour
     {
         Vector3 move = Vector3.zero;
         isMoving = false;
-        if (!disableUserMovementInputStatus)
+		PlayerNoiseLevel noiseLevel = PlayerNoiseLevel.None;
+
+		if (!disableUserMovementInputStatus)
         {
             move = (transform.forward * Input.GetAxis("Vertical") * currentMovementSpeed * Time.deltaTime +
                     transform.right * Input.GetAxis("Horizontal") * currentMovementSpeed * Time.deltaTime);
-        }
+
+			if (isSprinting) {
+				noiseLevel = PlayerNoiseLevel.Medium; // Running noise
+			} else if (isCrouched) {
+				noiseLevel = PlayerNoiseLevel.None; // Crouching noise
+			} else if (move.magnitude > 0) {
+				noiseLevel = PlayerNoiseLevel.Low; // Walking noise
+			}
+		}
         if (move.magnitude > 0)
         {
             isMoving = true;
-        }
+			PlayerSoundController.Instance.RegisterSound(noiseLevel, transform.position);
+		}
         currentVerticalSpeed -= gravity * Time.deltaTime;
         move.y = currentVerticalSpeed;
         characterController.Move(move);
@@ -135,7 +146,8 @@ public class Player : MonoBehaviour
             {
                 jumpedRecently = true;
                 currentVerticalSpeed = jumpSpeed;
-            }
+				PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.High, transform.position);
+			}
         }
         else if (!characterController.isGrounded && !jumpedRecently)
         {
@@ -145,8 +157,9 @@ public class Player : MonoBehaviour
                 {
                     jumpedRecently = true;
                     currentVerticalSpeed = jumpSpeed;
-                }
-            }
+					PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.High, transform.position);
+				}
+			}
             inAirTime += Time.deltaTime;
         }
 

@@ -125,7 +125,10 @@ public class PlayerWeaponSwitcher : MonoBehaviour, IPlayerInitializable
         {
             // Enter the action state
             ActionStateManager.Instance.EnterState(ActionState.SwappingWeapons);
-            float weaponSwapSpeed = noGunReloadSpeed;
+
+			PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Low, transform.position);
+
+			float weaponSwapSpeed = noGunReloadSpeed;
             if (gunOnHip != null)
             {
                 weaponSwapSpeed = gunOnHip.GetGunData().reloadTime;

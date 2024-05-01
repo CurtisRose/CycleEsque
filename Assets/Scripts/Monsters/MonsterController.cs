@@ -147,6 +147,7 @@ public class MonsterController : MonoBehaviour
         if (item != null) {
 			itemDropped = itemDropper.DropItem(item.CreateItemInstance());
 		}
+        Destroy(this);
     }
 
     void OnDrawGizmos()
@@ -221,5 +222,27 @@ public class MonsterController : MonoBehaviour
 		audioSource.pitch = Random.Range(0.95f, 1.05f); // Adjust pitch slightly
 		audioSource.volume = Random.Range(0.8f, 1.0f); // Adjust volume slightly
 		audioSource.PlayOneShot(audioClip);
+	}
+
+	public void HearNoise(Vector3 noiseSource, PlayerNoiseLevel noiseLevel) {
+		if (currentState is AggressiveState || currentState is AttackState) {
+			// If already in one of these states, just return
+			return;
+		}
+		float distanceToPlayer = Vector3.Distance(transform.position, noiseSource);
+		Debug.Log($"Heard noise at level {noiseLevel} from distance {distanceToPlayer}m");
+
+		//AlertOtherMonsters();
+
+		ChangeState(new AggressiveState(gameObject, monsterData));
+	}
+
+	private void AlertOtherMonsters() {
+		// Emit sound at High level
+		if (!audioSource.isPlaying) {
+			MakeSound(painFleeingRandomClips.GetRandomClip());
+		}
+
+		PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.High, transform.position, true);
 	}
 }

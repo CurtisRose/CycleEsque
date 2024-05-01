@@ -63,12 +63,6 @@ public class PlayerWeaponController : MonoBehaviour
             crosshairController.CenterCrosshairOnScreen();
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            WeaponAimTesting = !WeaponAimTesting;
-            crosshairController.CenterCrosshairOnScreen();
-        }
-
         //HandleInventoryItemDropping();
 
         HandleWeaponReloading();
@@ -109,10 +103,13 @@ public class PlayerWeaponController : MonoBehaviour
                     {
                         // Enter the action state
                         ActionStateManager.Instance.EnterState(ActionState.Shooting);
-                        // Start shooting animation
-                        // TODO: bullet casings, whatever
-                        // Exit state after rate of fire time
-                        Invoke("ExitShootingWeaponState", gearManager.GetGunInHands().GetGunData().RateOfFire);
+
+						PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.VeryHigh, transform.position);
+
+						// Start shooting animation
+						// TODO: bullet casings, whatever
+						// Exit state after rate of fire time
+						Invoke("ExitShootingWeaponState", gearManager.GetGunInHands().GetGunData().RateOfFire);
 
                         // Apply Recoil
                         recoil.RecoilFire();
@@ -168,7 +165,9 @@ public class PlayerWeaponController : MonoBehaviour
 
                 // Enter the action state
                 ActionStateManager.Instance.EnterState(ActionState.Reloading);
-                
+
+                PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Medium, transform.position);
+
                 // Exit state after reloading time
                 Invoke("ExitReloadingWeaponsState", gearManager.GetGunInHands().GetGunData().reloadTime);
             }
@@ -210,14 +209,17 @@ public class PlayerWeaponController : MonoBehaviour
         // Check to see if state manager allows this action
         if (!ActionStateManager.Instance.CanPerformAction(ActionState.Aiming)) return;
 
-        StopCoroutine("MoveWeapon");
+		PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Low, transform.position);
+
+		StopCoroutine("MoveWeapon");
         currentTransitionCoroutine = StartCoroutine(MoveWeapon(true));
     }
 
     public void MoveToHipFire()
     {
         StopCoroutine("MoveWeapon");
-        currentTransitionCoroutine = StartCoroutine(MoveWeapon(false));
+		PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Low, transform.position);
+		currentTransitionCoroutine = StartCoroutine(MoveWeapon(false));
     }
 
     IEnumerator MoveWeapon(bool toADS)

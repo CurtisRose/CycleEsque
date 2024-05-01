@@ -68,6 +68,7 @@ public class MonsterSpawner : MonoBehaviour, IActivatable
     private void HandleDeath(MonsterController monster, MonsterController prefab)
     {
         monster.OnDeath -= () => HandleDeath(monster, prefab);
+        activeMonsters.Remove(monster);
 		StartCoroutine(RespawnMonster(prefab));
     }
 

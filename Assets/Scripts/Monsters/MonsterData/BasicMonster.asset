@@ -25,5 +25,5 @@ MonoBehaviour:
   health: 100
   armor: 100
   attackRange: 4.5
-  effectiveAttackRange: 5.5
+  effectiveAttackRange: 6
   attackDamage: 20
