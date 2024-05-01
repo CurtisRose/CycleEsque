@@ -27,8 +27,7 @@ public class ExploringState : MonsterState
         ChooseNextPosition();
     }
 
-    public override void Execute()
-    {
+    public override void Execute() {
         // Check for player proximity to transition to AggressiveState if needed
         Collider[] hitColliders = Physics.OverlapSphere(monster.transform.position, monsterData.detectionRadius, LayerMask.GetMask("Player"));
         if (hitColliders.Length > 0)
@@ -44,7 +43,7 @@ public class ExploringState : MonsterState
         }
     }
 
-    public override void Exit()
+	public override void Exit()
     {
         base.Exit();
         // Unsubscribe to avoid memory leaks

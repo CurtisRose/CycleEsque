@@ -357,7 +357,9 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 		int numItems = 0;
 		if (inventoryDictionary.ContainsKey(itemID)) {
 			foreach (int slotIndex in inventoryDictionary[itemID]) {
-				numItems += inventorySlots[slotIndex].GetItemInSlot().GetItemCount();
+				if (inventorySlots[slotIndex].HasItem()) {
+					numItems += inventorySlots[slotIndex].GetItemInSlot().GetItemCount();
+				}
 			}
 		} else 
 		{ 

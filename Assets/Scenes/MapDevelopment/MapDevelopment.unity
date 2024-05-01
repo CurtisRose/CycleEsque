@@ -24681,6 +24681,36 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 200
       objectReference: {fileID: 0}
+    - target: {fileID: 4353811491843177763, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: painSounds.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4353811491843177763, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: painSounds.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 45742373c0c4a6a4e99860b54302a65c, type: 3}
+    - target: {fileID: 4353811491843177763, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: painSounds.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 95d1d0c389563494197ad6c0c1e9c9ad, type: 3}
+    - target: {fileID: 4353811491843177763, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: painSounds.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 88d718a0695cc2648b0b609d9f74808d, type: 3}
+    - target: {fileID: 4353811491843177763, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: painSounds.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: ca7105433e7f6bb4c874f852b3d8e3c8, type: 3}
+    - target: {fileID: 4353811491843177763, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: painSounds.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: 9df75200c6a0542488ebfe37556b0c1e, type: 3}
     - target: {fileID: 9064487098345231791, guid: e4c6fb353c04e3049b2329c6e6edcf05,
         type: 3}
       propertyPath: m_LocalPosition.x

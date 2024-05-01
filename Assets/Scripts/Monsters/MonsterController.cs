@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class MonsterController : MonoBehaviour
 {
@@ -35,9 +36,15 @@ public class MonsterController : MonoBehaviour
     bool isDead = false;
     public WorldItem itemDropped;
 
-    private void Awake()
+    AudioSource audioSource;
+	[SerializeField] List<AudioClip> painFleeingSounds;
+	SoundRandomizer painFleeingRandomClips;
+
+	private void Awake()
     {
-        healthComponent = GetComponent<Health>();
+		audioSource = GetComponent<AudioSource>();
+		painFleeingRandomClips = new SoundRandomizer(painFleeingSounds);
+		healthComponent = GetComponent<Health>();
         healthComponent.SetMaxHealth(monsterData.health);
         healthUIController = GetComponent<MonsterHealthUIController>();
         InitializeAgent();
@@ -99,6 +106,11 @@ public class MonsterController : MonoBehaviour
             currentState.Exit();
 
         currentState = newState;
+
+        if (newState as FleeingState != null) {
+            MakeSound(painFleeingRandomClips.GetRandomClip());
+        }
+
         currentState.Enter();
     }
 
@@ -115,7 +127,11 @@ public class MonsterController : MonoBehaviour
 
     private void HandleDeath()
     {
-        isDead = true;
+        if (!audioSource.isPlaying) {
+			MakeSound(painFleeingRandomClips.GetRandomClip());
+		}
+
+		isDead = true;
 		OnDeath?.Invoke();
 		healthComponent.OnHealthChanged -= HandleHealthChanged;
         healthComponent.OnDeath -= HandleDeath;
@@ -179,7 +195,8 @@ public class MonsterController : MonoBehaviour
             return;
 
         // If the target is too far away, don't apply damage
-        if (Vector3.Distance(transform.position, targetTransform.position) > monsterData.attackRange)
+        // Using the effective attack range here
+        if (Vector3.Distance(transform.position, targetTransform.position) > monsterData.effectiveAttackRange)
 			return;
 
         // Assuming the player has a script component that can receive damage
@@ -199,4 +216,10 @@ public class MonsterController : MonoBehaviour
     {
         return players;
     }
+
+	public void MakeSound(AudioClip audioClip) {
+		audioSource.pitch = Random.Range(0.95f, 1.05f); // Adjust pitch slightly
+		audioSource.volume = Random.Range(0.8f, 1.0f); // Adjust volume slightly
+		audioSource.PlayOneShot(audioClip);
+	}
 }

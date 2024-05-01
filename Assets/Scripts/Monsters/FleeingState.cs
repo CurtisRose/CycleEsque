@@ -9,7 +9,7 @@ public class FleeingState : MonsterState
     private Transform playerTransform;
     private Vector3 destination;
 
-    public FleeingState(GameObject monster, MonsterData monsterData) : base(monster, monsterData)
+	public FleeingState(GameObject monster, MonsterData monsterData) : base(monster, monsterData)
     {
         agent = monster.GetComponent<NavMeshAgent>();
         if (agent == null)
