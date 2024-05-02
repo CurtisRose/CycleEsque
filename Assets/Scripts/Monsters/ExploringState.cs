@@ -73,7 +73,7 @@ public class ExploringState : MonsterState
     {
         if (timer <= 0)
         {
-            timer = monsterData.pauseTime * 2;  // Pause twice the time before moving again
+            timer = monsterData.pauseTime;  // Pause twice the time before moving again
             ChooseNextPosition();
         }
         else

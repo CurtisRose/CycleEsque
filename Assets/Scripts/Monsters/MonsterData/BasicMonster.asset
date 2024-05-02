@@ -29,5 +29,5 @@ MonoBehaviour:
   effectiveAttackRange: 8
   attackDamage: 20
   maxStraightLineDistance: 200
-  investigationTime: 0
-  investigationDistance: 0
+  investigationTime: 30
+  investigationDistance: 20
