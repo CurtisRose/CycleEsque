@@ -327,11 +327,13 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 						success = true;
 						break;
 					} else if (itemInSlot.GetItemCount() == numItems) {
+						UpdateWeight(-itemInSlot.GetTotalWeight());
 						inventorySlots[slotIndex].RemoveItemFromSlot();
 						Destroy(itemInSlot.gameObject);
 						success = true;
 						break;
 					} else {
+						UpdateWeight(-itemInSlot.GetTotalWeight());
 						inventorySlots[slotIndex].RemoveItemFromSlot();
 						Destroy(itemInSlot.gameObject);
 						numItems -= itemInSlot.GetItemCount();
@@ -355,7 +357,9 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 		int numItems = 0;
 		if (inventoryDictionary.ContainsKey(itemID)) {
 			foreach (int slotIndex in inventoryDictionary[itemID]) {
-				numItems += inventorySlots[slotIndex].GetItemInSlot().GetItemCount();
+				if (inventorySlots[slotIndex].HasItem()) {
+					numItems += inventorySlots[slotIndex].GetItemInSlot().GetItemCount();
+				}
 			}
 		} else 
 		{ 

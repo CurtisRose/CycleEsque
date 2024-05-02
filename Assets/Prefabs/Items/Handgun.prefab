@@ -326,12 +326,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sharedItemData: {fileID: 11400000, guid: 6749e79904a1ad54e9db6412b3537fbc, type: 2}
   timeDelay: 1
-  numItemsInStack: 0
+  numItemsInStack: 1
   shootPositionTransform: {fileID: 7579410308665524227}
   aimPositionTransform: {fileID: 750004904246053663}
   projectilePrefab: {fileID: 7343739617303108452, guid: 9ce584057e259bb47b9937b06cfa6540,
     type: 3}
-  DrawGizmos: 1
+  DrawGizmos: 0
   gunAudioSource: {fileID: -7239728464899762388}
   weaponFireSounds:
   - {fileID: 8300000, guid: 52eee3472cd0d7744a172523797ea3ea, type: 3}

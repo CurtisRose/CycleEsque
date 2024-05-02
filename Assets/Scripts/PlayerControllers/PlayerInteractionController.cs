@@ -33,7 +33,11 @@ public class PlayerInteractionController : MonoBehaviour
                 {
                     //OnWorldItemPickedUp(interactableObject);
                     interactableObject.Interact();
-                } else
+
+					// TODO: Different interactions should make different sounds. E.G. picking up an item should make a different sound than opening a door.
+					PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Low, transform.position);
+
+				} else
                 {
                     interactableObjectLookingAt = interactableObject;
                     interactableObjectLookingAt.ShowUI();

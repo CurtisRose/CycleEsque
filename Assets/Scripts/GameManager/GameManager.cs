@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     // Player Menus that need to be initialized
 	[SerializeField] PlayerInventory playerInventory;
     [SerializeField] EquippedItemsMenu equippedItemsMenu;
+    [SerializeField] PlayerGearUI playerGearUI;
 
 	// Player components that need to be initialized
 	[SerializeField] PlayerGearManager playerGearManager;
@@ -124,7 +125,14 @@ public class GameManager : MonoBehaviour
             playerInventory.Initialize();
         }
 
-        if (playerGearManager != null) {
+        // This must be done before initializing the playerGearManager.
+        // Player Gear Manager equips gear, but playerGearUI subscribes to events from the gearManager
+        // PlayerGearUI won't see the changes unless put first.
+		if (playerGearUI != null) {
+			playerGearUI.Initialize();
+		}
+
+		if (playerGearManager != null) {
 			playerGearManager.Initialize();
 		}
         if (equippedItemsMenu != null) {
@@ -134,6 +142,7 @@ public class GameManager : MonoBehaviour
         if (playerWeaponSwitcher != null) {
             playerWeaponSwitcher.Initialize();
         }
+ 
         //playerWeaponController.Initialize();
 
         // MUST set up gear first, especially in regards to backpacks.... ask me how I know lol

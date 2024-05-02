@@ -22,6 +22,8 @@ public class PlayerItemDroppingController : MonoBehaviour
 				InventoryItem inventoryItemBeingDropped = InventoryItem.CurrentHoveredItem;
 				inventory.DropItem(inventorySlot);
 				Destroy(inventoryItemBeingDropped.gameObject);
+
+				PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Low, transform.position);
 			}
 		}
 	}

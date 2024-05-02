@@ -46,7 +46,7 @@ public class Projectile : MonoBehaviour
         RaycastHit hit;
         float raycastLength = raycastBackOffset + 0.5f; // Length of the raycast; includes the backward offset and a small forward distance
 
-        if (Physics.Raycast(startRaycastPoint, transform.forward, out hit, raycastLength, LayerMask.GetMask("Monster")))
+        if (Physics.Raycast(startRaycastPoint, transform.forward, out hit, raycastLength, LayerMask.GetMask("MonsterBodyPart")))
         {
             Debug.DrawRay(startRaycastPoint, transform.forward * raycastLength, Color.red, 60.0f); // Draw raycast in red if it hits something
             if (hit.collider.TryGetComponent<IDamageable>(out IDamageable damageable))
@@ -97,6 +97,7 @@ public class Projectile : MonoBehaviour
     private void PlayImpactEffect()
     {
         // Impact effect logic goes here
+        PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Medium, transform.position, true);
     }
 
     public void SetInitialVisualPosition(float offset)

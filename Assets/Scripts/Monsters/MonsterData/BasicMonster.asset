@@ -12,17 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cd4572ae8716514bb03770f57bb1779, type: 3}
   m_Name: BasicMonster
   m_EditorClassIdentifier: 
-  walkSpeed: 9
-  runSpeed: 14
+  walkSpeed: 12
+  runSpeed: 20
   turnSpeed: 360
-  stoppingDistance: 2.5
+  stoppingDistance: 1.5
   acceleration: 90
-  exploringRadius: 50
+  exploringRadius: 150
   pauseTime: 2
-  detectionRadius: 40
-  fleeDistance: 40
+  detectionRadiusExploring: 25
+  detectionRadiusInvestigating: 50
+  fleeDistance: 150
   minimumAggressionTime: 60
   health: 100
   armor: 100
-  attackRange: 3.5
+  attackRange: 4.5
+  effectiveAttackRange: 8
   attackDamage: 20
+  maxStraightLineDistance: 200
+  investigationTime: 30
+  investigationDistance: 20

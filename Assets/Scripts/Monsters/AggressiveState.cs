@@ -10,23 +10,21 @@ public class AggressiveState : MonsterState
     private float aggressiveTimer;  // Timer to track aggression duration
     Animator animator;
 
-    public AggressiveState(GameObject monster, MonsterData monsterData) : base(monster, monsterData)
-    {
-        agent = monster.GetComponent<NavMeshAgent>();
-        if (agent == null)
-        {
-            Debug.LogError("NavMeshAgent component is missing from the monster!");
-        }
-        player = monster.GetComponent<MonsterController>().GetPlayers()[0];
-        navMeshAgent.speed = monsterData.runSpeed;
-        animator = monster.GetComponentInChildren<Animator>();
-        animator.SetBool("IsRunning", true);
-        animator.SetBool("IsWalking", false);
-        animator.SetBool("IsIdle", false);
-        animator.Play("Run");
-    }
+	public AggressiveState(GameObject monster, MonsterData monsterData) : base(monster, monsterData) {
+		agent = monster.GetComponent<NavMeshAgent>();
+		if (agent == null) {
+			Debug.LogError("NavMeshAgent component is missing from the monster!");
+		}
+		player = monster.GetComponent<MonsterController>().GetPlayers()[0];
+		navMeshAgent.speed = monsterData.runSpeed;
+		animator = monster.GetComponentInChildren<Animator>();
+		animator.SetBool("IsRunning", true);
+		animator.SetBool("IsWalking", false);
+		animator.SetBool("IsIdle", false);
+		//animator.Play("Run");
+	}
 
-    public override void Enter()
+	public override void Enter()
     {
         base.Enter();
         //Debug.Log("Monster becomes aggressive!");
@@ -63,7 +61,7 @@ public class AggressiveState : MonsterState
         }
 
         // Check if the conditions to stop being aggressive are met
-        if (Vector3.Distance(monster.transform.position, player.transform.position) > monsterData.detectionRadius && aggressiveTimer > monsterData.minimumAggressionTime)
+        if (Vector3.Distance(monster.transform.position, player.transform.position) > monsterData.detectionRadiusInvestigating && aggressiveTimer > monsterData.minimumAggressionTime)
         {
             // If the player is outside the detection radius and the minimum time has elapsed
             monster.GetComponent<MonsterController>().ChangeState(new ExploringState(monster, monsterData, monster.GetComponent<MonsterController>().explorationTarget));

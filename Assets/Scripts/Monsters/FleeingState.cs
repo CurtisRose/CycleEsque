@@ -9,7 +9,7 @@ public class FleeingState : MonsterState
     private Transform playerTransform;
     private Vector3 destination;
 
-    public FleeingState(GameObject monster, MonsterData monsterData) : base(monster, monsterData)
+	public FleeingState(GameObject monster, MonsterData monsterData) : base(monster, monsterData)
     {
         agent = monster.GetComponent<NavMeshAgent>();
         if (agent == null)
@@ -26,41 +26,44 @@ public class FleeingState : MonsterState
         PickRandomFleeDirection();
     }
 
-    public override void Execute()
-    {
-        if (agent == null) return;
+	public override void Execute() {
+		if (agent == null) return;
 
-        // Check if monster has reached near the destination or not
-        if (!agent.pathPending && agent.remainingDistance < monsterData.stoppingDistance)
-        {
-            if (Vector3.Distance(monster.transform.position, playerTransform.position) > monsterData.detectionRadius)
-            {
-                // If far enough from the player, switch to exploring state
-                monster.GetComponent<MonsterController>().ChangeState(new ExploringState(monster, monsterData, monster.GetComponent<MonsterController>().explorationTarget));
-            }
-            else
-            {
-                // Otherwise, pick a new fleeing direction
-                PickRandomFleeDirection();
-            }
-        }
-    }
+		// Check if monster has reached near the destination or not
+		if (!agent.pathPending && agent.remainingDistance < monsterData.stoppingDistance) {
+			if (Vector3.Distance(monster.transform.position, playerTransform.position) > monsterData.detectionRadiusInvestigating) {
+				// If far enough from the player, switch to exploring state
+				monster.GetComponent<MonsterController>().ChangeState(new ExploringState(monster, monsterData, monster.GetComponent<MonsterController>().explorationTarget));
+			} else {
+				// Otherwise, pick a new fleeing direction
+				PickRandomFleeDirection();
+			}
+		}
+	}
+	
 
-    private void PickRandomFleeDirection()
+	private void PickRandomFleeDirection()
     {
-        // Generate a random direction to flee towards
-        Vector3 randomDirection = Random.insideUnitSphere * monsterData.fleeDistance + monster.transform.position;
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, monsterData.fleeDistance, NavMesh.AllAreas))
-        {
-            destination = hit.position;
-            agent.SetDestination(destination);
-        }
-        else
-        {
-            //Debug.Log("No valid navmesh point found in the flee direction!");
-        }
-    }
+		// Direction from the player to the monster
+		Vector3 fromPlayer = monster.transform.position - playerTransform.position;
+		fromPlayer.Normalize(); // Normalize to get direction vector
+
+		// Add variability in the flee direction by rotating around the y-axis
+		float fleeAngle = Random.Range(-30.0f, 30.0f); // Adjust angle range as needed
+		Quaternion rotation = Quaternion.Euler(0, fleeAngle, 0);
+		Vector3 fleeDirection = rotation * fromPlayer;
+
+		// Calculate potential flee position
+		Vector3 randomFleeDirection = fleeDirection * monsterData.fleeDistance + monster.transform.position;
+
+		NavMeshHit hit;
+		if (NavMesh.SamplePosition(randomFleeDirection, out hit, monsterData.fleeDistance, NavMesh.AllAreas)) {
+			destination = hit.position;
+			agent.SetDestination(destination);
+		} else {
+			//Debug.Log("No valid navmesh point found in the flee direction!");
+		}
+	}
 
     public override void Exit()
     {

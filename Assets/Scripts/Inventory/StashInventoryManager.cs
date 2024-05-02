@@ -45,10 +45,6 @@ public class StashInventoryManager : Inventory
                 MenuManager.Instance.OpenMenu(StashMenu.Instance);
             }
         }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            SaveStash();
-        }
     }
 
     private void PopulateStash()
@@ -68,9 +64,35 @@ public class StashInventoryManager : Inventory
         }
     }
 
+    private void OrganizeStash() {
+		foreach (InventorySlot thisSlot in inventorySlots) {
+			if (thisSlot.HasItem()) {
+				ItemInstance itemInstance = thisSlot.GetItemInSlot().itemInstance;
+				if (itemInstance.sharedData.Stackable) {
+					int numItems = thisSlot.GetItemInSlot().GetItemCount();
+					// loop through each slot in the inventory and try to combine them
+					foreach (InventorySlot otherSlot in inventorySlots) {
+						if (thisSlot == otherSlot) {
+							break;
+						}
+						if (otherSlot.HasItem() && otherSlot.GetItemInSlot().itemInstance.sharedData.ID == itemInstance.sharedData.ID) {
+							numItems = Combine(otherSlot, thisSlot.GetItemInSlot());
+							if (numItems == 0) {
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
     public void SaveStash()
     {
-        List<SerializableItemData> items = new List<SerializableItemData>();
+        // Gets all the same stackable items into minimum number of slots
+        OrganizeStash();
+
+		List<SerializableItemData> items = new List<SerializableItemData>();
         foreach (InventorySlot inventorySlot in inventorySlots)
         {
             if (inventorySlot.HasItem())

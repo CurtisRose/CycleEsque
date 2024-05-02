@@ -10,11 +10,16 @@ public class MonsterData : ScriptableObject
     public float acceleration;
     public float exploringRadius;
     public float pauseTime;
-    public float detectionRadius;
-    public float fleeDistance;
+	public float detectionRadiusExploring;
+	public float detectionRadiusInvestigating;
+	public float fleeDistance;
     public float minimumAggressionTime;
     public float health;
     public float armor;
-    public float attackRange;
+    public float attackRange; // Range for when to start attacking
+    public float effectiveAttackRange; // Range for how far attack is still effective
     public float attackDamage;
+    public float maxStraightLineDistance;
+    public float investigationTime;
+    public float investigationDistance;
 }

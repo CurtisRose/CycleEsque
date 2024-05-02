@@ -343,6 +343,7 @@ GameObject:
   - component: {fileID: 7153568819064761401}
   - component: {fileID: 2674165496531966792}
   - component: {fileID: 2049623903}
+  - component: {fileID: -6833699937734187050}
   m_Layer: 0
   m_Name: SM_Env_Pine_05 1
   m_TagString: Untagged
@@ -423,3 +424,19 @@ CapsuleCollider:
   m_Height: 5.125568
   m_Direction: 1
   m_Center: {x: -0.010372162, y: 2.41453, z: 0}
+--- !u!208 &-6833699937734187050
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7497724116738913923}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.3, y: 1, z: 0.3}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5

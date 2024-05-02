@@ -20,38 +20,42 @@ public class AttackState : MonsterState
     {
         base.Enter();
         agent.isStopped = true;  // Stop the monster from moving
-        animator.SetBool("IsAttacking", true);
-        animator.Play("Attack");
-        monster.GetComponent<MonsterController>().SetTarget(playerTransform);
+		animator.ResetTrigger("AttackTrigger");  // Reset trigger when entering the state
+		animator.SetTrigger("AttackTrigger");    // Set trigger to start the animation
+		monster.GetComponent<MonsterController>().SetTarget(playerTransform);
     }
 
     public override void Execute()
     {
-        if (playerTransform == null) {
+		if (playerTransform == null) {
 			monster.GetComponent<MonsterController>().ChangeState(new ExploringState(monster, monsterData, monster.GetComponent<MonsterController>().explorationTarget));
 			return;
 		}
 
-        // Ensure the monster faces the player while attacking
-        monster.transform.LookAt(playerTransform);
+		monster.transform.LookAt(playerTransform);
 
-        // Check if the player has moved out of attack range
-        if (Vector3.Distance(monster.transform.position, playerTransform.position) > monsterData.attackRange)
-        {
-            MonsterController monsterController = monster.GetComponent<MonsterController>();
-            // If the player is out of attack range, switch back to aggressive state
-            if (monsterController.GetPlayers()[0] == null) {
-				monsterController.ChangeState(new ExploringState(monsterController.gameObject, monsterData, monsterController.explorationTarget));
+		AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+		bool isAnimationFinished = stateInfo.IsName("Attack") && stateInfo.normalizedTime >= 0.7f;
+
+
+        if (isAnimationFinished && !animator.IsInTransition(0)) {
+			if (Vector3.Distance(monster.transform.position, playerTransform.position) > monsterData.attackRange) {
+				MonsterController monsterController = monster.GetComponent<MonsterController>();
+				if (monsterController.GetPlayers()[0] == null) {
+					monsterController.ChangeState(new ExploringState(monsterController.gameObject, monsterData, monsterController.explorationTarget));
+				} else {
+					monster.GetComponent<MonsterController>().ChangeState(new AggressiveState(monster, monsterData));
+				}
 			} else {
-				monster.GetComponent<MonsterController>().ChangeState(new AggressiveState(monster, monsterData));
+				// Only retrigger the attack if the animation has finished and the player is still in range
+				animator.SetTrigger("AttackTrigger");
 			}
 		}
-    }
+	}
 
     public override void Exit()
     {
         base.Exit();
         agent.isStopped = false;  // Allow the monster to move again
-        animator.SetBool("IsAttacking", false);
     }
 }

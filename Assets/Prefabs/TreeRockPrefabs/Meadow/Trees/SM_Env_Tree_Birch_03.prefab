@@ -177,7 +177,8 @@ GameObject:
   - component: {fileID: 2778334799675656661}
   - component: {fileID: 6977412205797490340}
   - component: {fileID: -944280920115297874}
-  - component: {fileID: -2409869789662031768}
+  - component: {fileID: -6014949806923012516}
+  - component: {fileID: -8534938869531854354}
   m_Layer: 0
   m_Name: SM_Env_Tree_Birch_03
   m_TagString: Untagged
@@ -256,12 +257,35 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 543953597455342938, guid: 525eee429f2e8db418d8b8c292252531, type: 3}
---- !u!208 &-2409869789662031768
+--- !u!136 &-6014949806923012516
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3298165907711742831}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.2
+  m_Height: 4
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &-8534938869531854354
 NavMeshObstacle:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -270,10 +294,10 @@ NavMeshObstacle:
   m_GameObject: {fileID: 3298165907711742831}
   m_Enabled: 1
   serializedVersion: 3
-  m_Shape: 1
+  m_Shape: 0
   m_Extents: {x: 0.5, y: 0.5, z: 0.5}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5

@@ -94,7 +94,8 @@ GameObject:
   - component: {fileID: 74766642427550001}
   - component: {fileID: 5139592836022267456}
   - component: {fileID: -7919287013205211967}
-  - component: {fileID: -2482016535133154515}
+  - component: {fileID: 7718361560328633133}
+  - component: {fileID: -4929986960131613647}
   m_Layer: 0
   m_Name: SM_Env_Tree_Fruit_03
   m_TagString: Untagged
@@ -164,12 +165,35 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -4155672973327171371, guid: a80e2a767bb53b54fb5a6bccc28776da, type: 3}
---- !u!208 &-2482016535133154515
+--- !u!136 &7718361560328633133
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739240639354438539}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 4
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: -0.05}
+--- !u!208 &-4929986960131613647
 NavMeshObstacle:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -178,10 +202,10 @@ NavMeshObstacle:
   m_GameObject: {fileID: 739240639354438539}
   m_Enabled: 1
   serializedVersion: 3
-  m_Shape: 1
+  m_Shape: 0
   m_Extents: {x: 0.5, y: 0.5, z: 0.5}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
