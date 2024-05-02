@@ -75,23 +75,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 		if (otherSlot == this) {
 			return;
 		}
-		
-		if (AttemptToCombine(this, itemComingIn)) {
-			return;
-		}
 
-
-		bool success = inventory.Swap(this, itemComingIn);
-	}
-
-	bool AttemptToCombine(InventorySlot inventorySlot, InventoryItem itemToCombine) {
-		int itemsToStart = itemToCombine.GetItemCount();
-		int itemsAfterCombine = inventory.Combine(this, itemToCombine);
-
-		if (itemsToStart != itemsAfterCombine) {
-			return true;
-		}
-		return false;
+		inventory.AddItem(this, itemComingIn);
 	}
 
 	// This gets called from InventoryItem when the player finishes the drag of an inventoryItem into a slot (or the orginal slot)

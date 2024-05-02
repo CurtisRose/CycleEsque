@@ -27,18 +27,37 @@ public class Inventory : MonoBehaviour
 			return false;
 		}
 		AddItem(slotToAddTo, inventoryItem);
+		
 		return true;
 	}
 
-	public virtual void AddItem(InventorySlot inventorySlot, InventoryItem itemToSet) {
-		if (itemToSet == null) {
-			return;
+	public virtual bool AddItem(InventorySlot inventorySlot, InventoryItem itemToSet) {
+		if (inventorySlot == null) {
+			return false;
 		}
-		inventorySlot.SetItemInSlotAfterDrag(itemToSet);
-		itemToSet.DoThingsAfterMove();
+		if (itemToSet == null) {
+			return false;
+		}
+		if (inventorySlot.HasItem()) {
+			// TODO: Maybe swap, or fill stack
+			return false;
+		}
+		if (CanAddItem(inventorySlot, itemToSet)) {
+			InventorySlot otherSlot = itemToSet.GetCurrentInventorySlot();
+
+			// If it's coming from another slot, then remove it from that slot
+			if (otherSlot != null) {
+				Inventory otherInventory = otherSlot.GetInventory();
+				otherInventory.RemoveItemFromSlot(otherSlot);
+			}
+			inventorySlot.SetItemInSlotAfterDrag(itemToSet);
+			itemToSet.DoThingsAfterMove();
+			return true;
+		}
+		return false;
 	}
 
-	public virtual bool CanAddItem(InventorySlot inventorySlot, InventoryItem itemToSet) {
+	protected virtual bool CanAddItem(InventorySlot inventorySlot, InventoryItem itemToSet) {
 		if (inventorySlot.GetInventory() != this) {
 			Debug.LogWarning("Developer Must Ensure The Slot is Part of This Inventory");
 			return false;
@@ -46,7 +65,25 @@ public class Inventory : MonoBehaviour
 		return true;
 	}
 
-	public virtual bool Swap(InventorySlot inventorySlot, InventoryItem itemToSet) {
+	// I can't think of any reason to override this function
+	// Even if it were a gear slot, it's not stackable. so... it's fine.
+	public virtual void SplitItem(InventoryItem itemToSplit) {
+		if (itemToSplit.itemInstance.sharedData.Stackable) {
+			int numItemsInStack = itemToSplit.GetItemCount();
+			int numItemsToSplit = Mathf.FloorToInt(numItemsInStack / 2);
+			if (numItemsToSplit == 0) {
+				return;
+			}
+			InventorySlot currentSlot = itemToSplit.GetCurrentInventorySlot();
+			ItemInstance newItemInstance = itemToSplit.itemInstance.Clone();
+			newItemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, numItemsToSplit);
+			InventoryItem newInventoryItem = CreateInventoryItem(newItemInstance);
+			AddItem(newInventoryItem);
+			RemoveNumItemsFromSlot(currentSlot, numItemsToSplit);
+		}
+	}
+
+	protected virtual bool Swap(InventorySlot inventorySlot, InventoryItem itemToSet) {
 		bool canAddInventory1 = false;
 		bool canAddInventory2 = false;
 		if (CanAddItem(inventorySlot, itemToSet)) {
@@ -74,7 +111,7 @@ public class Inventory : MonoBehaviour
 	}
 
 	// Returns the number of items left in incoming item
-	public virtual int Combine(InventorySlot inventorySlot, InventoryItem itemToCombine) {
+	protected virtual int Combine(InventorySlot inventorySlot, InventoryItem itemToCombine) {
 		// Assume inventorySlot has an item and these are the same type but confirm
 		if (!inventorySlot.HasItem() || itemToCombine == null) {
 			return itemToCombine.GetItemCount();
@@ -130,6 +167,8 @@ public class Inventory : MonoBehaviour
 		return null; // Return null if no suitable slot is found
 	}
 
+	// To drop the item from the inventory out into the world
+	// This would likely ALSO remove the item, but this is NOT removing the item specifically
 	public virtual void DropItem(InventorySlot inventorySlot) {
 
 	}

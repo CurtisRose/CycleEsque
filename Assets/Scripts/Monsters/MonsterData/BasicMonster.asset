@@ -18,7 +18,7 @@ MonoBehaviour:
   stoppingDistance: 1.5
   acceleration: 90
   exploringRadius: 150
-  pauseTime: 2
+  pauseTime: 5
   detectionRadiusExploring: 25
   detectionRadiusInvestigating: 50
   fleeDistance: 150

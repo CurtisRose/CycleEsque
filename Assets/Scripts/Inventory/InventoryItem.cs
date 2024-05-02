@@ -171,21 +171,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
                 // Split the stack, decrease this item count by half, and create a new item with the other half
                 // Add that other half to the inventory, check if you can first
                 Inventory inventory = currentInventorySlot.GetInventory();
-                int numItemsInStack = GetItemCount();
-                int numItemsToSplit = Mathf.FloorToInt(numItemsInStack / 2);
-
-                if (numItemsToSplit == 0) {
-					return;
-				}
-
-                ItemInstance newItemInstance = itemInstance.Clone();
-                newItemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, numItemsToSplit);
-				InventoryItem newInventoryItem = inventory.CreateInventoryItem(newItemInstance);
-
-				if (inventory.CanAddItem(currentInventorySlot, newInventoryItem)) {
-                    inventory.AddItem(newInventoryItem);
-                    inventory.RemoveNumItemsFromSlot(currentInventorySlot, numItemsToSplit);
-				}
+                inventory.SplitItem(this);
 			}
 			return;
 		}

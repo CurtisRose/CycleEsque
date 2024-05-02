@@ -119,11 +119,60 @@ public class PlayerInventory : Inventory, IPlayerInitializable
         return success;
     }
 
-	public override void AddItem(InventorySlot inventorySlot, InventoryItem itemToSet) {
-		base.AddItem(inventorySlot, itemToSet);
-		if (itemToSet == null) {
-			return;
+	public override bool AddItem(InventorySlot inventorySlot, InventoryItem itemToSet) {
+		if (inventorySlot == null) {
+			return false;
 		}
+		if (itemToSet == null) {
+			return false;
+		}
+		if (inventorySlot.HasItem()) {
+			// TODO: Maybe swap, or fill stack
+			return false;
+		}
+		if (CanAddItem(inventorySlot, itemToSet)) {
+			InventorySlot otherSlot = itemToSet.GetCurrentInventorySlot();
+
+			// If it's coming from another slot, then remove it from that slot
+			if (otherSlot != null) {
+				Inventory otherInventory = otherSlot.GetInventory();
+				otherInventory.RemoveItemFromSlot(otherSlot);
+			}
+
+			UpdateWeight(itemToSet.GetTotalWeight());
+			inventorySlot.SetItemInSlotAfterDrag(itemToSet);
+			itemToSet.DoThingsAfterMove();
+
+			return true;
+		} else {
+			// CanAddSome?
+			float weightLeft = GetInventoryWeightLimit() - GetCurrentInventoryWeight();
+			int numItemsToAddByWeight = (int)Mathf.Floor(weightLeft / itemToSet.itemInstance.sharedData.Weight);
+			foreach (int slotIndex in inventoryDictionary[itemToSet.itemInstance.sharedData.ID]) {
+				InventorySlot slot = inventorySlots[slotIndex];
+				int numItemsInSlot = slot.GetItemInSlot().GetItemCount();
+				int numItemsToFill = itemToSet.itemInstance.sharedData.MaxStackSize - numItemsInSlot;
+				int numItemsToAddToSlot = Mathf.Min(numItemsToAddByWeight, numItemsToFill);
+				numItemsToAddByWeight -= numItemsToAddToSlot;
+
+				// Remove the correct amount from the original item
+				itemToSet.GetCurrentInventorySlot().GetInventory().RemoveNumItemsFromSlot(itemToSet.GetCurrentInventorySlot(), numItemsToAddToSlot);
+				// Add the correct amount to the next item and update weight
+				slot.GetItemInSlot().AddToItemCount(numItemsToAddToSlot);
+
+				// If it's coming in from another inventory, add weight
+				if (this != itemToSet.GetCurrentInventorySlot().GetInventory()) {
+					UpdateWeight(numItemsToAddToSlot * itemToSet.itemInstance.sharedData.Weight);
+				}
+				if (numItemsToAddByWeight == 0) {
+					UpdateInventoryDictionary();
+					return false;
+				}
+			}	
+		}
+
+
+
 		if (inventorySlot is GearSlot) {
 			// If adding to a gear slot, don't update the weight
 			//UpdateWeight(0);
@@ -132,9 +181,10 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 			UpdateWeight(itemToSet.GetTotalWeight());
 		}
 		UpdateInventoryDictionary();
+		return true;
 	}
 
-	public override bool CanAddItem(InventorySlot inventorySlot, InventoryItem itemToSet) {
+	protected override bool CanAddItem(InventorySlot inventorySlot, InventoryItem itemToSet) {
 		// Early exit if base conditions are not met
 		if (!base.CanAddItem(inventorySlot, itemToSet)) {
 			return false;
@@ -185,7 +235,6 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 			}
 		}
 	}
-
 
 	private float CalculateWeightChange(InventoryItem newItem, InventorySlot targetSlot) {
 		float weightChange = 0;
@@ -260,7 +309,7 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 		return capacityChange;
 	}
 
-	public override bool Swap(InventorySlot slotToAddTo, InventoryItem itemToAdd) {
+	protected override bool Swap(InventorySlot slotToAddTo, InventoryItem itemToAdd) {
 		bool success = base.Swap(slotToAddTo, itemToAdd);
 		if (success) { UpdateInventoryDictionary(); }
 		return success;
@@ -285,7 +334,7 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 		}
 	}
 
-	public override int Combine(InventorySlot inventorySlot, InventoryItem itemToCombine) {
+	protected override int Combine(InventorySlot inventorySlot, InventoryItem itemToCombine) {
 		int numberOfItemsBeforeCombine = itemToCombine.GetItemCount();
 		int numberOfItemsAfterCombine = base.Combine(inventorySlot, itemToCombine);
 		if (numberOfItemsBeforeCombine != numberOfItemsAfterCombine) {
