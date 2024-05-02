@@ -78,8 +78,10 @@ public class Inventory : MonoBehaviour
 			ItemInstance newItemInstance = itemToSplit.itemInstance.Clone();
 			newItemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, numItemsToSplit);
 			InventoryItem newInventoryItem = CreateInventoryItem(newItemInstance);
-			AddItem(newInventoryItem);
+			// Removing the item first is key, because adding the item after (for the player inventory)
+			// will do a weight check that won't pass otherwise
 			RemoveNumItemsFromSlot(currentSlot, numItemsToSplit);
+			AddItem(newInventoryItem);
 		}
 	}
 
@@ -240,7 +242,7 @@ public class Inventory : MonoBehaviour
 					}
 				} else if (!slot.HasItem()) {
 
-					itemToQuickEquip.GetCurrentInventorySlot().RemoveItemFromSlot();
+					itemToQuickEquip.GetCurrentInventorySlot().GetInventory().RemoveItemFromSlot(itemToQuickEquip.GetCurrentInventorySlot());
 					AddItem(slot, itemToQuickEquip);
 					return true;
 				}

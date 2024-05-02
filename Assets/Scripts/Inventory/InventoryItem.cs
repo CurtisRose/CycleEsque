@@ -19,6 +19,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public static InventoryItem CurrentHoveredItem { get; private set; }
 
+    public int numItems = 0;
+
     // Initialized by the inventory when it's created
     public void InitializeItem(SharedItemData sharedItemData)
     {
@@ -27,12 +29,14 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         parentAfterDrag = transform.parent;
     }
 
-    public void InitializeItem(ItemInstance itemInstance)
+    public void InitializeItem(ItemInstance originalItemInstance)
     {
-        this.itemInstance = itemInstance;
+        this.itemInstance = originalItemInstance.Clone();
         itemImage.sprite = itemInstance.sharedData.SmallImage;
         parentAfterDrag = transform.parent;
-    }
+		numItems =  (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+
+	}
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -116,6 +120,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
 	public void AddToItemCount(int change) {
 		int currentCount = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+		numItems = currentCount + change;
 		itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, currentCount + change);
 		if (OnItemCountChanged != null) {
 			OnItemCountChanged();
@@ -123,6 +128,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 	}
 
 	public void ChangeItemCount(int change) {
+		numItems = change;
 		itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, change);
 		if (OnItemCountChanged != null) {
 			OnItemCountChanged();

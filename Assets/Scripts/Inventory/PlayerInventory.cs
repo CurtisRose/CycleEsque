@@ -88,7 +88,7 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 		// Need to do a weight check here
 		float weight = itemInstance.sharedData.Weight * (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
 		if (currentWeight + weight > GetInventoryWeightLimit()) {
-			return false;
+			//return false;
 		}
 		// If the item is stackable, I want to add it to an existing stack if possible
 		// First add it to the earliest empty slot then use the QuickEquip method to move it to the correct slot
@@ -102,6 +102,13 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 			}
 			return true;
 		} else {
+			int numberOfItemsStart = item.GetNumberOfItems();
+			AddItem(emptySlot, inventoryItem);
+			int numberOfItemsAfter = inventoryItem.GetItemCount();
+			item.ChangeNumberOfItems(-(numberOfItemsStart - numberOfItemsAfter));
+			if (inventoryItem.itemInstance.sharedData.Stackable) {
+				QuickEquip(emptySlot);
+			}
 			Destroy(inventoryItem.gameObject);
 			return false;
 		}
@@ -130,9 +137,10 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 			// TODO: Maybe swap, or fill stack
 			return false;
 		}
-		if (CanAddItem(inventorySlot, itemToSet)) {
-			InventorySlot otherSlot = itemToSet.GetCurrentInventorySlot();
 
+		InventorySlot otherSlot = itemToSet.GetCurrentInventorySlot();
+
+		if (CanAddItem(inventorySlot, itemToSet)) {
 			// If it's coming from another slot, then remove it from that slot
 			if (otherSlot != null) {
 				Inventory otherInventory = otherSlot.GetInventory();
@@ -148,27 +156,52 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 			// CanAddSome?
 			float weightLeft = GetInventoryWeightLimit() - GetCurrentInventoryWeight();
 			int numItemsToAddByWeight = (int)Mathf.Floor(weightLeft / itemToSet.itemInstance.sharedData.Weight);
+			if (numItemsToAddByWeight == 0) {
+				return false; // true?
+			}
 			foreach (int slotIndex in inventoryDictionary[itemToSet.itemInstance.sharedData.ID]) {
 				InventorySlot slot = inventorySlots[slotIndex];
 				int numItemsInSlot = slot.GetItemInSlot().GetItemCount();
 				int numItemsToFill = itemToSet.itemInstance.sharedData.MaxStackSize - numItemsInSlot;
 				int numItemsToAddToSlot = Mathf.Min(numItemsToAddByWeight, numItemsToFill);
+				
+				// If this slot can't add any, continue to the next slot
+				if (numItemsToAddToSlot == 0) {
+					continue;
+				}
+
 				numItemsToAddByWeight -= numItemsToAddToSlot;
 
-				// Remove the correct amount from the original item
-				itemToSet.GetCurrentInventorySlot().GetInventory().RemoveNumItemsFromSlot(itemToSet.GetCurrentInventorySlot(), numItemsToAddToSlot);
+				// If it's coming from another slot, then use that inventory to remove the items
+				if (otherSlot != null) {
+					Inventory otherInventory = otherSlot.GetInventory();
+					otherInventory.RemoveNumItemsFromSlot(itemToSet.GetCurrentInventorySlot(), numItemsToAddToSlot);
+				} else {
+					// If it's not coming from another inventory, just remove the items directly
+					itemToSet.AddToItemCount(-numItemsToAddToSlot);
+				}
+
+				// Update the weight
+				UpdateWeight(numItemsToAddToSlot * itemToSet.itemInstance.sharedData.Weight);
+
 				// Add the correct amount to the next item and update weight
 				slot.GetItemInSlot().AddToItemCount(numItemsToAddToSlot);
 
-				// If it's coming in from another inventory, add weight
-				if (this != itemToSet.GetCurrentInventorySlot().GetInventory()) {
-					UpdateWeight(numItemsToAddToSlot * itemToSet.itemInstance.sharedData.Weight);
-				}
 				if (numItemsToAddByWeight == 0) {
 					UpdateInventoryDictionary();
 					return false;
 				}
-			}	
+			}
+			// All other slots are full, add numItemsToAddByWeight to the earliest empty slot
+			InventorySlot emptySlot = FindEarliestEmptySlot();
+			if (emptySlot != null) {
+				// Create new inventoryItem with the remaining items
+				InventoryItem inventoryItem = CreateInventoryItem(itemToSet.itemInstance);
+				inventoryItem.ChangeItemCount(numItemsToAddByWeight);
+				itemToSet.GetCurrentInventorySlot().GetInventory().RemoveNumItemsFromSlot(itemToSet.GetCurrentInventorySlot(), numItemsToAddByWeight);
+				AddItem(emptySlot, inventoryItem);
+				return false;
+			}
 		}
 
 
