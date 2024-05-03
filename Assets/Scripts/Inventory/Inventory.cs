@@ -40,8 +40,7 @@ public class Inventory : MonoBehaviour
 		}
 		if (inventorySlot.HasItem()) {
 			// TODO: Maybe swap, or fill stack
-			Swap(inventorySlot, itemToSet);
-			return false;
+			return Swap(inventorySlot, itemToSet);
 		}
 		if (CanAddItem(inventorySlot, itemToSet)) {
 			InventorySlot otherSlot = itemToSet.GetCurrentInventorySlot();
