@@ -147,10 +147,17 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 				otherInventory.RemoveItemFromSlot(otherSlot);
 			}
 
-			UpdateWeight(itemToSet.GetTotalWeight());
+			if (inventorySlot is GearSlot) {
+				// If adding to a gear slot, don't update the weight
+				//UpdateWeight(0);
+			} else {
+				// If adding to an inventory slot, update the weight
+				UpdateWeight(itemToSet.GetTotalWeight());
+			}
+
 			inventorySlot.SetItemInSlotAfterDrag(itemToSet);
 			itemToSet.DoThingsAfterMove();
-
+			UpdateInventoryDictionary();
 			return true;
 		} else {
 			// CanAddSome?
@@ -200,20 +207,10 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 				inventoryItem.ChangeItemCount(numItemsToAddByWeight);
 				itemToSet.GetCurrentInventorySlot().GetInventory().RemoveNumItemsFromSlot(itemToSet.GetCurrentInventorySlot(), numItemsToAddByWeight);
 				AddItem(emptySlot, inventoryItem);
+				UpdateInventoryDictionary();
 				return false;
 			}
 		}
-
-
-
-		if (inventorySlot is GearSlot) {
-			// If adding to a gear slot, don't update the weight
-			//UpdateWeight(0);
-		} else {
-			// If adding to an inventory slot, update the weight
-			UpdateWeight(itemToSet.GetTotalWeight());
-		}
-		UpdateInventoryDictionary();
 		return true;
 	}
 
@@ -275,7 +272,8 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 		InventoryItem itemAlreadyHere = targetSlot.GetItemInSlot();
 
 		if (targetSlot is GearSlot) {
-			if (otherSlot.GetInventory() == this) {
+			// Note for future me, [otherSlot != null] is specifically for swapping guns during quick equip
+			if (otherSlot != null && otherSlot.GetInventory() == this) {
 				// This should only occur when dragging one gun onto another
 				if (otherSlot is GearSlot) {
 					// No Weight Change
@@ -531,6 +529,11 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 		UpdateInventoryDictionary();
 	}
 
+	// The base quick equip does quick sort... basically.
+	public void QuickSort(InventorySlot inventorySlot) {
+		base.QuickEquip(inventorySlot);
+	}
+
 	public override bool QuickEquip(InventorySlot inventorySlot) {
 		InventoryItem inventoryItem = inventorySlot.GetItemInSlot();
 		if (inventoryItem == null) {
@@ -544,14 +547,24 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 		// Then switch the items if the weight is valid
 		switch (inventoryItem.GetItemType()) {
 			case ItemType.WEAPON:
-				// Weapon needs to take into account weapon slot 1 and 2
-				if (gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1].HasItem() && gearSlots[(int)GearSlotIdentifier.WEAPONSLOT2].HasItem()) {
-					// If both weapon slots are full, unequip the first weapon to the inventory
-					success = EquipItem(gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1], inventorySlot, false);
-				} else if (!gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1].HasItem()) {
-					success = EquipItem(gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1], inventorySlot, false);
+				if (inventorySlot is GearSlot) {
+					// If the slot clicked is a gear slot, then just swap them
+					if (inventorySlot == gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1]) {
+						success = Swap(gearSlots[(int)GearSlotIdentifier.WEAPONSLOT2], inventorySlot.GetItemInSlot());
+					} else {
+						success = Swap(gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1], inventorySlot.GetItemInSlot());
+					}
 				} else {
-					success = EquipItem(gearSlots[(int)GearSlotIdentifier.WEAPONSLOT2], inventorySlot, false);
+					// Weapon needs to take into account weapon slot 1 and 2
+					if (gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1].HasItem() && gearSlots[(int)GearSlotIdentifier.WEAPONSLOT2].HasItem()) {
+						// If both weapon slots are full, unequip the first weapon to the inventory
+						// TODO should probably swap out the gun being held to be consistent
+						success = EquipItem(gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1], inventorySlot, false);
+					} else if (!gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1].HasItem()) {
+						success = EquipItem(gearSlots[(int)GearSlotIdentifier.WEAPONSLOT1], inventorySlot, false);
+					} else {
+						success = EquipItem(gearSlots[(int)GearSlotIdentifier.WEAPONSLOT2], inventorySlot, false);
+					}
 				}
 				break;
 			case ItemType.BACKPACK:
@@ -572,10 +585,10 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 	}
 
 	private bool EquipItem(GearSlot relevantGearSlot, InventorySlot inventorySlotOut, bool  force) {
-		// TODOL: Add some logic around forced, not forced
+		// TODO: Add some logic around forced, not forced
 		InventorySlot emptySlot = FindEarliestEmptySlot(inventorySlotOut.GetItemInSlot());
 		InventoryItem inventoryItem = inventorySlotOut.GetItemInSlot();
-		// If the slot in and out are the same, it means they clicked the gear slot just unequip item to earlierst empty slot
+		// If the slot in and out are the same, it means they clicked the gear slot just unequip item to earliest empty slot
 		if (inventorySlotOut == relevantGearSlot) {
 			if (emptySlot != null) {
 				if (CanAddItem(emptySlot, inventoryItem)) {

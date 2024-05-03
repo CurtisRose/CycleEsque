@@ -17,7 +17,7 @@ public class DeathMenu : MonoBehaviour
 	}
 
 	IEnumerator LoadStartScene() {
-		yield return new WaitForSeconds(3);
+		yield return new WaitForSeconds(timeToLoadStartScene);
 		GameManager.Instance.SavePlayerData();
 		SceneManagerHelper.LoadSceneWithPlayerData("SpaceStation");
 	}

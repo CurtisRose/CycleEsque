@@ -106,6 +106,10 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 		currentInventorySlot = parentAfterDrag.GetComponentInParent<InventorySlot>(true);
 	}
 
+    public void RemoveFromSlot() {
+        currentInventorySlot = null;
+    }
+
 	public InventorySlot GetCurrentInventorySlot() {
 		return currentInventorySlot;
 	}

@@ -99,9 +99,17 @@ public class Inventory : MonoBehaviour
 		if (canAddInventory1 && canAddInventory2) {
 			InventorySlot otherSlot = itemToSet.GetCurrentInventorySlot();
 
-			// Remove Items
+			// Remove Items from slots
 			InventoryItem inventoryItemHere = RemoveItemFromSlot(inventorySlot);
 			InventoryItem otherItem = otherSlot.GetInventory().RemoveItemFromSlot(otherSlot);
+
+			// Make sure items don't have a reference to the old slot, AddItem cares about this
+			if (inventoryItemHere != null) {
+				inventoryItemHere.RemoveFromSlot();
+			}
+			if (otherItem != null) {
+				otherItem.RemoveFromSlot(); 
+			}
 
 			// Add Items
 			AddItem(inventorySlot, itemToSet);

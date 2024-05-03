@@ -154,7 +154,7 @@ public class StashInventoryManager : Inventory
 
 		// I think this will try to effectively quick sort that item
 		if (successfullyAdded) {
-			playerInventory.QuickEquip(emptySlot);
+            playerInventory.QuickSort(emptySlot);
 			return true;
 		}
 		return false;
