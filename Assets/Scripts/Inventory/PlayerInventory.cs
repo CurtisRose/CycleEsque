@@ -133,6 +133,7 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 		if (itemToSet == null) {
 			return false;
 		}
+
 		if (inventorySlot.HasItem()) {
 			// TODO: Maybe swap, or fill stack
 			return false;
@@ -160,7 +161,10 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 			UpdateInventoryDictionary();
 			return true;
 		} else {
-			// CanAddSome?
+			// If the item isn't stackable you can't add some
+			if (!itemToSet.itemInstance.sharedData.Stackable) {
+				return false;
+			}
 			float weightLeft = GetInventoryWeightLimit() - GetCurrentInventoryWeight();
 			int numItemsToAddByWeight = (int)Mathf.Floor(weightLeft / itemToSet.itemInstance.sharedData.Weight);
 			if (numItemsToAddByWeight == 0) {
