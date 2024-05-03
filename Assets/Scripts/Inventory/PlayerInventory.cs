@@ -135,8 +135,7 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 		}
 
 		if (inventorySlot.HasItem()) {
-			// TODO: Maybe swap, or fill stack
-			return false;
+			return Swap(inventorySlot, itemToSet);
 		}
 
 		InventorySlot otherSlot = itemToSet.GetCurrentInventorySlot();
@@ -545,10 +544,6 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 		}
 
 		bool success = false;
-		// TODO Should probably be doing weight checks for all of these switches.
-		// Determine the slot that is being switched, in the switch statement
-		// Then check after the switch statement if the weight is valid
-		// Then switch the items if the weight is valid
 		switch (inventoryItem.GetItemType()) {
 			case ItemType.WEAPON:
 				if (inventorySlot is GearSlot) {
@@ -614,5 +609,9 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 			}
 		}
 		return false;
+	}
+
+	public List<int> GetSlotsById(string ID) {
+		return inventoryDictionary[ID];
 	}
 }

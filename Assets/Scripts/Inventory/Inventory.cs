@@ -40,6 +40,7 @@ public class Inventory : MonoBehaviour
 		}
 		if (inventorySlot.HasItem()) {
 			// TODO: Maybe swap, or fill stack
+			Swap(inventorySlot, itemToSet);
 			return false;
 		}
 		if (CanAddItem(inventorySlot, itemToSet)) {
@@ -236,6 +237,8 @@ public class Inventory : MonoBehaviour
 				return Swap(earliestEmptySlot, itemToQuickEquip);
 			}
 		} else {
+			// TODO Loop first to find slots that have the same item type
+			// Then loop to find empty slots
 			foreach (InventorySlot slot in inventorySlots) {
 				if (slot == inventorySlot) {
 					break;
