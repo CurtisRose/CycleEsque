@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static PlayerInventory;
 
@@ -40,7 +41,11 @@ public class Inventory : MonoBehaviour
 		}
 		if (inventorySlot.HasItem()) {
 			// TODO: Maybe swap, or fill stack
-			return Swap(inventorySlot, itemToSet);
+			if (itemToSet.itemInstance.sharedData.Stackable) {
+				return Combine(inventorySlot, itemToSet) == 0;
+			} else {
+				return Swap(inventorySlot, itemToSet);
+			}
 		}
 		if (CanAddItem(inventorySlot, itemToSet)) {
 			InventorySlot otherSlot = itemToSet.GetCurrentInventorySlot();
