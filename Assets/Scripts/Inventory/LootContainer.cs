@@ -118,6 +118,12 @@ public class LootContainer : Inventory, IInteractable, IActivatable
 
 		bool successfullyAdded = playerInventory.AddItem(emptySlot, inventorySlot.GetItemInSlot());
 
+		// I think this will try to effectively quick sort that item
+		if (successfullyAdded) {
+			playerInventory.QuickSort(emptySlot);
+			return true;
+		}
+
 		return false;
 	}
 }
