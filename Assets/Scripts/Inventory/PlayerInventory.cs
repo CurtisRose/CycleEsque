@@ -138,13 +138,6 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 			if (itemToSet.itemInstance.sharedData.Stackable) {
 				return Combine(inventorySlot, itemToSet) == 0;
 			} else {
-				// If it's not stackable, then swap it
-				// This is the only place where we swap items
-				// If the item is not stackable, then we can't combine it with the item in the slot
-				// So we just swap it
-				// This is the only place where we swap items
-				// If the item is not stackable, then we can't combine it with the item in the slot
-				// So we just swap it
 				return Swap(inventorySlot, itemToSet);
 			}
 		}
