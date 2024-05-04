@@ -7,7 +7,11 @@ public class ConsumableController : MonoBehaviour
     [SerializeField] private HealthItem consumableData;
     [SerializeField] private PlayerHealth playerHealth;
 
-    void Awake()
+	[SerializeField] float longPressThreshold = 1.0f;  // Duration threshold to define a long press
+	[SerializeField] bool isPressed = false;
+	[SerializeField] float pressTime = 0;
+
+	void Awake()
     {
         
     }
@@ -15,21 +19,36 @@ public class ConsumableController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E)) {
-            int numConsumables = PlayerInventory.Instance.GetNumberOfItems(consumableData.ID);
-            if (numConsumables > 0) {
-                if (playerHealth.GetMissingHealth() > 0) {
-					if (!ActionStateManager.Instance.CanPerformAction(ActionState.UsingConsumable)) return;
-					ActionStateManager.Instance.EnterState(ActionState.UsingConsumable);
-					Invoke("ExitUsingConsumableState", consumableData.TimeToUse);
-				}
-			}
-        }
+		if (Input.GetKeyDown(KeyCode.E)) {
+			isPressed = true;
+			pressTime = Time.time;  // Record the time when 'E' was pressed
+		}
 
-        if (Input.GetKeyDown(KeyCode.L)) {
-            SceneManagerHelper.LoadSceneWithPlayerData("SpaceStation");
-        }
+		// Short press action, use consumable
+		if (Input.GetKeyUp(KeyCode.E)) {
+			isPressed = false;
+			if (Time.time - pressTime < longPressThreshold) {
+				UseConsumable();
+			}
+		}
+
+		// Long press action, open consumable context window
+		if (isPressed && (Time.time - pressTime > longPressThreshold)) {
+			//OpenContextWindow();
+			isPressed = false; 
+		}
     }
+
+	private void UseConsumable() {
+		int numConsumables = PlayerInventory.Instance.GetNumberOfItems(consumableData.ID);
+		if (numConsumables > 0) {
+			if (playerHealth.GetMissingHealth() > 0) {
+				if (!ActionStateManager.Instance.CanPerformAction(ActionState.UsingConsumable)) return;
+				ActionStateManager.Instance.EnterState(ActionState.UsingConsumable);
+				Invoke("ExitUsingConsumableState", consumableData.TimeToUse);
+			}
+		}
+	}
 
 	private void ExitUsingConsumableState() {
 		PlayerInventory.Instance.RemoveItemByID(consumableData.ID, 1);

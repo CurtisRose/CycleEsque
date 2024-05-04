@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f775f24f7cf28c348ae33c245465141b, type: 3}
-  m_Name: Injector
+  m_Name: InjectorRare
   m_EditorClassIdentifier: 
-  <DisplayName>k__BackingField: Health Injector
-  <ID>k__BackingField: 65d608cb-1c59-4d2f-8d5d-841d411d08ae
+  <DisplayName>k__BackingField: Health Injector +2
+  <ID>k__BackingField: f4be708b-5b1a-4856-9e69-5a7715a81160
   <ItemDescription>k__BackingField: Health Injector
   <ItemType>k__BackingField: 5
-  <Rarity>k__BackingField: 0
+  <Rarity>k__BackingField: 1
   <SmallImage>k__BackingField: {fileID: 21300000, guid: 4b4d1adb4271a38498ae9f5152602a3e,
     type: 3}
   <LargeImage>k__BackingField: {fileID: 0}
@@ -27,4 +27,4 @@ MonoBehaviour:
   allowedKeys:
   - NumItemsInStack
   <TimeToUse>k__BackingField: 5
-  <HealingAmount>k__BackingField: 20
+  <HealingAmount>k__BackingField: 40

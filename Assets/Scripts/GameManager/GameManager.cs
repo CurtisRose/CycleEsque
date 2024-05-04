@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
         string[] categories = { "Weapons", "Armor", "Helmets", "Backpacks", "Consumables", "Ammo" };
         foreach (var category in categories)
         {
-            SharedItemData[] items = Resources.LoadAll<SharedItemData>($"Items/{category}");
+            SharedItemData[] items = Resources.LoadAll<SharedItemData>($"ItemData/{category}");
             foreach (SharedItemData item in items)
             {
                 if (!itemDictionary.ContainsKey(item.ID))
