@@ -114,8 +114,15 @@ public class Player : MonoBehaviour
 
 		if (!disableUserMovementInputStatus)
         {
-            move = (transform.forward * Input.GetAxis("Vertical") * currentMovementSpeed * Time.deltaTime +
-                    transform.right * Input.GetAxis("Horizontal") * currentMovementSpeed * Time.deltaTime);
+			// Get the input vector from keyboard or controller
+			Vector3 inputDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+
+			if (inputDirection.magnitude > 1) {
+				inputDirection.Normalize();
+			}
+
+			move = (transform.forward * Input.GetAxis("Vertical") * currentMovementSpeed * Time.deltaTime +
+					transform.right * Input.GetAxis("Horizontal") * currentMovementSpeed * Time.deltaTime);
 
 			if (isSprinting) {
 				noiseLevel = PlayerNoiseLevel.Medium; // Running noise

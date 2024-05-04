@@ -22,4 +22,5 @@ public class MonsterData : ScriptableObject
     public float maxStraightLineDistance;
     public float investigationTime;
     public float investigationDistance;
+    public float maxDistanceFromPOI;
 }

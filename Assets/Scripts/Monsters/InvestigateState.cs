@@ -10,6 +10,7 @@ public class InvestigateState : MonsterState {
 	private MonsterController monsterController;
 	private float investigateTimer = 0f;
 	private float pauseTimer;
+	private float pauseDuration = 2.0f;
 
 	public InvestigateState(GameObject monster, MonsterData monsterData, Vector3 soundPosition) : base(monster, monsterData) {
 		animator = monster.GetComponentInChildren<Animator>();
@@ -20,12 +21,11 @@ public class InvestigateState : MonsterState {
 
 	public override void Enter() {
 		animator.SetBool("IsWalking", true);
-		animator.SetBool("IsRunning", false);
-		animator.SetBool("IsIdle", false);
 		agent.SetDestination(soundPosition);
 		navMeshAgent.speed = monsterData.walkSpeed;
 		navMeshAgent.angularSpeed = monsterData.turnSpeed;
-		investigateTimer = monsterData.pauseTime;
+		investigateTimer = 0;
+		pauseTimer = 0;
 	}
 
 	int interval = 10;
@@ -36,12 +36,9 @@ public class InvestigateState : MonsterState {
 			if (playerVisible) {
 				monsterController.ChangeState(new AggressiveState(monster, monsterData));
 			}
+			framesUntilNextInterval = 0;
 		}
 		framesUntilNextInterval++;
-
-		if (!IsLookingAround) {
-			LookInRandomDirection(); // Continue to update the looking direction during the pause
-		}
 
 		if (Vector3.Distance(monster.transform.position, soundPosition) < monsterData.investigationDistance) {
 			investigateTimer += Time.deltaTime;
@@ -51,69 +48,32 @@ public class InvestigateState : MonsterState {
 			monsterController.ChangeState(new ExploringState(monster, monsterData, monsterController.explorationTarget));
 		}
 
-		if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= monsterData.stoppingDistance) {
-			PauseAndLookAround();
-		}
-	}
-
-	private void ChooseNextPosition() {
-		Vector3 randomDirection = Random.insideUnitSphere * monsterData.exploringRadius;
-		randomDirection += soundPosition;
-		UnityEngine.AI.NavMeshHit hit;
-		if (UnityEngine.AI.NavMesh.SamplePosition(randomDirection, out hit, monsterData.exploringRadius, UnityEngine.AI.NavMesh.AllAreas)) {
-			float straightLineDistance = Vector3.Distance(monster.transform.position, hit.position);
-			if (straightLineDistance <= monsterData.maxStraightLineDistance) {
-				navMeshAgent.SetDestination(hit.position);
-				animator.SetBool("IsWalking", true);
-				animator.SetBool("IsIdle", false);
+		// Check if reached the current destination
+		if (!agent.pathPending && agent.remainingDistance <= monsterData.stoppingDistance) {
+			if (pauseTimer <= 0) {
+				pauseTimer = pauseDuration; // Reset pause timer when destination is reached
 			} else {
-				ChooseNextPosition(); // Recursively try again
-			}
-		}
-	}
-
-	private void PauseAndLookAround() {
-		if (pauseTimer <= 0) {
-			pauseTimer = monsterData.pauseTime; // Reset pause timer
-
-			// Perform a random look around before moving again
-			LookInRandomDirection();
-			ChooseNextPosition();
-		} else {
-			if (!IsLookingAround) {
-				StartLookingAround(); // Start the look around process if not already looking around
-			}
-
-			animator.SetBool("IsIdle", true);
-			animator.SetBool("IsWalking", false);
-			pauseTimer -= Time.deltaTime;
-		}
-	}
-
-	private bool IsLookingAround = false;
-	private float lookAroundTimer = 0;
-	private Quaternion targetRotation;
-
-	private void StartLookingAround() {
-		IsLookingAround = true;
-		lookAroundTimer = 3.0f; // Adjust time to look around
-		targetRotation = Quaternion.Euler(0, Random.Range(-180, 180), 0); // Random rotation around y-axis
-	}
-
-	private void LookInRandomDirection() {
-		if (IsLookingAround) {
-			if (lookAroundTimer > 0) {
-				// Smoothly rotate towards the target rotation
-				monster.transform.rotation = Quaternion.Slerp(monster.transform.rotation, targetRotation, Time.deltaTime * monsterData.turnSpeed);
-				lookAroundTimer -= Time.deltaTime;
-			} else {
-				// Stop looking around
-				IsLookingAround = false;
+				pauseTimer -= Time.deltaTime;
+				if (pauseTimer <= 0) {
+					ChooseNextPosition(); // Only choose next position after pause
+				}
 			}
 		}
 	}
 
 	public override void Exit() {
+		animator.SetBool("IsWalking", false);
+		animator.SetBool("IsIdle", false);
 		base.Exit();
+	}
+
+	private void ChooseNextPosition() {
+		Vector3 randomDirection = Random.insideUnitSphere * monsterData.investigationDistance;
+		randomDirection += soundPosition;
+		NavMeshHit hit;
+		if (NavMesh.SamplePosition(randomDirection, out hit, monsterData.exploringRadius, NavMesh.AllAreas)) {
+			float straightLineDistance = Vector3.Distance(monster.transform.position, hit.position);
+			navMeshAgent.SetDestination(hit.position);
+		}
 	}
 }

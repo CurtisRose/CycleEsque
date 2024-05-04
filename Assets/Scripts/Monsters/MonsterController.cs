@@ -125,6 +125,8 @@ public class MonsterController : MonoBehaviour
 			state = "AttackState";
 		} else if (newState is FleeingState) {
 			state = "FleeingState";
+		}  else if (newState is InvestigateState) {
+			state = "InvestigateState";
 		} else {
 			state = "UnknownState";
 		}
@@ -208,9 +210,11 @@ public class MonsterController : MonoBehaviour
         HitMarker.Instance.ShowHitMarker(criticalMultiplier);
     }
 
-	private void OnDamageTaken(float damageAmount, float currentHealth) {
-		// Change state to Aggressive when taking damage
-		ChangeState(new AggressiveState(this.gameObject, monsterData));
+    private void OnDamageTaken(float damageAmount, float currentHealth) {
+        // Change state to Aggressive when taking damage
+        if (currentState is not AggressiveState) {
+            ChangeState(new AggressiveState(this.gameObject, monsterData));
+        }
 	}
 
 	public void ApplyDamage()
@@ -301,6 +305,17 @@ public class MonsterController : MonoBehaviour
 		}
 
 		return false; // No player found in the cone or player is occluded by an obstacle
+	}
+
+	// Method to start coroutines from non-MonoBehaviour classes
+	public Coroutine StartStateCoroutine(IEnumerator coroutine) {
+		return StartCoroutine(coroutine);
+	}
+
+	// Method to stop coroutines if needed
+	public void StopStateCoroutine(Coroutine coroutine) {
+		if (coroutine != null)
+			StopCoroutine(coroutine);
 	}
 
 	private void OnEnable() {

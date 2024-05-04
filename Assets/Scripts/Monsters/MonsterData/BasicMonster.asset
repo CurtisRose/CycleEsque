@@ -13,21 +13,22 @@ MonoBehaviour:
   m_Name: BasicMonster
   m_EditorClassIdentifier: 
   walkSpeed: 12
-  runSpeed: 20
+  runSpeed: 16
   turnSpeed: 360
   stoppingDistance: 1.5
   acceleration: 90
-  exploringRadius: 150
-  pauseTime: 2
+  exploringRadius: 75
+  pauseTime: 5
   detectionRadiusExploring: 25
   detectionRadiusInvestigating: 50
   fleeDistance: 150
   minimumAggressionTime: 60
-  health: 100
+  health: 200
   armor: 100
   attackRange: 4.5
   effectiveAttackRange: 8
   attackDamage: 20
   maxStraightLineDistance: 200
   investigationTime: 30
-  investigationDistance: 20
+  investigationDistance: 30
+  maxDistanceFromPOI: 300

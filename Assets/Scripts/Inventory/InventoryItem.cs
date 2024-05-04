@@ -19,6 +19,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public static InventoryItem CurrentHoveredItem { get; private set; }
 
+    public int numItems = 0;
+
     // Initialized by the inventory when it's created
     public void InitializeItem(SharedItemData sharedItemData)
     {
@@ -27,12 +29,14 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         parentAfterDrag = transform.parent;
     }
 
-    public void InitializeItem(ItemInstance itemInstance)
+    public void InitializeItem(ItemInstance originalItemInstance)
     {
-        this.itemInstance = itemInstance;
+        this.itemInstance = originalItemInstance.Clone();
         itemImage.sprite = itemInstance.sharedData.SmallImage;
         parentAfterDrag = transform.parent;
-    }
+		numItems =  (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+
+	}
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -102,6 +106,10 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 		currentInventorySlot = parentAfterDrag.GetComponentInParent<InventorySlot>(true);
 	}
 
+    public void RemoveFromSlot() {
+        currentInventorySlot = null;
+    }
+
 	public InventorySlot GetCurrentInventorySlot() {
 		return currentInventorySlot;
 	}
@@ -116,6 +124,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
 	public void AddToItemCount(int change) {
 		int currentCount = (int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack);
+		numItems = currentCount + change;
 		itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, currentCount + change);
 		if (OnItemCountChanged != null) {
 			OnItemCountChanged();
@@ -123,6 +132,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 	}
 
 	public void ChangeItemCount(int change) {
+		numItems = change;
 		itemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, change);
 		if (OnItemCountChanged != null) {
 			OnItemCountChanged();
@@ -171,21 +181,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
                 // Split the stack, decrease this item count by half, and create a new item with the other half
                 // Add that other half to the inventory, check if you can first
                 Inventory inventory = currentInventorySlot.GetInventory();
-                int numItemsInStack = GetItemCount();
-                int numItemsToSplit = Mathf.FloorToInt(numItemsInStack / 2);
-
-                if (numItemsToSplit == 0) {
-					return;
-				}
-
-                ItemInstance newItemInstance = itemInstance.Clone();
-                newItemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, numItemsToSplit);
-				InventoryItem newInventoryItem = inventory.CreateInventoryItem(newItemInstance);
-
-				if (inventory.CanAddItem(currentInventorySlot, newInventoryItem)) {
-                    inventory.AddItem(newInventoryItem);
-                    inventory.RemoveNumItemsFromSlot(currentInventorySlot, numItemsToSplit);
-				}
+                inventory.SplitItem(this);
 			}
 			return;
 		}

@@ -149,64 +149,15 @@ public class StashInventoryManager : Inventory
 	public override bool QuickEquip(InventorySlot inventorySlot) {
 		PlayerInventory playerInventory = PlayerInventory.Instance;
 		InventorySlot emptySlot = playerInventory.FindEarliestEmptySlot();
-		bool success = false;
 
-		// Try to 
-		if (emptySlot != null) {
-			if (playerInventory.CanAddItem(emptySlot, inventorySlot.GetItemInSlot())) {
-				if (inventorySlot.GetItemInSlot().itemInstance.sharedData.Stackable) {
-					int numItems = inventorySlot.GetItemInSlot().GetItemCount();
-					// loop through each slot in the inventory and try to combine them
-					foreach (InventorySlot slot in playerInventory.inventorySlots) {
-						if (slot.HasItem() && slot.GetItemInSlot().itemInstance.sharedData.ID == inventorySlot.GetItemInSlot().itemInstance.sharedData.ID) {
-							numItems = playerInventory.Combine(slot, inventorySlot.GetItemInSlot());
-							if (numItems == 0) {
-								return true;
-							}
-						}
-					}
-				}
+        bool successfullyAdded = playerInventory.AddItem(emptySlot, inventorySlot.GetItemInSlot());
 
-				success = playerInventory.Swap(emptySlot, inventorySlot.GetItemInSlot());
-				if (success) {
-					return true;
-				}
-			}
-            else {
-                // Can't add whole stack
-                // Try to add as many as possible
-                if (inventorySlot.GetItemInSlot().itemInstance.sharedData.Stackable) {
-					int numItems = inventorySlot.GetItemInSlot().GetItemCount();
-                    float weightLeft = playerInventory.GetInventoryWeightLimit() - playerInventory.GetCurrentInventoryWeight();
-					int numItemsToHold = (int)Mathf.Floor(weightLeft / inventorySlot.GetItemInSlot().itemInstance.sharedData.Weight);
-					if (numItemsToHold == 0) {
-                        return false; // Can't add any
-                    }
-                    inventorySlot.GetItemInSlot().AddToItemCount(-numItemsToHold);
-					
-                    // loop through each slot in the inventory and try to combine them
-					foreach (InventorySlot slot in playerInventory.inventorySlots) {
-						if (slot.HasItem() && slot.GetItemInSlot().itemInstance.sharedData.ID == inventorySlot.GetItemInSlot().itemInstance.sharedData.ID) {
-							numItemsToHold = playerInventory.Combine(slot, inventorySlot.GetItemInSlot());
-							if (numItemsToHold == 0) {
-								return true;
-							}
-						}
-					}
-
-                    // There are items leftover to add, create new instance and add them
-                    ItemInstance newItemInstance = new ItemInstance(inventorySlot.GetItemInSlot().itemInstance.sharedData);
-                    newItemInstance.SetProperty(ItemAttributeKey.NumItemsInStack, numItemsToHold);
-                    playerInventory.AddItem(newItemInstance);
-                    return false; // Not all were added
-				} else {
-                    // Can't add because not stackable
-                    return false;
-                }
-            }
+		// I think this will try to effectively quick sort that item
+		if (successfullyAdded) {
+            playerInventory.QuickSort(emptySlot);
+			return true;
 		}
-
-		return base.QuickEquip(inventorySlot);
+		return false;
 	}
 }
 
