@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f775f24f7cf28c348ae33c245465141b, type: 3}
+  m_Name: InjectorCommon
+  m_EditorClassIdentifier: 
+  <DisplayName>k__BackingField: Health Injector
+  <ID>k__BackingField: 65d608cb-1c59-4d2f-8d5d-841d411d08ae
+  <ItemDescription>k__BackingField: Health Injector
+  <ItemType>k__BackingField: 5
+  <Rarity>k__BackingField: 0
+  <SmallImage>k__BackingField: {fileID: 21300000, guid: f3b4619d09083764181cdbf796977eeb,
+    type: 3}
+  <LargeImage>k__BackingField: {fileID: 0}
+  <Weight>k__BackingField: 5
+  <Stackable>k__BackingField: 1
+  <MaxStackSize>k__BackingField: 5
+  <ColorGameObjectBasedOnRarity>k__BackingField: 0
+  allowedKeys:
+  - NumItemsInStack
+  <TimeToUse>k__BackingField: 5
+  <HealingAmount>k__BackingField: 20

@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] PlayerInventory playerInventory;
     [SerializeField] EquippedItemsMenu equippedItemsMenu;
     [SerializeField] PlayerGearUI playerGearUI;
+    [SerializeField] ConsumableSelectionMenu consumableSelectionMenu;
 
 	// Player components that need to be initialized
 	[SerializeField] PlayerGearManager playerGearManager;
@@ -101,7 +102,7 @@ public class GameManager : MonoBehaviour
         string[] categories = { "Weapons", "Armor", "Helmets", "Backpacks", "Consumables", "Ammo" };
         foreach (var category in categories)
         {
-            SharedItemData[] items = Resources.LoadAll<SharedItemData>($"Items/{category}");
+            SharedItemData[] items = Resources.LoadAll<SharedItemData>($"ItemData/{category}");
             foreach (SharedItemData item in items)
             {
                 if (!itemDictionary.ContainsKey(item.ID))
@@ -131,7 +132,6 @@ public class GameManager : MonoBehaviour
 		if (playerGearUI != null) {
 			playerGearUI.Initialize();
 		}
-
 		if (playerGearManager != null) {
 			playerGearManager.Initialize();
 		}
@@ -142,6 +142,9 @@ public class GameManager : MonoBehaviour
         if (playerWeaponSwitcher != null) {
             playerWeaponSwitcher.Initialize();
         }
+        if (consumableSelectionMenu != null) {
+			consumableSelectionMenu.Initialize();
+		}
  
         //playerWeaponController.Initialize();
 

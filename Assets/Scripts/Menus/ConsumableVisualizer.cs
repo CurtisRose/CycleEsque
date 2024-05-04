@@ -6,7 +6,9 @@ using TMPro;
 
 public class ConsumableVisualizer : MonoBehaviour
 {
-    InventoryItemTracker itemTracker;
+	public static ConsumableVisualizer Instance;
+
+	InventoryItemTracker itemTracker;
 	[SerializeField] private TMP_Text numberAvailableText;
 	[SerializeField] private SharedItemData injectorData;
 	[SerializeField] private Image image;
@@ -14,6 +16,12 @@ public class ConsumableVisualizer : MonoBehaviour
 	[SerializeField] private Image background;
 
 	private void Awake() {
+		if (Instance == null) {
+			Instance = this;
+		} else {
+			Destroy(gameObject);
+		}
+
 		itemTracker = GetComponent<InventoryItemTracker>();
 		itemTracker.OnNumberOfItemsChanged += NumberOfItemsChanged;
 		image.sprite = injectorData.SmallImage;
@@ -26,5 +34,13 @@ public class ConsumableVisualizer : MonoBehaviour
 
 	private void NumberOfItemsChanged(int numberOfItems) {
 		numberAvailableText.text = numberOfItems.ToString();
+	}
+
+	public void SetInjectorData(SharedItemData data) {
+		injectorData = data;
+		image.sprite = injectorData.SmallImage;
+		border.color = RarityColorManager.Instance.GetBrighterColorByRarity(injectorData.Rarity);
+		background.color = RarityColorManager.Instance.GetDullerColorByRarity(injectorData.Rarity);
+		itemTracker.SetNewItemToTrack(data);
 	}
 }

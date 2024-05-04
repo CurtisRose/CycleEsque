@@ -22,4 +22,9 @@ public class InventoryItemTracker : MonoBehaviour
 			OnNumberOfItemsChanged?.Invoke(numberOfItems);
 		}
 	}
+
+	public void SetNewItemToTrack(SharedItemData itemData) {
+		itemDataToTrack = itemData;
+		InventoryChanged();
+	}
 }

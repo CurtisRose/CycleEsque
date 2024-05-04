@@ -128,8 +128,8 @@ public class Inventory : MonoBehaviour
 		if (!inventorySlot.HasItem() || itemToCombine == null) {
 			return itemToCombine.GetItemCount();
 		}
-		// If not the same type, return all items
-		if (inventorySlot.GetItemInSlot().GetItemType() != itemToCombine.GetItemType()) {
+		// If not the same ID, return all items
+		if (inventorySlot.GetItemInSlot().itemInstance.sharedData.ID != itemToCombine.itemInstance.sharedData.ID) {
 			return itemToCombine.GetItemCount();
 		}
 		// If not stackable, return all items
@@ -238,13 +238,13 @@ public class Inventory : MonoBehaviour
 				return Swap(earliestEmptySlot, itemToQuickEquip);
 			}
 		} else {
-			// TODO Loop first to find slots that have the same item type
+			// TODO Loop first to find slots that have the same item ID
 			// Then loop to find empty slots
 			foreach (InventorySlot slot in inventorySlots) {
 				if (slot == inventorySlot) {
 					break;
 				}
-				if (slot.HasItem() && slot.GetItemInSlot().GetItemType() == itemToQuickEquip.GetItemType()) {
+				if (slot.HasItem() && slot.GetItemInSlot().itemInstance.sharedData.ID == itemToQuickEquip.itemInstance.sharedData.ID) {
 					int remainingItems = Combine(slot, itemToQuickEquip);
 					if (remainingItems == 0) {
 						// If there are no items left, remove the item and destroy it
