@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class ItemPrefabPair
-{
-    public SharedItemData baseItem;
-    public WorldItem prefab;
-}
 
 public class ItemSpawner : MonoBehaviour
 {
     public static ItemSpawner Instance { get; private set; }
-    public List<ItemPrefabPair> itemPrefabs = new List<ItemPrefabPair>();
+    public List<WorldItem> itemPrefabs = new List<WorldItem>();
     private Dictionary<SharedItemData, WorldItem> itemPrefabMap;
 
     void Awake()
@@ -25,9 +19,9 @@ public class ItemSpawner : MonoBehaviour
         Instance = this;
 
         itemPrefabMap = new Dictionary<SharedItemData, WorldItem>();
-        foreach (ItemPrefabPair pair in itemPrefabs)
+        foreach (WorldItem worldItem in itemPrefabs)
         {
-            itemPrefabMap[pair.baseItem] = pair.prefab;
+            itemPrefabMap[worldItem.GetSharedItemData()] = worldItem;
         }
     }
 
