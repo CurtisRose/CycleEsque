@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ConsumableController : MonoBehaviour
@@ -7,7 +8,7 @@ public class ConsumableController : MonoBehaviour
     [SerializeField] private HealthItem consumableData;
     [SerializeField] private PlayerHealth playerHealth;
 
-	[SerializeField] float longPressThreshold = 1.0f;  // Duration threshold to define a long press
+	[SerializeField] float longPressThreshold;  // Duration threshold to define a long press
 	[SerializeField] bool isPressed = false;
 	[SerializeField] float pressTime = 0;
 
@@ -26,6 +27,10 @@ public class ConsumableController : MonoBehaviour
 
 		// Short press action, use consumable
 		if (Input.GetKeyUp(KeyCode.E)) {
+			if (ConsumableSelectionMenu.Instance.IsOpen()) {
+				ConsumableSelectionMenu.Instance.Close();
+			}
+
 			isPressed = false;
 			if (Time.time - pressTime < longPressThreshold) {
 				UseConsumable();
@@ -34,8 +39,7 @@ public class ConsumableController : MonoBehaviour
 
 		// Long press action, open consumable context window
 		if (isPressed && (Time.time - pressTime > longPressThreshold)) {
-			//OpenContextWindow();
-			isPressed = false; 
+			OpenContextWindow();
 		}
     }
 
@@ -54,5 +58,10 @@ public class ConsumableController : MonoBehaviour
 		PlayerInventory.Instance.RemoveItemByID(consumableData.ID, 1);
 		playerHealth.ReceiveHealing(((HealthItem)consumableData).HealingAmount);
 		ActionStateManager.Instance.ExitState(ActionState.UsingConsumable);
+	}
+
+	private void OpenContextWindow() {
+		if (!ConsumableSelectionMenu.Instance.IsOpen())
+			ConsumableSelectionMenu.Instance.Open();
 	}
 }

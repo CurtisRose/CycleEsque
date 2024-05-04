@@ -46,7 +46,7 @@ public class Menu : MonoBehaviour, IMenu
         return isOpen;
     }
 
-    public void Close()
+    public virtual void Close()
     {
         menuPanel.SetActive(false);
         isOpen = false;
@@ -64,7 +64,7 @@ public class Menu : MonoBehaviour, IMenu
         }
     }
 
-    public void Open()
+    public virtual void Open()
     {
         menuPanel.SetActive(true);
         isOpen = true;

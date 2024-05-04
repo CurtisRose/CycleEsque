@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] PlayerInventory playerInventory;
     [SerializeField] EquippedItemsMenu equippedItemsMenu;
     [SerializeField] PlayerGearUI playerGearUI;
+    [SerializeField] ConsumableSelectionMenu consumableSelectionMenu;
 
 	// Player components that need to be initialized
 	[SerializeField] PlayerGearManager playerGearManager;
@@ -131,7 +132,6 @@ public class GameManager : MonoBehaviour
 		if (playerGearUI != null) {
 			playerGearUI.Initialize();
 		}
-
 		if (playerGearManager != null) {
 			playerGearManager.Initialize();
 		}
@@ -142,6 +142,9 @@ public class GameManager : MonoBehaviour
         if (playerWeaponSwitcher != null) {
             playerWeaponSwitcher.Initialize();
         }
+        if (consumableSelectionMenu != null) {
+			consumableSelectionMenu.Initialize();
+		}
  
         //playerWeaponController.Initialize();
 

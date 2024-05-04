@@ -616,4 +616,14 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 	public List<int> GetSlotsById(string ID) {
 		return inventoryDictionary[ID];
 	}
+
+	public List<int> GetSlotsByType(ItemType itemType) {
+		List<int> slots = new List<int>();
+		foreach (InventorySlot slot in inventorySlots) {
+			if (slot.HasItem() && slot.GetItemInSlot().GetItemType() == itemType) {
+				slots.Add(inventorySlots.IndexOf(slot));
+			}
+		}
+		return slots;
+	}
 }

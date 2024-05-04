@@ -16,8 +16,8 @@ MonoBehaviour:
   <ID>k__BackingField: a351b564-5f44-4095-91b8-6645c05906c2
   <ItemDescription>k__BackingField: Health Injector
   <ItemType>k__BackingField: 5
-  <Rarity>k__BackingField: 1
-  <SmallImage>k__BackingField: {fileID: 21300000, guid: 4b4d1adb4271a38498ae9f5152602a3e,
+  <Rarity>k__BackingField: 3
+  <SmallImage>k__BackingField: {fileID: 21300000, guid: 67a67fcd62aa98d469aaa86a9e73faf1,
     type: 3}
   <LargeImage>k__BackingField: {fileID: 0}
   <Weight>k__BackingField: 5
