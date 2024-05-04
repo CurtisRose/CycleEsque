@@ -80,6 +80,9 @@ public class LootContainer : Inventory, IInteractable, IActivatable
         // This is so the pick up menu doesn't trigger immediately.
         itemBeingDropped.SetUninteractableTemporarily();
         itemBeingDropped.SetNumberOfStartingItems((int)itemInstance.GetProperty(ItemAttributeKey.NumItemsInStack));
+        // Delete the item from the slot
+        InventoryItem inventoryItem = RemoveItemFromSlot(inventorySlot);
+        Destroy(inventoryItem.gameObject);
     }
 
     public void Interact()
