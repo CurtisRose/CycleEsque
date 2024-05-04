@@ -8,10 +8,12 @@ public class FleeingState : MonsterState
     private NavMeshAgent agent;
     private Transform playerTransform;
     private Vector3 destination;
+	private Animator animator;
 
 	public FleeingState(GameObject monster, MonsterData monsterData) : base(monster, monsterData)
     {
-        agent = monster.GetComponent<NavMeshAgent>();
+		animator = monster.GetComponentInChildren<Animator>();
+		agent = monster.GetComponent<NavMeshAgent>();
         if (agent == null)
         {
             Debug.LogError("NavMeshAgent component is missing from the monster!");
@@ -22,7 +24,8 @@ public class FleeingState : MonsterState
     public override void Enter()
     {
         base.Enter();
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+		animator.SetBool("IsRunning", true);
+		playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         PickRandomFleeDirection();
     }
 
@@ -68,7 +71,8 @@ public class FleeingState : MonsterState
     public override void Exit()
     {
         base.Exit();
-        if (agent.isActiveAndEnabled)
+		animator.SetBool("IsRunning", false);
+		if (agent.isActiveAndEnabled)
         {
             agent.ResetPath();
         }

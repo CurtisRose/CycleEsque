@@ -9,42 +9,41 @@ public class AggressiveState : MonsterState
     private Player player;
     private float aggressiveTimer;  // Timer to track aggression duration
     Animator animator;
+    MonsterController monsterController;
 
 	public AggressiveState(GameObject monster, MonsterData monsterData) : base(monster, monsterData) {
-		agent = monster.GetComponent<NavMeshAgent>();
+		monsterController = monster.GetComponent<MonsterController>();
+        agent = monster.GetComponent<NavMeshAgent>();
 		if (agent == null) {
 			Debug.LogError("NavMeshAgent component is missing from the monster!");
 		}
 		player = monster.GetComponent<MonsterController>().GetPlayers()[0];
 		navMeshAgent.speed = monsterData.runSpeed;
 		animator = monster.GetComponentInChildren<Animator>();
-		animator.SetBool("IsRunning", true);
-		animator.SetBool("IsWalking", false);
-		animator.SetBool("IsIdle", false);
 		//animator.Play("Run");
 	}
 
 	public override void Enter()
     {
         base.Enter();
-        //Debug.Log("Monster becomes aggressive!");
+		//Debug.Log("Monster becomes aggressive!");
 
-        aggressiveTimer = 0;  // Reset the aggression timer
+		aggressiveTimer = 0;  // Reset the aggression timer
 
         if (agent != null)
         {
             agent.speed = monsterData.runSpeed;  // Set the chasing speed
             agent.angularSpeed = monsterData.turnSpeed;  // Set how quickly the monster can turn
-        }
+		}
         if (player != null) {
             monster.GetComponent<MonsterController>().SetTarget(player.transform);
         }
-    }
+		animator.SetBool("IsRunning", true);
+	}
 
     public override void Execute()
     {
-        if (agent == null) return;
-        if (player == null) return;
+		if (agent == null || player == null) return;
 
         // Update the timer each frame
         aggressiveTimer += Time.deltaTime;
@@ -66,14 +65,19 @@ public class AggressiveState : MonsterState
             // If the player is outside the detection radius and the minimum time has elapsed
             monster.GetComponent<MonsterController>().ChangeState(new ExploringState(monster, monsterData, monster.GetComponent<MonsterController>().explorationTarget));
         }
+
+        // If the monster is too far from the point of interest switch to exploring state
+        if (Vector3.Distance(monster.transform.position, monsterController.explorationTarget.position) > monsterData.maxDistanceFromPOI) {
+			monster.GetComponent<MonsterController>().ChangeState(new ExploringState(monster, monsterData, monster.GetComponent<MonsterController>().explorationTarget));
+		}
     }
 
     public override void Exit()
     {
         base.Exit();
-        //Debug.Log("Monster stops being aggressive.");
-
-        if (agent.isActiveAndEnabled)
+		//Debug.Log("Monster stops being aggressive.");
+		animator.SetBool("IsRunning", false);
+		if (agent.isActiveAndEnabled)
         {
             agent.ResetPath();
         }

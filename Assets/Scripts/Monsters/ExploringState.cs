@@ -14,7 +14,6 @@ public class ExploringState : MonsterState
         this.targetArea = targetArea;
         animator = monster.GetComponent<Animator>();
         animator = monster.GetComponentInChildren<Animator>();
-        animator.SetBool("IsIdle", true);
         navMeshAgent.speed = monsterData.walkSpeed;
 		monsterController = monster.GetComponent<MonsterController>();
 	}
@@ -22,7 +21,9 @@ public class ExploringState : MonsterState
     public override void Enter()
     {
         base.Enter();
-        navMeshAgent.speed = monsterData.walkSpeed;
+		animator.SetBool("IsWalking", false);
+		animator.SetBool("IsIdle", false);
+		navMeshAgent.speed = monsterData.walkSpeed;
         navMeshAgent.angularSpeed = monsterData.turnSpeed;
         timer = monsterData.pauseTime;
         ChooseNextPosition();
@@ -49,10 +50,14 @@ public class ExploringState : MonsterState
 
 	public override void Exit()
     {
-        base.Exit();
+		animator.SetBool("IsWalking", false);
+		animator.SetBool("IsIdle", false);
+		base.Exit();
     }
 
 	private void ChooseNextPosition() {
+		animator.SetBool("IsWalking", true);
+		animator.SetBool("IsIdle", false);
 		Vector3 randomDirection = Random.insideUnitSphere * monsterData.exploringRadius;
 		randomDirection += targetArea.position;
 		UnityEngine.AI.NavMeshHit hit;
