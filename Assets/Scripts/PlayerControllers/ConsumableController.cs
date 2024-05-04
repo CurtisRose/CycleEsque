@@ -12,11 +12,6 @@ public class ConsumableController : MonoBehaviour
 	[SerializeField] bool isPressed = false;
 	[SerializeField] float pressTime = 0;
 
-	void Awake()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -63,5 +58,10 @@ public class ConsumableController : MonoBehaviour
 	private void OpenContextWindow() {
 		if (!ConsumableSelectionMenu.Instance.IsOpen())
 			ConsumableSelectionMenu.Instance.Open();
+	}
+
+
+	public void SetConsumableToUse(HealthItem itemData) {
+		consumableData = itemData;
 	}
 }

@@ -22,20 +22,11 @@ public class ConsumableSelectionMenu : Menu, IPlayerInitializable
 		consumableController = Player.Instance.GetComponent<ConsumableController>();
 	}
 
-	struct ConsumableInfo {
-		public Rarity rarity;
-		public Sprite sprite;
-		public ConsumableInfo(Rarity rarity, Sprite sprite) {
-			this.rarity = rarity;
-			this.sprite = sprite;
-		}
-	}
-
 	public override void Open() {
 		base.Open();
 		List<int> slots = PlayerInventory.Instance.GetSlotsByType(ItemType.CONSUMABLE);
 		// Loop through each slot, check ID, if it's a new ID, copy that slot and add it as a child to the gridLayout
-		List<ConsumableInfo> consumableInfo = new List<ConsumableInfo>();
+		List<SharedItemData> consumableInfo = new List<SharedItemData>();
 		List<string> IDs = new List<string>();
 		foreach (int slot in slots) {
 			SharedItemData itemData = PlayerInventory.Instance.inventorySlots[slot].GetItemInSlot().itemInstance.sharedData;
@@ -43,25 +34,28 @@ public class ConsumableSelectionMenu : Menu, IPlayerInitializable
 				continue;
 			}
 			IDs.Add(itemData.ID);
-			ConsumableInfo newInfo = new ConsumableInfo(itemData.Rarity, itemData.SmallImage);
-			if (!consumableInfo.Contains(newInfo)) {
-				consumableInfo.Add(newInfo);
+			if (!consumableInfo.Contains(itemData)) {
+				consumableInfo.Add(itemData);
 			}
 		}
 
 		// Sort the consumableInfo by rarity
-		consumableInfo.Sort((x, y) => x.rarity.CompareTo(y.rarity));
+		consumableInfo.Sort((x, y) => x.Rarity.CompareTo(y.Rarity));
 		
 		// Create slots for each consumable
-		foreach (ConsumableInfo info in consumableInfo) {
+		foreach (SharedItemData info in consumableInfo) {
 			ConsumableSelectionSlot newSlot = Instantiate(slotPrefab, container);
-			newSlot.itemImage.sprite = info.sprite;
-			newSlot.SetImageColor(info.rarity);
+			newSlot.Initialize(info);
 		}
 	}
 
 	public override void Close() {
 		base.Close();
+		if (ConsumableSelectionSlot.CurrentHoveredConsumable != null) {
+			SharedItemData itemData = ConsumableSelectionSlot.CurrentHoveredConsumable.itemData;
+			consumableController.SetConsumableToUse((HealthItem)itemData);
+			ConsumableVisualizer.Instance.SetInjectorData(itemData);
+		}
 		// Cleanup all the slots
 		foreach (Transform child in container) {
 			Destroy(child.gameObject);
