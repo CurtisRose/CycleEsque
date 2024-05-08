@@ -36,20 +36,25 @@ public class Inventory : MonoBehaviour
 		if (itemToSet == null) {
 			return false;
 		}
+		bool canAddItemToOtherInventory = false;
+		Inventory otherInventory = itemToSet.GetCurrentInventorySlot().GetInventory();
+		// Check to see if the other inventory can accept the item here
+		if (otherInventory.CanAddItem(itemToSet.GetCurrentInventorySlot(), inventorySlot.GetItemInSlot())) {
+			canAddItemToOtherInventory = true;
+		}
+
 		if (inventorySlot.HasItem()) {
-			// TODO: Maybe swap, or fill stack
 			if (itemToSet.itemInstance.sharedData.Stackable) {
 				return Combine(inventorySlot, itemToSet) == 0;
 			} else {
 				return Swap(inventorySlot, itemToSet);
 			}
 		}
-		if (CanAddItem(inventorySlot, itemToSet)) {
+		if (canAddItemToOtherInventory && CanAddItem(inventorySlot, itemToSet)) {
 			InventorySlot otherSlot = itemToSet.GetCurrentInventorySlot();
 
 			// If it's coming from another slot, then remove it from that slot
 			if (otherSlot != null) {
-				Inventory otherInventory = otherSlot.GetInventory();
 				otherInventory.RemoveItemFromSlot(otherSlot);
 			}
 			inventorySlot.SetItemInSlotAfterDrag(itemToSet);
