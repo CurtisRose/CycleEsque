@@ -127,6 +127,7 @@ GameObject:
   - component: {fileID: 3600179220345015223}
   - component: {fileID: 2551898184151654111}
   - component: {fileID: 4870924573543685664}
+  - component: {fileID: 5413169837865966812}
   m_Layer: 3
   m_Name: Pump
   m_TagString: Untagged
@@ -199,6 +200,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &5413169837865966812
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7411846614003081707}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3457640966021699784, guid: 4e9acb5e218b8fb47856ce2ca8fd1c95, type: 3}
 --- !u!1 &8434743064395930207
 GameObject:
   m_ObjectHideFlags: 0

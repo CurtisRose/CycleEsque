@@ -9,7 +9,8 @@ public enum AnimationCommand {
 	Shoot,
 	Reload,
 	Crouch, 
-	Aim
+	Aim,
+	Walk
 }
 
 public class AnimationManager : MonoBehaviour
@@ -30,11 +31,17 @@ public class AnimationManager : MonoBehaviour
 		switch (command) {
 			case AnimationCommand.Idle:
 				Debug.Log("Doing Idle Animation");
+				animator.ResetTrigger("Aim");
 				animator.SetTrigger("Idle");
 				break;
 			case AnimationCommand.Aim:
 				Debug.Log("Doing Aiming Animation");
+				animator.ResetTrigger("Idle");
 				animator.SetTrigger("Aim");
+				break;
+			case AnimationCommand.Walk:
+				Debug.Log("Doing Walking Animation");
+				animator.SetTrigger("Walk");
 				break;
 		}
 	}

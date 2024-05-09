@@ -143,6 +143,7 @@ public class PlayerWeaponController : MonoBehaviour
     {
         ActionStateManager.Instance.ExitState(ActionState.Shooting);
     }
+
     private void HandleWeaponReloading()
     {
         if (Input.GetKeyDown(KeyCode.R))
@@ -208,7 +209,7 @@ public class PlayerWeaponController : MonoBehaviour
 
         // Check to see if state manager allows this action
         if (!ActionStateManager.Instance.CanPerformAction(ActionState.Aiming)) return;
-
+		ActionStateManager.Instance.EnterState(ActionState.Aiming);
 		PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Low, transform.position);
 
 		StopCoroutine("MoveWeapon");
@@ -218,16 +219,20 @@ public class PlayerWeaponController : MonoBehaviour
     public void MoveToHipFire()
     {
         StopCoroutine("MoveWeapon");
-		PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Low, transform.position);
+		ActionStateManager.Instance.ExitState(ActionState.Aiming);
+		//PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Low, transform.position);
 		currentTransitionCoroutine = StartCoroutine(MoveWeapon(false));
-    }
+	}
 
     IEnumerator MoveWeapon(bool toADS)
     {
         if (!toADS)
         {
             ADSing = false;
-        }
+            //AnimationManager.Instance.HandleAnimationCommand(AnimationCommand.Idle);
+        } else {
+			//AnimationManager.Instance.HandleAnimationCommand(AnimationCommand.Aim);
+		}
 
         if (currentTransitionCoroutine != null)
         {
@@ -235,19 +240,10 @@ public class PlayerWeaponController : MonoBehaviour
         }
 
         float time = 0;
-        Vector3 startLocalPosition = weaponPositionHands.localPosition; // Start from the current local position
-        Quaternion startLocalRotation = weaponPositionHands.localRotation; // Start from the current local rotation
-
-        Transform targetTransform = toADS ? ADSFirePosition : hipFirePosition;
+        
 
         while (time < timeToADS)
         {
-            float t = time / timeToADS; // Normalize time
-            t = Mathf.SmoothStep(0.0f, 1.0f, t); // Apply SmoothStep for smoother interpolation
-
-            weaponPositionHands.localPosition = Vector3.Lerp(startLocalPosition, targetTransform.localPosition, t);
-            weaponPositionHands.localRotation = Quaternion.Lerp(startLocalRotation, targetTransform.localRotation, t);
-
             time += Time.deltaTime;
             yield return null;
         }
@@ -259,10 +255,6 @@ public class PlayerWeaponController : MonoBehaviour
             crosshairController.SetCrossHairVisual(false);
             StopCoroutine("ShowCrosshair");
         }
-        weaponPositionHands.localPosition = targetTransform.localPosition;
-        weaponPositionHands.localRotation = targetTransform.localRotation;
-
-        ActionStateManager.Instance.ExitState(ActionState.Aiming);
     }
 
     private void ShowCrosshair()

@@ -35,12 +35,18 @@ public class ActionStateManager : MonoBehaviour
     public void EnterState(ActionState newState)
     {
         currentState |= newState; // Adds the new state to the current state
+        if (newState == ActionState.Aiming) {
+			AnimationManager.Instance.HandleAnimationCommand(AnimationCommand.Aim);
+		}
     }
 
     public void ExitState(ActionState state)
     {
         currentState &= ~state; // Removes the state from the current state
-    }
+		if (state == ActionState.Aiming) {
+			AnimationManager.Instance.HandleAnimationCommand(AnimationCommand.Idle);
+		}
+	}
 
     public bool IsInState(ActionState state)
     {
