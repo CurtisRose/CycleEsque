@@ -21406,7 +21406,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d33445d6150272942a701da4771812ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: 0
 --- !u!114 &1820305391 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9179527463123617845, guid: 6e32f29348390c8499f7af5aefc655b4,

@@ -702,7 +702,7 @@ MonoBehaviour:
   aimPositionTransform: {fileID: 4503479181497635757}
   projectilePrefab: {fileID: 7343739617303108452, guid: 9ce584057e259bb47b9937b06cfa6540,
     type: 3}
-  DrawGizmos: 0
+  DrawGizmos: 1
   gunAudioSource: {fileID: 4186205593602730689}
   weaponFireSounds:
   - {fileID: 8300000, guid: 52eee3472cd0d7744a172523797ea3ea, type: 3}

@@ -2,73 +2,127 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class ActionStateManager : MonoBehaviour {
+	public static ActionStateManager Instance { get; private set; }
 
-[System.Flags]
-public enum ActionState
-{
-    Idle = 0,
-    Shooting = 1 << 0,
-    Reloading = 1 << 1,
-    Swapping = 1 << 2,
-    Aiming = 1 << 3,
-    UsingConsumable = 1 << 4,
-    Walking = 1 << 5,
-    Running = 1 << 6
-}
+	public bool IsAiming { get; private set; }
+	public bool IsWalking { get; private set; }
+	public bool IsRunning { get; private set; }
+	public bool IsReloading { get; private set; }
+	public bool IsShooting { get; private set; }
+	public bool IsUsingConsumable { get; private set; }
+	public bool IsSwapping { get; private set; }
 
-public class ActionStateManager : MonoBehaviour
-{
-    public static ActionStateManager Instance { get; private set; }
-
-    [SerializeField] private ActionState currentState = ActionState.Idle;
-
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
-    }
-
-    public void EnterState(ActionState newState)
-    {
-        currentState |= newState; // Adds the new state to the current state
-        if (newState == ActionState.Aiming) {
-			AnimationManager.Instance.HandleAnimationCommand(AnimationCommand.IdleAim);
-		}
-    }
-
-    public void ExitState(ActionState state)
-    {
-        currentState &= ~state; // Removes the state from the current state
-		if (state == ActionState.Aiming) {
-			AnimationManager.Instance.HandleAnimationCommand(AnimationCommand.IdleHip);
+	private void Awake() {
+		if (Instance != null && Instance != this) {
+			Destroy(this.gameObject);
+		} else {
+			Instance = this;
 		}
 	}
 
-    public bool IsInState(ActionState state)
-    {
-        return (currentState & state) == state;
-    }
+	// Methods to attempt to set states
+	public bool TrySetAiming(bool aiming) {
+		if (aiming) {
+			if (CanPerformAction(ActionState.Aiming)) {
+				IsAiming = true;
+				AnimationManager.Instance.HandleAnimationCommand(ActionState.Aiming, true);
+				return true;
+			}
+			return false;
+		}
+		IsAiming = false;
+		AnimationManager.Instance.HandleAnimationCommand(ActionState.Aiming, false);
+		return true;
+	}
 
+	public bool TrySetWalking(bool walking) {
+		IsWalking = walking;
+		AnimationManager.Instance.HandleAnimationCommand(ActionState.Walking, walking);
+		return true;
+	}
+
+	public bool TrySetRunning(bool running) {
+		IsRunning = running;
+		AnimationManager.Instance.HandleAnimationCommand(ActionState.Running, running);
+		if (running) {
+			// If you begin running, undo aiming if aiming.
+			if(IsAiming) {
+				TrySetAiming(false);
+			}
+		}
+		return true;
+	}
+
+	public bool TrySetReloading(bool reloading) {
+		if (reloading) {
+			if (CanPerformAction(ActionState.Reloading)) {
+				IsReloading = true;
+				return true;
+			}
+			return false;
+		}
+		IsReloading = false;
+		return true;
+	}
+
+	public bool TrySetShooting(bool shooting) {
+		if (shooting) {
+			if (CanPerformAction(ActionState.Shooting)) {
+				IsShooting = true;
+				return true;
+			}
+			return false;
+		}
+		IsShooting = false;
+		return true;
+	}
+
+	public bool TrySetUsingConsumable(bool usingConsumable) {
+		if (usingConsumable) {
+			if (CanPerformAction(ActionState.UseConsumable)) {
+				IsUsingConsumable = true;
+				return true;
+			}
+			return false;
+		}
+		IsUsingConsumable = false;
+		return true;
+	}
+	public bool TrySetSwapping(bool swapping) {
+		if (swapping) {
+			if (CanPerformAction(ActionState.Swapping)) {
+				IsSwapping = true;
+				return true;
+			}
+			return false;
+		}
+		IsSwapping = false;
+		return true;
+	}
+
+	// Check if an action can be performed
 	public bool CanPerformAction(ActionState actionState) {
-		// Check if any action that blocks other actions is active
-		bool isBusy = IsInState(ActionState.Reloading | ActionState.Swapping | ActionState.UsingConsumable);
 		switch (actionState) {
 			case ActionState.Shooting:
-				return !isBusy && !IsInState(ActionState.Shooting);
 			case ActionState.Reloading:
+			case ActionState.UseConsumable:
 			case ActionState.Swapping:
-			case ActionState.UsingConsumable:
-				return !isBusy;
+				return !IsShooting && !IsReloading && !IsUsingConsumable && !IsSwapping;
 			case ActionState.Aiming:
-				return !isBusy;
+				return !IsReloading && !IsUsingConsumable && !IsSwapping && !IsRunning;
 			default:
 				return true;
 		}
 	}
+}
+
+public enum ActionState {
+	Aiming,
+	Walking,
+	Running,
+	Reloading,
+	Shooting,
+	UseConsumable,
+	Swapping
 }

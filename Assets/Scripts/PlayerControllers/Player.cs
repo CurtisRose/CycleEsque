@@ -14,8 +14,8 @@ public class Player : MonoBehaviour
     [Header("Movement Parameters")]
     [SerializeField] private float rotationSpeedHorizontal;
     [SerializeField] private float rotationSpeedVertical;
-    [SerializeField] private float movementSpeed;
-    [SerializeField] private float sprintSpeed;
+    [SerializeField] public float movementSpeed;
+    [SerializeField] public float sprintSpeed;
     [SerializeField] private float crouchSpeed;
     private float currentMovementSpeed = 0.0f;
     private float headRotation = 0.0f;
@@ -136,6 +136,18 @@ public class Player : MonoBehaviour
         {
             isMoving = true;
 			PlayerSoundController.Instance.RegisterSound(noiseLevel, transform.position);
+            if (isSprinting) {
+				ActionStateManager.Instance.TrySetRunning(true);
+			} else {
+				if (ActionStateManager.Instance.IsRunning) {
+					ActionStateManager.Instance.TrySetRunning(false);
+				}
+				ActionStateManager.Instance.TrySetWalking(true);
+			}
+		} else {
+            // TODO: Maybe let the animation manager set these false when the speed falls.
+			ActionStateManager.Instance.TrySetWalking(false);
+			ActionStateManager.Instance.TrySetRunning(false);
 		}
         currentVerticalSpeed -= gravity * Time.deltaTime;
         move.y = currentVerticalSpeed;

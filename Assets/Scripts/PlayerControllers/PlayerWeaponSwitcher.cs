@@ -124,7 +124,7 @@ public class PlayerWeaponSwitcher : MonoBehaviour, IPlayerInitializable
         if (check != selectedFirstSlot)
         {
             // Enter the action state
-            ActionStateManager.Instance.EnterState(ActionState.Swapping);
+            ActionStateManager.Instance.TrySetSwapping(true);
 
 			PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Low, transform.position);
 
@@ -145,7 +145,7 @@ public class PlayerWeaponSwitcher : MonoBehaviour, IPlayerInitializable
 
     private void ExitSwappingWeaponsState()
     {
-        ActionStateManager.Instance.ExitState(ActionState.Swapping);
+        ActionStateManager.Instance.TrySetSwapping(false);
     }
 
     private void ExecuteSwitch()

@@ -102,7 +102,7 @@ public class PlayerWeaponController : MonoBehaviour
                     if (fired)
                     {
                         // Enter the action state
-                        ActionStateManager.Instance.EnterState(ActionState.Shooting);
+                        ActionStateManager.Instance.TrySetShooting(true);
 
 						PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.VeryHigh, transform.position);
 
@@ -141,7 +141,7 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void ExitShootingWeaponState()
     {
-        ActionStateManager.Instance.ExitState(ActionState.Shooting);
+        ActionStateManager.Instance.TrySetShooting(false);
     }
 
     private void HandleWeaponReloading()
@@ -165,7 +165,7 @@ public class PlayerWeaponController : MonoBehaviour
 				}
 
                 // Enter the action state
-                ActionStateManager.Instance.EnterState(ActionState.Reloading);
+                ActionStateManager.Instance.TrySetReloading(true);
 
                 PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Medium, transform.position);
 
@@ -193,8 +193,8 @@ public class PlayerWeaponController : MonoBehaviour
 				OnPrimaryGunReloaded();
 			}
 		}
-		ActionStateManager.Instance.ExitState(ActionState.Reloading);
-    }
+		ActionStateManager.Instance.TrySetReloading(false);
+	}
 
     public int GetNumberOfRoundsOfAmmoInInventory()
     {
@@ -209,7 +209,7 @@ public class PlayerWeaponController : MonoBehaviour
 
         // Check to see if state manager allows this action
         if (!ActionStateManager.Instance.CanPerformAction(ActionState.Aiming)) return;
-		ActionStateManager.Instance.EnterState(ActionState.Aiming);
+        ActionStateManager.Instance.TrySetAiming(true);
 		PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Low, transform.position);
 
 		StopCoroutine("MoveWeapon");
@@ -219,7 +219,7 @@ public class PlayerWeaponController : MonoBehaviour
     public void MoveToHipFire()
     {
         StopCoroutine("MoveWeapon");
-		ActionStateManager.Instance.ExitState(ActionState.Aiming);
+		ActionStateManager.Instance.TrySetAiming(false);
 		//PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Low, transform.position);
 		currentTransitionCoroutine = StartCoroutine(MoveWeapon(false));
 	}
