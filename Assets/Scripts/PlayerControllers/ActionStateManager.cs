@@ -9,9 +9,11 @@ public enum ActionState
     Idle = 0,
     Shooting = 1 << 0,
     Reloading = 1 << 1,
-    SwappingWeapons = 1 << 2,
+    Swapping = 1 << 2,
     Aiming = 1 << 3,
-    UsingConsumable = 1 << 4
+    UsingConsumable = 1 << 4,
+    Walking = 1 << 5,
+    Running = 1 << 6
 }
 
 public class ActionStateManager : MonoBehaviour
@@ -36,7 +38,7 @@ public class ActionStateManager : MonoBehaviour
     {
         currentState |= newState; // Adds the new state to the current state
         if (newState == ActionState.Aiming) {
-			AnimationManager.Instance.HandleAnimationCommand(AnimationCommand.Aim);
+			AnimationManager.Instance.HandleAnimationCommand(AnimationCommand.IdleAim);
 		}
     }
 
@@ -44,7 +46,7 @@ public class ActionStateManager : MonoBehaviour
     {
         currentState &= ~state; // Removes the state from the current state
 		if (state == ActionState.Aiming) {
-			AnimationManager.Instance.HandleAnimationCommand(AnimationCommand.Idle);
+			AnimationManager.Instance.HandleAnimationCommand(AnimationCommand.IdleHip);
 		}
 	}
 
@@ -53,40 +55,20 @@ public class ActionStateManager : MonoBehaviour
         return (currentState & state) == state;
     }
 
-    public bool CanPerformAction(ActionState actionState)
-    {
-        switch (actionState)
-        {
-            case ActionState.Shooting:
-                // Shooting can occur only if not reloading or swapping weapons
-                return !IsInState(ActionState.Reloading) && 
-                    !IsInState(ActionState.SwappingWeapons) && 
-                    !IsInState(ActionState.UsingConsumable) &&
-					!IsInState(ActionState.Shooting);
-            case ActionState.Reloading:
-                return !IsInState(ActionState.Reloading) && 
-                    !IsInState(ActionState.Shooting) && 
-                    !IsInState(ActionState.SwappingWeapons) && 
-                    !IsInState(ActionState.UsingConsumable);
-            case ActionState.SwappingWeapons:
-                // Reloading and swapping weapons cannot happen while shooting or aiming
-                return !IsInState(ActionState.Shooting) && 
-                    !IsInState(ActionState.SwappingWeapons) && 
-                    !IsInState(ActionState.UsingConsumable) && 
-                    !IsInState(ActionState.Reloading);
-            case ActionState.Aiming:
-                // Aiming cannot occur while reloading or swapping
-                return !IsInState(ActionState.Reloading) && 
-                    !IsInState(ActionState.SwappingWeapons) && 
-                    !IsInState(ActionState.UsingConsumable);
-            case ActionState.UsingConsumable:
-				// Using a consumable can only occur during idle state
-                return !IsInState(ActionState.Shooting) &&
-					!IsInState(ActionState.SwappingWeapons) &&
-					!IsInState(ActionState.UsingConsumable) &&
-					!IsInState(ActionState.Reloading);
+	public bool CanPerformAction(ActionState actionState) {
+		// Check if any action that blocks other actions is active
+		bool isBusy = IsInState(ActionState.Reloading | ActionState.Swapping | ActionState.UsingConsumable);
+		switch (actionState) {
+			case ActionState.Shooting:
+				return !isBusy && !IsInState(ActionState.Shooting);
+			case ActionState.Reloading:
+			case ActionState.Swapping:
+			case ActionState.UsingConsumable:
+				return !isBusy;
+			case ActionState.Aiming:
+				return !isBusy;
 			default:
-                return true;
-        }
-    }
+				return true;
+		}
+	}
 }

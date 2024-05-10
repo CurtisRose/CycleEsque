@@ -101,7 +101,7 @@ public class PlayerWeaponSwitcher : MonoBehaviour, IPlayerInitializable
     private void HandleWeaponSwitchingInput()
     {
         // Check to see if state manager allows this action
-        if (!ActionStateManager.Instance.CanPerformAction(ActionState.SwappingWeapons)) return;
+        if (!ActionStateManager.Instance.CanPerformAction(ActionState.Swapping)) return;
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         bool key1Pressed = Input.GetKeyDown(KeyCode.Alpha1);
@@ -124,7 +124,7 @@ public class PlayerWeaponSwitcher : MonoBehaviour, IPlayerInitializable
         if (check != selectedFirstSlot)
         {
             // Enter the action state
-            ActionStateManager.Instance.EnterState(ActionState.SwappingWeapons);
+            ActionStateManager.Instance.EnterState(ActionState.Swapping);
 
 			PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Low, transform.position);
 
@@ -145,7 +145,7 @@ public class PlayerWeaponSwitcher : MonoBehaviour, IPlayerInitializable
 
     private void ExitSwappingWeaponsState()
     {
-        ActionStateManager.Instance.ExitState(ActionState.SwappingWeapons);
+        ActionStateManager.Instance.ExitState(ActionState.Swapping);
     }
 
     private void ExecuteSwitch()

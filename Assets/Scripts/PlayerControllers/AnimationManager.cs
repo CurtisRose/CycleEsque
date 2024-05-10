@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum AnimationCommand {
-	Idle,
-	Run,
-	Jump,
+	IdleHip, // Idle Gun at Hip
+	WalkHip, // Gun at hip
+	IdleAim,
+	WalkAim,
+	Run, // Gun always at him when running, can't aim while running
+	Jump, // Gun always at hip when jumping, can't aim while jumping
 	Shoot,
-	Reload,
-	Crouch, 
-	Aim,
-	Walk
+	Reload
 }
 
 public class AnimationManager : MonoBehaviour
@@ -29,17 +29,19 @@ public class AnimationManager : MonoBehaviour
 
 	public void HandleAnimationCommand(AnimationCommand command) {
 		switch (command) {
-			case AnimationCommand.Idle:
+			case AnimationCommand.IdleHip:
 				Debug.Log("Doing Idle Animation");
 				animator.ResetTrigger("Aim");
 				animator.SetTrigger("Idle");
+				CameraFOVController.Instance.SetFOV(60, 0.2f);
 				break;
-			case AnimationCommand.Aim:
+			case AnimationCommand.IdleAim:
 				Debug.Log("Doing Aiming Animation");
 				animator.ResetTrigger("Idle");
 				animator.SetTrigger("Aim");
+				CameraFOVController.Instance.SetFOV(50, 0.3f);
 				break;
-			case AnimationCommand.Walk:
+			case AnimationCommand.WalkHip:
 				Debug.Log("Doing Walking Animation");
 				animator.SetTrigger("Walk");
 				break;
