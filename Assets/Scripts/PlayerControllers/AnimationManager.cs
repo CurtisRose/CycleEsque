@@ -10,6 +10,8 @@ public class AnimationManager : MonoBehaviour
 	float maxWalkingSpeed = 0.0f;
 	float maxSprintSpeed = 0.0f;
 
+	RuntimeAnimatorController defaultRuntimeAnimatorController;
+
 	void Awake() {
 		if (Instance == null) {
 			Instance = this;
@@ -18,7 +20,9 @@ public class AnimationManager : MonoBehaviour
 			Destroy(this);
 		}
 		characterController = GetComponent<CharacterController>();
+		defaultRuntimeAnimatorController = animator.runtimeAnimatorController;
 	}
+
 	void Start() {
 		maxWalkingSpeed = GetComponent<Player>().movementSpeed;
 		maxSprintSpeed = GetComponent<Player>().sprintSpeed;
@@ -62,6 +66,14 @@ public class AnimationManager : MonoBehaviour
 					CameraFOVController.Instance.SetFOV(60, 0.2f);
 				}
 				break;
+		}
+	}
+
+	public void SetAnimationOverrideController(AnimatorOverrideController overrideController) {
+		if (overrideController != null) {
+			animator.runtimeAnimatorController = overrideController;
+		} else {
+			animator.runtimeAnimatorController = defaultRuntimeAnimatorController;
 		}
 	}
 }

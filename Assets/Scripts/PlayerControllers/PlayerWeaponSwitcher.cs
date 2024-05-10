@@ -77,7 +77,10 @@ public class PlayerWeaponSwitcher : MonoBehaviour, IPlayerInitializable
             gunInHands.SetLayerRecursively(gunInHands.gameObject, LayerMask.NameToLayer("Gun"));
             gunInHands.PlayWeaponSwapSound();
             OnPrimaryChanged(gunInHands.GetGunData());
-        }
+			AnimationManager.Instance.SetAnimationOverrideController(gunInHands.animationOverrideController);
+		} else {
+			AnimationManager.Instance.SetAnimationOverrideController(null);
+		}
         if (OnLoadOutChanged != null)
         {
             OnLoadOutChanged();
@@ -166,7 +169,16 @@ public class PlayerWeaponSwitcher : MonoBehaviour, IPlayerInitializable
             gunInHands.PlayWeaponSwapSound();
             OnPrimaryChanged(gunInHands.GetGunData());
         }
-        gunOnHip = weaponPositionHip.GetComponentInChildren<Gun>();
+
+        // Update the animation managers override controller.
+		if (gunInHands != null) {
+			AnimationManager.Instance.SetAnimationOverrideController(gunOnHip.animationOverrideController);
+		} else {
+			// Switch to default (empty hands?)
+			AnimationManager.Instance.SetAnimationOverrideController(null);
+		}
+
+		gunOnHip = weaponPositionHip.GetComponentInChildren<Gun>();
         if (gunOnHip != null)
         {
             gunOnHip.SetLayerRecursively(gunOnHip.gameObject, LayerMask.NameToLayer("Player"));

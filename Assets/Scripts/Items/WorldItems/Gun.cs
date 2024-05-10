@@ -9,6 +9,8 @@ public class Gun : WorldItem
     [SerializeField] Projectile projectilePrefab;
     [SerializeField] bool DrawGizmos;
 
+    [SerializeField] public AnimatorOverrideController animationOverrideController;
+
     float projectileSpeed;
     float projectileDamage;
     float projectileArmorPenetration;

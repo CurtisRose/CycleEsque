@@ -57,6 +57,8 @@ MonoBehaviour:
   projectilePrefab: {fileID: 7343739617303108452, guid: 9ce584057e259bb47b9937b06cfa6540,
     type: 3}
   DrawGizmos: 1
+  animationOverrideController: {fileID: 22100000, guid: 373dc75628f83b440ade1abd84332558,
+    type: 2}
   gunAudioSource: {fileID: -7239728464899762388}
   weaponFireSounds:
   - {fileID: 8300000, guid: 52eee3472cd0d7744a172523797ea3ea, type: 3}
