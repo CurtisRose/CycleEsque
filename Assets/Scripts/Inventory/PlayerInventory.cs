@@ -220,6 +220,13 @@ public class PlayerInventory : Inventory, IPlayerInitializable
 	}
 
 	protected override bool CanAddItem(InventorySlot inventorySlot, InventoryItem itemToSet) {
+		// If the slot is a gear slot, just make sure that it's the right type
+		if (inventorySlot is GearSlot) {
+			if (itemToSet != null && itemToSet.GetItemType() != ((GearSlot)inventorySlot).GetItemType()) {
+				return false;
+			}
+		}
+		
 		// Early exit if base conditions are not met
 		if (!base.CanAddItem(inventorySlot, itemToSet)) {
 			return false;

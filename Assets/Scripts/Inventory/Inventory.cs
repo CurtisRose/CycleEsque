@@ -92,6 +92,8 @@ public class Inventory : MonoBehaviour
 		}
 	}
 
+	// Swap should assume that the canAddInventory has already been checked.
+	// But, I will do it again, just because I'm an idiot.
 	protected virtual bool Swap(InventorySlot inventorySlot, InventoryItem itemToSet) {
 		bool canAddInventory1 = false;
 		bool canAddInventory2 = false;
@@ -119,8 +121,12 @@ public class Inventory : MonoBehaviour
 			}
 
 			// Add Items
-			AddItem(inventorySlot, itemToSet);
-			otherSlot.GetInventory().AddItem(otherSlot, inventoryItemHere);
+			inventorySlot.SetItemInSlotAfterDrag(itemToSet);
+			itemToSet.DoThingsAfterMove();
+
+			otherSlot.SetItemInSlotAfterDrag(inventoryItemHere);
+			otherItem.DoThingsAfterMove();
+
 			return true;
 		}
 
