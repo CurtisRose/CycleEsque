@@ -105,13 +105,14 @@ public class ActionStateManager : MonoBehaviour {
 	// Check if an action can be performed
 	public bool CanPerformAction(ActionState actionState) {
 		switch (actionState) {
-			case ActionState.Firing:
 			case ActionState.Reloading:
 			case ActionState.UseConsumable:
 			case ActionState.Swapping:
 				return !IsShooting && !IsReloading && !IsUsingConsumable && !IsSwapping;
 			case ActionState.Aiming:
 				return !IsReloading && !IsUsingConsumable && !IsSwapping && !IsRunning;
+			case ActionState.Firing:
+				return !IsShooting && !IsReloading && !IsUsingConsumable && !IsSwapping && !IsRunning;
 			default:
 				return true;
 		}

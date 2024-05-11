@@ -36,6 +36,8 @@ public class PlayerWeaponController : MonoBehaviour
     public delegate void PrimaryGunReloaded();
     public event PrimaryGunReloaded OnPrimaryGunReloaded;
 
+    bool isADSing = false;
+
     private void Awake()
     {
 		if (Instance != null) {
@@ -76,7 +78,7 @@ public class PlayerWeaponController : MonoBehaviour
     {
         //hipFirePosition
         //ADSFirePosition
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButton(1))
         {
             MoveToADS();
         }
@@ -204,11 +206,12 @@ public class PlayerWeaponController : MonoBehaviour
 
     public void MoveToADS()
     {
+        if (ActionStateManager.Instance.IsAiming) return;
         if (Player.disableUserClickingInputStatus) return;
         if (gearManager.GetGunInHands() == null) return;
 
-        // Check to see if state manager allows this action
-        if (!ActionStateManager.Instance.CanPerformAction(ActionState.Aiming)) return;
+		// Check to see if state manager allows this action
+		if (!ActionStateManager.Instance.CanPerformAction(ActionState.Aiming)) return;
         ActionStateManager.Instance.TrySetAiming(true);
 		PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Low, transform.position);
 
