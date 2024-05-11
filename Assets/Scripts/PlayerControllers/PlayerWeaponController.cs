@@ -93,7 +93,7 @@ public class PlayerWeaponController : MonoBehaviour
             if (Input.GetMouseButton(0))
             {
                 // Check to see if state manager allows this action
-                if (!ActionStateManager.Instance.CanPerformAction(ActionState.Shooting)) return;
+                if (!ActionStateManager.Instance.CanPerformAction(ActionState.Firing)) return;
 
                 // Fully Auto
                 if (gearManager.GetGunInHands())

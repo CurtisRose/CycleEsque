@@ -5,12 +5,13 @@ using UnityEngine;
 public class AnimationManager : MonoBehaviour
 {
 	public static AnimationManager Instance;
-	[SerializeField] private Animator animator;
+	[SerializeField] private Animator playerAnimator;
 	CharacterController characterController;
 	float maxWalkingSpeed = 0.0f;
 	float maxSprintSpeed = 0.0f;
 
 	RuntimeAnimatorController defaultRuntimeAnimatorController;
+	PlayerGearManager playerGearManager;
 
 	void Awake() {
 		if (Instance == null) {
@@ -20,7 +21,8 @@ public class AnimationManager : MonoBehaviour
 			Destroy(this);
 		}
 		characterController = GetComponent<CharacterController>();
-		defaultRuntimeAnimatorController = animator.runtimeAnimatorController;
+		defaultRuntimeAnimatorController = playerAnimator.runtimeAnimatorController;
+		playerGearManager = GetComponent<PlayerGearManager>();
 	}
 
 	void Start() {
@@ -31,39 +33,46 @@ public class AnimationManager : MonoBehaviour
 	private void FixedUpdate() {
 		if (ActionStateManager.Instance.IsWalking) {
 			float normalizedSpeed = Mathf.Clamp01(characterController.velocity.magnitude / maxWalkingSpeed);
-			animator.SetFloat("WalkingSpeed", normalizedSpeed);
+			playerAnimator.SetFloat("WalkingSpeed", normalizedSpeed);
 		}
 		if (ActionStateManager.Instance.IsRunning) {
 			float normalizedSpeed = Mathf.Clamp01(characterController.velocity.magnitude / maxSprintSpeed);
-			animator.SetFloat("RunningSpeed", normalizedSpeed);
+			playerAnimator.SetFloat("RunningSpeed", normalizedSpeed);
 		}
 	}
 
 	public void HandleAnimationCommand(ActionState command, bool active) {
 		switch (command) {
 			case ActionState.Running:
-				animator.SetBool("IsRunning", active);
+				playerAnimator.SetBool("IsRunning", active);
 				if (active) {
-					animator.SetFloat("RunningSpeed", 1f);
+					playerAnimator.SetFloat("RunningSpeed", 1f);
 				} else {
-					animator.SetFloat("RunningSpeed", 0f);
+					playerAnimator.SetFloat("RunningSpeed", 0f);
 				}
 				break;
 			case ActionState.Walking:
-				animator.SetBool("IsWalking", active);
+				playerAnimator.SetBool("IsWalking", active);
 				if (active) {
 					float normalizedSpeed = Mathf.Clamp01(characterController.velocity.magnitude / maxWalkingSpeed);
-					animator.SetFloat("WalkingSpeed", normalizedSpeed);
+					playerAnimator.SetFloat("WalkingSpeed", normalizedSpeed);
 				} else {
-					animator.SetFloat("WalkingSpeed", 0f);
+					playerAnimator.SetFloat("WalkingSpeed", 0f);
 				}
 				break;
 			case ActionState.Aiming:
-				animator.SetBool("IsAiming", active);
+				playerAnimator.SetBool("IsAiming", active);
 				if (active) {
 					CameraFOVController.Instance.SetFOV(50, 0.3f);
 				} else {
 					CameraFOVController.Instance.SetFOV(60, 0.2f);
+				}
+				break;
+			case ActionState.Firing:
+				if (active) {
+					playerAnimator.ResetTrigger("IsFiring");
+					playerAnimator.SetTrigger("IsFiring");
+					playerGearManager.GetGunInHands().GetComponent<Animator>().SetTrigger("IsFiring");
 				}
 				break;
 		}
@@ -71,9 +80,9 @@ public class AnimationManager : MonoBehaviour
 
 	public void SetAnimationOverrideController(AnimatorOverrideController overrideController) {
 		if (overrideController != null) {
-			animator.runtimeAnimatorController = overrideController;
+			playerAnimator.runtimeAnimatorController = overrideController;
 		} else {
-			animator.runtimeAnimatorController = defaultRuntimeAnimatorController;
+			playerAnimator.runtimeAnimatorController = defaultRuntimeAnimatorController;
 		}
 	}
 }

@@ -21350,6 +21350,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06ca188699e39fc4aa4320fba0b2ee38, type: 3}
+--- !u!95 &1810469345 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9038742679167151118, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+    type: 3}
+  m_PrefabInstance: {fileID: 2145551240}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1812347952 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6260020171764642782, guid: f3bb4c99b8001eb49a8587c49adfbfbd,
@@ -25365,6 +25371,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6760358711617514559, guid: e4c6fb353c04e3049b2329c6e6edcf05,
+        type: 3}
+      propertyPath: playerAnimator
+      value: 
+      objectReference: {fileID: 1810469345}
     - target: {fileID: 9064487098345231791, guid: e4c6fb353c04e3049b2329c6e6edcf05,
         type: 3}
       propertyPath: m_LocalPosition.x

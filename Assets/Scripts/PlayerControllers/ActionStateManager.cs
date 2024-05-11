@@ -68,8 +68,9 @@ public class ActionStateManager : MonoBehaviour {
 
 	public bool TrySetShooting(bool shooting) {
 		if (shooting) {
-			if (CanPerformAction(ActionState.Shooting)) {
+			if (CanPerformAction(ActionState.Firing)) {
 				IsShooting = true;
+				AnimationManager.Instance.HandleAnimationCommand(ActionState.Firing, shooting);
 				return true;
 			}
 			return false;
@@ -104,7 +105,7 @@ public class ActionStateManager : MonoBehaviour {
 	// Check if an action can be performed
 	public bool CanPerformAction(ActionState actionState) {
 		switch (actionState) {
-			case ActionState.Shooting:
+			case ActionState.Firing:
 			case ActionState.Reloading:
 			case ActionState.UseConsumable:
 			case ActionState.Swapping:
@@ -122,7 +123,7 @@ public enum ActionState {
 	Walking,
 	Running,
 	Reloading,
-	Shooting,
+	Firing,
 	UseConsumable,
 	Swapping
 }

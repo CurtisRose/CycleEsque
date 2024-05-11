@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1570672019362220136}
   - component: {fileID: -8819084480297045738}
   - component: {fileID: -7239728464899762388}
+  - component: {fileID: -8350104661476589809}
   m_Layer: 3
   m_Name: Handgun
   m_TagString: Untagged
@@ -195,6 +196,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &-8350104661476589809
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2474077918294206929}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: ef9ea83ceaf38564dae1850c7f2c2281, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2647082089903213152
 GameObject:
   m_ObjectHideFlags: 0
