@@ -58,6 +58,7 @@ public class ActionStateManager : MonoBehaviour {
 		if (reloading) {
 			if (CanPerformAction(ActionState.Reloading)) {
 				IsReloading = true;
+				AnimationManager.Instance.HandleAnimationCommand(ActionState.Reloading, reloading);
 				return true;
 			}
 			return false;

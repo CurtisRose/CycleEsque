@@ -75,6 +75,13 @@ public class AnimationManager : MonoBehaviour
 					playerGearManager.GetGunInHands().GetComponent<Animator>().SetTrigger("IsFiring");
 				}
 				break;
+			case ActionState.Reloading:
+				if (active) {
+					playerAnimator.ResetTrigger("IsReloading");
+					playerAnimator.SetTrigger("IsReloading");
+					//playerGearManager.GetGunInHands().GetComponent<Animator>().SetTrigger("IsReloading");
+				}
+				break;
 		}
 	}
 
