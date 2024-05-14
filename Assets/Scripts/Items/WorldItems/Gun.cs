@@ -28,8 +28,6 @@ public class Gun : WorldItem
     int magazineCapacity;
     [SerializeField] int numberOfRounds;
 
-    [SerializeField] Vector3 EquipPosition;
-
     protected override void Awake()
     {
         base.Awake();
@@ -92,7 +90,7 @@ public class Gun : WorldItem
         base.Equip();
         SetLayerRecursively(gameObject, LayerMask.NameToLayer("Gun"));
         MakeSound(weaponEquipRandomClips.GetRandomClip());
-        transform.localPosition = EquipPosition;
+        transform.localPosition = GetGunData().gunBoneOffset;
     }
 
     public void PlayWeaponSwapSound()

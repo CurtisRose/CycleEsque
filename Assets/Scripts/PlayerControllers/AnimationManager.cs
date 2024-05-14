@@ -82,7 +82,33 @@ public class AnimationManager : MonoBehaviour
 					//playerGearManager.GetGunInHands().GetComponent<Animator>().SetTrigger("IsReloading");
 				}
 				break;
+			case ActionState.Swapping:
+				if (active) {
+					StartCoroutine(SwapWeaponAfterAnimation());
+				}
+				break;
 		}
+	}
+
+	private IEnumerator SwapWeaponAfterAnimation() {
+		// Trigger the 'swap down' animation
+		playerAnimator.SetTrigger("IsSwapping");
+
+		// Wait for the 'swap down' animation to complete
+		yield return new WaitForSeconds(playerAnimator.GetCurrentAnimatorStateInfo(0).length);
+
+		// Tell the weapon switcher to actually switch the guns, now that the arms are down.
+		PlayerWeaponSwitcher.Instance.SwitchGunsActual();
+
+		// Switch the override controller to the new guns controller
+		if (playerGearManager.GetGunInHands() != null) {
+			SetAnimationOverrideController(playerGearManager.GetGunInHands().animationOverrideController);
+		} else {
+			SetAnimationOverrideController(null); // Default controller for empty hands
+		}
+
+		// Trigger the 'swap up' animation
+		playerAnimator.SetTrigger("FinishSwapping");
 	}
 
 	public void SetAnimationOverrideController(AnimatorOverrideController overrideController) {

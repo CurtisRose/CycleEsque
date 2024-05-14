@@ -95,6 +95,7 @@ public class ActionStateManager : MonoBehaviour {
 		if (swapping) {
 			if (CanPerformAction(ActionState.Swapping)) {
 				IsSwapping = true;
+				AnimationManager.Instance.HandleAnimationCommand(ActionState.Swapping, swapping);
 				return true;
 			}
 			return false;
@@ -109,11 +110,10 @@ public class ActionStateManager : MonoBehaviour {
 			case ActionState.Reloading:
 			case ActionState.UseConsumable:
 			case ActionState.Swapping:
-				return !IsShooting && !IsReloading && !IsUsingConsumable && !IsSwapping;
-			case ActionState.Aiming:
-				return !IsReloading && !IsUsingConsumable && !IsSwapping && !IsRunning;
 			case ActionState.Firing:
 				return !IsShooting && !IsReloading && !IsUsingConsumable && !IsSwapping && !IsRunning;
+			case ActionState.Aiming:
+				return !IsReloading && !IsUsingConsumable && !IsSwapping && !IsRunning;
 			default:
 				return true;
 		}

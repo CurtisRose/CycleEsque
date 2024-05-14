@@ -117,15 +117,17 @@ public class Inventory : MonoBehaviour
 				inventoryItemHere.RemoveFromSlot();
 			}
 			if (otherItem != null) {
-				otherItem.RemoveFromSlot(); 
+				otherItem.RemoveFromSlot();
 			}
 
 			// Add Items
 			inventorySlot.SetItemInSlotAfterDrag(itemToSet);
 			itemToSet.DoThingsAfterMove();
 
-			otherSlot.SetItemInSlotAfterDrag(inventoryItemHere);
-			otherItem.DoThingsAfterMove();
+			if (inventoryItemHere != null) {
+				otherSlot.SetItemInSlotAfterDrag(inventoryItemHere);
+				otherItem.DoThingsAfterMove();
+			}
 
 			return true;
 		}

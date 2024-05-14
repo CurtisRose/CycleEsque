@@ -33,8 +33,10 @@ public class GunSharedItemData : SharedItemData
 	[field: SerializeField] public float aimFOV { get; private set; }
     // Time to go from hip to ADS
 	[field: SerializeField] public float aimInTime { get; private set; }
-    // Time to go from ADS to hip
+	// Time to go from ADS to hip
 	[field: SerializeField] public float aimOutTime { get; private set; }
+	[field: SerializeField] public Vector3 gunBoneOffset { get; private set; }
+
 
 
 
