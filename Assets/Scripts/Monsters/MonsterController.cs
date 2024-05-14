@@ -219,7 +219,13 @@ public class MonsterController : MonoBehaviour
 
 	public void ApplyDamage()
     {
-        if (targetTransform == null)
+        // In the event that the monster died after the attack was initiated but before this was called, return
+		if (this == null) {
+            return;
+        }
+
+
+		if (targetTransform == null)
             return;
 
         // If the target is too far away, don't apply damage
