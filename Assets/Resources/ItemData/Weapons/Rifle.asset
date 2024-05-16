@@ -41,3 +41,7 @@ MonoBehaviour:
   <damage>k__BackingField: 40
   <speed>k__BackingField: 400
   <penetration>k__BackingField: 10
+  <aimFOV>k__BackingField: 0
+  <aimInTime>k__BackingField: 0
+  <aimOutTime>k__BackingField: 0
+  <gunBoneOffset>k__BackingField: {x: 0, y: -0.003, z: 0.034}

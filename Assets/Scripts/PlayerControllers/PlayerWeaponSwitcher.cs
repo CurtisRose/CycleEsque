@@ -129,9 +129,9 @@ public class PlayerWeaponSwitcher : MonoBehaviour, IPlayerInitializable
 			PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Low, transform.position);
 
 			float weaponSwapSpeed = noGunSwapSpeed;
-            if (gunInHands != null)
+            if (gunOnHip != null)
             {
-                weaponSwapSpeed = gunInHands.GetGunData().switchToTime;
+                weaponSwapSpeed = gunOnHip.GetGunData().switchToTime;
             }
             // Start reloading animation
             // TODO:

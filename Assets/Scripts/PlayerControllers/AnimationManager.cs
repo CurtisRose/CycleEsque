@@ -95,7 +95,8 @@ public class AnimationManager : MonoBehaviour
 		playerAnimator.SetTrigger("IsSwapping");
 
 		// Wait for the 'swap down' animation to complete
-		yield return new WaitForSeconds(playerAnimator.GetCurrentAnimatorStateInfo(0).length);
+		float timeToSwitch = playerGearManager.GetGunOnHip().GetGunData().switchToTime;
+		yield return new WaitForSeconds(timeToSwitch);
 
 		// Tell the weapon switcher to actually switch the guns, now that the arms are down.
 		PlayerWeaponSwitcher.Instance.SwitchGunsActual();
