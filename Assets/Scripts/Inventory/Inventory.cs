@@ -36,20 +36,25 @@ public class Inventory : MonoBehaviour
 		if (itemToSet == null) {
 			return false;
 		}
+		bool canAddItemToOtherInventory = false;
+		Inventory otherInventory = itemToSet.GetCurrentInventorySlot().GetInventory();
+		// Check to see if the other inventory can accept the item here
+		if (otherInventory.CanAddItem(itemToSet.GetCurrentInventorySlot(), inventorySlot.GetItemInSlot())) {
+			canAddItemToOtherInventory = true;
+		}
+
 		if (inventorySlot.HasItem()) {
-			// TODO: Maybe swap, or fill stack
 			if (itemToSet.itemInstance.sharedData.Stackable) {
 				return Combine(inventorySlot, itemToSet) == 0;
 			} else {
 				return Swap(inventorySlot, itemToSet);
 			}
 		}
-		if (CanAddItem(inventorySlot, itemToSet)) {
+		if (canAddItemToOtherInventory && CanAddItem(inventorySlot, itemToSet)) {
 			InventorySlot otherSlot = itemToSet.GetCurrentInventorySlot();
 
 			// If it's coming from another slot, then remove it from that slot
 			if (otherSlot != null) {
-				Inventory otherInventory = otherSlot.GetInventory();
 				otherInventory.RemoveItemFromSlot(otherSlot);
 			}
 			inventorySlot.SetItemInSlotAfterDrag(itemToSet);
@@ -87,6 +92,8 @@ public class Inventory : MonoBehaviour
 		}
 	}
 
+	// Swap should assume that the canAddInventory has already been checked.
+	// But, I will do it again, just because I'm an idiot.
 	protected virtual bool Swap(InventorySlot inventorySlot, InventoryItem itemToSet) {
 		bool canAddInventory1 = false;
 		bool canAddInventory2 = false;
@@ -110,12 +117,18 @@ public class Inventory : MonoBehaviour
 				inventoryItemHere.RemoveFromSlot();
 			}
 			if (otherItem != null) {
-				otherItem.RemoveFromSlot(); 
+				otherItem.RemoveFromSlot();
 			}
 
 			// Add Items
-			AddItem(inventorySlot, itemToSet);
-			otherSlot.GetInventory().AddItem(otherSlot, inventoryItemHere);
+			inventorySlot.SetItemInSlotAfterDrag(itemToSet);
+			itemToSet.DoThingsAfterMove();
+
+			if (inventoryItemHere != null) {
+				otherSlot.SetItemInSlotAfterDrag(inventoryItemHere);
+				otherItem.DoThingsAfterMove();
+			}
+
 			return true;
 		}
 

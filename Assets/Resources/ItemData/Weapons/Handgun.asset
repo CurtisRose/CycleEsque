@@ -29,8 +29,8 @@ MonoBehaviour:
   - NumItemsInStack
   - AmmoCount
   <MagazineCapacity>k__BackingField: 12
-  <RateOfFire>k__BackingField: 0.3
-  <reloadTime>k__BackingField: 0.75
+  <RateOfFire>k__BackingField: 0.4
+  <reloadTime>k__BackingField: 2
   <switchToTime>k__BackingField: 0.5
   <hipFireMultiplier>k__BackingField: 3
   <aimRecoilX>k__BackingField: 3
@@ -41,3 +41,6 @@ MonoBehaviour:
   <damage>k__BackingField: 50
   <speed>k__BackingField: 300
   <penetration>k__BackingField: 5
+  <aimFOV>k__BackingField: 0
+  <aimInTime>k__BackingField: 0
+  <aimOutTime>k__BackingField: 0

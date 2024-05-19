@@ -27,11 +27,20 @@ public class GunSharedItemData : SharedItemData
     // Gun Projectile Data
     [field: SerializeField] public float damage { get; private set; }
     [field: SerializeField] public float speed { get; private set; }
-    [field: SerializeField] public float penetration { get; private set; }
+	[field: SerializeField] public float penetration { get; private set; }
+
+    // ADS FOV
+	[field: SerializeField] public float aimFOV { get; private set; }
+    // Time to go from hip to ADS
+	[field: SerializeField] public float aimInTime { get; private set; }
+	// Time to go from ADS to hip
+	[field: SerializeField] public float aimOutTime { get; private set; }
+	[field: SerializeField] public Vector3 gunBoneOffset { get; private set; }
 
 
 
-    protected override void PopulateAllowedKeys()
+
+	protected override void PopulateAllowedKeys()
     {
         base.PopulateAllowedKeys();
 

@@ -42,8 +42,8 @@ public class ConsumableController : MonoBehaviour
 		int numConsumables = PlayerInventory.Instance.GetNumberOfItems(consumableData.ID);
 		if (numConsumables > 0) {
 			if (playerHealth.GetMissingHealth() > 0) {
-				if (!ActionStateManager.Instance.CanPerformAction(ActionState.UsingConsumable)) return;
-				ActionStateManager.Instance.EnterState(ActionState.UsingConsumable);
+				if (!ActionStateManager.Instance.CanPerformAction(ActionState.UseConsumable)) return;
+				ActionStateManager.Instance.TrySetUsingConsumable(true);
 				Invoke("ExitUsingConsumableState", consumableData.TimeToUse);
 			}
 		}
@@ -52,14 +52,13 @@ public class ConsumableController : MonoBehaviour
 	private void ExitUsingConsumableState() {
 		PlayerInventory.Instance.RemoveItemByID(consumableData.ID, 1);
 		playerHealth.ReceiveHealing(((HealthItem)consumableData).HealingAmount);
-		ActionStateManager.Instance.ExitState(ActionState.UsingConsumable);
+		ActionStateManager.Instance.TrySetUsingConsumable(false);
 	}
 
 	private void OpenContextWindow() {
 		if (!ConsumableSelectionMenu.Instance.IsOpen())
 			ConsumableSelectionMenu.Instance.Open();
 	}
-
 
 	public void SetConsumableToUse(HealthItem itemData) {
 		consumableData = itemData;

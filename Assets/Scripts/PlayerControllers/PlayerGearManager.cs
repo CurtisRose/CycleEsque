@@ -138,12 +138,14 @@ public class PlayerGearManager : MonoBehaviour, IPlayerInitializable
         }
     }
 
-    public Gun GetGunInHands()
-    {
-        return playerWeaponSwitcher.GetGunInHands();
-    }
+	public Gun GetGunInHands() {
+		return playerWeaponSwitcher.GetGunInHands();
+	}
+	public Gun GetGunOnHip() {
+		return playerWeaponSwitcher.GetGunOnHip();
+	}
 
-    public Gun GunGetGunOnHip()
+	public Gun GunGetGunOnHip()
     {
         return playerWeaponSwitcher.GetGunOnHip();
     }

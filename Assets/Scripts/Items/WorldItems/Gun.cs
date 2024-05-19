@@ -9,6 +9,8 @@ public class Gun : WorldItem
     [SerializeField] Projectile projectilePrefab;
     [SerializeField] bool DrawGizmos;
 
+    [SerializeField] public AnimatorOverrideController animationOverrideController;
+
     float projectileSpeed;
     float projectileDamage;
     float projectileArmorPenetration;
@@ -25,8 +27,6 @@ public class Gun : WorldItem
 
     int magazineCapacity;
     [SerializeField] int numberOfRounds;
-
-    [SerializeField] Vector3 EquipPosition;
 
     protected override void Awake()
     {
@@ -90,7 +90,7 @@ public class Gun : WorldItem
         base.Equip();
         SetLayerRecursively(gameObject, LayerMask.NameToLayer("Gun"));
         MakeSound(weaponEquipRandomClips.GetRandomClip());
-        transform.localPosition = EquipPosition;
+        transform.localPosition = GetGunData().gunBoneOffset;
     }
 
     public void PlayWeaponSwapSound()

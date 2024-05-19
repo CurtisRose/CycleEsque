@@ -36,6 +36,8 @@ public class PlayerWeaponController : MonoBehaviour
     public delegate void PrimaryGunReloaded();
     public event PrimaryGunReloaded OnPrimaryGunReloaded;
 
+    bool isADSing = false;
+
     private void Awake()
     {
 		if (Instance != null) {
@@ -76,7 +78,7 @@ public class PlayerWeaponController : MonoBehaviour
     {
         //hipFirePosition
         //ADSFirePosition
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButton(1))
         {
             MoveToADS();
         }
@@ -93,7 +95,7 @@ public class PlayerWeaponController : MonoBehaviour
             if (Input.GetMouseButton(0))
             {
                 // Check to see if state manager allows this action
-                if (!ActionStateManager.Instance.CanPerformAction(ActionState.Shooting)) return;
+                if (!ActionStateManager.Instance.CanPerformAction(ActionState.Firing)) return;
 
                 // Fully Auto
                 if (gearManager.GetGunInHands())
@@ -102,7 +104,7 @@ public class PlayerWeaponController : MonoBehaviour
                     if (fired)
                     {
                         // Enter the action state
-                        ActionStateManager.Instance.EnterState(ActionState.Shooting);
+                        ActionStateManager.Instance.TrySetShooting(true);
 
 						PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.VeryHigh, transform.position);
 
@@ -141,8 +143,9 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void ExitShootingWeaponState()
     {
-        ActionStateManager.Instance.ExitState(ActionState.Shooting);
+        ActionStateManager.Instance.TrySetShooting(false);
     }
+
     private void HandleWeaponReloading()
     {
         if (Input.GetKeyDown(KeyCode.R))
@@ -164,7 +167,7 @@ public class PlayerWeaponController : MonoBehaviour
 				}
 
                 // Enter the action state
-                ActionStateManager.Instance.EnterState(ActionState.Reloading);
+                ActionStateManager.Instance.TrySetReloading(true);
 
                 PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Medium, transform.position);
 
@@ -192,8 +195,8 @@ public class PlayerWeaponController : MonoBehaviour
 				OnPrimaryGunReloaded();
 			}
 		}
-		ActionStateManager.Instance.ExitState(ActionState.Reloading);
-    }
+		ActionStateManager.Instance.TrySetReloading(false);
+	}
 
     public int GetNumberOfRoundsOfAmmoInInventory()
     {
@@ -203,12 +206,13 @@ public class PlayerWeaponController : MonoBehaviour
 
     public void MoveToADS()
     {
+        if (ActionStateManager.Instance.IsAiming) return;
         if (Player.disableUserClickingInputStatus) return;
         if (gearManager.GetGunInHands() == null) return;
 
-        // Check to see if state manager allows this action
-        if (!ActionStateManager.Instance.CanPerformAction(ActionState.Aiming)) return;
-
+		// Check to see if state manager allows this action
+		if (!ActionStateManager.Instance.CanPerformAction(ActionState.Aiming)) return;
+        ActionStateManager.Instance.TrySetAiming(true);
 		PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Low, transform.position);
 
 		StopCoroutine("MoveWeapon");
@@ -218,16 +222,20 @@ public class PlayerWeaponController : MonoBehaviour
     public void MoveToHipFire()
     {
         StopCoroutine("MoveWeapon");
-		PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Low, transform.position);
+		ActionStateManager.Instance.TrySetAiming(false);
+		//PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Low, transform.position);
 		currentTransitionCoroutine = StartCoroutine(MoveWeapon(false));
-    }
+	}
 
     IEnumerator MoveWeapon(bool toADS)
     {
         if (!toADS)
         {
             ADSing = false;
-        }
+            //AnimationManager.Instance.HandleAnimationCommand(AnimationCommand.Idle);
+        } else {
+			//AnimationManager.Instance.HandleAnimationCommand(AnimationCommand.Aim);
+		}
 
         if (currentTransitionCoroutine != null)
         {
@@ -235,19 +243,10 @@ public class PlayerWeaponController : MonoBehaviour
         }
 
         float time = 0;
-        Vector3 startLocalPosition = weaponPositionHands.localPosition; // Start from the current local position
-        Quaternion startLocalRotation = weaponPositionHands.localRotation; // Start from the current local rotation
-
-        Transform targetTransform = toADS ? ADSFirePosition : hipFirePosition;
+        
 
         while (time < timeToADS)
         {
-            float t = time / timeToADS; // Normalize time
-            t = Mathf.SmoothStep(0.0f, 1.0f, t); // Apply SmoothStep for smoother interpolation
-
-            weaponPositionHands.localPosition = Vector3.Lerp(startLocalPosition, targetTransform.localPosition, t);
-            weaponPositionHands.localRotation = Quaternion.Lerp(startLocalRotation, targetTransform.localRotation, t);
-
             time += Time.deltaTime;
             yield return null;
         }
@@ -259,10 +258,6 @@ public class PlayerWeaponController : MonoBehaviour
             crosshairController.SetCrossHairVisual(false);
             StopCoroutine("ShowCrosshair");
         }
-        weaponPositionHands.localPosition = targetTransform.localPosition;
-        weaponPositionHands.localRotation = targetTransform.localRotation;
-
-        ActionStateManager.Instance.ExitState(ActionState.Aiming);
     }
 
     private void ShowCrosshair()

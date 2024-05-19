@@ -17,7 +17,7 @@ public class PlayerWeaponSwitcher : MonoBehaviour, IPlayerInitializable
 
     [SerializeField] bool primarySelected = true;
 
-    [SerializeField] float noGunReloadSpeed = 0.5f;
+    [SerializeField] float noGunSwapSpeed = 0.5f;
 
     [SerializeField] bool selectedFirstSlot;
 
@@ -77,7 +77,10 @@ public class PlayerWeaponSwitcher : MonoBehaviour, IPlayerInitializable
             gunInHands.SetLayerRecursively(gunInHands.gameObject, LayerMask.NameToLayer("Gun"));
             gunInHands.PlayWeaponSwapSound();
             OnPrimaryChanged(gunInHands.GetGunData());
-        }
+			AnimationManager.Instance.SetAnimationOverrideController(gunInHands.animationOverrideController);
+		} else {
+			AnimationManager.Instance.SetAnimationOverrideController(null);
+		}
         if (OnLoadOutChanged != null)
         {
             OnLoadOutChanged();
@@ -101,7 +104,7 @@ public class PlayerWeaponSwitcher : MonoBehaviour, IPlayerInitializable
     private void HandleWeaponSwitchingInput()
     {
         // Check to see if state manager allows this action
-        if (!ActionStateManager.Instance.CanPerformAction(ActionState.SwappingWeapons)) return;
+        if (!ActionStateManager.Instance.CanPerformAction(ActionState.Swapping)) return;
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         bool key1Pressed = Input.GetKeyDown(KeyCode.Alpha1);
@@ -123,15 +126,12 @@ public class PlayerWeaponSwitcher : MonoBehaviour, IPlayerInitializable
 
         if (check != selectedFirstSlot)
         {
-            // Enter the action state
-            ActionStateManager.Instance.EnterState(ActionState.SwappingWeapons);
-
 			PlayerSoundController.Instance.RegisterSound(PlayerNoiseLevel.Low, transform.position);
 
-			float weaponSwapSpeed = noGunReloadSpeed;
+			float weaponSwapSpeed = noGunSwapSpeed;
             if (gunOnHip != null)
             {
-                weaponSwapSpeed = gunOnHip.GetGunData().reloadTime;
+                weaponSwapSpeed = gunOnHip.GetGunData().switchToTime;
             }
             // Start reloading animation
             // TODO:
@@ -145,7 +145,7 @@ public class PlayerWeaponSwitcher : MonoBehaviour, IPlayerInitializable
 
     private void ExitSwappingWeaponsState()
     {
-        ActionStateManager.Instance.ExitState(ActionState.SwappingWeapons);
+        ActionStateManager.Instance.TrySetSwapping(false);
     }
 
     private void ExecuteSwitch()
@@ -153,29 +153,34 @@ public class PlayerWeaponSwitcher : MonoBehaviour, IPlayerInitializable
         primarySelected = !primarySelected;
         SwitchGuns();
     }
+
     private void SwitchGuns()
     {
-        Transform tempParent = weaponSlot1.parent;
-        weaponSlot1.SetParent(weaponSlot2.parent, false);
-        weaponSlot2.SetParent(tempParent, false);
-
-        gunInHands = weaponPositionHands.GetComponentInChildren<Gun>();
-        if (gunInHands != null)
-        {
-            gunInHands.SetLayerRecursively(gunInHands.gameObject, LayerMask.NameToLayer("Gun"));
-            gunInHands.PlayWeaponSwapSound();
-            OnPrimaryChanged(gunInHands.GetGunData());
-        }
-        gunOnHip = weaponPositionHip.GetComponentInChildren<Gun>();
-        if (gunOnHip != null)
-        {
-            gunOnHip.SetLayerRecursively(gunOnHip.gameObject, LayerMask.NameToLayer("Player"));
-        }
-        if (OnLoadOutChanged != null)
-        {
-            OnLoadOutChanged();
-        }
+        // The actionStateManager calls the animation manager. Animation manager handles gun down, override, and gun up.
+		ActionStateManager.Instance.TrySetSwapping(true);
     }
+
+    // This is called by the animation manager... it's gross but it works for now.
+    public void SwitchGunsActual() {
+		Transform tempParent = weaponSlot1.parent;
+		weaponSlot1.SetParent(weaponSlot2.parent, false);
+		weaponSlot2.SetParent(tempParent, false);
+
+		gunInHands = weaponPositionHands.GetComponentInChildren<Gun>();
+		if (gunInHands != null) {
+			gunInHands.SetLayerRecursively(gunInHands.gameObject, LayerMask.NameToLayer("Gun"));
+			gunInHands.PlayWeaponSwapSound();
+			OnPrimaryChanged(gunInHands.GetGunData());
+		}
+
+		gunOnHip = weaponPositionHip.GetComponentInChildren<Gun>();
+		if (gunOnHip != null) {
+			gunOnHip.SetLayerRecursively(gunOnHip.gameObject, LayerMask.NameToLayer("Player"));
+		}
+		if (OnLoadOutChanged != null) {
+			OnLoadOutChanged();
+		}
+	}
 
     public Gun GetGunInHands()
     {
