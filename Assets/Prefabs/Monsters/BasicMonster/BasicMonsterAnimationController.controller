@@ -163,37 +163,37 @@ AnimatorStateMachine:
     m_Position: {x: 30, y: 200, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5432050406197419038}
-    m_Position: {x: 700, y: 430, z: 0}
+    m_Position: {x: 800, y: 330, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6736794312419657967}
     m_Position: {x: 700, y: 650, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7642366517664904443}
-    m_Position: {x: 990, y: 650, z: 0}
+    m_Position: {x: 1370, y: 480, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3962462101118700152}
-    m_Position: {x: 700, y: 390, z: 0}
+    m_Position: {x: 800, y: 290, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -843902551135123749}
-    m_Position: {x: 700, y: 560, z: 0}
+    m_Position: {x: 1120, y: 530, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2454832893798736961}
-    m_Position: {x: -110, y: 480, z: 0}
+    m_Position: {x: 1310, y: 430, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7281865803681680928}
-    m_Position: {x: 700, y: 520, z: 0}
+    m_Position: {x: 1120, y: 490, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4322953714970532327}
-    m_Position: {x: -110, y: 390, z: 0}
+    m_Position: {x: 1310, y: 380, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6670789249580004262}
-    m_Position: {x: 160, y: 610, z: 0}
+    m_Position: {x: 50, y: 570, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3658622238688221082}
     m_Position: {x: 250, y: 460, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4743563699334028661}
-    m_Position: {x: 1050, y: 180, z: 0}
+    m_Position: {x: 1300, y: 180, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2642450655454230249}
     m_Position: {x: 800, y: 80, z: 0}
@@ -202,31 +202,31 @@ AnimatorStateMachine:
     m_Position: {x: 280, y: -20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6299095572933630119}
-    m_Position: {x: 1050, y: 100, z: 0}
+    m_Position: {x: 1300, y: 100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2734798452233910675}
     m_Position: {x: 800, y: 40, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7183133874374429717}
-    m_Position: {x: 1050, y: 220, z: 0}
+    m_Position: {x: 1300, y: 220, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1576815666709591734}
     m_Position: {x: 280, y: 20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6740392996252562737}
-    m_Position: {x: 1050, y: 260, z: 0}
+    m_Position: {x: 1260, y: 330, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1503594833684000702}
     m_Position: {x: 800, y: 0, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1943304339556855731}
-    m_Position: {x: 1050, y: 60, z: 0}
+    m_Position: {x: 1300, y: 60, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7948417884604565289}
     m_Position: {x: 260, y: 280, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1158323212541954099}
-    m_Position: {x: 1050, y: 140, z: 0}
+    m_Position: {x: 1300, y: 140, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -82,13 +83,14 @@ public class Player : MonoBehaviour
             isSprinting = false;
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                currentMovementSpeed = sprintSpeed;
-                isSprinting = true;
-                if (currentSlopeLimit != sprintingSlopeLimit)
-                {
-                    currentSlopeLimit = sprintingSlopeLimit;
-                    characterController.slopeLimit = currentSlopeLimit;
-                }
+                if (ActionStateManager.Instance.CanPerformAction(ActionState.Running)) {
+					currentMovementSpeed = sprintSpeed;
+					isSprinting = true;
+					if (currentSlopeLimit != sprintingSlopeLimit) {
+						currentSlopeLimit = sprintingSlopeLimit;
+						characterController.slopeLimit = currentSlopeLimit;
+					}
+				}
             } else
             {
                 if (currentSlopeLimit != walkingSlopeLimit)

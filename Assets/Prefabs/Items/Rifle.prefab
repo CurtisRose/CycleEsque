@@ -454,6 +454,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DeleteRifleRig
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5ce3d945364d2c74e85a1b3cb71b0d23,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

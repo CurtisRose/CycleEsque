@@ -60,7 +60,6 @@ public class ConsumableController : MonoBehaviour
 			ConsumableSelectionMenu.Instance.Open();
 	}
 
-
 	public void SetConsumableToUse(HealthItem itemData) {
 		consumableData = itemData;
 	}

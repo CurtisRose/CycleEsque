@@ -44,12 +44,17 @@ public class ActionStateManager : MonoBehaviour {
 
 	public bool TrySetRunning(bool running) {
 		IsRunning = running;
-		AnimationManager.Instance.HandleAnimationCommand(ActionState.Running, running);
 		if (running) {
 			// If you begin running, undo aiming if aiming.
-			if(IsAiming) {
-				TrySetAiming(false);
+			if (CanPerformAction(ActionState.Running)) {
+				AnimationManager.Instance.HandleAnimationCommand(ActionState.Running, running);
+				if (IsAiming) {
+					TrySetAiming(false);
+				}
 			}
+		}
+		else {
+			AnimationManager.Instance.HandleAnimationCommand(ActionState.Running, running);
 		}
 		return true;
 	}
@@ -114,6 +119,8 @@ public class ActionStateManager : MonoBehaviour {
 				return !IsShooting && !IsReloading && !IsUsingConsumable && !IsSwapping && !IsRunning;
 			case ActionState.Aiming:
 				return !IsReloading && !IsUsingConsumable && !IsSwapping && !IsRunning;
+			case ActionState.Running:
+				return !IsShooting && !IsReloading && !IsUsingConsumable && !IsSwapping;
 			default:
 				return true;
 		}
