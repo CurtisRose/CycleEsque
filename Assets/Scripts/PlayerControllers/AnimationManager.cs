@@ -119,4 +119,16 @@ public class AnimationManager : MonoBehaviour
 			playerAnimator.runtimeAnimatorController = defaultRuntimeAnimatorController;
 		}
 	}
+	 
+	private void SyncStateAcrossLayers(string stateName) {
+		int layerCount = playerAnimator.layerCount;
+		for (int i = 0; i < layerCount; i++) {
+			// Check if the layer has the state
+			AnimatorStateInfo stateInfo = playerAnimator.GetCurrentAnimatorStateInfo(i);
+			if (stateInfo.IsName(stateName)) {
+				// Force state re-entry to apply potential changes from the override controller
+				playerAnimator.Play(stateName, i, 0);
+			}
+		}
+	}
 }
