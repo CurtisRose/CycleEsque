@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SpaceStation.unity
+    path: Assets/Scenes/SpaceStation/SpaceStation.unity
     guid: c2bbd82d6dc83b043a65e6f3dffcbeb9
   - enabled: 1
     path: Assets/Scenes/MapDevelopment/MapDevelopmentSunny.unity

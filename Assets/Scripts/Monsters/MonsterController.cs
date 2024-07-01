@@ -87,6 +87,10 @@ public class MonsterController : MonoBehaviour
 			return;
         if (currentState != null)
             currentState.Execute();
+        if (Input.GetKeyDown(KeyCode.K)) {
+			// switch state to attack state
+            ChangeState(new AttackState(gameObject, monsterData));
+		}
     }
 
 	public void Destroy() {
@@ -189,18 +193,6 @@ public class MonsterController : MonoBehaviour
                 Gizmos.DrawWireSphere(explorationTarget.position, monsterData.exploringRadius);
             }
         }
-    }
-
-    // This should be done at the end of a root motion movement.
-    void AlignParentToRootMotionObject()
-    {
-        // Set the parent's position and rotation to match the child's
-        transform.position = rootmotionObject.position;
-        transform.rotation = rootmotionObject.rotation;
-
-        // Reset the child's local position and rotation
-        rootmotionObject.localPosition = Vector3.zero;
-        rootmotionObject.localRotation = Quaternion.identity;
     }
 
     public void HandleHit(Projectile projectile, float criticalMultiplier)
